@@ -23,29 +23,6 @@ FkRlProject class >> codeGeneration [
 	project generateSource.
 ]
 
-{ #category : #'instance creation' }
-FkRlProject class >> fromBaselineClass: aBaselineClass fromRepositoryDescription: aRepositoryUrl [
-	self assert: [ aBaselineClass project versions size = 1 ].
-	^ self new 
-		repositorySpec: (MetacelloRepositoriesSpec new
-			add: (MetacelloRepositorySpec new 
-				description: aRepositoryUrl;
-				yourself);
-			yourself);
-		baselineVersion: aBaselineClass project versions first;
-		baselineClass: aBaselineClass.
-]
-
-{ #category : #'instance creation' }
-FkRlProject class >> fromProjectSpec: aBaselineProjectSpec [
-	self assert: [ aBaselineProjectSpec project versions size = 1 ].
-	self assert: [ aBaselineProjectSpec repositorySpecs size = 1 ].
-	^ self new 
-		repositorySpec: aBaselineProjectSpec version spec repositories;
-		baselineVersion: aBaselineProjectSpec version;
-		baselineClass: aBaselineProjectSpec projectClass.
-]
-
 { #category : #adding }
 FkRlProject >> addChildProject: aChildProject [ 
 	self childProjects add: aChildProject.
@@ -56,6 +33,18 @@ FkRlProject >> addChildProject: aChildProject [
 FkRlProject >> addChildProjects: aCollection [
 	aCollection do: [ :aChildProject | 
 		self addChildProject: aChildProject ]
+]
+
+{ #category : #adding }
+FkRlProject >> addPackage: aPackage [
+	aPackage parentProject: self. 
+	self packages add: aPackage.
+]
+
+{ #category : #adding }
+FkRlProject >> addPackages: aCollection [
+	aCollection do: [ :aPackage |
+		self addPackage: aPackage ]
 ]
 
 { #category : #'accessing - dynamic' }
@@ -115,13 +104,14 @@ FkRlProject >> childProjectsWithNewRepositories [
 { #category : #actions }
 FkRlProject >> generateSource [
 	| toolbox |
-  (toolbox := FkRlMetacelloToolBox baselineNamed: 'BaselineOfGToolkit')
+  (toolbox := FkRlMetacelloToolBox baselineNamed: self baselineClass name)
     createBaselineOfMethod: 'baseline:' inCategory: 'baseline';
     addBaselineOfSection: #'common'
       requiredProjects: self childProjectsNames
-      packages: #()
+      packages: (self packages collect: #name)
       repositories: self childProjectsWithNewRepositories
-      dependencies: #()
+      dependencies: (self packages collect: [ :aPackage | 
+			aPackage name -> aPackage dependencies ])
       groups: #()
       versionSpecsDo: [ :versionSpec | ].
   ^ toolbox methodSpec methodSource
@@ -200,6 +190,7 @@ FkRlProject >> gtProjectMapFor: aView [
 { #category : #initialization }
 FkRlProject >> initialize [ 
 	super initialize.
+	packages := OrderedCollection new.
 	parentProjects := OrderedCollection new.
 	childProjects := OrderedCollection new
 ]
@@ -212,6 +203,11 @@ FkRlProject >> name [
 { #category : #'accessing - dynamic' }
 FkRlProject >> name: aString [
 	name := aString
+]
+
+{ #category : #accessing }
+FkRlProject >> packages [
+	^ packages
 ]
 
 { #category : #accessing }

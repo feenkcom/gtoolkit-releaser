@@ -2,17 +2,39 @@ Class {
 	#name : #FkRlPackage,
 	#superclass : #FkRlNode,
 	#instVars : [
-		'project'
+		'name',
+		'dependencies',
+		'parentProject'
 	],
 	#category : #'Feenk-Releaser'
 }
 
 { #category : #accessing }
-FkRlPackage >> project [
-	^ project
+FkRlPackage >> dependencies [
+	^ dependencies
 ]
 
 { #category : #accessing }
-FkRlPackage >> project: aProject [
-	project := aProject
+FkRlPackage >> dependencies: aSymbolArray [
+	dependencies := aSymbolArray
+]
+
+{ #category : #accessing }
+FkRlPackage >> name [
+	^ name
+]
+
+{ #category : #accessing }
+FkRlPackage >> name: aString [
+	name := aString
+]
+
+{ #category : #accessing }
+FkRlPackage >> parentProject [
+	^ parentProject
+]
+
+{ #category : #accessing }
+FkRlPackage >> parentProject: aProject [
+	parentProject := aProject
 ]
