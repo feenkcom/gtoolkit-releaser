@@ -1,22 +1,25 @@
 Class {
 	#name : #FkRlProject,
-	#superclass : #Object,
+	#superclass : #FkRlNode,
 	#instVars : [
+		'name',
 		'baselineVersion',
 		'baselineClass',
 		'repositorySpec',
-		'projectDependencies'
+		'parentProjects',
+		'childProjects',
+		'packages'
 	],
 	#category : #'Feenk-Releaser'
 }
 
 { #category : #examples }
 FkRlProject class >> codeGeneration [
-	| project |
-	project := FkRlProject 
-		fromBaselineClass: BaselineOfGToolkit
-		fromRepositoryDescription: 'github://feenkcom/gtoolkit-debugger/src'.
-	project updateDependencies.
+	| project builder |
+	builder := FkRlModelBuilder new.
+	project := builder 
+		buildProjectFromBaselineClass: BaselineOfGToolkit 
+		withRepositoryDescription: 'github://feenkcom/gtoolkit-debugger/src'.
 	project generateSource.
 ]
 
@@ -43,6 +46,25 @@ FkRlProject class >> fromProjectSpec: aBaselineProjectSpec [
 		baselineClass: aBaselineProjectSpec projectClass.
 ]
 
+{ #category : #adding }
+FkRlProject >> addChildProject: aChildProject [ 
+	self childProjects add: aChildProject.
+	aChildProject basicAddParentProject: self
+]
+
+{ #category : #adding }
+FkRlProject >> addChildProjects: aCollection [
+	aCollection do: [ :aChildProject | 
+		self addChildProject: aChildProject ]
+]
+
+{ #category : #'accessing - dynamic' }
+FkRlProject >> allChildrenProjects [
+	^ self 
+		withDeepCollect: [ :aProject | aProject childProjects ] 
+		as: Set
+]
+
 { #category : #accessing }
 FkRlProject >> baselineClass [
 	^ baselineClass
@@ -51,11 +73,6 @@ FkRlProject >> baselineClass [
 { #category : #accessing }
 FkRlProject >> baselineClass: aBaselineClass [
 	baselineClass := aBaselineClass
-]
-
-{ #category : #'accessing - dynamic' }
-FkRlProject >> baselineProject [ 
-	^ self baselineVersion project
 ]
 
 { #category : #accessing }
@@ -70,43 +87,144 @@ FkRlProject >> baselineVersion: aMetacelloVersion [
 	baselineVersion := aMetacelloVersion
 ]
 
+{ #category : #'private - adding' }
+FkRlProject >> basicAddParentProject: aParentProject [
+	self parentProjects add: aParentProject
+]
+
+{ #category : #accessing }
+FkRlProject >> childProjects [
+	^ childProjects
+]
+
+{ #category : #'accessing - dynamic' }
+FkRlProject >> childProjectsNames [
+	^ self childProjects collect: #name
+]
+
+{ #category : #'accessing - dynamic' }
+FkRlProject >> childProjectsWithNewRepositories [
+	^ self childProjects collect: [ :aProject |
+		| simpleName currentUrl |
+		simpleName := aProject name.
+		currentUrl := ZnUrl fromString: aProject repositorySpec list first name.
+		currentUrl segments at: 1 put: (currentUrl segments at: 1), ':v1.1.1'. 
+		simpleName -> {currentUrl printString} ]
+]
+
 { #category : #actions }
 FkRlProject >> generateSource [
 	| toolbox |
   (toolbox := FkRlMetacelloToolBox baselineNamed: 'BaselineOfGToolkit')
     createBaselineOfMethod: 'baseline:' inCategory: 'baseline';
     addBaselineOfSection: #'common'
-      requiredProjects: self subprojectsNames
+      requiredProjects: self childProjectsNames
       packages: #()
-      repositories: self subprojectsWithNewRepositories
+      repositories: self childProjectsWithNewRepositories
       dependencies: #()
       groups: #()
       versionSpecsDo: [ :versionSpec | ].
   ^ toolbox methodSpec methodSource
 ]
 
+{ #category : #ui }
+FkRlProject >> gtChildProjectsFor: aView [
+	<gtView>
+	^ aView list
+		title: 'Child Projects' translated;
+		items: [ self childProjects ];
+		itemFormat: #name;
+		priority: 45
+]
+
 { #category : #printing }
-FkRlProject >> gtDisplayOn: stream [
-	stream 
-		nextPutAll: self baselineVersion printString
+FkRlProject >> gtDisplayOn: aStream [
+	aStream 
+		nextPutAll: self name
+]
+
+{ #category : #ui }
+FkRlProject >> gtGeneratedSourceFor: aView [
+	<gtView> 
+	^ aView textEditor
+		title: 'Src (generated)';
+		text: [ self generateSource ];
+		priority: 55
+]
+
+{ #category : #ui }
+FkRlProject >> gtMCProjectMapFor: aView [
+	<gtView>
+	^ self baselineVersion ifNotNil: [ :aBaselineVersion |
+		(aBaselineVersion gtProjectMapFor: aView)
+			title: 'MC Map';
+			priority: 70 ]
+]
+
+{ #category : #ui }
+FkRlProject >> gtParentProjectsFor: aView [
+	<gtView>
+	^ aView list
+		title: 'Parent Projects' translated;
+		items: [ self parentProjects ];
+		itemFormat: #name;
+		priority: 50
 ]
 
 { #category : #ui }
 FkRlProject >> gtProjectMapFor: aView [
 	<gtView>
-	^ self baselineVersion ifNotNil: [ :aBaselineVersion |
-		aBaselineVersion gtProjectMapFor: aView ]
+	^ aView mondrian
+		title: 'Project map' translated;
+		priority: 60;
+		painting: [ :mondrian |
+			mondrian nodes 
+				shape: [ :aProject |
+					BlTextElement new text: aProject name asRopedText ];
+				with: self allChildrenProjects.
+			mondrian edges
+				shape: [
+					BlLineElement new 
+						zIndex: -1;
+						border: (BlBorder paint: (Color gray alpha: 0.5) width: 2);
+						toHead: (BlArrowheadSimpleArrow new
+							border: (BlBorder builder paint: (Color gray alpha: 0.5); width: 2; build)) ];
+				fromRightCenter;
+				toLeftCenter;
+				connectToAll: #childProjects.
+			mondrian layout horizontalDominanceTree 
+				nodeDistance: 10; 
+				levelDistance: 10 ]
 ]
 
 { #category : #initialization }
 FkRlProject >> initialize [ 
 	super initialize.
-	projectDependencies := OrderedCollection new.
+	parentProjects := OrderedCollection new.
+	childProjects := OrderedCollection new
+]
+
+{ #category : #'accessing - dynamic' }
+FkRlProject >> name [ 	
+	^ name
+]
+
+{ #category : #'accessing - dynamic' }
+FkRlProject >> name: aString [
+	name := aString
 ]
 
 { #category : #accessing }
-FkRlProject >> projectDependencies [
-	^ projectDependencies
+FkRlProject >> parentProjects [
+	^ parentProjects
+]
+
+{ #category : #printing }
+FkRlProject >> printOn: aStream [
+	super printOn: aStream.
+	aStream nextPutAll: ' ('.
+	self gtDisplayOn: aStream.
+	aStream nextPutAll: ')'
 ]
 
 { #category : #accessing }
@@ -117,30 +235,4 @@ FkRlProject >> repositorySpec [
 { #category : #accessing }
 FkRlProject >> repositorySpec: aRepositorySpec [
 	repositorySpec := aRepositorySpec 
-]
-
-{ #category : #'accessing - dynamic' }
-FkRlProject >> subprojectsNames [
-	^ self projectDependencies collect: [ :each | 
-		MetacelloScriptEngine baseNameOf: each  baselineClass name ]
-]
-
-{ #category : #'accessing - dynamic' }
-FkRlProject >> subprojectsWithNewRepositories [
-	^ self projectDependencies collect: [ :each |
-		| simpleName currentUrl |
-		simpleName := MetacelloScriptEngine baseNameOf: each baselineClass name.
-		currentUrl := ZnUrl fromString: each repositorySpec list first name.
-		currentUrl segments at: 1 put: (currentUrl segments at: 1), ':v1.1.1'. 
-		simpleName -> {currentUrl printString} ]
-]
-
-{ #category : #actions }
-FkRlProject >> updateDependencies [
-	| newProjects |
-	newProjects := self baselineVersion projects collect: [ :aMetacelloProjectSpec |
-		self class fromProjectSpec: aMetacelloProjectSpec ].
-	"newProjects do: #updateDependencies."
-	self projectDependencies addAll: newProjects
-	
 ]
