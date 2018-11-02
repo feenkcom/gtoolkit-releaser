@@ -8,12 +8,15 @@ IceRepository registry
 
 Each repository has branches
 [[[
-IceRepository registry detect: [:r | r name = #gtoolkit]
+branches := (IceRepository registry detect: [:r | r name = 'feenk-releaser']) allBranches.
+branches
 ]]]
 
 
-
-
+To see the commits of one branch, we created a gtView that shows the ancestors tree of the latest commit in the selected branch
+[[[
+branches first commit
+]]]
 
 "
 Class {

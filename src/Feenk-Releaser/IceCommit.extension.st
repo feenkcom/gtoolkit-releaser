@@ -1,7 +1,7 @@
-Extension { #name : #IceCommitish }
+Extension { #name : #IceCommit }
 
 { #category : #'*Feenk-Releaser' }
-IceCommitish >> gtCommitAncestorsDominanceTreeFor: aView [
+IceCommit >> gtCommitAncestorsDominanceTreeFor: aView [
 	<gtView>
 	^ aView mondrian
 		title: 'DominanceTree';
@@ -24,7 +24,7 @@ IceCommitish >> gtCommitAncestorsDominanceTreeFor: aView [
 ]
 
 { #category : #'*Feenk-Releaser' }
-IceCommitish >> gtCommitAncestorsTreeFor: aView [
+IceCommit >> gtCommitAncestorsTreeFor: aView [
 	<gtView>
 	^ aView mondrian
 		title: 'Tree';
