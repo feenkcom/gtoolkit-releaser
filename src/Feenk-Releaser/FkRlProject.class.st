@@ -18,9 +18,23 @@ FkRlProject class >> codeGeneration [
 	| project builder |
 	builder := FkRlModelBuilder new.
 	project := builder 
-		buildProjectFromBaselineClass: BaselineOfGToolkit 
+		buildProjectFromBaselineClass: BaselineOfGToolkitDebugger
 		withRepositoryDescription: 'github://feenkcom/gtoolkit-debugger/src'.
 	^ project generateSource.
+]
+
+{ #category : #examples }
+FkRlProject class >> gitRepositories [
+	| project builder allGitRepos |
+	builder := FkRlModelBuilder new.
+	project := builder 
+		buildProjectFromBaselineClass: BaselineOfGToolkitDebugger
+		withRepositoryDescription: 'github://feenkcom/gtoolkit-debugger/src'.
+	^ (((((allGitRepos := project withDeepCollect: #childProjects) 
+		collect: #repositorySpec) 
+			flatCollect: #list) 
+				collect: #name) asSet)
+					select: [ :repo | repo includesSubstring: 'github://feenkcom/gtoolkit'].
 ]
 
 { #category : #adding }
