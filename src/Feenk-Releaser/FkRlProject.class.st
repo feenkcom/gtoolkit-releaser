@@ -20,7 +20,7 @@ FkRlProject class >> codeGeneration [
 	project := builder 
 		buildProjectFromBaselineClass: BaselineOfGToolkit 
 		withRepositoryDescription: 'github://feenkcom/gtoolkit-debugger/src'.
-	project generateSource.
+	^ project generateSource.
 ]
 
 { #category : #adding }
@@ -101,9 +101,19 @@ FkRlProject >> childProjectsWithNewRepositories [
 		simpleName -> {currentUrl printString} ]
 ]
 
+{ #category : #'accessing - dynamic' }
+FkRlProject >> childProjectsWithNewRepositories: aSemanticVersionString [
+	^ self childProjects collect: [ :aProject |
+		| simpleName currentUrl |
+		simpleName := aProject name.
+		currentUrl := ZnUrl fromString: aProject repositorySpec list first name.
+		currentUrl segments at: 1 put: (currentUrl segments at: 1), aSemanticVersionString. 
+		simpleName -> {currentUrl printString} ]
+]
+
 { #category : #actions }
 FkRlProject >> generateSource [
-	| toolbox |
+	| toolbox saurce |
   (toolbox := FkRlMetacelloToolBox baselineNamed: self baselineClass name)
     createBaselineOfMethod: 'baseline:' inCategory: 'baseline';
     addBaselineOfSection: #'common'
@@ -114,7 +124,24 @@ FkRlProject >> generateSource [
 			aPackage name -> aPackage dependencies ])
       groups: #()
       versionSpecsDo: [ :versionSpec | ].
-  ^ toolbox methodSpec methodSource
+	saurce := (toolbox methodSpec methodSource).
+  ^ saurce
+]
+
+{ #category : #actions }
+FkRlProject >> generateSourceWithSemanticVersion: aSemanticVersionString [
+	| toolbox |
+  (toolbox := FkRlMetacelloToolBox baselineNamed: self baselineClass name)
+    createBaselineOfMethod: 'baseline:' inCategory: 'baseline';
+    addBaselineOfSection: #'common'
+      requiredProjects: self childProjectsNames
+      packages: (self packages collect: #name)
+      repositories: (self childProjectsWithNewRepositories: aSemanticVersionString)
+      dependencies: (self packages collect: [ :aPackage | 
+			aPackage name -> aPackage dependencies ])
+      groups: #()
+      versionSpecsDo: [ :versionSpec | ].
+  ^ (toolbox methodSpec methodSource).
 ]
 
 { #category : #ui }
