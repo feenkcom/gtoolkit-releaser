@@ -14,6 +14,27 @@ Class {
 }
 
 { #category : #examples }
+FkRlProject class >> changeBaselinesThenTagEachRepo [
+	self gitRepositories keysAndValuesDo: [ :key :collection | 
+		| repository |
+		"switch to release branch"
+		repository := IceRepository registry detect: [ :r | key includesSubstring: (r name) ].
+		repository checkoutBranch: 'release'.
+		"do the merge from master"
+		IceMerge new repository: repository; mergeCommit: (repository branchNamed:'master') commit; executeWithoutUpdatingWorkingCopy.
+		"do the baseline change commit"
+		collection do: [ :aFkRlProject |
+			| baselineMethodSourceCode |
+			baselineMethodSourceCode := self generateVersionBaselineForClass: (aFkRlProject baselineClass) withRepoDescription: aFkRlProject name.
+			aFkRlProject baselineClass compile: baselineMethodSourceCode. 
+		].
+		"push to origin"
+	].
+	^ self gitRepositories	
+
+]
+
+{ #category : #examples }
 FkRlProject class >> codeGeneration [
 	| project builder |
 	builder := FkRlModelBuilder new.
@@ -24,19 +45,29 @@ FkRlProject class >> codeGeneration [
 ]
 
 { #category : #examples }
+FkRlProject class >> generateVersionBaselineForClass: aBaselineClass withRepoDescription: aRepoDescription [
+	| project builder |
+	builder := FkRlModelBuilder new.
+	project := builder 
+		buildProjectFromBaselineClass: aBaselineClass
+		withRepositoryDescription: aRepoDescription.
+	^ project generateSource.
+]
+
+{ #category : #examples }
 FkRlProject class >> gitRepositories [
 	| project builder repoToBaselinesMap |
 	builder := FkRlModelBuilder new.
 	repoToBaselinesMap := IdentityDictionary new.
 	project := builder 
-		buildProjectFromBaselineClass: BaselineOfGToolkit 
-		withRepositoryDescription: 'github://feenkcom/gtoolkit/src'.
+		buildProjectFromBaselineClass: BaselineOfGToolkitCognitiveServiceDemo 
+		withRepositoryDescription: 'github://feenkcom/gtoolkit-demos/src'.
 	((project withDeepCollect: #childProjects) select: #isGToolkitProject) do:[ :each |
 		repoToBaselinesMap at: (each githubRepoURL) 
 			ifPresent: [ :collection | (repoToBaselinesMap at: (each githubRepoURL)) add: each  ] 
 			ifAbsentPut: [ |c| c := OrderedCollection new. c add: each. c  ].
 		].
-	repoToBaselinesMap.
+	^ repoToBaselinesMap.
 
 ]
 
