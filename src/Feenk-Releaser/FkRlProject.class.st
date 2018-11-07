@@ -25,16 +25,19 @@ FkRlProject class >> codeGeneration [
 
 { #category : #examples }
 FkRlProject class >> gitRepositories [
-	| project builder allGitRepos |
+	| project builder repoToBaselinesMap |
 	builder := FkRlModelBuilder new.
+	repoToBaselinesMap := IdentityDictionary new.
 	project := builder 
-		buildProjectFromBaselineClass: BaselineOfGToolkitDebugger
-		withRepositoryDescription: 'github://feenkcom/gtoolkit-debugger/src'.
-	^ (((((allGitRepos := project withDeepCollect: #childProjects) 
-		collect: #repositorySpec) 
-			flatCollect: #list) 
-				collect: #name) asSet)
-					select: [ :repo | repo includesSubstring: 'github://feenkcom/gtoolkit'].
+		buildProjectFromBaselineClass: BaselineOfGToolkit 
+		withRepositoryDescription: 'github://feenkcom/gtoolkit/src'.
+	((project withDeepCollect: #childProjects) select: #isGToolkitProject) do:[ :each |
+		repoToBaselinesMap at: (each githubRepoURL) 
+			ifPresent: [ :collection | (repoToBaselinesMap at: (each githubRepoURL)) add: each  ] 
+			ifAbsentPut: [ |c| c := OrderedCollection new. c add: each. c  ].
+		].
+	repoToBaselinesMap.
+
 ]
 
 { #category : #adding }
@@ -158,6 +161,12 @@ FkRlProject >> generateSourceWithSemanticVersion: aSemanticVersionString [
   ^ (toolbox methodSpec methodSource).
 ]
 
+{ #category : #'accessing - dynamic' }
+FkRlProject >> githubRepoURL [
+	^ self repositorySpec list first name
+	
+]
+
 { #category : #ui }
 FkRlProject >> gtChildProjectsFor: aView [
 	<gtView>
@@ -234,6 +243,12 @@ FkRlProject >> initialize [
 	packages := OrderedCollection new.
 	parentProjects := OrderedCollection new.
 	childProjects := OrderedCollection new
+]
+
+{ #category : #'accessing - dynamic' }
+FkRlProject >> isGToolkitProject [
+	^ self repositorySpec list first name includesSubstring: 'github://feenkcom/gtoolkit'
+
 ]
 
 { #category : #'accessing - dynamic' }
