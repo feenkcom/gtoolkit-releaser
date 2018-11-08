@@ -16,19 +16,25 @@ Class {
 { #category : #examples }
 FkRlProject class >> changeBaselinesThenTagEachRepo [
 	self gitRepositories keysAndValuesDo: [ :key :collection | 
-		| repository |
+		| repository semanticVersion releaseBranch |
 		"switch to release branch"
-		repository := IceRepository registry detect: [ :r | key includesSubstring: (r name) ].
+		repository := IceRepository registry detect: [ :r | 
+			(key includesSubstring: ('/', r name, '/')) or: (key includesSubstring: ('/', r name, ':')) ].
 		repository checkoutBranch: 'release'.
+		releaseBranch := repository branchNamed: 'release'.
 		"do the merge from master"
 		IceMerge new repository: repository; mergeCommit: (repository branchNamed:'master') commit; executeWithoutUpdatingWorkingCopy.
-		"do the baseline change commit"
+		"get compute the latest version"
+		semanticVersion := self findNextSemanticVersion: releaseBranch.
+		"do the baseline change"
 		collection do: [ :aFkRlProject |
 			| baselineMethodSourceCode |
-			baselineMethodSourceCode := self generateVersionBaselineForClass: (aFkRlProject baselineClass) withRepoDescription: aFkRlProject name.
+			baselineMethodSourceCode := self generateVersionBaselineForClass: (aFkRlProject baselineClass) withRepoDescription: aFkRlProject name withTag: semanticVersion.
 			aFkRlProject baselineClass compile: baselineMethodSourceCode. 
 		].
-		"push to origin"
+		
+		"commit and push to origin"
+		repository workingCopy  commitChanges: repository workingCopyDiff withMessage: 'update baseline' force: true.
 	].
 	^ self gitRepositories	
 
@@ -45,13 +51,31 @@ FkRlProject class >> codeGeneration [
 ]
 
 { #category : #examples }
-FkRlProject class >> generateVersionBaselineForClass: aBaselineClass withRepoDescription: aRepoDescription [
+FkRlProject class >> findNextSemanticVersion: aBranch [
+	| allTags semanticVersionTags result |
+	result := '0.2.0'.
+	allTags := (aBranch commit withDeepCollect: #ancestors) flatCollect: #tags. 
+	semanticVersionTags := allTags select: [ :t | t name matchesRegex: '[0-9]+\.[0-9]+\.[0-9]+' ].
+	(semanticVersionTags collect:  [ :each | 
+		|tokens| 
+		tokens := each name findTokens: '.'. 
+		FkRlSemanticVersion new major: tokens first; minor: tokens second; patch: tokens third]) 
+			ifNotEmpty:[ :c | ^ c last incrementPatch printString ] 
+			ifEmpty: [ ^ result ].
+
+
+
+
+]
+
+{ #category : #examples }
+FkRlProject class >> generateVersionBaselineForClass: aBaselineClass withRepoDescription: aRepoDescription withTag: aSemanticVersion [
 	| project builder |
 	builder := FkRlModelBuilder new.
 	project := builder 
 		buildProjectFromBaselineClass: aBaselineClass
 		withRepositoryDescription: aRepoDescription.
-	^ project generateSource.
+	^ project generateSourceWithSemanticVersion: aSemanticVersion.
 ]
 
 { #category : #examples }
@@ -155,8 +179,7 @@ FkRlProject >> childProjectsWithNewRepositories: aSemanticVersionString [
 		| simpleName currentUrl |
 		simpleName := aProject name.
 		currentUrl := ZnUrl fromString: aProject repositorySpec list first name.
-		currentUrl segments at: 1 put: (currentUrl segments at: 1), aSemanticVersionString. 
-		simpleName -> {currentUrl printString} ]
+		simpleName -> {(currentUrl port: aSemanticVersionString) printString} ]
 ]
 
 { #category : #actions }
