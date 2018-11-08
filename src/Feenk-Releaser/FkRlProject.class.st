@@ -41,16 +41,6 @@ FkRlProject class >> changeBaselinesThenTagEachRepo [
 ]
 
 { #category : #examples }
-FkRlProject class >> codeGeneration [
-	| project builder |
-	builder := FkRlModelBuilder new.
-	project := builder 
-		buildProjectFromBaselineClass: BaselineOfGToolkitDebugger
-		withRepositoryDescription: 'github://feenkcom/gtoolkit-debugger/src'.
-	^ project generateSource.
-]
-
-{ #category : #examples }
 FkRlProject class >> findNextSemanticVersion: aBranch [
 	| allTags semanticVersionTags result |
 	result := '0.2.0'.
@@ -80,13 +70,14 @@ FkRlProject class >> generateVersionBaselineForClass: aBaselineClass withRepoDes
 
 { #category : #examples }
 FkRlProject class >> gitRepositories [
-	| project builder repoToBaselinesMap |
+	| project builder repoToBaselinesMap allProjects |
 	builder := FkRlModelBuilder new.
 	repoToBaselinesMap := IdentityDictionary new.
 	project := builder 
 		buildProjectFromBaselineClass: BaselineOfGToolkitCognitiveServiceDemo 
 		withRepositoryDescription: 'github://feenkcom/gtoolkit-demos/src'.
-	((project withDeepCollect: #childProjects) select: #isGToolkitProject) do:[ :each |
+	allProjects := (project withDeepCollect: #childProjects).
+	(allProjects select: #isGToolkitProject) do:[ :each |
 		repoToBaselinesMap at: (each githubRepoURL) 
 			ifPresent: [ :collection | (repoToBaselinesMap at: (each githubRepoURL)) add: each  ] 
 			ifAbsentPut: [ |c| c := OrderedCollection new. c add: each. c  ].
@@ -176,10 +167,12 @@ FkRlProject >> childProjectsWithNewRepositories [
 { #category : #'accessing - dynamic' }
 FkRlProject >> childProjectsWithNewRepositories: aSemanticVersionString [
 	^ self childProjects collect: [ :aProject |
-		| simpleName currentUrl |
+		| simpleName currentUrl onlyTheRepoName|
 		simpleName := aProject name.
 		currentUrl := ZnUrl fromString: aProject repositorySpec list first name.
-		simpleName -> {(currentUrl port: aSemanticVersionString) printString} ]
+		onlyTheRepoName := ((currentUrl segments at: 1) findTokens: ':') first.
+		currentUrl segments at: 1 put: onlyTheRepoName,':', aSemanticVersionString. 
+		simpleName -> {currentUrl printString} ]
 ]
 
 { #category : #actions }
