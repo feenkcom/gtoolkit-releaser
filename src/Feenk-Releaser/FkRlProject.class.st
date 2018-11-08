@@ -35,6 +35,7 @@ FkRlProject class >> changeBaselinesThenTagEachRepo [
 		
 		"commit and push to origin"
 		repository workingCopy  commitChanges: repository workingCopyDiff withMessage: 'update baseline' force: true.
+		releaseBranch commit ensureCreateTag: 'semanticVersion'.
 	].
 	^ self gitRepositories	
 
