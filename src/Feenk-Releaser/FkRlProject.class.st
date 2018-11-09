@@ -33,9 +33,10 @@ FkRlProject class >> changeBaselinesThenTagEachRepo [
 			aFkRlProject baselineClass compile: baselineMethodSourceCode. 
 		].
 		
-		"commit and push to origin"
+		"commit, tag and push to origin"
 		repository workingCopy  commitChanges: repository workingCopyDiff withMessage: 'update baseline' force: true.
 		releaseBranch commit ensureCreateTag: semanticVersion.
+		(repository checkoutBranch: 'release') pushTo: (repository remotes detect: [:r | r name = #origin]).
 	].
 	^ self gitRepositories	
 
