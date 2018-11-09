@@ -35,7 +35,7 @@ FkRlProject class >> changeBaselinesThenTagEachRepo [
 		
 		"commit and push to origin"
 		repository workingCopy  commitChanges: repository workingCopyDiff withMessage: 'update baseline' force: true.
-		releaseBranch commit ensureCreateTag: 'semanticVersion'.
+		releaseBranch commit ensureCreateTag: semanticVersion.
 	].
 	^ self gitRepositories	
 
@@ -50,8 +50,8 @@ FkRlProject class >> findNextSemanticVersion: aBranch [
 	(semanticVersionTags collect:  [ :each | 
 		|tokens| 
 		tokens := each name findTokens: '.'. 
-		FkRlSemanticVersion new major: tokens first; minor: tokens second; patch: tokens third]) 
-			ifNotEmpty:[ :c | ^ c last incrementPatch printString ] 
+		FkRlSemanticVersion new major: tokens first asInteger; minor: tokens second asInteger; patch: tokens third asInteger]) 
+			ifNotEmpty:[ :c | ^ c sort last incrementPatch printString ] 
 			ifEmpty: [ ^ result ].
 
 

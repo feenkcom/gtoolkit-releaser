@@ -9,6 +9,13 @@ Class {
 	#category : #'Feenk-Releaser'
 }
 
+{ #category : #comparison }
+FkRlSemanticVersion >> <= aFkRlSemanticVersion [ 
+	self major > aFkRlSemanticVersion major ifTrue: [ ^ false ] .
+	self minor > aFkRlSemanticVersion minor ifTrue: [ ^ false ] .
+	self patch > aFkRlSemanticVersion patch ifTrue: [ ^ false ] .
+]
+
 { #category : #accessing }
 FkRlSemanticVersion >> incrementPatch [
 	patch := patch + 1
@@ -47,4 +54,9 @@ FkRlSemanticVersion >> patch [
 { #category : #accessing }
 FkRlSemanticVersion >> patch: anInteger [
 	patch := anInteger
+]
+
+{ #category : #accessing }
+FkRlSemanticVersion >> printString [
+	^ major printString, '.', minor printString, '.', patch printString 
 ]
