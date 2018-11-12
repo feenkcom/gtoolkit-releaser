@@ -76,12 +76,12 @@ FkRlProject class >> gitRepositories [
 	builder := FkRlModelBuilder new.
 	repoToBaselinesMap := IdentityDictionary new.
 	project := builder 
-		buildProjectFromBaselineClass: BaselineOfGToolkitCognitiveServiceDemo 
+		buildProjectFromBaselineClass: BaselineOfGToolkitCognitiveServiceDemo  
 		withRepositoryDescription: 'github://feenkcom/gtoolkit-demos/src'.
 	allProjects := (project withDeepCollect: #childProjects).
 	(allProjects select: #isGToolkitProject) do:[ :each |
-		repoToBaselinesMap at: (each githubRepoURL) 
-			ifPresent: [ :collection | (repoToBaselinesMap at: (each githubRepoURL)) add: each  ] 
+		repoToBaselinesMap at: (each githubRepoURL asSymbol) 
+			ifPresent: [ :collection | (repoToBaselinesMap at: (each githubRepoURL asSymbol)) add: each  ] 
 			ifAbsentPut: [ |c| c := OrderedCollection new. c add: each. c  ].
 		].
 	^ repoToBaselinesMap.
