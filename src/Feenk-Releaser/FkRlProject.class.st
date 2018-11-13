@@ -15,8 +15,10 @@ Class {
 
 { #category : #examples }
 FkRlProject class >> changeBaselinesThenTagEachRepo [
+	| semanticVersion |
+	semanticVersion := self findNextGToolkitVersion printString.
 	self gitRepositories keysAndValuesDo: [ :key :collection | 
-		| repository semanticVersion releaseBranch |
+		| repository releaseBranch |
 		"switch to release branch"
 		repository := IceRepository registry detect: [ :r | 
 			(key includesSubstring: ('/', r name, '/')) or: (key includesSubstring: ('/', r name, ':')) ].
@@ -24,8 +26,7 @@ FkRlProject class >> changeBaselinesThenTagEachRepo [
 		releaseBranch := repository branchNamed: 'release'.
 		"do the merge from master"
 		IceMerge new repository: repository; mergeCommit: (repository branchNamed:'master') commit; executeWithoutUpdatingWorkingCopy.
-		"get compute the latest version"
-		semanticVersion := self findNextSemanticVersion: releaseBranch.
+	
 		"do the baseline change"
 		collection do: [ :aFkRlProject |
 			| baselineMethodSourceCode |
@@ -39,6 +40,44 @@ FkRlProject class >> changeBaselinesThenTagEachRepo [
 		(repository checkoutBranch: 'release') pushTo: (repository remotes detect: [:r | r name = #origin]).
 	].
 	^ self gitRepositories	
+
+]
+
+{ #category : #examples }
+FkRlProject class >> findNextFkRlSemanticVersion: aBranch [
+	| allTags semanticVersionTags result |
+	result := FkRlSemanticVersion new major:0; minor: 2; patch: 0.
+	allTags := (aBranch commit withDeepCollect: #ancestors) flatCollect: #tags. 
+	semanticVersionTags := allTags select: [ :t | t name matchesRegex: '[0-9]+\.[0-9]+\.[0-9]+' ].
+	(semanticVersionTags collect:  [ :each | 
+		|tokens| 
+		tokens := each name findTokens: '.'. 
+		FkRlSemanticVersion new major: tokens first asInteger; minor: tokens second asInteger; patch: tokens third asInteger]) 
+			ifNotEmpty:[ :c | ^ c sort last incrementPatch  ] 
+			ifEmpty: [ ^ result ].
+
+
+
+
+]
+
+{ #category : #examples }
+FkRlProject class >> findNextGToolkitVersion [
+	| allVersions |
+	allVersions := OrderedCollection new.
+	allVersions add: (FkRlSemanticVersion new major:0; minor: 2; patch: 0).
+	self gitRepositories keysAndValuesDo: [ :key :collection | 
+		| repository semanticVersion releaseBranch |
+		"switch to release branch"
+		repository := IceRepository registry detect: [ :r | 
+			(key includesSubstring: ('/', r name, '/')) or: (key includesSubstring: ('/', r name, ':')) ].
+		repository checkoutBranch: 'release'.
+		releaseBranch := repository branchNamed: 'release'.
+		"get compute the latest version"
+		semanticVersion := self findNextFkRlSemanticVersion: releaseBranch.	
+		allVersions add: semanticVersion. 
+	].
+	^ allVersions sort last.
 
 ]
 
@@ -76,7 +115,7 @@ FkRlProject class >> gitRepositories [
 	builder := FkRlModelBuilder new.
 	repoToBaselinesMap := IdentityDictionary new.
 	project := builder 
-		buildProjectFromBaselineClass: BaselineOfGToolkitCognitiveServiceDemo  
+		buildProjectFromBaselineClass: BaselineOfGToolkitCognitiveServiceDemo 
 		withRepositoryDescription: 'github://feenkcom/gtoolkit-demos/src'.
 	allProjects := (project withDeepCollect: #childProjects).
 	(allProjects select: #isGToolkitProject) do:[ :each |
