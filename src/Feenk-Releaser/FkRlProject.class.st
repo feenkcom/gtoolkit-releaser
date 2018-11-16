@@ -115,8 +115,8 @@ FkRlProject class >> gitRepositories [
 	builder := FkRlModelBuilder new.
 	repoToBaselinesMap := IdentityDictionary new.
 	project := builder 
-		buildProjectFromBaselineClass: BaselineOfGToolkitCognitiveServiceDemo 
-		withRepositoryDescription: 'github://feenkcom/gtoolkit-demos/src'.
+		buildProjectFromBaselineClass: BaselineOfGToolkit
+		withRepositoryDescription: 'github://feenkcom/gtoolkit/src'.
 	allProjects := (project withDeepCollect: #childProjects).
 	(allProjects select: #isGToolkitProject) do:[ :each |
 		repoToBaselinesMap at: (each githubRepoURL asSymbol) 
