@@ -66,7 +66,22 @@ FkRlRepository >> gtRepoMapFor: aView [
 					element 	
 						text: text; 
 						zIndex: 1.];
-					with: repos.]
+					with: repos.
+				mondrian edges
+				shape: [ :each |
+					BlParabollaArcElement new 
+						zIndex: 0;
+						curvatureFraction: 0.2;
+						border: (BlBorder paint: (Color gray alpha: 0.2) width: 2);
+						toHead: (BlArrowheadSimpleArrow new
+							border: (BlBorder builder paint: (Color gray alpha: 0.2); width: 2; build))  ];
+				fromRightCenter;
+				toLeftCenter;
+				connectFrom: #yourself 
+				toAll: [:each | |dependedRepos |
+					dependedRepos := each parentRepositories.
+					repos select: [ :project | dependedRepos anySatisfy: [ :dependedProject | dependedProject = project ] ] ].
+			mondrian layout custom: (GtGradHorizontalDominanceCenteredTreeLayout new levelDistance: 50; nodeDistance: 10)]
 ]
 
 { #category : #initialization }
