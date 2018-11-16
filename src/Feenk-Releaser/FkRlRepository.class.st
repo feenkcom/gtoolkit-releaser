@@ -27,6 +27,11 @@ FkRlRepository class >> gtRepositories [
 ]
 
 { #category : #initialization }
+FkRlRepository >> = anotherRepo [
+	^ name = anotherRepo name
+]
+
+{ #category : #initialization }
 FkRlRepository >> addProject: aFkRlProject [
 	projects add: aFkRlProject 
 ]
@@ -81,7 +86,11 @@ FkRlRepository >> name: theRepoName [
 
 { #category : #initialization }
 FkRlRepository >> parentRepositories [ 
-	^ (projects flatCollect: [ :p | (p parentProjects) collect: [ :parent | FkRlRepository gtRepositories at:(parent githubRepoURL asSymbol ) ] ]) asSet.
+	| urls result |
+	result := OrderedCollection new.
+	urls := (projects flatCollect: [ :p | (p parentProjects) collect: [ :parent |parent githubRepoURL asSymbol]]) asSet.
+	urls collect: [ :url | self name asSymbol = url ifFalse: [ result add: (FkRlRepository gtRepositories at: url) ]].
+	^ result
 ]
 
 { #category : #initialization }
