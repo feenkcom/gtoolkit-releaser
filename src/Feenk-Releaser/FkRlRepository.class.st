@@ -28,13 +28,22 @@ FkRlRepository class >> gtRepositories [
 
 { #category : #initialization }
 FkRlRepository >> = anotherRepo [
-	
-	^ anotherRepo isNotNil and: [name asSymbol == anotherRepo name asSymbol]
+	anotherRepo ifNil: [ ^ false ].
+	^ name asSymbol == anotherRepo name asSymbol
 ]
 
 { #category : #initialization }
 FkRlRepository >> addProject: aFkRlProject [
 	projects add: aFkRlProject 
+]
+
+{ #category : #initialization }
+FkRlRepository >> childRepositories [ 
+	| urls result |
+	result := OrderedCollection new.
+	urls := (projects flatCollect: [ :p | (p childProjects) collect: [ :parent |parent githubRepoURL asSymbol]]) asSet.
+	urls collect: [ :url | self name asSymbol = url ifFalse: [ |toAdd| toAdd:=FkRlRepository gtRepositories at: url. toAdd ifNotNil: [result add: toAdd] ]].
+	^ result
 ]
 
 { #category : #initialization }
@@ -50,17 +59,12 @@ FkRlRepository >> gtRepoMapFor: aView [
 	  priority: 10; 
 	  painting: [ :mondrian | 
 			| repos |
-			repos := (self withDeepCollect: #parentRepositories) asSet.
+			repos := (self withDeepCollect: #childRepositories) asSet.
 			mondrian nodes 
 				shape: [ :each | 
 					| text element |
 					text := [
-						| displayString |
-						displayString := (((each gtDisplayString 
-							copyReplaceAll: 'BaselineOf' with: '')
-							copyReplaceAll: 'ConfigurationOf' with: '')
-							copyReplaceAll: 'GToolkit' with: 'GT ').
-						displayString asRopedText ]
+						each gtDisplayString asRopedText ]
 						on: Error do: [ :e | e asString asRopedText foreground: BrGlamorousColors linkWithErrorColor ].
 					element := BlTextElement new.
 					element 	
@@ -79,7 +83,7 @@ FkRlRepository >> gtRepoMapFor: aView [
 				toLeftCenter;
 				connectFrom: #yourself 
 				toAll: [:each | |dependedRepos |
-					dependedRepos := each parentRepositories.
+					dependedRepos := each childRepositories.
 					repos select: [ :project | dependedRepos anySatisfy: [ :dependedProject | dependedProject = project ] ] ].
 			mondrian layout custom: (GtGradHorizontalDominanceCenteredTreeLayout new levelDistance: 50; nodeDistance: 10)]
 ]
