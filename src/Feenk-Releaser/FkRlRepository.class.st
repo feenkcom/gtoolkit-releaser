@@ -17,7 +17,7 @@ FkRlRepository class >> gtRepositories [
 		buildProjectFromBaselineClass: BaselineOfGToolkit
 		withRepositoryDescription: 'github://feenkcom/gtoolkit/src'.
 	allProjects := (project withDeepCollect: #childProjects).
-	(allProjects select: #isGToolkitProject) do:[ :each |
+	(allProjects "select: #isGToolkitProject") do:[ :each |
 		repoToBaselinesMap at: (each githubRepoURL asSymbol) 
 			ifPresent: [ :aFkRlRepository | aFkRlRepository addProject: each ] 
 			ifAbsentPut: [ |c| c := FkRlRepository new. c name: (each githubRepoURL asSymbol). c addProject: each. c ].
@@ -28,7 +28,8 @@ FkRlRepository class >> gtRepositories [
 
 { #category : #initialization }
 FkRlRepository >> = anotherRepo [
-	^ name = anotherRepo name
+	
+	^ anotherRepo isNotNil and: [name asSymbol == anotherRepo name asSymbol]
 ]
 
 { #category : #initialization }
@@ -49,7 +50,7 @@ FkRlRepository >> gtRepoMapFor: aView [
 	  priority: 10; 
 	  painting: [ :mondrian | 
 			| repos |
-			repos := self withDeepCollect: #parentRepositories.
+			repos := (self withDeepCollect: #parentRepositories) asSet.
 			mondrian nodes 
 				shape: [ :each | 
 					| text element |
@@ -66,6 +67,11 @@ FkRlRepository >> gtRepoMapFor: aView [
 						text: text; 
 						zIndex: 1.];
 					with: repos.]
+]
+
+{ #category : #initialization }
+FkRlRepository >> hash [ 
+	^ name hash
 ]
 
 { #category : #initialization }
@@ -89,7 +95,7 @@ FkRlRepository >> parentRepositories [
 	| urls result |
 	result := OrderedCollection new.
 	urls := (projects flatCollect: [ :p | (p parentProjects) collect: [ :parent |parent githubRepoURL asSymbol]]) asSet.
-	urls collect: [ :url | self name asSymbol = url ifFalse: [ result add: (FkRlRepository gtRepositories at: url) ]].
+	urls collect: [ :url | self name asSymbol = url ifFalse: [ |toAdd| toAdd:=FkRlRepository gtRepositories at: url. toAdd ifNotNil: [result add: toAdd] ]].
 	^ result
 ]
 
