@@ -6,19 +6,14 @@ IceCommitish >> gtDetailsFor: aView [
 	^ aView columnedList 
 		priority: 9;
 		title: 'Details' translated;
-		items: [ { 
+		items: [ {
 			'Commit'  -> ('[' , self commit shortId , '] ' , self commit id).
 			'Parents' -> (self commit ancestors collect: #shortId) asCommaString.
 			'Author'  -> self commit author.
 			'Date'    -> self commit timeStamp asStringYMDHM.
 			'Tags'    -> self tagNames asCommaString.
 			'Comment' -> self commit comment } ];
-		column: 'Property' do: [ :column |
-			column 
-				evaluated: [ :detail | detail key ] ];
-		column: 'Value' do: [ :column |
-			column 
-				evaluated: [ :detail | detail value ];
-				matchParent ]
+		column: 'Property' item: #key;
+		column: 'Value' item: #value
 		
 ]
