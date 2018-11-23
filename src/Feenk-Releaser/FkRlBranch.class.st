@@ -14,13 +14,6 @@ FkRlBranch class >> for: anIceBranch [
 		icebergBranch: anIceBranch
 ]
 
-{ #category : #ui }
-FkRlBranch >> gtDetailsFor: aView [
-	<gtView>
-	^ self icebergBranch ifNotNil: [ :anIcebergBranch | 
-		anIcebergBranch gtDetailsFor: aView ]
-]
-
 { #category : #accessing }
 FkRlBranch >> icebergBranch [
 	^ icebergBranch

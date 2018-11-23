@@ -1,6 +1,6 @@
 Extension { #name : #IceCommit }
 
-{ #category : #'*Feenk-Releaser' }
+{ #category : #'*Feenk-Releaser-IcebergExtensions' }
 IceCommit >> gtCommitAncestorsDominanceTreeFor: aView [
 	<gtView>
 	^ aView mondrian
@@ -23,7 +23,7 @@ IceCommit >> gtCommitAncestorsDominanceTreeFor: aView [
 			view layout dominanceTree]
 ]
 
-{ #category : #'*Feenk-Releaser' }
+{ #category : #'*Feenk-Releaser-IcebergExtensions' }
 IceCommit >> gtCommitAncestorsTreeFor: aView [
 	<gtView>
 	^ aView mondrian
@@ -44,4 +44,22 @@ IceCommit >> gtCommitAncestorsTreeFor: aView [
 				with: (self withDeepCollect: #ancestors) asSet.
 			view edges connectToAll: #ancestors.
 			view layout tree]
+]
+
+{ #category : #'*Feenk-Releaser-IcebergExtensions' }
+IceCommit >> gtDetailsFor: aView [
+	<gtView>
+	^ aView columnedList 
+		priority: 9;
+		title: 'Details' translated;
+		items: [ {
+			'Commit'  -> ('[' , self commit shortId , '] ' , self commit id).
+			'Parents' -> (self commit ancestors collect: #shortId) asCommaString.
+			'Author'  -> self commit author.
+			'Date'    -> self commit timeStamp asStringYMDHM.
+			'Tags'    -> self tagNames asCommaString.
+			'Comment' -> self commit comment } ];
+		column: 'Property' item: #key;
+		column: 'Value' item: #value
+		
 ]
