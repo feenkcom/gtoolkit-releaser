@@ -3,7 +3,8 @@ Class {
 	#superclass : #FkRlNode,
 	#instVars : [
 		'url',
-		'projects'
+		'projects',
+		'icebergRepository'
 	],
 	#category : #'Feenk-Releaser'
 }
@@ -36,9 +37,12 @@ FkRlRepository class >> gtRepositories [
 ]
 
 { #category : #comparing }
-FkRlRepository >> = anotherRepo [
-	anotherRepo ifNil: [ ^ false ].
-	^ self name asSymbol == anotherRepo name asSymbol
+FkRlRepository >> = anotherObject [
+	self == anotherObject
+		ifTrue: [ ^ true ].
+	(anotherObject isKindOf: self class)
+		ifFalse: [ ^ false ].
+	^ self urlString asSymbol == anotherObject urlString asSymbol
 ]
 
 { #category : #accessing }
@@ -59,9 +63,19 @@ FkRlRepository >> childRepositories [
 FkRlRepository >> gtBranchesFor: aView [
 	<gtView>
 	^ aView list 
-		title: 'Branches';
-		items: [ (IceRepository registry detect: [:r | 
-			r name = self url segments first ]) allBranches ]
+		title: 'Branches' translated;
+		items: [ (IceRepository registry detect: [ :anIceRepository | 
+			anIceRepository name = self repositoryName ]) allBranches collect: [ :anIceBranch |
+				FkRlBranch for: anIceBranch ] ];
+		itemFormat: #summaryDescription
+]
+
+{ #category : #ui }
+FkRlRepository >> gtProjectsFor: aView [
+	<gtView>
+	^ aView list 
+		title: 'Projects' translated;
+		items: [ self projects ]
 ]
 
 { #category : #ui }
@@ -161,20 +175,33 @@ FkRlRepository >> gtRepoMapFor: aView [
 			mondrian layout custom: (GtGradHorizontalDominanceCenteredTreeLayout new levelDistance: 50; nodeDistance: 10)]
 ]
 
+{ #category : #ui }
+FkRlRepository >> gtTagsFor: aView [
+	<gtView>
+	^ aView list 
+		title: 'Tags' translated;
+		items: [ self icebergRepository tags ];
+		itemFormat: [ :anIceTag |
+			anIceTag name, ' [', (anIceTag commit id first: 7), ']' ]
+]
+
 { #category : #comparing }
 FkRlRepository >> hash [ 
-	^ self name hash
+	^ self urlString hash
+]
+
+{ #category : #'accessing - dynamic' }
+FkRlRepository >> icebergRepository [
+	"I act like a cache for the iceberg repository associated with this repository."
+	^ icebergRepository ifNil: [
+		icebergRepository := IceRepository registry detect: [ :anIceRepo | 
+			anIceRepo name = self repositoryName ] ]
 ]
 
 { #category : #initialization }
 FkRlRepository >> initialize [ 
 	super initialize.
 	projects := OrderedCollection new.
-]
-
-{ #category : #accessing }
-FkRlRepository >> name [
-	^ self urlString
 ]
 
 { #category : #'accessing - dynamic' }
@@ -204,6 +231,15 @@ FkRlRepository >> printOn: aStream [
 { #category : #accessing }
 FkRlRepository >> projects [ 
 	^ projects
+]
+
+{ #category : #accessing }
+FkRlRepository >> repositoryName [
+	| firstPathSegment |
+	firstPathSegment := self url segments first.
+	^ (firstPathSegment includes: $:)
+		ifTrue: [ firstPathSegment copyUpTo: $: ]
+		ifFalse: [ firstPathSegment ]
 ]
 
 { #category : #accessing }

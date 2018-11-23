@@ -264,12 +264,6 @@ FkRlProject >> gtChildProjectsFor: aView [
 		priority: 45
 ]
 
-{ #category : #printing }
-FkRlProject >> gtDisplayOn: aStream [
-	aStream 
-		nextPutAll: self name
-]
-
 { #category : #ui }
 FkRlProject >> gtGeneratedSourceFor: aView [
 	<gtView> 
@@ -367,8 +361,8 @@ FkRlProject >> parentProjects [
 { #category : #printing }
 FkRlProject >> printOn: aStream [
 	super printOn: aStream.
-	aStream nextPutAll: ' ('.
-	self gtDisplayOn: aStream.
+	aStream nextPutAll: '('.
+	aStream nextPutAll: self name.
 	aStream nextPutAll: ')'
 ]
 

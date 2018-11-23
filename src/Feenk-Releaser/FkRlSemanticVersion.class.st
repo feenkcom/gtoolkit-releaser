@@ -61,3 +61,8 @@ FkRlSemanticVersion >> patch: anInteger [
 FkRlSemanticVersion >> printString [
 	^ major printString, '.', minor printString, '.', patch printString 
 ]
+
+{ #category : #accessing }
+FkRlSemanticVersion >> versionString [
+	^ major printString, '.', minor printString, '.', patch printString 
+]
