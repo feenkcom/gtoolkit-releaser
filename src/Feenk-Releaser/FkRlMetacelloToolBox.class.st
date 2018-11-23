@@ -21,7 +21,7 @@ FkRlMetacelloToolBox >> createProjectReferenceSpec: projectBaseName [
 	projectSpec repositories list removeAll.
 
   ^ project projectReferenceSpec
-    name: projectBaseName;
-    projectReference: projectSpec;
-    yourself
+    	name: projectBaseName;
+    	projectReference: projectSpec;
+    	yourself
 ]

@@ -2,11 +2,17 @@ Class {
 	#name : #FkRlRepository,
 	#superclass : #FkRlNode,
 	#instVars : [
-		'name',
+		'url',
 		'projects'
 	],
 	#category : #'Feenk-Releaser'
 }
+
+{ #category : #'instance creation' }
+FkRlRepository class >> fromUrlString: aString [
+	^ self new
+		url: (ZnUrl fromString: aString)
+]
 
 { #category : #'as yet unclassified' }
 FkRlRepository class >> gtRepositories [
@@ -16,55 +22,62 @@ FkRlRepository class >> gtRepositories [
 	project := builder 
 		buildProjectFromBaselineClass: BaselineOfGToolkit
 		withRepositoryDescription: 'github://feenkcom/gtoolkit/src'.
-	allProjects := (project withDeepCollect: #childProjects).
-	(allProjects "select: #isGToolkitProject") do:[ :each |
-		repoToBaselinesMap at: (each githubRepoURL asSymbol) 
-			ifPresent: [ :aFkRlRepository | aFkRlRepository addProject: each ] 
-			ifAbsentPut: [ |c| c := FkRlRepository new. c name: (each githubRepoURL asSymbol). c addProject: each. c ].
-		].
+	allProjects := project withDeepCollect: #childProjects.
+	(allProjects "select: #isGToolkitProject") do:[ :aProject |
+		repoToBaselinesMap 
+			at: aProject githubRepoURL asSymbol
+			ifPresent: [ :aFkRlRepository | aFkRlRepository addProject: aProject ] 
+			ifAbsentPut: [|repository| 
+				repository := FkRlRepository fromUrlString: aProject githubRepoURL. 
+				repository addProject: aProject. 
+				repository ] ].
 	^ repoToBaselinesMap.
 
 ]
 
-{ #category : #initialization }
+{ #category : #comparing }
 FkRlRepository >> = anotherRepo [
 	anotherRepo ifNil: [ ^ false ].
-	^ name asSymbol == anotherRepo name asSymbol
+	^ self name asSymbol == anotherRepo name asSymbol
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 FkRlRepository >> addProject: aFkRlProject [
 	projects add: aFkRlProject 
 ]
 
-{ #category : #initialization }
+{ #category : #'accessing - dynamic' }
 FkRlRepository >> childRepositories [ 
-	| urls result |
-	result := OrderedCollection new.
-	urls := (projects flatCollect: [ :p | (p childProjects) collect: [ :parent |parent githubRepoURL asSymbol]]) asSet.
-	urls collect: [ :url | self name asSymbol = url ifFalse: [ |toAdd| toAdd:=FkRlRepository gtRepositories at: url. toAdd ifNotNil: [result add: toAdd] ]].
-	^ result
+	^ (self projects flatCollect: [ :aProject | 
+		aProject childProjects collect: #repository ]) asSet
+			remove: self ifAbsent: [ ];
+			yourself
+
 ]
 
-{ #category : #initialization }
-FkRlRepository >> gtDisplayString [
-	^ (name withoutPrefix: 'github://') withoutSuffix: '/src'
+{ #category : #ui }
+FkRlRepository >> gtBranchesFor: aView [
+	<gtView>
+	^ aView list 
+		title: 'Branches';
+		items: [ (IceRepository registry detect: [:r | 
+			r name = self url segments first ]) allBranches ]
 ]
 
-{ #category : #initialization }
-FkRlRepository >> gtRepoMapFor: aView [
+{ #category : #ui }
+FkRlRepository >> gtRepoDependenciesFor: aView [
 	<gtView> 
 	^ aView mondrian 
-	  title: 'Repo Map';
+	  title: 'Repo Dependencies';
 	  priority: 10; 
 	  painting: [ :mondrian | 
 			| repos |
 			repos := (self withDeepCollect: #childRepositories) asSet.
 			mondrian nodes 
-				shape: [ :each | 
+				shape: [ :aRepository | 
 					| text element |
 					text := [
-						each gtDisplayString asRopedText ]
+						aRepository urlString asRopedText ]
 						on: Error do: [ :e | e asString asRopedText foreground: BrGlamorousColors linkWithErrorColor ].
 					element := BlTextElement new.
 					element 	
@@ -72,13 +85,13 @@ FkRlRepository >> gtRepoMapFor: aView [
 						zIndex: 1.];
 					with: repos.
 				mondrian edges
-				shape: [ :each |
+				shape: [
 					BlParabollaArcElement new 
 						zIndex: 0;
 						curvatureFraction: 0.2;
 						border: (BlBorder paint: (Color gray alpha: 0.2) width: 2);
 						toHead: (BlArrowheadSimpleArrow new
-							border: (BlBorder builder paint: (Color gray alpha: 0.2); width: 2; build))  ];
+							border: (BlBorder builder paint: (Color gray alpha: 0.2); width: 2; build)) ];
 				fromRightCenter;
 				toLeftCenter;
 				connectFrom: #yourself 
@@ -88,9 +101,69 @@ FkRlRepository >> gtRepoMapFor: aView [
 			mondrian layout custom: (GtGradHorizontalDominanceCenteredTreeLayout new levelDistance: 50; nodeDistance: 10)]
 ]
 
-{ #category : #initialization }
+{ #category : #ui }
+FkRlRepository >> gtRepoMapFor: aView [
+	<gtView> 
+	^ aView mondrian 
+	  title: 'Repo Map';
+	  priority: 10; 
+	  painting: [ :mondrian | 
+			| repos |
+			repos := (self withDeepCollect: #childRepositories) asSet.
+			mondrian nodes 
+				shape: [ :aRepository | 
+					| container children label |
+					container := BlElement new
+						layout: BlLinearLayout vertical;
+						border: (BlBorder paint: Color gray width: 1);
+						zIndex: 1;
+						constraintsDo: [ :c |
+							c padding: (BlInsets all: 5).
+							c horizontal fitContent.
+							c vertical fitContent ].
+					label := BlTextElement new
+						text: aRepository urlString asRopedText;
+						constraintsDo: [ :c | 
+							c padding: (BlInsets all: 5).
+							c linear horizontal alignCenter ].
+					children := BlElement new
+						constraintsDo: [ :c | 
+							c linear horizontal alignCenter ].
+					children graph beChildrenContainer.
+					container
+						addChild: label;
+						addChild: children.
+					container ];
+				with: repos;
+				forEach: [ :aRepository | 
+					mondrian nodes
+						shape: [ :aProject |
+							(BlTextElement text: aProject name asRopedText)
+								constraintsDo: [ :c | 
+									c padding: (BlInsets all: 2).
+									c linear horizontal alignCenter ]. ];
+						with: aRepository projects.
+					mondrian layout vertical ].
+			mondrian edges
+				shape: [
+					BlParabollaArcElement new 
+						zIndex: 0;
+						curvatureFraction: 0.2;
+						border: (BlBorder paint: (Color gray alpha: 0.2) width: 2);
+						toHead: (BlArrowheadSimpleArrow new
+							border: (BlBorder builder paint: (Color gray alpha: 0.2); width: 2; build)) ];
+				fromRightCenter;
+				toLeftCenter;
+				connectFrom: #yourself 
+				toAll: [:each | |dependedRepos |
+					dependedRepos := each childRepositories.
+					repos select: [ :project | dependedRepos anySatisfy: [ :dependedProject | dependedProject = project ] ] ].
+			mondrian layout custom: (GtGradHorizontalDominanceCenteredTreeLayout new levelDistance: 50; nodeDistance: 10)]
+]
+
+{ #category : #comparing }
 FkRlRepository >> hash [ 
-	^ name hash
+	^ self name hash
 ]
 
 { #category : #initialization }
@@ -99,26 +172,51 @@ FkRlRepository >> initialize [
 	projects := OrderedCollection new.
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 FkRlRepository >> name [
-	^ name
+	^ self urlString
 ]
 
-{ #category : #initialization }
-FkRlRepository >> name: theRepoName [ 
-	name := theRepoName 
-]
-
-{ #category : #initialization }
+{ #category : #'accessing - dynamic' }
 FkRlRepository >> parentRepositories [ 
-	| urls result |
-	result := OrderedCollection new.
-	urls := (projects flatCollect: [ :p | (p parentProjects) collect: [ :parent |parent githubRepoURL asSymbol]]) asSet.
-	urls collect: [ :url | self name asSymbol = url ifFalse: [ |toAdd| toAdd:=FkRlRepository gtRepositories at: url. toAdd ifNotNil: [result add: toAdd] ]].
-	^ result
+	^ (projects flatCollect: [ :aProject | 
+		aProject parentProjects collect: #repository]) asSet
+			remove: self ifAbsent: [ ];
+			yourself
+	
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
+FkRlRepository >> pathSegments [
+	^ String streamContents: [:s | 
+		self url segments asStringOn: s delimiter: '/']
+]
+
+{ #category : #printing }
+FkRlRepository >> printOn: aStream [
+	super printOn: aStream.
+	aStream 
+		nextPutAll: '(';
+		nextPutAll: self urlString;
+		nextPutAll: ')'
+]
+
+{ #category : #accessing }
 FkRlRepository >> projects [ 
 	^ projects
+]
+
+{ #category : #accessing }
+FkRlRepository >> url [
+	^ url
+]
+
+{ #category : #accessing }
+FkRlRepository >> url: aZnUrl [
+	url := aZnUrl
+]
+
+{ #category : #accessing }
+FkRlRepository >> urlString [
+	^ self url asString
 ]

@@ -5,7 +5,7 @@ Class {
 		'name',
 		'baselineVersion',
 		'baselineClass',
-		'repositorySpec',
+		'repository',
 		'parentProjects',
 		'childProjects',
 		'packages'
@@ -200,7 +200,7 @@ FkRlProject >> childProjectsWithNewRepositories [
 	^ self childProjects collect: [ :aProject |
 		| simpleName currentUrl |
 		simpleName := aProject name.
-		currentUrl := ZnUrl fromString: aProject repositorySpec list first name.
+		currentUrl := ZnUrl fromString: aProject repository urlString.
 		currentUrl segments at: 1 put: (currentUrl segments at: 1), ':v1.1.1'. 
 		simpleName -> {currentUrl printString} ]
 ]
@@ -210,7 +210,7 @@ FkRlProject >> childProjectsWithNewRepositories: aSemanticVersionString [
 	^ self childProjects collect: [ :aProject |
 		| simpleName currentUrl onlyTheRepoName|
 		simpleName := aProject name.
-		currentUrl := ZnUrl fromString: aProject repositorySpec list first name.
+		currentUrl := ZnUrl fromString: aProject repository urlString.
 		onlyTheRepoName := ((currentUrl segments at: 1) findTokens: ':') first.
 		currentUrl segments at: 1 put: onlyTheRepoName,':', aSemanticVersionString. 
 		simpleName -> {currentUrl printString} ]
@@ -218,7 +218,7 @@ FkRlProject >> childProjectsWithNewRepositories: aSemanticVersionString [
 
 { #category : #actions }
 FkRlProject >> generateSource [
-	| toolbox saurce |
+	| toolbox |
   (toolbox := FkRlMetacelloToolBox baselineNamed: self baselineClass name)
     createBaselineOfMethod: 'baseline:' inCategory: 'baseline';
     addBaselineOfSection: #'common'
@@ -229,8 +229,7 @@ FkRlProject >> generateSource [
 			aPackage name -> aPackage dependencies ])
       groups: #()
       versionSpecsDo: [ :versionSpec | ].
-	saurce := (toolbox methodSpec methodSource).
-  ^ saurce
+	^ toolbox methodSpec methodSource
 ]
 
 { #category : #actions }
@@ -246,12 +245,12 @@ FkRlProject >> generateSourceWithSemanticVersion: aSemanticVersionString [
 			aPackage name -> aPackage dependencies ])
       groups: #()
       versionSpecsDo: [ :versionSpec | ].
-  ^ (toolbox methodSpec methodSource).
+	^ toolbox methodSpec methodSource
 ]
 
 { #category : #'accessing - dynamic' }
 FkRlProject >> githubRepoURL [
-	^ self repositorySpec list first name
+	^ self repository urlString
 	
 ]
 
@@ -335,8 +334,14 @@ FkRlProject >> initialize [
 
 { #category : #'accessing - dynamic' }
 FkRlProject >> isGToolkitProject [
-	^ self repositorySpec list first name includesSubstring: 'github://feenkcom/gtoolkit'
+	^ self repository urlString includesSubstring: 'github://feenkcom/gtoolkit'
 
+]
+
+{ #category : #actions }
+FkRlProject >> linkWithRepository: aRepository [
+	self repository: aRepository.
+	aRepository addProject: self
 ]
 
 { #category : #'accessing - dynamic' }
@@ -368,11 +373,11 @@ FkRlProject >> printOn: aStream [
 ]
 
 { #category : #accessing }
-FkRlProject >> repositorySpec [
-	^ repositorySpec
+FkRlProject >> repository [
+	^ repository
 ]
 
 { #category : #accessing }
-FkRlProject >> repositorySpec: aRepositorySpec [
-	repositorySpec := aRepositorySpec 
+FkRlProject >> repository: aRepository [
+	repository := aRepository 
 ]

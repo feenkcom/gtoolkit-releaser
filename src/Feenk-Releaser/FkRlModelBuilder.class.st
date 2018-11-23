@@ -3,6 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'projectsByBaselineClass',
+		'repositoriesByUrl',
 		'projectsChain'
 	],
 	#category : #'Feenk-Releaser'
@@ -23,9 +24,9 @@ FkRlModelBuilder >> buildProjectFromBaselineClass: aBaselineClass withRepository
 	mcVersion := aBaselineClass project versions first.
 	newProject := FkRlProject new
 		name: (MetacelloScriptEngine baseNameOf: aBaselineClass name); 
-		repositorySpec: (self createRepositoriesSpecFor: aRepositoryUrl);
 		baselineVersion: mcVersion;
-		baselineClass: aBaselineClass.
+		baselineClass: aBaselineClass;
+		linkWithRepository: (self ensureRepositoriesFor: aRepositoryUrl).
 	
 	self updateDependenciesFor: newProject fromMCVersion: mcVersion.
 	self projectsByBaselineClass at: aBaselineClass put: newProject.
@@ -57,28 +58,32 @@ FkRlModelBuilder >> buildProjectFromMetacelloSpec: aMetacelloProjectSpec [
 ]
 
 { #category : #'private - building' }
-FkRlModelBuilder >> createRepositoriesSpecFor: aRepositoryUrl [
-	^ MetacelloRepositoriesSpec new
-			add: (MetacelloRepositorySpec new 
-				description: aRepositoryUrl;
-				yourself);
-			yourself
+FkRlModelBuilder >> ensureRepositoriesFor: aRepositoryUrl [
+	^ repositoriesByUrl 
+		at: aRepositoryUrl 
+		ifAbsentPut: [ 
+			FkRlRepository fromUrlString: aRepositoryUrl ]
 ]
 
 { #category : #initialize }
 FkRlModelBuilder >> initialize [ 
 	super initialize.
 	projectsByBaselineClass := IdentityDictionary new.
+	repositoriesByUrl := Dictionary new.
 	projectsChain := OrderedCollection new.
 ]
 
 { #category : #'private - building' }
 FkRlModelBuilder >> instantiateProjectFromMetacelloSpec: aBaselineProjectSpec [
+	| repositoriesSpec |
+	repositoriesSpec := aBaselineProjectSpec version spec repositories.
+	self flag: 'This should be in place. Not added because of the PetitParser dependencies'.
+	"self assert: [ repositoriesSpec map size = 1 ]."
 	^ FkRlProject new 
 		name: (MetacelloScriptEngine baseNameOf: aBaselineProjectSpec projectClass name);
-		repositorySpec: aBaselineProjectSpec version spec repositories;
 		baselineVersion: aBaselineProjectSpec version;
-		baselineClass: aBaselineProjectSpec projectClass 
+		baselineClass: aBaselineProjectSpec projectClass;
+		linkWithRepository: (self ensureRepositoriesFor: repositoriesSpec map values first description) 
 ]
 
 { #category : #accessing }
