@@ -64,10 +64,8 @@ FkRlRepository >> gtBranchesFor: aView [
 	<gtView>
 	^ aView list 
 		title: 'Branches' translated;
-		items: [ (IceRepository registry detect: [ :anIceRepository | 
-			anIceRepository name = self repositoryName ]) allBranches collect: [ :anIceBranch |
-				FkRlBranch for: anIceBranch ] ];
-		itemFormat: #summaryDescription
+		items: [ self icebergRepository allBranches ];
+		itemFormat: #gtSummaryDescription
 ]
 
 { #category : #ui }
@@ -185,6 +183,11 @@ FkRlRepository >> gtTagsFor: aView [
 			anIceTag name, ' [', (anIceTag commit id first: 7), ']' ]
 ]
 
+{ #category : #testing }
+FkRlRepository >> hasVersion [
+	^ self url segments first includes: $:
+]
+
 { #category : #comparing }
 FkRlRepository >> hash [ 
 	^ self urlString hash
@@ -196,6 +199,17 @@ FkRlRepository >> icebergRepository [
 	^ icebergRepository ifNil: [
 		icebergRepository := IceRepository registry detect: [ :anIceRepo | 
 			anIceRepo name = self repositoryName ] ]
+]
+
+{ #category : #'accessing - dynamic' }
+FkRlRepository >> id [ 	
+	| urlCopy |
+	urlCopy := self url copy.
+	urlCopy segments: OrderedCollection new. 
+	urlCopy addPathSegment: self projectName.
+	(self url segments size > 1)
+		ifTrue: [ urlCopy addPathSegments: (self url segments copyFrom: 2 to: self url segments size )  ].
+	^ urlCopy asString.
 ]
 
 { #category : #initialization }
@@ -226,6 +240,15 @@ FkRlRepository >> printOn: aStream [
 		nextPutAll: '(';
 		nextPutAll: self urlString;
 		nextPutAll: ')'
+]
+
+{ #category : #'accessing - dynamic' }
+FkRlRepository >> projectName [
+	| firstSegment |
+	firstSegment := self url segments first.
+	^ (firstSegment includes: $:)
+		ifTrue: [ firstSegment copyUpTo: $: ]
+		ifFalse: [ firstSegment ]
 ]
 
 { #category : #accessing }

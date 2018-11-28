@@ -11,3 +11,12 @@ IceBranch >> gtCommitsFor: aView [
 		column: 'Author' item: #author;
 		column: 'Description' item: #comment
 ]
+
+{ #category : #'*Feenk-Releaser-IcebergExtensions' }
+IceBranch >> gtSummaryDescription [
+	^ String streamContents: [ :aStream |
+		aStream
+			nextPutAll: self name;
+			nextPutAll: ', ';
+			nextPutAll: (self isLocal ifTrue: [ 'local' ] ifFalse: [ 'remote' ] ) ]
+]
