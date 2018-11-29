@@ -16,19 +16,53 @@ FkRlProjectRelease >> addChildRelease: aProjectRelease [
 	self childReleases add: aProjectRelease.
 ]
 
+{ #category : #traversing }
+FkRlProjectRelease >> allChildReleaseDo: aBloc [
+	aBloc value: self.
+	self childReleases do: aBloc
+]
+
+{ #category : #'accessing - dynamic' }
+FkRlProjectRelease >> childProjectsWithRepositoryURL [
+	^ self childReleases collect: [ :aRelease |
+		aRelease project name -> {aRelease repositoryRelease urlWithReleaseVersion asString} ]
+]
+
 { #category : #accessing }
 FkRlProjectRelease >> childReleases [
 	^ childReleases ifNil: [ 
 		childReleases := OrderedCollection new ]
 ]
 
+{ #category : #actions }
+FkRlProjectRelease >> compileBaselineMethod [
+	| childProjectsWithRepositoryURL |
+	childProjectsWithRepositoryURL := self childProjectsWithRepositoryURL.
+ 	^ self project compileBaselineWithProjectDependencies: childProjectsWithRepositoryURL
+]
+
+{ #category : #actions }
+FkRlProjectRelease >> generateBaselineSource [
+	| childProjectsWithRepositoryURL |
+	childProjectsWithRepositoryURL := self childProjectsWithRepositoryURL.
+ 	^ self project generateSourceWithProjectDependencies: childProjectsWithRepositoryURL
+]
+
 { #category : #ui }
 FkRlProjectRelease >> gtGeneratedSourceFor: aView [
 	<gtView> 
 	^ aView textEditor
-		title: 'Release source';
-		text: [ self project generateSourceWithSemanticVersion: self version versionString];
+		title: 'Release source' translated;
+		text: [ self generateBaselineSource ];
 		priority: 15
+]
+
+{ #category : #ui }
+FkRlProjectRelease >> gtRepoMapFor: aView [
+	<gtView>
+	^ self repositoryRelease 
+		ifNil: [ aView ]
+		ifNotNil: [ :aRepositoryRelease | aRepositoryRelease gtRepoMapFor: aView ]
 ]
 
 { #category : #accessing }
@@ -44,6 +78,8 @@ FkRlProjectRelease >> printOn: aStream [
 	aStream nextPutAll: self project name.
 	aStream nextPutAll: ', '.
 	aStream nextPutAll: self version versionString.
+	aStream nextPutAll: ', #'.
+	aStream nextPutAll: self repositoryRelease releaseBranchName.
 	aStream nextPutAll: ')'
 ]
 

@@ -2,7 +2,8 @@ Class {
 	#name : #FkRlRepositoryRelease,
 	#superclass : #FkRlRelease,
 	#instVars : [
-		'branchName',
+		'releaseBranchName',
+		'referenceBranchName',
 		'version',
 		'repository',
 		'projectReleases'
@@ -16,30 +17,43 @@ FkRlRepositoryRelease >> addProjectRelease: aProjectRelease [
 	^ self projectReleases add: aProjectRelease
 ]
 
-{ #category : #accessing }
-FkRlRepositoryRelease >> branchName [
-	^ branchName
-]
-
-{ #category : #accessing }
-FkRlRepositoryRelease >> branchName: aBranchName [
-	branchName := aBranchName
-]
-
 { #category : #'accessing - dynamic' }
-FkRlRepositoryRelease >> childReleases [
+FkRlRepositoryRelease >> childRepositoryReleases [
 	^ (self projectReleases flatCollect: [ :aProjectRelease | 
-		aProjectRelease childReleases collect: #repositoryRelease ]) asSet
+		aProjectRelease childReleases collect: #repositoryRelease ]) removeDuplicates
 			remove: self ifAbsent: [ ];
 			yourself
+]
+
+{ #category : #actions }
+FkRlRepositoryRelease >> commitAndTagRelease [
+	| iceRepository |
+	iceRepository := self repository icebergRepository.
+	iceRepository workingCopy 
+		commitChanges: iceRepository workingCopyDiff 
+		withMessage: 'Update to version ', self version versionString 
+		force: true.
+	self icebergReleaseBranch commit ensureCreateTag: self version versionString.
+		
 ]
 
 { #category : #printing }
 FkRlRepositoryRelease >> description [
 	^ String streamContents: [ :stream |
-		stream nextPutAll: self repository id.
-		stream nextPutAll: ', ', self version versionString.
-		stream nextPutAll: ' (#', self branchName, ')' ]
+		stream 
+			nextPutAll: self repository id;
+		 	nextPutAll: ', ';
+			nextPutAll: self version versionString;
+			nextPutAll: ', #';
+			nextPutAll: self releaseBranchName ]
+]
+
+{ #category : #ui }
+FkRlRepositoryRelease >> gtBranchesFor: aView [
+	<gtView>
+	^ self repository 
+		ifNil: [ aView ]
+		ifNotNil: [ :aRepository | aRepository gtBranchesFor: aView ]
 ]
 
 { #category : #ui }
@@ -47,6 +61,7 @@ FkRlRepositoryRelease >> gtProjectsFor: aView [
 	<gtView>
 	^ aView list 
 		title: 'Project releases' translated;
+		priority: 15;
 		items: [ self projectReleases ]
 ]
 
@@ -58,7 +73,7 @@ FkRlRepositoryRelease >> gtRepoMapFor: aView [
 	  priority: 10; 
 	  painting: [ :mondrian | 
 			| repos |
-			repos := (self withDeepCollect: #childReleases) asSet.
+			repos := (self withDeepCollect: #childRepositoryReleases) asSet.
 			mondrian nodes 
 				umlClassShapeWithName: [ :aRepositoryRelease | aRepositoryRelease description ];
 				with: repos;
@@ -83,9 +98,42 @@ FkRlRepositoryRelease >> gtRepoMapFor: aView [
 				toLeftCenter;
 				connectFrom: #yourself 
 				toAll: [:each | |dependedRepos |
-					dependedRepos := each childReleases.
+					dependedRepos := each childRepositoryReleases.
 					repos select: [ :project | dependedRepos anySatisfy: [ :dependedProject | dependedProject = project ] ] ].
 			mondrian layout custom: (GtGradHorizontalDominanceCenteredTreeLayout new levelDistance: 50; nodeDistance: 10)]
+]
+
+{ #category : #ui }
+FkRlRepositoryRelease >> gtTagsFor: aView [
+	<gtView>
+	^ self repository 
+		ifNil: [ aView ]
+		ifNotNil: [ :aRepository | aRepository gtTagsFor: aView ]
+]
+
+{ #category : #'accessing - dynamic' }
+FkRlRepositoryRelease >> icebergReleaseBranch [
+	^ self repository icebergRepository branchNamed: self releaseBranchName
+]
+
+{ #category : #actions }
+FkRlRepositoryRelease >> mergeToReleaseBranch [
+	| icebergRepository |
+	icebergRepository := self repository icebergRepository.
+	icebergRepository checkoutBranch: self releaseBranchName.
+	"Do the merge from the current branch"
+	IceMerge new 
+		repository: icebergRepository; 
+		mergeCommit: (icebergRepository branchNamed: self referenceBranchName) commit; 
+		executeWithoutUpdatingWorkingCopy.
+]
+
+{ #category : #'accessing - dynamic' }
+FkRlRepositoryRelease >> parentRepositoryReleases [
+	^ (self projectReleases flatCollect: [ :aProjectRelease | 
+		aProjectRelease parentReleases collect: #repositoryRelease ]) removeDuplicates 
+			remove: self ifAbsent: [ ];
+			yourself
 ]
 
 { #category : #printing }
@@ -93,9 +141,7 @@ FkRlRepositoryRelease >> printOn: aStream [
 	super printOn: aStream.
 	aStream 
 		nextPutAll: '(';
-		nextPutAll: self repository urlString;
-		nextPutAll: ', ';
-		nextPutAll: self version versionString;
+		nextPutAll: self description;
 		nextPutAll: ')'
 ]
 
@@ -103,6 +149,26 @@ FkRlRepositoryRelease >> printOn: aStream [
 FkRlRepositoryRelease >> projectReleases [ 	
 	^ projectReleases ifNil: [ 
 		projectReleases := OrderedCollection new ]
+]
+
+{ #category : #accessing }
+FkRlRepositoryRelease >> referenceBranchName [
+	^ referenceBranchName
+]
+
+{ #category : #accessing }
+FkRlRepositoryRelease >> referenceBranchName: aBranchName [
+	referenceBranchName := aBranchName
+]
+
+{ #category : #accessing }
+FkRlRepositoryRelease >> releaseBranchName [
+	^ releaseBranchName
+]
+
+{ #category : #accessing }
+FkRlRepositoryRelease >> releaseBranchName: aBranchName [
+	releaseBranchName := aBranchName
 ]
 
 { #category : #accessing }
@@ -115,6 +181,11 @@ FkRlRepositoryRelease >> repository: aRepository [
 	repository := aRepository
 ]
 
+{ #category : #'accessing - dynamic' }
+FkRlRepositoryRelease >> urlWithReleaseVersion [
+	^ self repository urlWithVersion: self version versionString
+]
+
 { #category : #accessing }
 FkRlRepositoryRelease >> version [
 	^ version
@@ -123,4 +194,9 @@ FkRlRepositoryRelease >> version [
 { #category : #accessing }
 FkRlRepositoryRelease >> version: aVersion [
 	version := aVersion
+]
+
+{ #category : #'accessing - dynamic' }
+FkRlRepositoryRelease >> versionString [
+	^ self version versionString
 ]

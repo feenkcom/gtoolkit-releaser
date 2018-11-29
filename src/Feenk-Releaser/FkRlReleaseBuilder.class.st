@@ -9,7 +9,13 @@ Class {
 	#category : #'Feenk-Releaser'
 }
 
-{ #category : #accessing }
+{ #category : #'instance creation' }
+FkRlReleaseBuilder class >> forConfiguration: aReleaseConfiguration [
+	^ self new
+		configuration: aReleaseConfiguration
+]
+
+{ #category : #building }
 FkRlReleaseBuilder >> buildReleaseForPoject: aProject [
 	| projectRelease repositoryRelease |
 	projectRelease := FkRlProjectRelease new project: aProject.
@@ -34,22 +40,31 @@ FkRlReleaseBuilder >> configuration: aReleaseConfiguration [
 	configuration := aReleaseConfiguration
 ]
 
-{ #category : #accessing }
+{ #category : #'private - building' }
 FkRlReleaseBuilder >> ensureRepositoryReleaseFor: aRepository [
 	^ self repositoryReleasesMap at: aRepository ifAbsentPut: [ 
 		FkRlRepositoryRelease new
 			repository: aRepository;
-			branchName: self configuration defaultReleaseBranchName;
-			version: (FkRlSemanticVersion new
-				major: 1;
-				minor: 2;
-				patch: 3) ]
+			releaseBranchName: (self releaseBranchForRepository: aRepository);
+			referenceBranchName: aRepository icebergRepository branchName;
+			version: (self nextVersionForRepository: aRepository) ]
+]
+
+{ #category : #'private - building' }
+FkRlReleaseBuilder >> nextVersionForRepository: aRepository [
+	^ self configuration nextVersionComputation nextVersionForRepository: aRepository
+	
 ]
 
 { #category : #accessing }
 FkRlReleaseBuilder >> projectReleasesMap [
 	^ projectReleasesMap ifNil: [ 
 		projectReleasesMap := Dictionary new ]
+]
+
+{ #category : #'private - building' }
+FkRlReleaseBuilder >> releaseBranchForRepository: aRepository [
+	^ self configuration releaseBranchForRepository: aRepository
 ]
 
 { #category : #accessing }

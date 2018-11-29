@@ -9,6 +9,14 @@ Class {
 	#category : #'Feenk-Releaser'
 }
 
+{ #category : #'instance creation' }
+FkRlSemanticVersion class >> major: majorNumber minor: minorNumber patch: patchNumber [
+	^ self new 
+		major: majorNumber; 
+		minor: minorNumber; 
+		patch: patchNumber
+]
+
 { #category : #comparison }
 FkRlSemanticVersion >> <= aFkRlSemanticVersion [ 
 	self major > aFkRlSemanticVersion major ifTrue: [ ^ false ] .
@@ -18,13 +26,10 @@ FkRlSemanticVersion >> <= aFkRlSemanticVersion [
 ]
 
 { #category : #accessing }
-FkRlSemanticVersion >> incrementPatch [
-	patch := patch + 1
-]
-
-{ #category : #accessing }
 FkRlSemanticVersion >> initialize [ 
-	major := 0. minor := 0. patch := 0
+	major := 0. 
+	minor := 0. 
+	patch := 0
 ]
 
 { #category : #accessing }
@@ -58,8 +63,12 @@ FkRlSemanticVersion >> patch: anInteger [
 ]
 
 { #category : #accessing }
-FkRlSemanticVersion >> printString [
-	^ major printString, '.', minor printString, '.', patch printString 
+FkRlSemanticVersion >> printOn: aStream [
+	super printOn: aStream.
+	aStream
+		nextPutAll: '(';
+		nextPutAll: self versionString;
+		nextPutAll: ')'
 ]
 
 { #category : #accessing }

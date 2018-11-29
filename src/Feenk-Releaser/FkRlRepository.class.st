@@ -53,7 +53,7 @@ FkRlRepository >> addProject: aFkRlProject [
 { #category : #'accessing - dynamic' }
 FkRlRepository >> childRepositories [ 
 	^ (self projects flatCollect: [ :aProject | 
-		aProject childProjects collect: #repository ]) asSet
+		aProject childProjects collect: #repository ]) removeDuplicates
 			remove: self ifAbsent: [ ];
 			yourself
 
@@ -227,12 +227,6 @@ FkRlRepository >> parentRepositories [
 	
 ]
 
-{ #category : #accessing }
-FkRlRepository >> pathSegments [
-	^ String streamContents: [:s | 
-		self url segments asStringOn: s delimiter: '/']
-]
-
 { #category : #printing }
 FkRlRepository >> printOn: aStream [
 	super printOn: aStream.
@@ -278,4 +272,12 @@ FkRlRepository >> url: aZnUrl [
 { #category : #accessing }
 FkRlRepository >> urlString [
 	^ self url asString
+]
+
+{ #category : #'accessing - dynamic' }
+FkRlRepository >> urlWithVersion: aVersionString [
+	| currentUrl |
+	currentUrl := self url copy.
+	currentUrl segments at: 1 put: self projectName,':', aVersionString. 
+	^ currentUrl
 ]

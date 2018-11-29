@@ -25,7 +25,10 @@ FkRlProject class >> changeBaselinesThenTagEachRepo [
 		repository checkoutBranch: 'release'.
 		releaseBranch := repository branchNamed: 'release'.
 		"do the merge from master"
-		IceMerge new repository: repository; mergeCommit: (repository branchNamed:'master') commit; executeWithoutUpdatingWorkingCopy.
+		IceMerge new 
+			repository: repository; 
+			mergeCommit: (repository branchNamed:'master') commit; 
+			executeWithoutUpdatingWorkingCopy.
 	
 		"do the baseline change"
 		collection do: [ :aFkRlProject |
@@ -153,9 +156,7 @@ FkRlProject >> addPackages: aCollection [
 
 { #category : #'accessing - dynamic' }
 FkRlProject >> allChildrenProjects [
-	^ self 
-		withDeepCollect: [ :aProject | aProject childProjects ] 
-		as: Set
+	^ self withDeepCollect: #childProjects 
 ]
 
 { #category : #accessing }
@@ -180,7 +181,7 @@ FkRlProject >> baselineVersion: aMetacelloVersion [
 	baselineVersion := aMetacelloVersion
 ]
 
-{ #category : #'private - adding' }
+{ #category : #private }
 FkRlProject >> basicAddParentProject: aParentProject [
 	self parentProjects add: aParentProject
 ]
@@ -195,63 +196,18 @@ FkRlProject >> childProjectsNames [
 	^ self childProjects collect: #name
 ]
 
-{ #category : #'accessing - dynamic' }
-FkRlProject >> childProjectsWithNewRepositories [
-	^ self childProjects collect: [ :aProject |
-		| simpleName currentUrl |
-		simpleName := aProject name.
-		currentUrl := ZnUrl fromString: aProject repository urlString.
-		currentUrl segments at: 1 put: (currentUrl segments at: 1), ':v1.1.1'. 
-		simpleName -> {currentUrl printString} ]
-]
-
-{ #category : #'accessing - dynamic' }
-FkRlProject >> childProjectsWithNewRepositories: aSemanticVersionString [
-	^ self childProjects collect: [ :aProject |
-		| simpleName currentUrl onlyTheRepoName|
-		simpleName := aProject name.
-		currentUrl := ZnUrl fromString: aProject repository urlString.
-		onlyTheRepoName := ((currentUrl segments at: 1) findTokens: ':') first.
-		currentUrl segments at: 1 put: onlyTheRepoName,':', aSemanticVersionString. 
-		simpleName -> {currentUrl printString} ]
+{ #category : #actions }
+FkRlProject >> compileBaselineWithProjectDependencies: projectDependenciesMap [
+	| toolbox |
+	toolbox := self toolboxForBaselineWithProjectDependencies: projectDependenciesMap.
+	^ toolbox commitBaselineOfMethod.
 ]
 
 { #category : #actions }
-FkRlProject >> generateSource [
+FkRlProject >> generateSourceWithProjectDependencies: projectDependenciesMap [
 	| toolbox |
-  (toolbox := FkRlMetacelloToolBox baselineNamed: self baselineClass name)
-    createBaselineOfMethod: 'baseline:' inCategory: 'baseline';
-    addBaselineOfSection: #'common'
-      requiredProjects: self childProjectsNames
-      packages: (self packages collect: #name)
-      repositories: self childProjectsWithNewRepositories
-      dependencies: (self packages collect: [ :aPackage | 
-			aPackage name -> aPackage dependencies ])
-      groups: #()
-      versionSpecsDo: [ :versionSpec | ].
+	toolbox := self toolboxForBaselineWithProjectDependencies: projectDependenciesMap.
 	^ toolbox methodSpec methodSource
-]
-
-{ #category : #actions }
-FkRlProject >> generateSourceWithSemanticVersion: aSemanticVersionString [
-	| toolbox |
-  (toolbox := FkRlMetacelloToolBox baselineNamed: self baselineClass name)
-    createBaselineOfMethod: 'baseline:' inCategory: 'baseline';
-    addBaselineOfSection: #'common'
-      requiredProjects: self childProjectsNames
-      packages: (self packages collect: #name)
-      repositories: (self childProjectsWithNewRepositories: aSemanticVersionString)
-      dependencies: (self packages collect: [ :aPackage | 
-			aPackage name -> aPackage dependencies ])
-      groups: #()
-      versionSpecsDo: [ :versionSpec | ].
-	^ toolbox methodSpec methodSource
-]
-
-{ #category : #'accessing - dynamic' }
-FkRlProject >> githubRepoURL [
-	^ self repository urlString
-	
 ]
 
 { #category : #ui }
@@ -262,15 +218,6 @@ FkRlProject >> gtChildProjectsFor: aView [
 		items: [ self childProjects ];
 		itemFormat: #name;
 		priority: 45
-]
-
-{ #category : #ui }
-FkRlProject >> gtGeneratedSourceFor: aView [
-	<gtView> 
-	^ aView textEditor
-		title: 'Src (generated)';
-		text: [ self generateSource ];
-		priority: 55
 ]
 
 { #category : #ui }
@@ -318,6 +265,26 @@ FkRlProject >> gtProjectMapFor: aView [
 				levelDistance: 10 ]
 ]
 
+{ #category : #ui }
+FkRlProject >> gtRepoMapFor: aView [
+	<gtView> 
+	^ self repository 
+		ifNil: [ aView ]
+		ifNotNil:  [ :aRepository | 
+			(aRepository gtRepoMapFor: aView)
+				priority: 60 ]
+]
+
+{ #category : #ui }
+FkRlProject >> gtSourceFor: aView [
+	<gtView> 
+	^ aView textEditor
+		title: 'Source' translated;
+		text: [ String streamContents: [ :s | 
+			self baselineVersion spec configMethodOn: s] ];
+		priority: 55
+]
+
 { #category : #initialization }
 FkRlProject >> initialize [ 
 	super initialize.
@@ -326,24 +293,18 @@ FkRlProject >> initialize [
 	childProjects := OrderedCollection new
 ]
 
-{ #category : #'accessing - dynamic' }
-FkRlProject >> isGToolkitProject [
-	^ self repository urlString includesSubstring: 'github://feenkcom/gtoolkit'
-
-]
-
 { #category : #actions }
 FkRlProject >> linkWithRepository: aRepository [
 	self repository: aRepository.
 	aRepository addProject: self
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : #accessing }
 FkRlProject >> name [ 	
 	^ name
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : #accessing }
 FkRlProject >> name: aString [
 	name := aString
 ]
@@ -374,4 +335,20 @@ FkRlProject >> repository [
 { #category : #accessing }
 FkRlProject >> repository: aRepository [
 	repository := aRepository 
+]
+
+{ #category : #private }
+FkRlProject >> toolboxForBaselineWithProjectDependencies: projectDependenciesMap [
+	| projectNames  |
+	projectNames := projectDependenciesMap collect: #key.
+  ^ (FkRlMetacelloToolBox baselineNamed: self baselineClass name)
+    createBaselineOfMethod: 'baseline:' inCategory: 'baseline';
+    addBaselineOfSection: #'common'
+      requiredProjects: projectNames
+      packages: (self packages collect: #name)
+      repositories: projectDependenciesMap
+      dependencies: (self packages collect: [ :aPackage | 
+			aPackage name -> aPackage dependencies ])
+      groups: #()
+      versionSpecsDo: [ :versionSpec | ]
 ]
