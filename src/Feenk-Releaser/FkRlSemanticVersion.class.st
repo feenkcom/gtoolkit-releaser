@@ -1,6 +1,6 @@
 Class {
 	#name : #FkRlSemanticVersion,
-	#superclass : #Object,
+	#superclass : #FkRlVersion,
 	#instVars : [
 		'major',
 		'minor',

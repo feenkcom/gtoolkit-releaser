@@ -2,9 +2,8 @@ Class {
 	#name : #FkRlRepositoryRelease,
 	#superclass : #FkRlRelease,
 	#instVars : [
-		'releaseBranchName',
-		'referenceBranchName',
 		'version',
+		'releaseStrategy',
 		'repository',
 		'projectReleases'
 	],
@@ -27,13 +26,14 @@ FkRlRepositoryRelease >> childRepositoryReleases [
 
 { #category : #actions }
 FkRlRepositoryRelease >> commitAndTagRelease [
-	| iceRepository |
+	| iceRepository iceReleaseBranch |
 	iceRepository := self repository icebergRepository.
 	iceRepository workingCopy 
 		commitChanges: iceRepository workingCopyDiff 
 		withMessage: 'Update to version ', self version versionString 
 		force: true.
-	self icebergReleaseBranch commit ensureCreateTag: self version versionString.
+	iceReleaseBranch :=self repository icebergRepository branchNamed: self releaseStrategy releaseBranchName.
+	iceReleaseBranch commit ensureCreateTag: self version versionString.
 		
 ]
 
@@ -43,9 +43,7 @@ FkRlRepositoryRelease >> description [
 		stream 
 			nextPutAll: self repository id;
 		 	nextPutAll: ', ';
-			nextPutAll: self version versionString;
-			nextPutAll: ', #';
-			nextPutAll: self releaseBranchName ]
+			nextPutAll: self releaseDetailsDescription ]
 ]
 
 { #category : #ui }
@@ -111,20 +109,15 @@ FkRlRepositoryRelease >> gtTagsFor: aView [
 		ifNotNil: [ :aRepository | aRepository gtTagsFor: aView ]
 ]
 
-{ #category : #'accessing - dynamic' }
-FkRlRepositoryRelease >> icebergReleaseBranch [
-	^ self repository icebergRepository branchNamed: self releaseBranchName
-]
-
 { #category : #actions }
 FkRlRepositoryRelease >> mergeToReleaseBranch [
 	| icebergRepository |
 	icebergRepository := self repository icebergRepository.
-	icebergRepository checkoutBranch: self releaseBranchName.
+	icebergRepository checkoutBranch: self releaseStrategy releaseBranchName.
 	"Do the merge from the current branch"
 	IceMerge new 
 		repository: icebergRepository; 
-		mergeCommit: (icebergRepository branchNamed: self referenceBranchName) commit; 
+		mergeCommit: (icebergRepository branchNamed: self releaseStrategy referenceBranchName) commit; 
 		executeWithoutUpdatingWorkingCopy.
 ]
 
@@ -151,24 +144,23 @@ FkRlRepositoryRelease >> projectReleases [
 		projectReleases := OrderedCollection new ]
 ]
 
-{ #category : #accessing }
-FkRlRepositoryRelease >> referenceBranchName [
-	^ referenceBranchName
+{ #category : #printing }
+FkRlRepositoryRelease >> releaseDetailsDescription [
+	^ String streamContents: [ :stream |
+		stream 
+			nextPutAll: self version description;
+			nextPutAll: ', ';
+			nextPutAll: self releaseStrategy releaseTarget ]
 ]
 
 { #category : #accessing }
-FkRlRepositoryRelease >> referenceBranchName: aBranchName [
-	referenceBranchName := aBranchName
+FkRlRepositoryRelease >> releaseStrategy [
+	^ releaseStrategy
 ]
 
 { #category : #accessing }
-FkRlRepositoryRelease >> releaseBranchName [
-	^ releaseBranchName
-]
-
-{ #category : #accessing }
-FkRlRepositoryRelease >> releaseBranchName: aBranchName [
-	releaseBranchName := aBranchName
+FkRlRepositoryRelease >> releaseStrategy: aReleaseStrategy [
+	releaseStrategy := aReleaseStrategy
 ]
 
 { #category : #accessing }

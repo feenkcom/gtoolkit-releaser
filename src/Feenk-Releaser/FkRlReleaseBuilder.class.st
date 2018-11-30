@@ -45,15 +45,8 @@ FkRlReleaseBuilder >> ensureRepositoryReleaseFor: aRepository [
 	^ self repositoryReleasesMap at: aRepository ifAbsentPut: [ 
 		FkRlRepositoryRelease new
 			repository: aRepository;
-			releaseBranchName: (self releaseBranchForRepository: aRepository);
-			referenceBranchName: aRepository icebergRepository branchName;
-			version: (self nextVersionForRepository: aRepository) ]
-]
-
-{ #category : #'private - building' }
-FkRlReleaseBuilder >> nextVersionForRepository: aRepository [
-	^ self configuration nextVersionComputation nextVersionForRepository: aRepository
-	
+			version: (self releaseVersionForRepository: aRepository);
+			releaseStrategy: (self releaseStragegyForRepository: aRepository) ]
 ]
 
 { #category : #accessing }
@@ -65,6 +58,21 @@ FkRlReleaseBuilder >> projectReleasesMap [
 { #category : #'private - building' }
 FkRlReleaseBuilder >> releaseBranchForRepository: aRepository [
 	^ self configuration releaseBranchForRepository: aRepository
+]
+
+{ #category : #'private - building' }
+FkRlReleaseBuilder >> releaseStragegyForRepository: aRepository [
+	^ (self configuration shouldIgnoreProject: aRepository id)
+		ifTrue: [ FkRlNoReleaseStragegy new ]
+		ifFalse: [ FkRlDedicatedReleaseBranchStragegy new
+			releaseBranchName: (self releaseBranchForRepository: aRepository);
+			referenceBranchName: aRepository icebergRepository branchName ]
+]
+
+{ #category : #'private - building' }
+FkRlReleaseBuilder >> releaseVersionForRepository: aRepository [
+	^ self configuration releaseVersionForRepository: aRepository
+	
 ]
 
 { #category : #accessing }

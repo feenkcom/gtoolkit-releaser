@@ -77,9 +77,7 @@ FkRlProjectRelease >> printOn: aStream [
 	aStream nextPutAll: '('.
 	aStream nextPutAll: self project name.
 	aStream nextPutAll: ', '.
-	aStream nextPutAll: self version versionString.
-	aStream nextPutAll: ', #'.
-	aStream nextPutAll: self repositoryRelease releaseBranchName.
+	aStream nextPutAll: self repositoryRelease releaseDetailsDescription.
 	aStream nextPutAll: ')'
 ]
 

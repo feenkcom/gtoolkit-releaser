@@ -3,8 +3,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'defaultReleaseBranchName',
-		'nextVersionComputation',
 		'customReleaseBranches',
+		'defaultVersionComputation',
+		'customVersionComputations',
 		'ignoredProjects'
 	],
 	#category : #'Feenk-Releaser'
@@ -17,6 +18,12 @@ FkRlReleaseConfiguration >> customReleaseBranches [
 ]
 
 { #category : #accessing }
+FkRlReleaseConfiguration >> customVersionComputations [
+	^ customVersionComputations ifNil: [ 
+		customVersionComputations := Dictionary new ]
+]
+
+{ #category : #accessing }
 FkRlReleaseConfiguration >> defaultReleaseBranchName [
 	^ defaultReleaseBranchName
 ]
@@ -24,6 +31,16 @@ FkRlReleaseConfiguration >> defaultReleaseBranchName [
 { #category : #accessing }
 FkRlReleaseConfiguration >> defaultReleaseBranchName: aBranchName [
 	defaultReleaseBranchName := aBranchName
+]
+
+{ #category : #accessing }
+FkRlReleaseConfiguration >> defaultVersionComputation [
+	^ defaultVersionComputation
+]
+
+{ #category : #accessing }
+FkRlReleaseConfiguration >> defaultVersionComputation: aVersionComputation [
+	defaultVersionComputation := aVersionComputation
 ]
 
 { #category : #actions }
@@ -42,16 +59,6 @@ FkRlReleaseConfiguration >> ignoredProjects [
 		ignoredProjects := OrderedCollection new ]
 ]
 
-{ #category : #accessing }
-FkRlReleaseConfiguration >> nextVersionComputation [
-	^ nextVersionComputation
-]
-
-{ #category : #accessing }
-FkRlReleaseConfiguration >> nextVersionComputation: aVersionComputation [
-	nextVersionComputation := aVersionComputation
-]
-
 { #category : #'accessing - dynamic' }
 FkRlReleaseConfiguration >> releaseBranchForRepository: aRepository [
 	^ self customReleaseBranches 
@@ -59,8 +66,35 @@ FkRlReleaseConfiguration >> releaseBranchForRepository: aRepository [
 		ifAbsent: [ self defaultReleaseBranchName ]
 ]
 
+{ #category : #'accessing - dynamic' }
+FkRlReleaseConfiguration >> releaseVersionForRepository: aRepository [
+	| versionComputation |
+	versionComputation := self customVersionComputations 
+		at: aRepository id 
+		ifAbsent: [ self defaultVersionComputation ].
+	^ versionComputation releaseVersionForRepository: aRepository
+]
+
 { #category : #actions }
 FkRlReleaseConfiguration >> setReleaseBranch: aBranchName forProjectId: aProjectId [
 	self customReleaseBranches 
 		at: aProjectId put: aBranchName
+]
+
+{ #category : #actions }
+FkRlReleaseConfiguration >> setVersionComputation: aVersionComputation forProjectId: aProjectId [
+	self customVersionComputations 
+		at: aProjectId put: aVersionComputation
+]
+
+{ #category : #actions }
+FkRlReleaseConfiguration >> setVersionComputationOfType: aVersionComputationType forProjecs: aListOfProjectIds [
+	aListOfProjectIds do: [ :aProjectId |
+		self setVersionComputation: aVersionComputationType new forProjectId: aProjectId  ]
+	
+]
+
+{ #category : #accessing }
+FkRlReleaseConfiguration >> shouldIgnoreProject: aProjectId [
+	^ self ignoredProjects includes: aProjectId
 ]
