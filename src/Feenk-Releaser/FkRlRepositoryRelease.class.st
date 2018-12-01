@@ -17,6 +17,11 @@ FkRlRepositoryRelease >> addProjectRelease: aProjectRelease [
 ]
 
 { #category : #'accessing - dynamic' }
+FkRlRepositoryRelease >> allChildRepositoryReleases [
+	^ self withDeepCollect: #childRepositoryReleases
+]
+
+{ #category : #'accessing - dynamic' }
 FkRlRepositoryRelease >> childRepositoryReleases [
 	^ (self projectReleases flatCollect: [ :aProjectRelease | 
 		aProjectRelease childReleases collect: #repositoryRelease ]) removeDuplicates
