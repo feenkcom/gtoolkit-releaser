@@ -18,7 +18,7 @@ FkRlReleaserWorkflow >> createReleaseActions [
 	| order |
 	order := 0.
 	self releaseActions ifNotEmpty: [ Error signal: 'Release actions already created' ].
-	self rootProjectRelease repositoryRelease allChildRepositoryReleases reverseDo: [ :aRepositoryRelease |
+	self repositoriesReleasesInReleaseOrder do: [ :aRepositoryRelease |
 		|  mergeAction commitAction |
 		mergeAction := FkRlMergeToReleaseBranchAction forRepositoryRelease: aRepositoryRelease.
 		mergeAction order: (order := order + 1).
@@ -71,7 +71,8 @@ FkRlReleaserWorkflow >> releaseActions [
 
 { #category : #accessing }
 FkRlReleaserWorkflow >> repositoriesReleasesInReleaseOrder [
-	^ self rootProjectRelease repositoryRelease allChildRepositoryReleases reverse
+	^ self rootProjectRelease repositoryRelease allChildRepositoryReleases reverse reject: [ :aRelease |
+		aRelease isPassiveRelease ]
 ]
 
 { #category : #accessing }

@@ -65,6 +65,11 @@ FkRlProjectRelease >> gtRepoMapFor: aView [
 		ifNotNil: [ :aRepositoryRelease | aRepositoryRelease gtRepoMapFor: aView ]
 ]
 
+{ #category : #testing }
+FkRlProjectRelease >> isPassiveRelease [
+	^ self repositoryRelease isPassiveRelease
+]
+
 { #category : #accessing }
 FkRlProjectRelease >> parentReleases [
 	^ parentReleases ifNil: [ 

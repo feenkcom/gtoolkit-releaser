@@ -4,6 +4,11 @@ Class {
 	#category : #'Feenk-Releaser'
 }
 
+{ #category : #testing }
+FkRlReleaseStragegy >> allowsReleaseGeneration [
+	^ true
+]
+
 { #category : #versions }
 FkRlReleaseStragegy >> releaseTarget [
 	self subclassResponsibility

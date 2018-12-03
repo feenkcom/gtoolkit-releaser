@@ -88,12 +88,38 @@ FkRlRepositoryRelease >> gtRepoMapFor: aView [
 			| repos |
 			repos := (self withDeepCollect: #childRepositoryReleases) asSet.
 			mondrian nodes 
-				umlClassShapeWithName: [ :aRepositoryRelease | aRepositoryRelease description ];
+				"umlClassShapeWithName: [ :aRepositoryRelease | aRepositoryRelease description ];"
+				shape: [ :aRepositoryRelease | |container children label textColor |
+					textColor := aRepositoryRelease isPassiveRelease 
+						ifTrue: [ Color gray ] ifFalse: [ Color black ].
+					container := BlElement new
+						layout: BlLinearLayout vertical;
+						border: (BlBorder paint: Color gray width: 1);
+						zIndex: 1;
+						constraintsDo: [ :c |
+							c padding: (BlInsets all: 5).
+							c horizontal fitContent.
+							c vertical fitContent ].
+					label := BlTextElement new
+						text: (aRepositoryRelease description asRopedText foreground: textColor);
+						constraintsDo: [ :c | 
+							c padding: (BlInsets all: 5).
+							c linear horizontal alignCenter ].
+					children := BlElement new
+						constraintsDo: [ :c | 
+							c linear horizontal alignCenter ].
+					children graph beChildrenContainer.
+					container
+						addChild: label;
+						addChild: children. ];
 				with: repos;
 				forEach: [ :aRepositoryRelease | 
 					mondrian nodes
-						shape: [ :aProjectRelease |
-							(BlTextElement text: aProjectRelease project name asRopedText)
+						shape: [ :aProjectRelease ||textColor text|
+							textColor := aProjectRelease  isPassiveRelease 
+								ifTrue: [ Color gray ] ifFalse: [ Color black ].
+							text := aProjectRelease project name asRopedText foreground: textColor.
+							(BlTextElement text: text)
 								constraintsDo: [ :c | 
 									c padding: (BlInsets all: 2).
 									c linear horizontal alignCenter ] ];
@@ -122,6 +148,11 @@ FkRlRepositoryRelease >> gtTagsFor: aView [
 	^ self repository 
 		ifNil: [ aView ]
 		ifNotNil: [ :aRepository | aRepository gtTagsFor: aView ]
+]
+
+{ #category : #testing }
+FkRlRepositoryRelease >> isPassiveRelease [
+	^ self releaseStrategy allowsReleaseGeneration not
 ]
 
 { #category : #actions }
