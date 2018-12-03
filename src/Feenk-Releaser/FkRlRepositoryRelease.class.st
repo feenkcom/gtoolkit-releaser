@@ -69,6 +69,16 @@ FkRlRepositoryRelease >> gtProjectsFor: aView [
 ]
 
 { #category : #ui }
+FkRlRepositoryRelease >> gtReleaseActionsFor: aView [
+	<gtView>
+	| allActions |
+	allActions := self projectReleases 
+		inject: self releaseActions
+		into: [ :all :current | all, current releaseActions ].
+	^ allActions sortedByOrder gtReleaseActionsFor: aView
+]
+
+{ #category : #ui }
 FkRlRepositoryRelease >> gtRepoMapFor: aView [
 	<gtView> 
 	^ aView mondrian 

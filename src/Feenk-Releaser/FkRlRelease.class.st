@@ -9,11 +9,17 @@ Class {
 
 { #category : #accessing }
 FkRlRelease >> addReleaseAction: aReleaseAction [
-	^ self releaseActions add: aReleaseAction
+	^ self releaseActions addAction: aReleaseAction
+]
+
+{ #category : #ui }
+FkRlRelease >> gtReleaseActionsFor: aView [
+	<gtView>
+	^ self releaseActions gtReleaseActionsFor: aView
 ]
 
 { #category : #accessing }
 FkRlRelease >> releaseActions [
 	^ releaseActions ifNil: [ 
-		releaseActions := OrderedCollection new ]
+		releaseActions := FkRlReleaseActionsGroup new ]
 ]
