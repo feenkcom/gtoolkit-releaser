@@ -31,14 +31,13 @@ FkRlRepositoryRelease >> childRepositoryReleases [
 
 { #category : #actions }
 FkRlRepositoryRelease >> commitAndTagRelease [
-	| iceRepository iceReleaseBranch |
-	iceRepository := self repository icebergRepository.
+	| iceRepository |
+	iceRepository := self icebergRepository.
 	iceRepository workingCopy 
 		commitChanges: iceRepository workingCopyDiff 
-		withMessage: 'Update to version ', self version versionString 
+		withMessage: 'Update to version ', self versionString 
 		force: true.
-	iceReleaseBranch :=self repository icebergRepository branchNamed: self releaseStrategy releaseBranchName.
-	iceReleaseBranch commit ensureCreateTag: self version versionString.
+	iceRepository branch commit ensureCreateTag: self versionString.
 		
 ]
 
@@ -116,7 +115,7 @@ FkRlRepositoryRelease >> gtRepoMapFor: aView [
 				forEach: [ :aRepositoryRelease | 
 					mondrian nodes
 						shape: [ :aProjectRelease ||textColor text|
-							textColor := aProjectRelease  isPassiveRelease 
+							textColor := (aProjectRelease isPassiveRelease or: [ aProjectRelease isLeaf ])
 								ifTrue: [ Color gray ] ifFalse: [ Color black ].
 							text := aProjectRelease project name asRopedText foreground: textColor.
 							(BlTextElement text: text)
@@ -150,20 +149,25 @@ FkRlRepositoryRelease >> gtTagsFor: aView [
 		ifNotNil: [ :aRepository | aRepository gtTagsFor: aView ]
 ]
 
+{ #category : #accessing }
+FkRlRepositoryRelease >> icebergRepository [
+	^ self repository icebergRepository
+]
+
 { #category : #testing }
 FkRlRepositoryRelease >> isPassiveRelease [
 	^ self releaseStrategy allowsReleaseGeneration not
 ]
 
 { #category : #actions }
-FkRlRepositoryRelease >> mergeToReleaseBranch [
+FkRlRepositoryRelease >> mergeToBranch: aBranchName [
 	| icebergRepository |
-	icebergRepository := self repository icebergRepository.
-	icebergRepository checkoutBranch: self releaseStrategy releaseBranchName.
+	icebergRepository := self icebergRepository.
+	icebergRepository checkoutBranch: aBranchName.
 	"Do the merge from the current branch"
 	IceMerge new 
 		repository: icebergRepository; 
-		mergeCommit: (icebergRepository branchNamed: self releaseStrategy referenceBranchName) commit; 
+		mergeCommit: icebergRepository branch commit; 
 		executeWithoutUpdatingWorkingCopy.
 ]
 

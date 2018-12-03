@@ -2,7 +2,8 @@ Class {
 	#name : #FkRlReleaseAction,
 	#superclass : #Object,
 	#instVars : [
-		'order'
+		'order',
+		'isExecuted'
 	],
 	#category : #'Feenk-Releaser'
 }
@@ -17,6 +18,13 @@ FkRlReleaseAction >> descriptionDetails [
 	^ ''
 ]
 
+{ #category : #actions }
+FkRlReleaseAction >> execute [
+	isExecuted ifTrue: [ Error signal: 'Action already executed' ].
+	[ self performAction ] 
+		ensure: [ isExecuted := true ].
+]
+
 { #category : #ui }
 FkRlReleaseAction >> gtDescriptionFor: aView [
 	<gtView>
@@ -25,6 +33,12 @@ FkRlReleaseAction >> gtDescriptionFor: aView [
 		priority: 5;
 		text: [ self description asRopedText ]
 	
+]
+
+{ #category : #initialization }
+FkRlReleaseAction >> initialize [ 
+	super initialize.
+	isExecuted := false
 ]
 
 { #category : #printing }
@@ -40,6 +54,11 @@ FkRlReleaseAction >> order [
 { #category : #accessing }
 FkRlReleaseAction >> order: anInteger [
 	order := anInteger
+]
+
+{ #category : #actions }
+FkRlReleaseAction >> performAction [
+	self subclassResponsibility
 ]
 
 { #category : #accessing }

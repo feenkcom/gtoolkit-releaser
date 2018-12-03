@@ -28,6 +28,11 @@ FkRlCompileBaselineReleaseAction >> name [
 	^ 'Compile baseline'
 ]
 
+{ #category : #actions }
+FkRlCompileBaselineReleaseAction >> performAction [
+	self projectReleases compileBaselineMethod
+]
+
 { #category : #accessing }
 FkRlCompileBaselineReleaseAction >> projectReleases [
 	^ projectReleases

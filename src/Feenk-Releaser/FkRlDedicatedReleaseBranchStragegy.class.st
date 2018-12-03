@@ -8,6 +8,26 @@ Class {
 	#category : #'Feenk-Releaser'
 }
 
+{ #category : #actions }
+FkRlDedicatedReleaseBranchStragegy >> commitAndTagRelease [
+	| iceRepository |
+	iceRepository := self repositoryRelease icebergRepository.
+	self 
+		assert: [ iceRepository branchName = self releaseBranchName ]
+		description: 'The Iceberg repository needs to be on the release branch.'.
+	self repositoryRelease commitAndTagRelease
+]
+
+{ #category : #actions }
+FkRlDedicatedReleaseBranchStragegy >> mergeToReleaseBranch [
+	| icebergRepository |
+	icebergRepository := self repositoryRelease icebergRepository.
+	self 
+		assert: [ icebergRepository branchName = self referenceBranchName ]
+		description: 'The Iceberg repository needs to be on the reference branch.'.
+	self repositoryRelease mergeToBranch: self releaseBranchName
+]
+
 { #category : #accessing }
 FkRlDedicatedReleaseBranchStragegy >> referenceBranchName [
 	^ referenceBranchName
@@ -28,7 +48,7 @@ FkRlDedicatedReleaseBranchStragegy >> releaseBranchName: aBranchName [
 	releaseBranchName := aBranchName
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 FkRlDedicatedReleaseBranchStragegy >> releaseTarget [
 	^ '#', self releaseBranchName
 ]

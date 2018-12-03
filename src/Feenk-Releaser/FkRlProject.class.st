@@ -293,6 +293,11 @@ FkRlProject >> initialize [
 	childProjects := OrderedCollection new
 ]
 
+{ #category : #testing }
+FkRlProject >> isLeaf [
+	^ self childProjects isEmpty
+]
+
 { #category : #actions }
 FkRlProject >> linkWithRepository: aRepository [
 	self repository: aRepository.

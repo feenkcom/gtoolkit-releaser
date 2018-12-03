@@ -14,6 +14,11 @@ FkRlRepositoryReleaseAction class >> forRepositoryRelease: aRepositoryRelease [
 ]
 
 { #category : #accessing }
+FkRlRepositoryReleaseAction >> releaseStrategy [
+	^ self repositoryRelease releaseStrategy
+]
+
+{ #category : #accessing }
 FkRlRepositoryReleaseAction >> repositoryRelease [
 	^ repositoryRelease
 ]

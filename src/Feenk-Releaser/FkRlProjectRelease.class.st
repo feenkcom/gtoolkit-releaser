@@ -66,6 +66,11 @@ FkRlProjectRelease >> gtRepoMapFor: aView [
 ]
 
 { #category : #testing }
+FkRlProjectRelease >> isLeaf [
+	^ self project isLeaf
+]
+
+{ #category : #testing }
 FkRlProjectRelease >> isPassiveRelease [
 	^ self repositoryRelease isPassiveRelease
 ]

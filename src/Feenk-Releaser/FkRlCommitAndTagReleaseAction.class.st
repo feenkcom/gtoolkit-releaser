@@ -22,3 +22,8 @@ FkRlCommitAndTagReleaseAction >> descriptionDetails [
 FkRlCommitAndTagReleaseAction >> name [
 	^ 'Commit and tag release'
 ]
+
+{ #category : #actions }
+FkRlCommitAndTagReleaseAction >> performAction [
+	self releaseStrategy commitAndTagRelease
+]

@@ -24,3 +24,8 @@ FkRlMergeToReleaseBranchAction >> descriptionDetails [
 FkRlMergeToReleaseBranchAction >> name [ 
 	^ 'Merge to release branch'
 ]
+
+{ #category : #actions }
+FkRlMergeToReleaseBranchAction >> performAction [
+	self releaseStrategy mergeToReleaseBranch
+]

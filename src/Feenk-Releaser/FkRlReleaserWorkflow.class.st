@@ -24,7 +24,7 @@ FkRlReleaserWorkflow >> createReleaseActions [
 		mergeAction order: (order := order + 1).
 		aRepositoryRelease addReleaseAction: mergeAction.
 		self addReleaseAction: mergeAction.
-		aRepositoryRelease projectReleases do: [ :aProjectRelease | 
+		(aRepositoryRelease projectReleases reject: #isLeaf) do: [ :aProjectRelease | 
 			| baselineAction |
 			baselineAction := FkRlCompileBaselineReleaseAction forProjectRelease: aProjectRelease.
 			baselineAction order: (order := order + 1).
