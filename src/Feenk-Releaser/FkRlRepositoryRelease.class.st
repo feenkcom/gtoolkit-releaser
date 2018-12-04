@@ -31,11 +31,12 @@ FkRlRepositoryRelease >> childRepositoryReleases [
 
 { #category : #actions }
 FkRlRepositoryRelease >> commitAndTagRelease [
-	| iceRepository |
+	| iceRepository diff |
 	iceRepository := self icebergRepository.
+	diff := iceRepository workingCopyDiff.
 	iceRepository workingCopy 
-		commitChanges: iceRepository workingCopyDiff 
-		withMessage: 'Update to version ', self versionString 
+		commitChanges: diff
+		withMessage: 'Release version ', self versionString 
 		force: true.
 	iceRepository branch commit ensureCreateTag: self versionString.
 		
@@ -161,13 +162,14 @@ FkRlRepositoryRelease >> isPassiveRelease [
 
 { #category : #actions }
 FkRlRepositoryRelease >> mergeToBranch: aBranchName [
-	| icebergRepository |
+	| initialBranchName icebergRepository |
 	icebergRepository := self icebergRepository.
+	initialBranchName := icebergRepository branchName.
 	icebergRepository checkoutBranch: aBranchName.
 	"Do the merge from the current branch"
 	IceMerge new 
 		repository: icebergRepository; 
-		mergeCommit: icebergRepository branch commit; 
+		mergeCommit: (icebergRepository branchNamed: initialBranchName) commit; 
 		executeWithoutUpdatingWorkingCopy.
 ]
 
@@ -210,7 +212,11 @@ FkRlRepositoryRelease >> releaseStrategy [
 
 { #category : #accessing }
 FkRlRepositoryRelease >> releaseStrategy: aReleaseStrategy [
-	releaseStrategy := aReleaseStrategy
+	self 
+		assert: [ aReleaseStrategy repositoryRelease isNil ] 
+		description: 'The release strategy should not be attached at this point to any repository'.
+	releaseStrategy := aReleaseStrategy.
+	aReleaseStrategy repositoryRelease: self.
 ]
 
 { #category : #accessing }
