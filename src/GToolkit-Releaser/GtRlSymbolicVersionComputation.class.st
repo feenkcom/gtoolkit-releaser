@@ -14,10 +14,10 @@ GtRlSymbolicVersionComputation >> releaseVersionForRepository: aRepository [
 	| tags semanticVersions |
 	tags := aRepository icebergRepository tags. 
 	semanticVersions := tags 
-		select: [ :aTag | aTag name matchesRegex: '[0-9]+\.[0-9]+\.[0-9]+' ]
+		select: [ :aTag | aTag name matchesRegex: 'v[0-9]+\.[0-9]+\.[0-9]+' ]
 		thenCollect: [ :each | 
 			|tokens| 
-			tokens := each name findTokens: '.'. 
+			tokens := each name allButFirst findTokens: '.'. 
 			GtRlSemanticVersion 
 				major: tokens first asInteger
 				minor: tokens second asInteger

@@ -73,5 +73,5 @@ GtRlSemanticVersion >> printOn: aStream [
 
 { #category : #accessing }
 GtRlSemanticVersion >> versionString [
-	^ major printString, '.', minor printString, '.', patch printString 
+	^ 'v', major printString, '.', minor printString, '.', patch printString 
 ]
