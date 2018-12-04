@@ -60,6 +60,16 @@ GtRlRepositoryRelease >> gtBranchesFor: aView [
 ]
 
 { #category : #ui }
+GtRlRepositoryRelease >> gtCommitsAncestryFor: aView [
+	<gtView>
+	^ self releaseStrategy 
+		ifNil: [ aView ]
+		ifNotNil: [ :aReleaseStrategy | 
+			(aReleaseStrategy gtCommitsAncestryFor: aView)
+				priority: 45 ]
+]
+
+{ #category : #ui }
 GtRlRepositoryRelease >> gtProjectsFor: aView [
 	<gtView>
 	^ aView list 
@@ -75,6 +85,14 @@ GtRlRepositoryRelease >> gtReleaseActionsFor: aView [
 		inject: self releaseActions
 		into: [ :all :current | all, current releaseActions ].
 	^ allActions sortedByOrder gtReleaseActionsFor: aView
+]
+
+{ #category : #ui }
+GtRlRepositoryRelease >> gtReleaseTagsFor: aView [
+	<gtView>
+	^ self releaseStrategy 
+		ifNil: [ aView ]
+		ifNotNil: [ :aReleaseStrategy | aReleaseStrategy gtReleaseTagsFor: aView ]
 ]
 
 { #category : #ui }
@@ -139,14 +157,6 @@ GtRlRepositoryRelease >> gtRepoMapFor: aView [
 					dependedRepos := each childRepositoryReleases.
 					repos select: [ :project | dependedRepos anySatisfy: [ :dependedProject | dependedProject = project ] ] ].
 			mondrian layout custom: (GtGradHorizontalDominanceCenteredTreeLayout new levelDistance: 50; nodeDistance: 10)]
-]
-
-{ #category : #ui }
-GtRlRepositoryRelease >> gtTagsFor: aView [
-	<gtView>
-	^ self repository 
-		ifNil: [ aView ]
-		ifNotNil: [ :aRepository | aRepository gtTagsFor: aView ]
 ]
 
 { #category : #accessing }

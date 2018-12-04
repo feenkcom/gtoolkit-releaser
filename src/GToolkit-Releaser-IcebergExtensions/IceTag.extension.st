@@ -25,3 +25,8 @@ IceTag >> gtHeadCommitDetailsFor: aView [
 	<gtView>
 	^ self commit gtDetailsFor: aView
 ]
+
+{ #category : #'*GToolkit-Releaser-IcebergExtensions' }
+IceTag >> gtIsSemanticVersion [
+	^ self name matchesRegex: 'v[0-9]+\.[0-9]+\.[0-9]+'
+]
