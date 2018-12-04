@@ -1,7 +1,7 @@
-Extension { #name : #IceBranch }
+Extension { #name : #IceTag }
 
 { #category : #'*GToolkit-Releaser-IcebergExtensions' }
-IceBranch >> gtCommitAncestorsFor: aView [
+IceTag >> gtCommitAncestorsFor: aView [
 	<gtView>
 	^ (self commit
 		gtCommitAncestorsDominanceTreeFor: aView)
@@ -9,7 +9,7 @@ IceBranch >> gtCommitAncestorsFor: aView [
 ]
 
 { #category : #'*GToolkit-Releaser-IcebergExtensions' }
-IceBranch >> gtCommitsFor: aView [
+IceTag >> gtCommitsFor: aView [
 	<gtView>
 	^ aView columnedList 
 		title: 'Commits' translated;
@@ -21,10 +21,7 @@ IceBranch >> gtCommitsFor: aView [
 ]
 
 { #category : #'*GToolkit-Releaser-IcebergExtensions' }
-IceBranch >> gtSummaryDescription [
-	^ String streamContents: [ :aStream |
-		aStream
-			nextPutAll: self name;
-			nextPutAll: ', ';
-			nextPutAll: (self isLocal ifTrue: [ 'local' ] ifFalse: [ 'remote' ] ) ]
+IceTag >> gtHeadCommitDetailsFor: aView [
+	<gtView>
+	^ self commit gtDetailsFor: aView
 ]

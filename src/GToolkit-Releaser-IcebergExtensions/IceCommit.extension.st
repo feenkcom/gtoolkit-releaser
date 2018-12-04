@@ -47,6 +47,18 @@ IceCommit >> gtCommitAncestorsTreeFor: aView [
 ]
 
 { #category : #'*GToolkit-Releaser-IcebergExtensions' }
+IceCommit >> gtCommitsFor: aView [
+	<gtView>
+	^ aView columnedList 
+		title: 'Ancestors' translated;
+		items: [ self commits ];
+		column: 'Timestamp' item: [ :aCommit | aCommit timeStamp asStringYMDHM ];
+		column: 'Commit' item: #shortId;
+		column: 'Author' item: #author;
+		column: 'Description' item: #comment
+]
+
+{ #category : #'*GToolkit-Releaser-IcebergExtensions' }
 IceCommit >> gtDetailsFor: aView [
 	<gtView>
 	^ aView columnedList 
@@ -61,5 +73,4 @@ IceCommit >> gtDetailsFor: aView [
 			'Comment' -> self commit comment } ];
 		column: 'Property' item: #key;
 		column: 'Value' item: #value
-		
 ]
