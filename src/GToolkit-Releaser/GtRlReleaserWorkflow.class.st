@@ -38,6 +38,15 @@ GtRlReleaserWorkflow >> createReleaseActions [
 ]
 
 { #category : #ui }
+GtRlReleaserWorkflow >> gtProjectMapFor: aView [
+	<gtView>
+	^ self rootProjectRelease 
+		ifNil: [ aView ]
+		ifNotNil: [ :aRepository | 
+			rootProjectRelease gtProjectMapFor: aView ]
+]
+
+{ #category : #ui }
 GtRlReleaserWorkflow >> gtReleaseActionsFor: aView [
 	<gtView>
 	^ self releaseActions gtReleaseActionsFor: aView
