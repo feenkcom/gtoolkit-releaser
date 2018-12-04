@@ -1,0 +1,67 @@
+Class {
+	#name : #GtRlReleaseAction,
+	#superclass : #Object,
+	#instVars : [
+		'order',
+		'isExecuted'
+	],
+	#category : #'Feenk-Releaser'
+}
+
+{ #category : #printing }
+GtRlReleaseAction >> description [ 	
+	self subclassResponsibility
+]
+
+{ #category : #printing }
+GtRlReleaseAction >> descriptionDetails [
+	^ ''
+]
+
+{ #category : #actions }
+GtRlReleaseAction >> execute [
+	isExecuted ifTrue: [ Error signal: 'Action already executed' ].
+	[ self performAction ] 
+		ensure: [ isExecuted := true ].
+]
+
+{ #category : #ui }
+GtRlReleaseAction >> gtDescriptionFor: aView [
+	<gtView>
+	^ aView textEditor
+		title: 'Description' translated;
+		priority: 5;
+		text: [ self description asRopedText ]
+	
+]
+
+{ #category : #initialization }
+GtRlReleaseAction >> initialize [ 
+	super initialize.
+	isExecuted := false
+]
+
+{ #category : #printing }
+GtRlReleaseAction >> name [ 	
+	^ 'Release action'
+]
+
+{ #category : #accessing }
+GtRlReleaseAction >> order [
+	^ order
+]
+
+{ #category : #accessing }
+GtRlReleaseAction >> order: anInteger [
+	order := anInteger
+]
+
+{ #category : #actions }
+GtRlReleaseAction >> performAction [
+	self subclassResponsibility
+]
+
+{ #category : #accessing }
+GtRlReleaseAction >> repositoryRelease [
+	self subclassResponsibility
+]
