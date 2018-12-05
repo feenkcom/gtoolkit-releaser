@@ -32,17 +32,21 @@ GtRlReleaserWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://kursjan/petitparser2'.
 		'github://j-brant/SmaCC/src'.
 		'github://pharo-project/pharo-beacon/repository'.
-		'github://svenvc/NeoJSON/repository' };
+		'github://svenvc/NeoJSON/repository'};
 	setVersionComputationOfType: GtRlCurrentLoadedTagComputation forProjecs: {
 		'github://noha/mustache/repository'.
-		'github://sbragagnolo/taskit' };
+		'github://sbragagnolo/taskit'.
+		'github://feenkcom/Containers-PropertyEnvironment'.
+		'github://feenkcom/Chrysal/src' };
 	ignoreProjects: {
 		'github://kursjan/petitparser2'.
 		'github://j-brant/SmaCC/src'.
 		'github://pharo-project/pharo-beacon/repository'.
 		'github://svenvc/NeoJSON/repository'.
 		'github://noha/mustache/repository'.
-		'github://sbragagnolo/taskit' }
+		'github://sbragagnolo/taskit'.
+		'github://feenkcom/Containers-PropertyEnvironment'.
+		'github://feenkcom/Chrysal/src' }
 ]
 
 { #category : #releasing }
