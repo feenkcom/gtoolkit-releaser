@@ -10,7 +10,7 @@ Class {
 { #category : #'instance creation' }
 GtRlCompileBaselineReleaseAction class >> forProjectRelease: aProjectRelease [
 	^ self new
-		projectReleases: aProjectRelease
+		projectRelease: aProjectRelease
 ]
 
 { #category : #printing }
@@ -21,6 +21,14 @@ GtRlCompileBaselineReleaseAction >> description [
 { #category : #printing }
 GtRlCompileBaselineReleaseAction >> descriptionDetails [
 	^ self projectRelease project baselineClass name
+]
+
+{ #category : #ui }
+GtRlCompileBaselineReleaseAction >> gtGeneratedSourceFor: aView [
+	<gtView> 
+	^ self projectRelease 
+		ifNil: [ aView ]
+		ifNotNil: [ self projectRelease gtGeneratedSourceFor: aView ]
 ]
 
 { #category : #accessing }
