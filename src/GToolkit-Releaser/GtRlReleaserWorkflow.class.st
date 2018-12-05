@@ -8,33 +8,82 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
-{ #category : #'private - actions' }
-GtRlReleaserWorkflow >> addReleaseAction: aReleaseAction [
-	self releaseActions addAction: aReleaseAction
+{ #category : #'instance creation' }
+GtRlReleaserWorkflow class >> forBaseline: aBaselineClass fromRepository: aRepositoryUrl withConfiguration: aReleaseConfiguration [
+	| projectBuilder releaseBuilder project release |
+	projectBuilder := GtRlModelBuilder new.
+	project := projectBuilder 
+		buildProjectFromBaselineClass: aBaselineClass
+		withRepositoryDescription: aRepositoryUrl.
+
+	releaseBuilder := GtRlReleaseBuilder new
+		configuration: aReleaseConfiguration. 
+	release := releaseBuilder buildReleaseForPoject: project.
+	^ self new
+		rootProjectRelease: release
 ]
 
-{ #category : #initialization }
+{ #category : #releasing }
+GtRlReleaserWorkflow class >> gtoolkitReleaseConfiguration [
+	^ GtRlReleaseConfiguration new
+	defaultReleaseBranchName: 'release';
+	defaultVersionComputation: GtRlPatchVersionComputation new;	
+	setVersionComputationOfType: GtRlLatestCommitComputation forProjecs: {
+		'github://kursjan/petitparser2'.
+		'github://j-brant/SmaCC/src'.
+		'github://pharo-project/pharo-beacon/repository'.
+		'github://svenvc/NeoJSON/repository' };
+	setVersionComputationOfType: GtRlCurrentLoadedTagComputation forProjecs: {
+		'github://noha/mustache/repository'.
+		'github://sbragagnolo/taskit' };
+	ignoreProjects: {
+		'github://kursjan/petitparser2'.
+		'github://j-brant/SmaCC/src'.
+		'github://pharo-project/pharo-beacon/repository'.
+		'github://svenvc/NeoJSON/repository'.
+		'github://noha/mustache/repository'.
+		'github://sbragagnolo/taskit' }
+]
+
+{ #category : #releasing }
+GtRlReleaserWorkflow class >> performGToolkitRelease [
+	| releaseConfiguration workflow |
+	releaseConfiguration := GtRlReleaserWorkflow gtoolkitReleaseConfiguration.
+	workflow := GtRlReleaserWorkflow 
+		forBaseline: BaselineOfGToolkit 
+		fromRepository: 'github://feenkcom/gtoolkit/src'
+		withConfiguration: releaseConfiguration.
+	^ workflow executeReleaseActions.
+]
+
+{ #category : #actions }
 GtRlReleaserWorkflow >> createReleaseActions [
-	| order |
+	| order newReleaseActions |
 	order := 0.
-	self releaseActions ifNotEmpty: [ Error signal: 'Release actions already created' ].
+	newReleaseActions := GtRlReleaseActionsGroup new.
 	self repositoriesReleasesInReleaseOrder do: [ :aRepositoryRelease |
 		|  mergeAction commitAction |
 		mergeAction := GtRlMergeToReleaseBranchAction forRepositoryRelease: aRepositoryRelease.
 		mergeAction order: (order := order + 1).
 		aRepositoryRelease addReleaseAction: mergeAction.
-		self addReleaseAction: mergeAction.
+		newReleaseActions addAction: mergeAction.
 		(aRepositoryRelease projectReleases reject: #isLeaf) do: [ :aProjectRelease | 
 			| baselineAction |
 			baselineAction := GtRlCompileBaselineReleaseAction forProjectRelease: aProjectRelease.
 			baselineAction order: (order := order + 1).
 			aProjectRelease addReleaseAction: baselineAction.
-			self addReleaseAction: baselineAction ].
+			newReleaseActions addAction: baselineAction ].
 		commitAction := GtRlCommitAndTagReleaseAction forRepositoryRelease: aRepositoryRelease.
 		commitAction order: (order := order + 1).
 		aRepositoryRelease addReleaseAction: commitAction.
-		self addReleaseAction: commitAction ].
+		newReleaseActions addAction: commitAction ].
+	^ newReleaseActions
 	
+]
+
+{ #category : #actions }
+GtRlReleaserWorkflow >> executeReleaseActions [
+	^ self releaseActions execute
 ]
 
 { #category : #ui }
@@ -75,7 +124,7 @@ GtRlReleaserWorkflow >> gtRepositoryReleasesListFor: aView [
 { #category : #accessing }
 GtRlReleaserWorkflow >> releaseActions [
 	^ releaseActions ifNil: [ 
-		releaseActions := GtRlReleaseActionsGroup new ]
+		releaseActions := self createReleaseActions ]
 ]
 
 { #category : #accessing }

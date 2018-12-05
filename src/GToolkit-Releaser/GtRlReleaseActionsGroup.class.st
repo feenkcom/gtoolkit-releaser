@@ -34,6 +34,11 @@ GtRlReleaseActionsGroup >> do: aBlock [
 	^ actions do: aBlock
 ]
 
+{ #category : #actions }
+GtRlReleaseActionsGroup >> execute [
+	self actions do: #execute
+]
+
 { #category : #ui }
 GtRlReleaseActionsGroup >> gtReleaseActionsFor: aView [
 	<gtView>
