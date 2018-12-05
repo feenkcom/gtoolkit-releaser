@@ -2,7 +2,7 @@ Class {
 	#name : #GtRlCompileBaselineReleaseAction,
 	#superclass : #GtRlReleaseAction,
 	#instVars : [
-		'projectReleases'
+		'projectRelease'
 	],
 	#category : #'GToolkit-Releaser'
 }
@@ -15,12 +15,12 @@ GtRlCompileBaselineReleaseAction class >> forProjectRelease: aProjectRelease [
 
 { #category : #printing }
 GtRlCompileBaselineReleaseAction >> description [
-	^ 'Compile baseline ', self projectReleases project baselineClass name
+	^ 'Compile baseline ', self projectRelease project baselineClass name
 ]
 
 { #category : #printing }
 GtRlCompileBaselineReleaseAction >> descriptionDetails [
-	^ self projectReleases project baselineClass name
+	^ self projectRelease project baselineClass name
 ]
 
 { #category : #accessing }
@@ -30,20 +30,20 @@ GtRlCompileBaselineReleaseAction >> name [
 
 { #category : #actions }
 GtRlCompileBaselineReleaseAction >> performAction [
-	self projectReleases compileBaselineMethod
+	self projectRelease compileBaselineMethod
 ]
 
 { #category : #accessing }
-GtRlCompileBaselineReleaseAction >> projectReleases [
-	^ projectReleases
+GtRlCompileBaselineReleaseAction >> projectRelease [
+	^ projectRelease
 ]
 
 { #category : #accessing }
-GtRlCompileBaselineReleaseAction >> projectReleases: aProjectRelease [
-	projectReleases := aProjectRelease
+GtRlCompileBaselineReleaseAction >> projectRelease: aProjectRelease [
+	projectRelease := aProjectRelease
 ]
 
 { #category : #accessing }
 GtRlCompileBaselineReleaseAction >> repositoryRelease [
-	^ self projectReleases repositoryRelease
+	^ self projectRelease repositoryRelease
 ]

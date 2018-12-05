@@ -117,8 +117,11 @@ GtRlReleaserWorkflow >> gtRepositoryReleasesListFor: aView [
 		title: 'Releases' translated;
 		items: [ self repositoriesReleasesInReleaseOrder ];
 		column: 'Repository' item: [ :aRepositoryRelease | aRepositoryRelease repository id ];
-		column: 'Version' item: [ :aRepositoryRelease | aRepositoryRelease versionString ];
-		column: 'Release strategy' item: [ :aRepositoryRelease | aRepositoryRelease releaseStrategy releaseTarget ]
+		column: 'Version' do: [ :aColumn | 
+			aColumn 
+				item: #versionString;
+				width: 100 ]";
+		column: 'Release strategy' item: [ :aRepositoryRelease | aRepositoryRelease releaseStrategy releaseTarget ]"
 ]
 
 { #category : #accessing }
