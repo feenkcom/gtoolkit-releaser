@@ -1,7 +1,7 @@
 Extension { #name : #IceMerge }
 
 { #category : #'*GToolkit-Releaser' }
-IceMerge >> executeWithoutUpdatingWorkingCopy [
+IceMerge >> executeWithAcceptingLeftOnConflict [
 	"at begining of this, there is a possibility that imageCommit needs to be 'fixed' to use."
 	| commitToAdvance |
 	mergeCommit validateCanMerge.
@@ -15,6 +15,8 @@ IceMerge >> executeWithoutUpdatingWorkingCopy [
 		operation selectLeft.
 	].
 	commitToAdvance := self updateHead.
+	
+	self updateWorkingCopy.
 	
 	^ commitToAdvance
 ]

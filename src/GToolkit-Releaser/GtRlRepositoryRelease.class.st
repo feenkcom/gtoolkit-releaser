@@ -174,12 +174,16 @@ GtRlRepositoryRelease >> mergeToBranch: aBranchName [
 	| initialBranchName icebergRepository |
 	icebergRepository := self icebergRepository.
 	initialBranchName := icebergRepository branchName.
+	
 	icebergRepository checkoutBranch: aBranchName.
+	"[icebergRepository switchToBranchNamed: aBranchName] 
+		on: Warning do: [ :ex | ex resume ]."
+	
 	"Do the merge from the current branch"
 	IceMerge new 
 		repository: icebergRepository; 
 		mergeCommit: (icebergRepository branchNamed: initialBranchName) commit; 
-		executeWithoutUpdatingWorkingCopy.
+		executeWithAcceptingLeftOnConflict.
 ]
 
 { #category : #'accessing - dynamic' }

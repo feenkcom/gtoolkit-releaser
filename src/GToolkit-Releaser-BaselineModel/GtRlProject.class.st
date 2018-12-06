@@ -30,7 +30,7 @@ GtRlProject class >> changeBaselinesThenTagEachRepo [
 		IceMerge new 
 			repository: repository; 
 			mergeCommit: (repository branchNamed:'master') commit; 
-			executeWithoutUpdatingWorkingCopy.
+			executeWithAcceptingLeftOnConflict.
 	
 		"do the baseline change"
 		collection do: [ :aFkRlProject |
