@@ -8,7 +8,9 @@ Class {
 		'repository',
 		'parentProjects',
 		'childProjects',
-		'packages'
+		'packages',
+		'preLoadAction',
+		'postLoadAction'
 	],
 	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
@@ -178,7 +180,18 @@ GtRlProject >> baselineVersion [
 GtRlProject >> baselineVersion: aMetacelloVersion [
 	self assert: [ aMetacelloVersion name = 'baseline' ].
 	self assert: [ aMetacelloVersion versionNumber versionString = 'baseline' ].
-	baselineVersion := aMetacelloVersion
+	baselineVersion := aMetacelloVersion.
+	
+	aMetacelloVersion spec preLoadDoIt ifNotNil: [ :aPreLoadSpec |
+		self 
+			assert: [ aPreLoadSpec isKindOf: MetacelloValueHolderSpec ] 
+			description: 'Only MetacelloValueHolderSpec are supported as pre load actions'.
+		self preLoadAction: aPreLoadSpec value ].
+	aMetacelloVersion spec postLoadDoIt ifNotNil: [ :aPostLoadSpec |
+		self 
+			assert: [ aPostLoadSpec isKindOf: MetacelloValueHolderSpec ] 
+			description: 'Only MetacelloValueHolderSpec are supported as post load actions'.
+		self postLoadAction: aPostLoadSpec value ]
 ]
 
 { #category : #private }
@@ -324,6 +337,26 @@ GtRlProject >> parentProjects [
 	^ parentProjects
 ]
 
+{ #category : #accessing }
+GtRlProject >> postLoadAction [
+	^ postLoadAction
+]
+
+{ #category : #accessing }
+GtRlProject >> postLoadAction: aSymbol [
+	postLoadAction := aSymbol
+]
+
+{ #category : #accessing }
+GtRlProject >> preLoadAction [
+	^ preLoadAction
+]
+
+{ #category : #accessing }
+GtRlProject >> preLoadAction: aSymbol [
+	preLoadAction := aSymbol
+]
+
 { #category : #printing }
 GtRlProject >> printOn: aStream [
 	super printOn: aStream.
@@ -344,16 +377,30 @@ GtRlProject >> repository: aRepository [
 
 { #category : #private }
 GtRlProject >> toolboxForBaselineWithProjectDependencies: projectDependenciesMap [
-	| projectNames  |
+	| projectNames toolbox |
 	projectNames := projectDependenciesMap collect: #key.
-  ^ (GtRlMetacelloToolBox baselineNamed: self baselineClass name)
+  toolbox := (GtRlMetacelloToolBox baselineNamed: self baselineClass name)
     createBaselineOfMethod: 'baseline:' inCategory: 'baseline';
-    addBaselineOfSection: #'common'
-      requiredProjects: projectNames
-      packages: (self packages collect: #name)
-      repositories: projectDependenciesMap
-      dependencies: (self packages collect: [ :aPackage | 
+	addBaselineOfSection: #'common'
+		requiredProjects: projectNames
+	   packages: (self packages collect: #name)
+	   dependencies: (self packages collect: [ :aPackage | 
 			aPackage name -> aPackage dependencies ])
-      groups: #()
-      versionSpecsDo: [ :versionSpec | ]
+	   includes: #()
+	   files: #()
+	   repositories: projectDependenciesMap
+	   preLoadDoIts: #()
+	   postLoadDoIts: #()
+	   supplyingAnswers: #()
+	   groups: #()
+	   versionSpecsDo: [ :versionSpec | ].
+	
+	self assert: [ toolbox methodSpec methodSections size = 1] description: 'Only one section per method is supported'.
+	self assert: [ toolbox methodSpec methodSections first attributes = #(#common) ] description: 'Only #common section is supported'.
+	self preLoadAction ifNotNil: [ 
+		toolbox methodSpec methodSections first versionSpec preLoadDoIt: self preLoadAction ].
+	 self postLoadAction ifNotNil: [
+		toolbox methodSpec methodSections first versionSpec postLoadDoIt: self postLoadAction ].
+	
+	^ toolbox
 ]
