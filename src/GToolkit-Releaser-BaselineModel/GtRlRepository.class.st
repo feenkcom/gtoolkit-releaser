@@ -6,7 +6,7 @@ Class {
 		'projects',
 		'icebergRepository'
 	],
-	#category : #'GToolkit-Releaser-BaselineModel'
+	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
 
 { #category : #'instance creation' }

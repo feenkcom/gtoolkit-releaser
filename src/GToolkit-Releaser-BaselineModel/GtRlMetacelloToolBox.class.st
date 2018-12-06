@@ -1,7 +1,7 @@
 Class {
 	#name : #GtRlMetacelloToolBox,
 	#superclass : #MetacelloToolBox,
-	#category : #'GToolkit-Releaser-BaselineModel'
+	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
 
 { #category : #'spec creation' }
