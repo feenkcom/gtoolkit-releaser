@@ -77,8 +77,7 @@ GtRlModelBuilder >> initialize [
 GtRlModelBuilder >> instantiateProjectFromMetacelloSpec: aBaselineProjectSpec [
 	| repositoriesSpec |
 	repositoriesSpec := aBaselineProjectSpec version spec repositories.
-	self flag: 'This should be in place. Not added because of the PetitParser dependencies'.
-	"self assert: [ repositoriesSpec map size = 1 ]."
+	self assert: [ repositoriesSpec map size = 1 ].
 	^ GtRlProject new 
 		name: (MetacelloScriptEngine baseNameOf: aBaselineProjectSpec projectClass name);
 		baselineVersion: aBaselineProjectSpec version;
