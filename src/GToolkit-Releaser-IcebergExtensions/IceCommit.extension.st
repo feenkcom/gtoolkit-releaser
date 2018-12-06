@@ -52,8 +52,8 @@ IceCommit >> gtCommitsFor: aView [
 	^ aView columnedList 
 		title: 'Ancestors' translated;
 		items: [ self commits ];
-		column: 'Timestamp' item: [ :aCommit | aCommit timeStamp asStringYMDHM ];
-		column: 'Commit' item: #shortId;
+		column: 'Timestamp' item: [ :aCommit | aCommit timeStamp asStringYMDHM ] width: 120;
+		column: 'Commit' item: #shortId width: 70;
 		column: 'Author' item: #author;
 		column: 'Description' item: #comment
 ]
