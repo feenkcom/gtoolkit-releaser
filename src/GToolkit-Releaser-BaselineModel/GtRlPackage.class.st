@@ -6,7 +6,7 @@ Class {
 		'dependencies',
 		'parentProject'
 	],
-	#category : #'GToolkit-Releaser-BaselineModel'
+	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
 
 { #category : #accessing }

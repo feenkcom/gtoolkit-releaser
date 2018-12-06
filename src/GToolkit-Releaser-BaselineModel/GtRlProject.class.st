@@ -10,7 +10,7 @@ Class {
 		'childProjects',
 		'packages'
 	],
-	#category : #'GToolkit-Releaser-BaselineModel'
+	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
 
 { #category : #examples }

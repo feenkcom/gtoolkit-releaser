@@ -6,7 +6,7 @@ Class {
 		'repositoriesByUrl',
 		'projectsChain'
 	],
-	#category : #'GToolkit-Releaser-BaselineModel'
+	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
 
 { #category : #building }
