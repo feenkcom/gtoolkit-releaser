@@ -58,6 +58,16 @@ GtRlRepositoryRelease >> description [
 ]
 
 { #category : #ui }
+GtRlRepositoryRelease >> gtBaselineVersionMetadataFor: aView [
+	<gtView>
+	self childRepositoryReleases ifEmpty: [ ^ aView ].
+	^ aView textEditor
+		title: 'Version data' translated;
+		priority: 45;
+		text: [ self versionsMetadata ]
+]
+
+{ #category : #ui }
 GtRlRepositoryRelease >> gtBranchesFor: aView [
 	<gtView>
 	^ self repository 
@@ -249,6 +259,11 @@ GtRlRepositoryRelease >> repository: aRepository [
 ]
 
 { #category : #'accessing - dynamic' }
+GtRlRepositoryRelease >> semanticVersionTags [
+	^ self icebergRepository tags select: #gtIsSemanticVersion
+]
+
+{ #category : #'accessing - dynamic' }
 GtRlRepositoryRelease >> urlWithReleaseVersion [
 	^ self repository urlWithVersion: self version versionString
 ]
@@ -266,4 +281,12 @@ GtRlRepositoryRelease >> version: aVersion [
 { #category : #'accessing - dynamic' }
 GtRlRepositoryRelease >> versionString [
 	^ self version versionString
+]
+
+{ #category : #'accessing - dynamic' }
+GtRlRepositoryRelease >> versionsMetadata [
+	| repositoriesByVersion |
+	repositoriesByVersion := (self childRepositoryReleases collect: [ :aRepositoryRelease |
+		aRepositoryRelease repository id -> aRepositoryRelease versionString ]) asDictionary.
+	^ STON toJsonStringPretty: {'repositories' -> repositoriesByVersion } asDictionary
 ]
