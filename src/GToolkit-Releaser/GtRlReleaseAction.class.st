@@ -26,6 +26,16 @@ GtRlReleaseAction >> execute [
 ]
 
 { #category : #ui }
+GtRlReleaseAction >> gtActionExecuteFor: anAction [
+	<gtAction>
+	self isExecuted ifTrue: [ ^ anAction ].
+	^ anAction button
+			icon: BrGlamorousIcons go asElement;
+			label: 'Execute action';
+			action: [ self execute ]
+]
+
+{ #category : #ui }
 GtRlReleaseAction >> gtDescriptionFor: aView [
 	<gtView>
 	^ aView textEditor
@@ -39,6 +49,11 @@ GtRlReleaseAction >> gtDescriptionFor: aView [
 GtRlReleaseAction >> initialize [ 
 	super initialize.
 	isExecuted := false
+]
+
+{ #category : #testing }
+GtRlReleaseAction >> isExecuted [
+	^ isExecuted notNil and: [ isExecuted ]
 ]
 
 { #category : #printing }

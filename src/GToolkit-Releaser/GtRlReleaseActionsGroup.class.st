@@ -40,6 +40,13 @@ GtRlReleaseActionsGroup >> execute [
 ]
 
 { #category : #ui }
+GtRlReleaseActionsGroup >> format: aString for: anAction [
+	^ anAction isExecuted
+		ifTrue: [ aString asRopedText foreground: Color gray ] 
+		ifFalse: [ aString ]
+]
+
+{ #category : #ui }
 GtRlReleaseActionsGroup >> gtReleaseActionsFor: aView [
 	<gtView>
 	^ aView columnedList
@@ -48,11 +55,14 @@ GtRlReleaseActionsGroup >> gtReleaseActionsFor: aView [
 		items: [ actions ifNil: [ #() ] ];
 		column: 'Order' do: [ :aColumn | 
 			aColumn 
-				item: #order;
+				item: [ :anAction | anAction order ];
 				width: 50 ];
-		column: 'Repository' item: [ :anAction | anAction repositoryRelease repository id ];
-		column: 'Action' item: [ :anAction | anAction name ];
-		column: 'Details' item: #descriptionDetails
+		column: 'Repository' item: [ :anAction | 
+			self format: anAction repositoryRelease repository id for: anAction ];
+		column: 'Action' item: [ :anAction | 
+			self format: anAction name for: anAction ];
+		column: 'Details' item: [ :anAction | 
+			self format: anAction descriptionDetails for: anAction ]
 ]
 
 { #category : #testing }

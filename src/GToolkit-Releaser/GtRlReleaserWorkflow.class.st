@@ -78,11 +78,10 @@ GtRlReleaserWorkflow >> createReleaseActions [
 			aProjectRelease addReleaseAction: baselineAction.
 			newReleaseActions addAction: baselineAction ].
 		
-		aRepositoryRelease childRepositoryReleases ifNotEmpty: [ 
-			metadataAction := GtRlExportReleaseMetadataAction forRepositoryRelease: aRepositoryRelease.
-			metadataAction order: (order := order + 1).
-			aRepositoryRelease addReleaseAction: metadataAction.
-			newReleaseActions addAction: metadataAction ].
+		metadataAction := GtRlExportReleaseMetadataAction forRepositoryRelease: aRepositoryRelease.
+		metadataAction order: (order := order + 1).
+		aRepositoryRelease addReleaseAction: metadataAction.
+		newReleaseActions addAction: metadataAction.
 		
 		commitAction := GtRlCommitAndTagReleaseAction forRepositoryRelease: aRepositoryRelease.
 		commitAction order: (order := order + 1).

@@ -60,11 +60,10 @@ GtRlRepositoryRelease >> description [
 { #category : #ui }
 GtRlRepositoryRelease >> gtBaselineVersionMetadataFor: aView [
 	<gtView>
-	self childRepositoryReleases ifEmpty: [ ^ aView ].
 	^ aView textEditor
 		title: 'Version data' translated;
-		priority: 45;
-		text: [ self versionsMetadata ]
+		priority: 55;
+		text: [ STON toJsonStringPretty: self versionsMetadata ]
 ]
 
 { #category : #ui }
@@ -290,5 +289,5 @@ GtRlRepositoryRelease >> versionsMetadata [
 	| repositoriesByVersion |
 	repositoriesByVersion := (self childRepositoryReleases collect: [ :aRepositoryRelease |
 		aRepositoryRelease repository id -> aRepositoryRelease versionString ]) asDictionary.
-	^ STON toJsonStringPretty: {'repositories' -> repositoriesByVersion } asDictionary
+	^ {'repositories' -> repositoriesByVersion } asDictionary
 ]

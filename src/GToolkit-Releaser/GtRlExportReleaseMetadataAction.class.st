@@ -20,7 +20,7 @@ GtRlExportReleaseMetadataAction >> gtBaselineVersionMetadataFor: aView [
 	^ aView textEditor
 		title: 'Version data' translated;
 		priority: 45;
-		text: [ self repositoryRelease versionsMetadata ]
+		text: [ STON toJsonStringPretty: self repositoryRelease versionsMetadata ]
 ]
 
 { #category : #printing }
@@ -30,8 +30,16 @@ GtRlExportReleaseMetadataAction >> name [
 
 { #category : #actions }
 GtRlExportReleaseMetadataAction >> performAction [
-	(self repositoryRelease repositoryDirectory / '.baseline-versions.ston') writeStreamDo: [ :aStream |
-		aStream nextPutAll: self repositoryRelease versionsMetadata ]
+	| versionsFile fileName |
+	fileName := '.baseline-versions.ston'.
+	versionsFile := self repositoryRelease icebergRepository repositoryDirectory / fileName.	
+	versionsFile 
+		ensureDelete;
+		writeStreamDo: [ :aStream |
+			aStream nextPutAll: (STON toJsonStringPretty: self repositoryRelease versionsMetadata) ].
+	
+	"Manually add the versions file to the git index to be included in the next commit."
+	self repositoryRelease icebergRepository addFileToIndex: fileName asFileReference.
 ]
 
 { #category : #actions }
