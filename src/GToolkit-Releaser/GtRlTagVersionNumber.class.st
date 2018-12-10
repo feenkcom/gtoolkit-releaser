@@ -1,6 +1,6 @@
 Class {
-	#name : #GtRlTagVersion,
-	#superclass : #GtRlVersion,
+	#name : #GtRlTagVersionNumber,
+	#superclass : #GtRlVersionNumber,
 	#instVars : [
 		'tagName'
 	],
@@ -8,16 +8,16 @@ Class {
 }
 
 { #category : #accessing }
-GtRlTagVersion >> tagName [
+GtRlTagVersionNumber >> tagName [
 	^ tagName
 ]
 
 { #category : #accessing }
-GtRlTagVersion >> tagName: aTagName [
+GtRlTagVersionNumber >> tagName: aTagName [
 	tagName := aTagName
 ]
 
 { #category : #accessing }
-GtRlTagVersion >> versionString [
+GtRlTagVersionNumber >> versionString [
 	^ self tagName
 ]

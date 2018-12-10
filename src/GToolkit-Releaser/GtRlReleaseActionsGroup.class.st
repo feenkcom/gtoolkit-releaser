@@ -52,7 +52,7 @@ GtRlReleaseActionsGroup >> gtReleaseActionsFor: aView [
 	^ aView columnedList
 		title: 'Release actions' translated;
 		priority: 50;
-		items: [ actions ifNil: [ #() ] ];
+		items: [ self actions ifNil: [ #() ] ];
 		column: 'Order' do: [ :aColumn | 
 			aColumn 
 				item: [ :anAction | anAction order ];

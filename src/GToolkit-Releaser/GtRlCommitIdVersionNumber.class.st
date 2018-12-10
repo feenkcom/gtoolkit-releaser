@@ -1,6 +1,6 @@
 Class {
-	#name : #GtRlCommitVersion,
-	#superclass : #GtRlVersion,
+	#name : #GtRlCommitIdVersionNumber,
+	#superclass : #GtRlVersionNumber,
 	#instVars : [
 		'commitId'
 	],
@@ -8,21 +8,21 @@ Class {
 }
 
 { #category : #accessing }
-GtRlCommitVersion >> commitId [ 
+GtRlCommitIdVersionNumber >> commitId [ 
 	^ commitId 
 ]
 
 { #category : #accessing }
-GtRlCommitVersion >> commitId: aCommitId [
+GtRlCommitIdVersionNumber >> commitId: aCommitId [
 	commitId := aCommitId 
 ]
 
 { #category : #accessing }
-GtRlCommitVersion >> description [ 
+GtRlCommitIdVersionNumber >> description [ 
 	^ self versionString first: 7
 ]
 
 { #category : #accessing }
-GtRlCommitVersion >> versionString [
+GtRlCommitIdVersionNumber >> versionString [
 	^ self commitId
 ]

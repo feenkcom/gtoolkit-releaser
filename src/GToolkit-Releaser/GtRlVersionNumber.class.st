@@ -1,15 +1,15 @@
 Class {
-	#name : #GtRlVersion,
+	#name : #GtRlVersionNumber,
 	#superclass : #Object,
 	#category : #'GToolkit-Releaser'
 }
 
 { #category : #accessing }
-GtRlVersion >> description [ 
+GtRlVersionNumber >> description [ 
 	^ self versionString
 ]
 
 { #category : #accessing }
-GtRlVersion >> versionString [
+GtRlVersionNumber >> versionString [
 	self subclassResponsibility
 ]

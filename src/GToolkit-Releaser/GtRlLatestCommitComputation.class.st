@@ -6,6 +6,6 @@ Class {
 
 { #category : #accessing }
 GtRlLatestCommitComputation >> releaseVersionForRepository: aRepository [
-	^ GtRlCommitVersion new
+	^ GtRlCommitIdVersionNumber new
 		commitId: aRepository icebergRepository headCommit id
 ]

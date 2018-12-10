@@ -51,13 +51,13 @@ GtRlProject class >> changeBaselinesThenTagEachRepo [
 { #category : #examples }
 GtRlProject class >> findNextFkRlSemanticVersion: aBranch [
 	| allTags semanticVersionTags result |
-	result := GtRlSemanticVersion new major:0; minor: 2; patch: 0.
+	result := GtRlSemanticVersionNumber new major:0; minor: 2; patch: 0.
 	allTags := (aBranch commit withDeepCollect: #ancestors) flatCollect: #tags. 
 	semanticVersionTags := allTags select: [ :t | t name matchesRegex: '[0-9]+\.[0-9]+\.[0-9]+' ].
 	(semanticVersionTags collect:  [ :each | 
 		|tokens| 
 		tokens := each name findTokens: '.'. 
-		GtRlSemanticVersion new major: tokens first asInteger; minor: tokens second asInteger; patch: tokens third asInteger]) 
+		GtRlSemanticVersionNumber new major: tokens first asInteger; minor: tokens second asInteger; patch: tokens third asInteger]) 
 			ifNotEmpty:[ :c | ^ c sort last incrementPatch  ] 
 			ifEmpty: [ ^ result ].
 
@@ -70,7 +70,7 @@ GtRlProject class >> findNextFkRlSemanticVersion: aBranch [
 GtRlProject class >> findNextGToolkitVersion [
 	| allVersions |
 	allVersions := OrderedCollection new.
-	allVersions add: (GtRlSemanticVersion new major:0; minor: 2; patch: 0).
+	allVersions add: (GtRlSemanticVersionNumber new major:0; minor: 2; patch: 0).
 	self gitRepositories keysAndValuesDo: [ :key :collection | 
 		| repository semanticVersion releaseBranch |
 		"switch to release branch"
@@ -95,7 +95,7 @@ GtRlProject class >> findNextSemanticVersion: aBranch [
 	(semanticVersionTags collect:  [ :each | 
 		|tokens| 
 		tokens := each name findTokens: '.'. 
-		GtRlSemanticVersion new major: tokens first asInteger; minor: tokens second asInteger; patch: tokens third asInteger]) 
+		GtRlSemanticVersionNumber new major: tokens first asInteger; minor: tokens second asInteger; patch: tokens third asInteger]) 
 			ifNotEmpty:[ :c | ^ c sort last incrementPatch printString ] 
 			ifEmpty: [ ^ result ].
 

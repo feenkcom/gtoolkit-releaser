@@ -6,6 +6,6 @@ Class {
 
 { #category : #accessing }
 GtRlCurrentLoadedTagComputation >> releaseVersionForRepository: aRepository [
-	^ GtRlTagVersion new 
+	^ GtRlTagVersionNumber new 
 		tagName: aRepository icebergRepository headCommit tags first name
 ]

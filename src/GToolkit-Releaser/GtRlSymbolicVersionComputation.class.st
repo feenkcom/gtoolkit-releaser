@@ -18,12 +18,12 @@ GtRlSymbolicVersionComputation >> releaseVersionForRepository: aRepository [
 		thenCollect: [ :each | 
 			|tokens| 
 			tokens := each name allButFirst findTokens: '.'. 
-			GtRlSemanticVersion 
+			GtRlSemanticVersionNumber 
 				major: tokens first asInteger
 				minor: tokens second asInteger
 				patch: tokens third asInteger].
 	^ semanticVersions 
-		ifEmpty: [ ^ GtRlSemanticVersion major: 0 minor: 0 patch: 1 ]
+		ifEmpty: [ ^ GtRlSemanticVersionNumber major: 0 minor: 0 patch: 1 ]
 		ifNotEmpty: [ 
 			self nextSemanticVersionFrom: semanticVersions sorted last ]
 ]

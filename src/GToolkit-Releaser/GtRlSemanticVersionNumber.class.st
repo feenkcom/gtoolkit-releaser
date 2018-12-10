@@ -1,6 +1,6 @@
 Class {
-	#name : #GtRlSemanticVersion,
-	#superclass : #GtRlVersion,
+	#name : #GtRlSemanticVersionNumber,
+	#superclass : #GtRlVersionNumber,
 	#instVars : [
 		'major',
 		'minor',
@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-GtRlSemanticVersion class >> major: majorNumber minor: minorNumber patch: patchNumber [
+GtRlSemanticVersionNumber class >> major: majorNumber minor: minorNumber patch: patchNumber [
 	^ self new 
 		major: majorNumber; 
 		minor: minorNumber; 
@@ -18,7 +18,7 @@ GtRlSemanticVersion class >> major: majorNumber minor: minorNumber patch: patchN
 ]
 
 { #category : #comparison }
-GtRlSemanticVersion >> <= aFkRlSemanticVersion [ 
+GtRlSemanticVersionNumber >> <= aFkRlSemanticVersion [ 
 	self major > aFkRlSemanticVersion major ifTrue: [ ^ false ] .
 	self minor > aFkRlSemanticVersion minor ifTrue: [ ^ false ] .
 	self patch > aFkRlSemanticVersion patch ifTrue: [ ^ false ] .
@@ -26,44 +26,44 @@ GtRlSemanticVersion >> <= aFkRlSemanticVersion [
 ]
 
 { #category : #accessing }
-GtRlSemanticVersion >> initialize [ 
+GtRlSemanticVersionNumber >> initialize [ 
 	major := 0. 
 	minor := 0. 
 	patch := 0
 ]
 
 { #category : #accessing }
-GtRlSemanticVersion >> major [
+GtRlSemanticVersionNumber >> major [
 	^ major
 ]
 
 { #category : #accessing }
-GtRlSemanticVersion >> major: anInteger [
+GtRlSemanticVersionNumber >> major: anInteger [
 	major := anInteger
 ]
 
 { #category : #accessing }
-GtRlSemanticVersion >> minor [
+GtRlSemanticVersionNumber >> minor [
 	^ minor
 ]
 
 { #category : #accessing }
-GtRlSemanticVersion >> minor: anInteger [
+GtRlSemanticVersionNumber >> minor: anInteger [
 	minor := anInteger
 ]
 
 { #category : #accessing }
-GtRlSemanticVersion >> patch [
+GtRlSemanticVersionNumber >> patch [
 	^ patch
 ]
 
 { #category : #accessing }
-GtRlSemanticVersion >> patch: anInteger [
+GtRlSemanticVersionNumber >> patch: anInteger [
 	patch := anInteger
 ]
 
 { #category : #accessing }
-GtRlSemanticVersion >> printOn: aStream [
+GtRlSemanticVersionNumber >> printOn: aStream [
 	super printOn: aStream.
 	aStream
 		nextPutAll: '(';
@@ -72,6 +72,6 @@ GtRlSemanticVersion >> printOn: aStream [
 ]
 
 { #category : #accessing }
-GtRlSemanticVersion >> versionString [
+GtRlSemanticVersionNumber >> versionString [
 	^ 'v', major printString, '.', minor printString, '.', patch printString 
 ]
