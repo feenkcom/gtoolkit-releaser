@@ -50,16 +50,6 @@ GtRlDedicatedReleaseBranchStragegy >> gtCommitsAncestryFor: aView [
 			view layout dominanceTree]
 ]
 
-{ #category : #ui }
-GtRlDedicatedReleaseBranchStragegy >> gtReleaseTagsFor: aView [
-	<gtView>
-	^ aView list 
-		title: 'Release tags' translated;
-		items: [ self repositoryRelease icebergRepository tags select: #gtIsSemanticVersion ];
-		itemFormat: [ :anIceTag |
-			anIceTag name, ' [', (anIceTag commit id first: 7), ']' ]
-]
-
 { #category : #actions }
 GtRlDedicatedReleaseBranchStragegy >> mergeToReleaseBranch [
 	| icebergRepository |

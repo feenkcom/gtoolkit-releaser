@@ -106,9 +106,11 @@ GtRlRepositoryRelease >> gtReleaseActionsFor: aView [
 { #category : #ui }
 GtRlRepositoryRelease >> gtReleaseTagsFor: aView [
 	<gtView>
-	^ self releaseStrategy 
-		ifNil: [ aView ]
-		ifNotNil: [ :aReleaseStrategy | aReleaseStrategy gtReleaseTagsFor: aView ]
+	^ aView list 
+		title: 'Release tags' translated;
+		items: [ self semanticVersionTags ];
+		itemFormat: [ :anIceTag |
+			anIceTag name, ' [', (anIceTag commit id first: 7), ']' ]
 ]
 
 { #category : #ui }

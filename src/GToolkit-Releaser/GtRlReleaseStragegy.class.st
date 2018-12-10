@@ -17,11 +17,6 @@ GtRlReleaseStragegy >> gtCommitsAncestryFor: aView [
 	^ aView
 ]
 
-{ #category : #ui }
-GtRlReleaseStragegy >> gtReleaseTagsFor: aView [
-	^ aView
-]
-
 { #category : #accessing }
 GtRlReleaseStragegy >> releaseTarget [
 	self subclassResponsibility
