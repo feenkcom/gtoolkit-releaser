@@ -23,21 +23,66 @@ FakeRepositoryExamples >> baselineClassCode [
 ]
 
 { #category : #'as yet unclassified' }
-FakeRepositoryExamples >> inMemoryRepo [
-	| repo repoFolder baselineCode packagest baselineClass baseline |
-	repoFolder := (FileSystem memory root / 'MockRepo') .
+FakeRepositoryExamples >> mockRepo [
+	| repo repoFolder baselineCode packagest baselineClass baseline cls diff dotProjectText dotProperties dotProject|
+	
+	'MockRepo' asFileReference ensureDeleteAll .
+	repoFolder := 'MockRepo' asFileReference.
 
-	repo := IceRepositoryCreator new
+	repo:=IceRepositoryCreator new
 	location: repoFolder;
 	subdirectory: 'src';
 	createNewRepositoryNamed: 'MockRepo'.
 
-	baselineCode := self baselineClassCode. 
-	baseline := ( repoFolder / 'src' / 'BaselineOfMockRepo') ensureCreateDirectory.
-	packagest := (baseline / 'package.st') ensureCreateFile.
-	packagest writeStreamDo: [ :stream | stream nextPutAll: 'Package { #name : #MockRepo }' ].
-	baselineClass := (baseline / 'BaselineOfMockrepo.class.st') ensureCreateFile.
-	baselineClass  writeStreamDo: [ :stream | stream nextPutAll: baselineCode ].
+	baselineCode := 'Class {
+		#name : #BaselineOfMockRepo,
+		#superclass : #BaselineOf,
+		#category : #BaselineOfMockRepo
+	}
+	{ #category : #baselines }
+	BaselineOfMockRepo >> baseline: spec [
+		<baseline>
+			spec for: #common do: [ 
+			spec
+				package: #MockRepo ]
+	]'.
 
+	cls := BaselineOf subclass:#BaselineOfMockRepo
+			instanceVariableNames: ''
+			classVariableNames: ''
+			poolDictionaries: ''
+			package: 'BaselineOfMockRepo'.
+
+	cls compile: 'baseline: spec 
+		<baseline>
+			spec for: #common do: [ 
+			spec
+				package: #BaselineOfMockRepo ]'.
+
+	dotProjectText := '{ ''srcDirectory'' : ''src'' }'.
+
+	baseline := ( repoFolder / 'src' / 'BaselineOfMockRepo') ensureCreateDirectory.
+
+	packagest := (baseline / 'package.st') ensureCreateFile.
+	packagest writeStreamDo: [ :stream | stream nextPutAll: 'Package { #name : #BaselineOfMockRepo }' ].
+
+	dotProperties := (repoFolder / 'src' / '.properties') ensureCreateFile.
+	dotProperties writeStreamDo: [ :stream | stream nextPutAll: '{ #format : #tonel }' ].
+
+	dotProject := ( repoFolder / '.project' ) ensureCreateFile.
+	dotProject writeStreamDo: [ :stream | stream nextPutAll: dotProjectText ].
+
+	baselineClass := (baseline / 'BaselineOfMockRepo.class.st') ensureCreateFile.
+	baselineCode.
+	baselineClass  writeStreamDo: [ :stream | stream nextPutAll: baselineCode. stream flush. ].
+
+	repo workingCopy addPackage: (IcePackage named: #BaselineOfMockRepo repository: repo).
+
+	diff := repo workingCopyDiff.
+
+	repo workingCopy 
+			commitChanges: diff
+			withMessage: 'initial version'
+			force: true.
 	^ repo
 ]
