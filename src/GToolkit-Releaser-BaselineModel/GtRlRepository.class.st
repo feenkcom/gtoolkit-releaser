@@ -218,6 +218,11 @@ GtRlRepository >> initialize [
 	projects := OrderedCollection new.
 ]
 
+{ #category : #testing }
+GtRlRepository >> isLeaf [
+	^ self childRepositories isEmpty
+]
+
 { #category : #'accessing - dynamic' }
 GtRlRepository >> parentRepositories [ 
 	^ (projects flatCollect: [ :aProject | 

@@ -18,7 +18,7 @@ GtRlReleaserWorkflow class >> forBaseline: aBaselineClass fromRepository: aRepos
 
 	releaseBuilder := GtRlReleaseBuilder new
 		configuration: aReleaseConfiguration. 
-	release := releaseBuilder buildReleaseForPoject: project.
+	release := releaseBuilder buildReleaseForProject: project.
 	^ self new
 		rootProjectRelease: release
 ]

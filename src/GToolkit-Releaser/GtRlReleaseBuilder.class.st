@@ -2,9 +2,7 @@ Class {
 	#name : #GtRlReleaseBuilder,
 	#superclass : #Object,
 	#instVars : [
-		'configuration',
-		'projectReleasesMap',
-		'repositoryReleasesMap'
+		'configuration'
 	],
 	#category : #'GToolkit-Releaser'
 }
@@ -16,18 +14,12 @@ GtRlReleaseBuilder class >> forConfiguration: aReleaseConfiguration [
 ]
 
 { #category : #building }
-GtRlReleaseBuilder >> buildReleaseForPoject: aProject [
-	| projectRelease repositoryRelease |
-	projectRelease := GtRlProjectRelease new project: aProject.
-	repositoryRelease := self ensureRepositoryReleaseFor: aProject repository.
-	repositoryRelease addProjectRelease: projectRelease.
-	aProject childProjects do: [ :aChildProject |
-		| childProjectRelease |
-		childProjectRelease := self projectReleasesMap
-			at: aChildProject
-			ifAbsentPut: [ self buildReleaseForPoject: aChildProject ].
-		projectRelease addChildRelease: childProjectRelease ].
-	^ projectRelease
+GtRlReleaseBuilder >> buildReleaseForProject: aProject [
+	| projectRelease |
+	projectRelease := self structureBuilder buildStructureForProject: aProject.
+	(self repositoriesInReleaseOrderFor: projectRelease) do: [ :aRepositoryRelease | 
+		self configureRepositoryRelease: aRepositoryRelease ].
+	^ projectRelease 
 ]
 
 { #category : #accessing }
@@ -40,19 +32,24 @@ GtRlReleaseBuilder >> configuration: aReleaseConfiguration [
 	configuration := aReleaseConfiguration
 ]
 
-{ #category : #'private - building' }
-GtRlReleaseBuilder >> ensureRepositoryReleaseFor: aRepository [
-	^ self repositoryReleasesMap at: aRepository ifAbsentPut: [ 
-		GtRlRepositoryRelease new
-			repository: aRepository;
-			version: (self releaseVersionForRepository: aRepository);
-			releaseStrategy: (self releaseStragegyForRepository: aRepository) ]
+{ #category : #'private - configuration' }
+GtRlReleaseBuilder >> configureNormalRelease: aRepositoryRelease [
+	"Very ugly method. Fix later by having strategies for how to build the release."
+	aRepositoryRelease
+		version: (self releaseVersionForRepository: aRepositoryRelease repository);
+		releaseStrategy: (self releaseStragegyForRepository: aRepositoryRelease repository)
 ]
 
-{ #category : #accessing }
-GtRlReleaseBuilder >> projectReleasesMap [
-	^ projectReleasesMap ifNil: [ 
-		projectReleasesMap := Dictionary new ]
+{ #category : #'private - configuration' }
+GtRlReleaseBuilder >> configureRepositoryRelease: aRepositoryRelease [
+	"Very ugly method. Fix later by having strategies for how to build the release."
+	(self configuration shouldIgnoreProject: aRepositoryRelease repository id)
+		ifTrue: [  
+			aRepositoryRelease
+				version: (self releaseVersionForRepository: aRepositoryRelease repository);
+				releaseStrategy: GtRlNoReleaseStragegy new ]
+		ifFalse: [
+			self configureNormalRelease: aRepositoryRelease ]
 ]
 
 { #category : #'private - building' }
@@ -75,8 +72,12 @@ GtRlReleaseBuilder >> releaseVersionForRepository: aRepository [
 	
 ]
 
-{ #category : #accessing }
-GtRlReleaseBuilder >> repositoryReleasesMap [
-	^ repositoryReleasesMap ifNil: [ 
-		repositoryReleasesMap := Dictionary new ]
+{ #category : #'accessing - dynamic' }
+GtRlReleaseBuilder >> repositoriesInReleaseOrderFor: aProjectRelease [
+	^ (aProjectRelease repositoryRelease withDeepCollect: #childRepositoryReleases) reversed
+]
+
+{ #category : #'accessing - dynamic' }
+GtRlReleaseBuilder >> structureBuilder [
+	^ GtRlReleaseStructureBuilder new
 ]

@@ -10,6 +10,12 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
+{ #category : #'instance creation' }
+GtRlRepositoryRelease class >> forRepository: aRepository [
+	^ self new
+		repository: aRepository
+]
+
 { #category : #accessing }
 GtRlRepositoryRelease >> addProjectRelease: aProjectRelease [
 	aProjectRelease repositoryRelease: self.
