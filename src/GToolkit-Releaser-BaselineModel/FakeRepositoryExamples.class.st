@@ -4,67 +4,67 @@ Class {
 	#category : #'GToolkit-Releaser-BaselineModel-Tests'
 }
 
-{ #category : #'as yet unclassified' }
-FakeRepositoryExamples >> baselineClassCode [
-	^ 'Class {
-		#name : #BaselineOfMockRepo,
-		#superclass : #BaselineOf,
-		#category : #BaselineOfMockRepo
-	}
-
-	{ #category : #baseline }
-	BaselineOfMockRepo >> baseline: spec [
-		<baseline>
-			spec for: #common do: [ 
-			spec
-				package: #MockRepo ]
-	]'.
-
+{ #category : #'setUp-tearDown' }
+FakeRepositoryExamples >> aGtRlProject [
+	| projectBuilder project |
+	self createNewRepoWithName: #MockRepo.
+	projectBuilder := GtRlModelBuilder new.
+	project := projectBuilder 
+		buildProjectFromBaselineClass: (self baselineOfMockRepo: #MockRepo)
+		withRepositoryDescription: 'urlOfMockRepo'. " we only use the urls as dictionary keys in examples"
+	^ project
 ]
 
-{ #category : #'as yet unclassified' }
-FakeRepositoryExamples >> mockRepo [
-	| repo repoFolder baselineCode packagest baselineClass baseline cls diff dotProjectText dotProperties dotProject|
-	
-	'MockRepo' asFileReference ensureDeleteAll .
-	repoFolder := 'MockRepo' asFileReference.
-
-	repo:=IceRepositoryCreator new
-	location: repoFolder;
-	subdirectory: 'src';
-	createNewRepositoryNamed: 'MockRepo'.
-
-	baselineCode := 'Class {
-		#name : #BaselineOfMockRepo,
-		#superclass : #BaselineOf,
-		#category : #BaselineOfMockRepo
-	}
-	{ #category : #baselines }
-	BaselineOfMockRepo >> baseline: spec [
-		<baseline>
-			spec for: #common do: [ 
-			spec
-				package: #MockRepo ]
-	]'.
-
-	cls := BaselineOf subclass:#BaselineOfMockRepo
+{ #category : #'setUp-tearDown' }
+FakeRepositoryExamples >> baselineOfMockRepo: repoName [
+	| cls |
+	cls := BaselineOf subclass:#BaselineOf,repoName
 			instanceVariableNames: ''
 			classVariableNames: ''
 			poolDictionaries: ''
-			package: 'BaselineOfMockRepo'.
+			package: 'BaselineOf',repoName.
 
 	cls compile: 'baseline: spec 
 		<baseline>
 			spec for: #common do: [ 
 			spec
-				package: #BaselineOfMockRepo ]'.
+				package: #BaselineOf',repoName,' ]'.
+	^ cls
+]
+
+{ #category : #'setUp-tearDown' }
+FakeRepositoryExamples >> createNewRepoWithName: repoName [
+	| repo repoFolder baselineCode packagest baselineClass baseline cls diff dotProjectText dotProperties dotProject|
+	
+	repoName asFileReference ensureDeleteAll .
+	repoFolder := repoName asFileReference.
+
+	repo:=IceRepositoryCreator new
+	location: repoFolder;
+	subdirectory: 'src';
+	createNewRepositoryNamed: repoName.
+
+	baselineCode := 'Class {
+		#name : #BaselineOf',repoName,',
+		#superclass : #BaselineOf,
+		#category : #BaselineOf',repoName,'
+	}
+	{ #category : #baselines }
+	BaselineOf',repoName,' >> baseline: spec [
+		<baseline>
+			spec for: #common do: [ 
+			spec
+				package: #',repoName,' ]
+	]'.
+
+	cls := self baselineOfMockRepo: repoName.
 
 	dotProjectText := '{ ''srcDirectory'' : ''src'' }'.
 
-	baseline := ( repoFolder / 'src' / 'BaselineOfMockRepo') ensureCreateDirectory.
+	baseline := ( repoFolder / 'src' / 'BaselineOf',repoName) ensureCreateDirectory.
 
 	packagest := (baseline / 'package.st') ensureCreateFile.
-	packagest writeStreamDo: [ :stream | stream nextPutAll: 'Package { #name : #BaselineOfMockRepo }' ].
+	packagest writeStreamDo: [ :stream | stream nextPutAll: 'Package { #name : #BaselineOf',repoName,' }' ].
 
 	dotProperties := (repoFolder / 'src' / '.properties') ensureCreateFile.
 	dotProperties writeStreamDo: [ :stream | stream nextPutAll: '{ #format : #tonel }' ].
@@ -72,11 +72,11 @@ FakeRepositoryExamples >> mockRepo [
 	dotProject := ( repoFolder / '.project' ) ensureCreateFile.
 	dotProject writeStreamDo: [ :stream | stream nextPutAll: dotProjectText ].
 
-	baselineClass := (baseline / 'BaselineOfMockRepo.class.st') ensureCreateFile.
+	baselineClass := (baseline / 'BaselineOf',repoName,'.class.st') ensureCreateFile.
 	baselineCode.
 	baselineClass  writeStreamDo: [ :stream | stream nextPutAll: baselineCode. stream flush. ].
 
-	repo workingCopy addPackage: (IcePackage named: #BaselineOfMockRepo repository: repo).
+	repo workingCopy addPackage: (IcePackage named: #BaselineOf,repoName repository: repo).
 
 	diff := repo workingCopyDiff.
 
