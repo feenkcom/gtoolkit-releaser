@@ -1,6 +1,16 @@
 Extension { #name : #IceTag }
 
 { #category : #'*GToolkit-Releaser-IcebergExtensions' }
+IceTag >> gtAsSemanticVersionNumber [
+	|tokens| 
+	tokens := self name allButFirst findTokens: '.'. 
+	^ GtRlSemanticVersionNumber 
+		major: tokens first asInteger
+		minor: tokens second asInteger
+		patch: tokens third asInteger
+]
+
+{ #category : #'*GToolkit-Releaser-IcebergExtensions' }
 IceTag >> gtCommitAncestorsFor: aView [
 	<gtView>
 	^ (self commit

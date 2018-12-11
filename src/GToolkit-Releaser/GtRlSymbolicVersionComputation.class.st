@@ -15,13 +15,7 @@ GtRlSymbolicVersionComputation >> releaseVersionForRepository: aRepository [
 	tags := aRepository icebergRepository tags. 
 	semanticVersions := tags 
 		select: #gtIsSemanticVersion
-		thenCollect: [ :each | 
-			|tokens| 
-			tokens := each name allButFirst findTokens: '.'. 
-			GtRlSemanticVersionNumber 
-				major: tokens first asInteger
-				minor: tokens second asInteger
-				patch: tokens third asInteger].
+		thenCollect: #gtAsSemanticVersionNumber.
 	^ semanticVersions 
 		ifEmpty: [ ^ GtRlSemanticVersionNumber major: 0 minor: 0 patch: 1 ]
 		ifNotEmpty: [ 
