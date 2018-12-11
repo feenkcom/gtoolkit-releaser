@@ -183,7 +183,16 @@ GtRlRepositoryRelease >> icebergRepository [
 
 { #category : #testing }
 GtRlRepositoryRelease >> isPassiveRelease [
-	^ self releaseStrategy allowsReleaseGeneration not
+	^ self releaseStrategy isNil or: [ self releaseStrategy allowsReleaseGeneration not ]
+]
+
+{ #category : #'accessing - dynamic' }
+GtRlRepositoryRelease >> latestSemanticVersionTag [
+	^ ((self icebergRepository tags 
+		select: #gtIsSemanticVersion
+		thenCollect: [ :anIceTag | 
+			anIceTag -> anIceTag gtAsSemanticVersionNumber]) sorted: [ :a :b |
+				a value <= b value ]) last key
 ]
 
 { #category : #actions }
@@ -230,9 +239,9 @@ GtRlRepositoryRelease >> projectReleases [
 GtRlRepositoryRelease >> releaseDetailsDescription [
 	^ String streamContents: [ :stream |
 		stream 
-			nextPutAll: self version description;
+			nextPutAll: (self version ifNil: [ '' ] ifNotNil: [ self version description ]);
 			nextPutAll: ', ';
-			nextPutAll: self releaseStrategy releaseTarget ]
+			nextPutAll: (self releaseStrategy ifNil: [ '' ] ifNotNil: [ self releaseStrategy releaseTarget ]) ]
 ]
 
 { #category : #accessing }

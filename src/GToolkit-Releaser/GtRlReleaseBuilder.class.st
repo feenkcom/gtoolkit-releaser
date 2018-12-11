@@ -35,7 +35,7 @@ GtRlReleaseBuilder >> configuration: aReleaseConfiguration [
 { #category : #'private - configuration' }
 GtRlReleaseBuilder >> configureNormalRelease: aRepositoryRelease [
 	"Very ugly method. Fix later by having strategies for how to build the release."
-	| releaseStrategy releaseVersion latestReleaseCommit dependencyVersions |
+	| releaseStrategy releaseVersion latestVersionTag dependencyVersions latestRefenceBranchCommit |
 	releaseStrategy := GtRlDedicatedReleaseBranchStragegy new
 		releaseBranchName: (self releaseBranchForRepository: aRepositoryRelease repository);
 		referenceBranchName: aRepositoryRelease repository icebergRepository branchName.
@@ -48,21 +48,24 @@ GtRlReleaseBuilder >> configureNormalRelease: aRepositoryRelease [
 			releaseStrategy: releaseStrategy ].
 		
 	"2. latest release tag should include the latest commit from the reference branch"
-	latestReleaseCommit := aRepositoryRelease gtLatestSemanticVersionTag commit.
-	(latestReleaseCommit isParentOf: releaseStrategy referenceBranch commit) ifTrue: [
+	latestVersionTag := aRepositoryRelease latestSemanticVersionTag.
+	latestRefenceBranchCommit := (aRepositoryRelease icebergRepository branchNamed: releaseStrategy referenceBranchName) commit.
+	(latestVersionTag commit isParentOf: latestRefenceBranchCommit) ifFalse: [
 		^ aRepositoryRelease
 			version: releaseVersion;
 			releaseStrategy: releaseStrategy ].
 		
 	"3. if any dependency needs to have a new version generate a new release"
-	dependencyVersions := {  }.
+	dependencyVersions := (STON fromString: (latestVersionTag commit fileSystem / '.baseline-versions.ston') contents) at: 'repositories'.
 	(aRepositoryRelease childRepositoryReleases anySatisfy: [ :aChildRelease |
-		aChildRelease versionString ~= (dependencyVersions versionFor: aChildRelease) ]) ifTrue: [
+		aChildRelease versionString ~= (dependencyVersions at: aChildRelease repository id) ]) ifTrue: [
 			^ aRepositoryRelease
 				version: releaseVersion;
 				releaseStrategy: releaseStrategy ].
 	
-	self flag: 'Use the current tag as a version'
+	^ aRepositoryRelease
+			version: latestVersionTag gtAsSemanticVersionNumber;
+			releaseStrategy: GtRlNoReleaseStragegy new
 		
 	
 	
@@ -83,7 +86,7 @@ GtRlReleaseBuilder >> configureRepositoryRelease: aRepositoryRelease [
 				version: (self releaseVersionForRepository: aRepositoryRelease repository);
 				releaseStrategy: (GtRlDedicatedReleaseBranchStragegy new
 					releaseBranchName: (self releaseBranchForRepository: aRepositoryRelease repository);
-					referenceBranchName: aRepositoryRelease repository icebergRepository branchName)]
+					referenceBranchName: aRepositoryRelease repository icebergRepository branchName) ]
 ]
 
 { #category : #'private - building' }
