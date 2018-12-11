@@ -1,6 +1,6 @@
 Class {
 	#name : #GtRlPatchVersionComputation,
-	#superclass : #GtRlSymbolicVersionComputation,
+	#superclass : #GtRlSemanticVersionComputation,
 	#category : #'GToolkit-Releaser'
 }
 

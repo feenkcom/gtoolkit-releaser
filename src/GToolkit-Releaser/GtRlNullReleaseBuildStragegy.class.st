@@ -1,15 +1,15 @@
 Class {
-	#name : #GtRlNoReleaseStragegy,
+	#name : #GtRlNullReleaseBuildStragegy,
 	#superclass : #GtRlReleaseStragegy,
 	#category : #'GToolkit-Releaser'
 }
 
 { #category : #testing }
-GtRlNoReleaseStragegy >> allowsReleaseGeneration [
+GtRlNullReleaseBuildStragegy >> allowsReleaseGeneration [
 	^ false
 ]
 
 { #category : #versions }
-GtRlNoReleaseStragegy >> releaseTarget [
+GtRlNullReleaseBuildStragegy >> releaseTarget [
 	^ '--ignored--'
 ]
