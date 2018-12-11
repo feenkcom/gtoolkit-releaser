@@ -4,26 +4,36 @@ Class {
 	#category : #'GToolkit-Releaser-BaselineModel-Tests'
 }
 
-{ #category : #'as yet unclassified' }
-FakeRepositoryExamples >> baselineClassCode [
-	^ 'Class {
-		#name : #BaselineOfMockRepo,
-		#superclass : #BaselineOf,
-		#category : #BaselineOfMockRepo
-	}
+{ #category : #'setUp-tearDown' }
+FakeRepositoryExamples >> aGtRlProject [
+	| projectBuilder project |
+	self createNewRepoWithName: #MockRepo.
+	projectBuilder := GtRlModelBuilder new.
+	project := projectBuilder 
+		buildProjectFromBaselineClass: (self baselineOfMockRepo: #MockRepo)
+		withRepositoryDescription: 'urlOfMockRepo'. " we only use the urls as dictionary keys in examples"
+	^ project
+]
 
-	{ #category : #baseline }
-	BaselineOfMockRepo >> baseline: spec [
+{ #category : #'setUp-tearDown' }
+FakeRepositoryExamples >> baselineOfMockRepo: repoName [
+	| cls |
+	cls := BaselineOf subclass:#BaselineOf,repoName
+			instanceVariableNames: ''
+			classVariableNames: ''
+			poolDictionaries: ''
+			package: 'BaselineOf',repoName.
+
+	cls compile: 'baseline: spec 
 		<baseline>
 			spec for: #common do: [ 
 			spec
-				package: #MockRepo ]
-	]'.
-
+				package: #BaselineOf',repoName,' ]'.
+	^ cls
 ]
 
-{ #category : #'as yet unclassified' }
-FakeRepositoryExamples >> mockRepo: repoName [
+{ #category : #'setUp-tearDown' }
+FakeRepositoryExamples >> createNewRepoWithName: repoName [
 	| repo repoFolder baselineCode packagest baselineClass baseline cls diff dotProjectText dotProperties dotProject|
 	
 	repoName asFileReference ensureDeleteAll .
@@ -47,17 +57,7 @@ FakeRepositoryExamples >> mockRepo: repoName [
 				package: #',repoName,' ]
 	]'.
 
-	cls := BaselineOf subclass:#BaselineOf,repoName
-			instanceVariableNames: ''
-			classVariableNames: ''
-			poolDictionaries: ''
-			package: 'BaselineOf',repoName.
-
-	cls compile: 'baseline: spec 
-		<baseline>
-			spec for: #common do: [ 
-			spec
-				package: #BaselineOf',repoName,' ]'.
+	cls := self baselineOfMockRepo: repoName.
 
 	dotProjectText := '{ ''srcDirectory'' : ''src'' }'.
 
