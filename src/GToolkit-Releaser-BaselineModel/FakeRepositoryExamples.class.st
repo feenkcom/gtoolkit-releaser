@@ -6,14 +6,15 @@ Class {
 
 { #category : #'setUp-tearDown' }
 FakeRepositoryExamples >> aGtRlProject [
-	| projectBuilder project repository diff|
+	| projectBuilder project repository diff cls |
 	IceRepository registry detect: [ :repo | repo name = #MockRepo ] ifFound: [:repo | repo forget].
 	repository := self createNewRepoWithName: #MockRepo.
 	projectBuilder := GtRlModelBuilder new.
+	cls := self baselineClass: #MockRepo.
 	project := projectBuilder 
-		buildProjectFromBaselineClass: (self baselineOfMockRepo: #MockRepo)
+		buildProjectFromBaselineClass: cls
 		withRepositoryDescription: 'github://feenkcom/MockRepo/src'. " we only use the urls as dictionary keys in examples"
-	self addBaselineCode: project.
+	self addBaselineCode: project toClass: cls.
 	diff := repository workingCopyDiff.
 	repository workingCopy 
 			commitChanges: diff
@@ -25,11 +26,11 @@ FakeRepositoryExamples >> aGtRlProject [
 { #category : #'setUp-tearDown' }
 FakeRepositoryExamples >> aGtRlProjectRelease [
 	<gtExample>
-	| releaseConfiguration workflow |
-	self aGtRlProject.
+	| releaseConfiguration workflow project |
+	project := self aGtRlProject.
 	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
 	workflow := GtRlReleaserExportWorkflow 
-		forBaseline: (self baselineOfMockRepo: #MockRepo) 
+		forBaseline: project baselineClass  
 		fromRepository: 'github://feenkcom/MockRepo/src'
 		withConfiguration: releaseConfiguration.
 	workflow releaseActions.
@@ -37,34 +38,21 @@ FakeRepositoryExamples >> aGtRlProjectRelease [
 ]
 
 { #category : #'setUp-tearDown' }
-FakeRepositoryExamples >> addBaselineCode: project [
-	| cls name baselinecode |
-	name := project name.
-	cls := BaselineOf subclass:#BaselineOf, name
-			instanceVariableNames: ''
-			classVariableNames: ''
-			poolDictionaries: ''
-			package: 'BaselineOf', name.
+FakeRepositoryExamples >> addBaselineCode: project toClass: cls [
+	| baselinecode |
 	baselinecode := project generateSourceWithProjectDependencies: Dictionary new.
 	cls compile: baselinecode.
 	^ cls
 ]
 
 { #category : #'setUp-tearDown' }
-FakeRepositoryExamples >> baselineOfMockRepo: repoName [
-	| cls |
-	cls := BaselineOf subclass:#BaselineOf,repoName
+FakeRepositoryExamples >> baselineClass: project [
+	^ BaselineOf subclass:#BaselineOf, project
 			instanceVariableNames: ''
 			classVariableNames: ''
 			poolDictionaries: ''
-			package: 'BaselineOf',repoName.
+			package: 'BaselineOf', project
 
-	cls compile: 'baseline: spec 
-		<baseline>
-			spec for: #common do: [ 
-			spec
-				package: #BaselineOf',repoName,' ]'.
-	^ cls
 ]
 
 { #category : #'setUp-tearDown' }
