@@ -23,3 +23,8 @@ GtRlRelease >> releaseActions [
 	^ releaseActions ifNil: [ 
 		releaseActions := GtRlReleaseActionsGroup new ]
 ]
+
+{ #category : #actions }
+GtRlRelease >> resetReleaseActions [
+	self releaseActions removeAll.
+]

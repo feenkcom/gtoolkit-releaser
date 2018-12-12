@@ -63,15 +63,6 @@ GtRlSemanticVersionNumber >> patch: anInteger [
 ]
 
 { #category : #accessing }
-GtRlSemanticVersionNumber >> printOn: aStream [
-	super printOn: aStream.
-	aStream
-		nextPutAll: '(';
-		nextPutAll: self versionString;
-		nextPutAll: ')'
-]
-
-{ #category : #accessing }
 GtRlSemanticVersionNumber >> versionString [
 	^ 'v', major printString, '.', minor printString, '.', patch printString 
 ]

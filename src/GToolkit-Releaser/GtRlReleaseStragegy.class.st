@@ -7,9 +7,9 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
-{ #category : #testing }
-GtRlReleaseStragegy >> allowsReleaseGeneration [
-	^ true
+{ #category : #printing }
+GtRlReleaseStragegy >> description [
+	self subclassResponsibility
 ]
 
 { #category : #ui }
@@ -17,9 +17,10 @@ GtRlReleaseStragegy >> gtCommitsAncestryFor: aView [
 	^ aView
 ]
 
-{ #category : #accessing }
-GtRlReleaseStragegy >> releaseTarget [
-	self subclassResponsibility
+{ #category : #initialization }
+GtRlReleaseStragegy >> initializeFor: aRepositoryRelease fromConfiguration: aBuildConfiguration [
+	self repositoryRelease: aRepositoryRelease.
+	aRepositoryRelease releaseStrategy: self.
 ]
 
 { #category : #accessing }
@@ -30,4 +31,9 @@ GtRlReleaseStragegy >> repositoryRelease [
 { #category : #accessing }
 GtRlReleaseStragegy >> repositoryRelease: aRepositoryRelease [
 	repositoryRelease := aRepositoryRelease
+]
+
+{ #category : #accessing }
+GtRlReleaseStragegy >> updateFor: anUpdateWorkflow [
+	self subclassResponsibility
 ]

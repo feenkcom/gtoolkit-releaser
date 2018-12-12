@@ -31,7 +31,7 @@ GtRlExportReleaseMetadataAction >> name [
 { #category : #actions }
 GtRlExportReleaseMetadataAction >> performAction [
 	| versionsFile fileName |
-	fileName := '.baseline-versions.ston'.
+	fileName := GtRlReleaseVersionMetadata fileName.
 	versionsFile := self repositoryRelease icebergRepository repositoryDirectory / fileName.	
 	versionsFile 
 		ensureDelete;

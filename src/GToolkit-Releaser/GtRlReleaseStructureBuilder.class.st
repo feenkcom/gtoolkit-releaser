@@ -2,11 +2,18 @@ Class {
 	#name : #GtRlReleaseStructureBuilder,
 	#superclass : #Object,
 	#instVars : [
+		'configuration',
 		'projectReleasesMap',
 		'repositoryReleasesMap'
 	],
 	#category : #'GToolkit-Releaser'
 }
+
+{ #category : #'instance creation' }
+GtRlReleaseStructureBuilder class >> forConfiguration: aReleaseConfiguration [
+	^ self new
+		configuration: aReleaseConfiguration
+]
 
 { #category : #building }
 GtRlReleaseStructureBuilder >> buildStructureForProject: aProject [
@@ -23,10 +30,26 @@ GtRlReleaseStructureBuilder >> buildStructureForProject: aProject [
 	^ projectRelease
 ]
 
+{ #category : #accessing }
+GtRlReleaseStructureBuilder >> configuration [
+	^ configuration
+]
+
+{ #category : #accessing }
+GtRlReleaseStructureBuilder >> configuration: aReleaseConfiguration [
+	configuration := aReleaseConfiguration
+]
+
 { #category : #'private - building' }
 GtRlReleaseStructureBuilder >> ensureRepositoryReleaseFor: aRepository [
 	^ self repositoryReleasesMap at: aRepository ifAbsentPut: [ 
-		GtRlRepositoryRelease forRepository: aRepository ]
+		| repositoryRelease releaseStrategy |
+		repositoryRelease := GtRlRepositoryRelease forRepository: aRepository.
+		releaseStrategy := self configuration releaseStrategyForRepository: repositoryRelease repository.
+		releaseStrategy
+			initializeFor: repositoryRelease 
+			fromConfiguration: self configuration.
+		repositoryRelease ]
 ]
 
 { #category : #accessing }
