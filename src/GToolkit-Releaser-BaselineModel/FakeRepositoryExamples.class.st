@@ -7,7 +7,7 @@ Class {
 { #category : #'setUp-tearDown' }
 FakeRepositoryExamples >> aDependentGtRlProject [
 	| projectBuilder project repository diff cls |
-	IceRepository registry detect: [ :repo | repo name = #MockRepo ] ifFound: [:repo | repo forget].
+	IceRepository registry detect: [ :repo | repo name = #DependentMockRepo ] ifFound: [:repo | repo forget].
 	repository := self createNewRepoWithName: #DependentMockRepo.
 	projectBuilder := GtRlModelBuilder new.
 	cls := self baselineClass: #DependentMockRepo.
@@ -47,6 +47,7 @@ FakeRepositoryExamples >> aGtRlProject [
 	project := projectBuilder 
 		buildProjectFromBaselineClass: cls
 		withRepositoryDescription: 'github://feenkcom/MockRepo/src'. " we only use the urls as dictionary keys in examples"
+	project addPackage: (GtRlPackage new name: #BaselineOfMockRepo; dependencies: OrderedCollection new).
 	self addBaselineCode: project toClass: cls.
 	diff := repository workingCopyDiff.
 	repository workingCopy 
