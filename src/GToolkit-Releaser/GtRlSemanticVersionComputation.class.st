@@ -1,8 +1,21 @@
 Class {
 	#name : #GtRlSemanticVersionComputation,
 	#superclass : #Object,
+	#instVars : [
+		'defaultVersionNumber'
+	],
 	#category : #'GToolkit-Releaser'
 }
+
+{ #category : #accessing }
+GtRlSemanticVersionComputation >> defaultVersionNumber [
+	^ defaultVersionNumber
+]
+
+{ #category : #accessing }
+GtRlSemanticVersionComputation >> defaultVersionNumber: aVersionNumber [
+	defaultVersionNumber := aVersionNumber
+]
 
 { #category : #accessing }
 GtRlSemanticVersionComputation >> nextSemanticVersionFrom: aSemanticVersion [
@@ -10,14 +23,14 @@ GtRlSemanticVersionComputation >> nextSemanticVersionFrom: aSemanticVersion [
 ]
 
 { #category : #accessing }
-GtRlSemanticVersionComputation >> releaseVersionForRepository: aRepository [
+GtRlSemanticVersionComputation >> nextVersionNumberForRepository: aRepository [
 	| tags semanticVersions |
 	tags := aRepository icebergRepository tags. 
 	semanticVersions := tags 
 		select: #gtIsSemanticVersion
 		thenCollect: #gtAsSemanticVersionNumber.
 	^ semanticVersions 
-		ifEmpty: [ ^ GtRlSemanticVersionNumber major: 0 minor: 0 patch: 1 ]
+		ifEmpty: [ self defaultVersionNumber ]
 		ifNotEmpty: [ 
 			self nextSemanticVersionFrom: semanticVersions sorted last ]
 ]

@@ -26,8 +26,11 @@ GtRlReleaserExportWorkflow class >> forBaseline: aBaselineClass fromRepository: 
 { #category : #releasing }
 GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 	^ GtRlReleaseConfiguration new
+	defaultVersionNumber: (GtRlSemanticVersionNumber major:0 minor: 3 patch: 0);
 	defaultReleaseBranchName: 'release';
 	defaultVersionComputation: GtRlPatchVersionComputation new;	
+	setReleaseStrategyOfType: GtRlLeafProjectReleaseStrategy forProjecs: {
+		'github://feenkcom/gtoolkit-releaser/src' };
 	setReleaseStrategyOfType: GtRlLatestCommitReleaseStrategy forProjecs: {
 		'github://kursjan/petitparser2'.
 		'github://j-brant/SmaCC/src'.

@@ -7,7 +7,8 @@ Class {
 		'defaultVersionComputation',
 		'customVersionComputations',
 		'customReleaseStrategies',
-		'shouldForceNewRelease'
+		'shouldForceNewRelease',
+		'defaultVersionNumber'
 	],
 	#category : #'GToolkit-Releaser'
 }
@@ -42,7 +43,7 @@ GtRlReleaseConfiguration >> defaultReleaseBranchName: aBranchName [
 
 { #category : #accessing }
 GtRlReleaseConfiguration >> defaultReleaseStrategy [
-	^ GtRlDedicatedReleaseBranchStragegy new
+	^ GtRlDedicatedBranchReleaseStragegy new
 ]
 
 { #category : #accessing }
@@ -53,6 +54,17 @@ GtRlReleaseConfiguration >> defaultVersionComputation [
 { #category : #accessing }
 GtRlReleaseConfiguration >> defaultVersionComputation: aVersionComputation [
 	defaultVersionComputation := aVersionComputation
+]
+
+{ #category : #accessing }
+GtRlReleaseConfiguration >> defaultVersionNumber [
+	^ defaultVersionNumber ifNil: [ 
+		GtRlSemanticVersionNumber major:0 minor: 1 patch: 0 ]
+]
+
+{ #category : #accessing }
+GtRlReleaseConfiguration >> defaultVersionNumber: aVersionNumber [
+	defaultVersionNumber := aVersionNumber
 ]
 
 { #category : #accessing }
@@ -76,9 +88,12 @@ GtRlReleaseConfiguration >> releaseStrategyForRepository: aRepository [
 
 { #category : #'accessing - dynamic' }
 GtRlReleaseConfiguration >> releaseVersionComputationForRepository: aRepository [
-	^ self customVersionComputations 
+	| versionComputation |
+	versionComputation := self customVersionComputations 
 		at: aRepository id 
-		ifAbsent: [ self defaultVersionComputation ]
+		ifAbsent: [ self defaultVersionComputation ].
+	versionComputation defaultVersionNumber: self defaultVersionNumber.
+	^ versionComputation
 ]
 
 { #category : #actions }
