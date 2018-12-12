@@ -27,8 +27,8 @@ FakeRepositoryExamples >> aGtRlProjectRelease [
 	<gtExample>
 	| releaseConfiguration workflow |
 	self aGtRlProject.
-	releaseConfiguration := GtRlReleaserWorkflow gtoolkitReleaseConfiguration.
-	workflow := GtRlReleaserWorkflow 
+	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
+	workflow := GtRlReleaserExportWorkflow 
 		forBaseline: (self baselineOfMockRepo: #MockRepo) 
 		fromRepository: 'github://feenkcom/MockRepo/src'
 		withConfiguration: releaseConfiguration.
