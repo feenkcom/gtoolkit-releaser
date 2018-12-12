@@ -195,6 +195,12 @@ GtRlRepositoryRelease >> latestSemanticVersionTag [
 				a value <= b value ]) last key
 ]
 
+{ #category : #testing }
+GtRlRepositoryRelease >> matchesDependenciesIn: versionMetadata [
+	^ (self childRepositoryReleases allSatisfy: [ :aChildRelease |
+		versionMetadata matchesVersionForRelease: aChildRelease ]) 
+]
+
 { #category : #actions }
 GtRlRepositoryRelease >> mergeToBranch: aBranchName [
 	| initialBranchName icebergRepository |
