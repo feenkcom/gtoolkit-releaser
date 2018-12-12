@@ -5,6 +5,39 @@ Class {
 }
 
 { #category : #'setUp-tearDown' }
+FakeRepositoryExamples >> aDependentGtRlProject [
+	| projectBuilder project repository diff cls |
+	IceRepository registry detect: [ :repo | repo name = #MockRepo ] ifFound: [:repo | repo forget].
+	repository := self createNewRepoWithName: #DependentMockRepo.
+	projectBuilder := GtRlModelBuilder new.
+	cls := self baselineClass: #DependentMockRepo.
+	project := projectBuilder 
+		buildProjectFromBaselineClass: cls
+		withRepositoryDescription: 'github://feenkcom/DependentMockRepo/src'. " we only use the urls as dictionary keys in examples"
+	self addBaselineCode: project toClass: cls withDependencies: {#MockRepo-> 'github://feenkcom/MockRepo/src'}.
+	diff := repository workingCopyDiff.
+	repository workingCopy 
+			commitChanges: diff
+			withMessage: 'baseline: method code'
+			force: true.
+	^ project
+]
+
+{ #category : #'setUp-tearDown' }
+FakeRepositoryExamples >> aDependentGtRlProjectRelease [
+	<gtExample>
+	| releaseConfiguration workflow project |
+	project := self aDependentGtRlProject.
+	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
+	workflow := GtRlReleaserExportWorkflow 
+		forBaseline: project baselineClass  
+		fromRepository: 'github://feenkcom/DependentMockRepo/src'
+		withConfiguration: releaseConfiguration.
+	workflow releaseActions.
+	^ workflow rootProjectRelease 
+]
+
+{ #category : #'setUp-tearDown' }
 FakeRepositoryExamples >> aGtRlProject [
 	| projectBuilder project repository diff cls |
 	IceRepository registry detect: [ :repo | repo name = #MockRepo ] ifFound: [:repo | repo forget].
@@ -41,6 +74,14 @@ FakeRepositoryExamples >> aGtRlProjectRelease [
 FakeRepositoryExamples >> addBaselineCode: project toClass: cls [
 	| baselinecode |
 	baselinecode := project generateSourceWithProjectDependencies: Dictionary new.
+	cls compile: baselinecode.
+	^ cls
+]
+
+{ #category : #'setUp-tearDown' }
+FakeRepositoryExamples >> addBaselineCode: project toClass: cls withDependencies: dependenciesMap [
+	| baselinecode |
+	baselinecode := project generateSourceWithProjectDependencies: dependenciesMap.
 	cls compile: baselinecode.
 	^ cls
 ]
