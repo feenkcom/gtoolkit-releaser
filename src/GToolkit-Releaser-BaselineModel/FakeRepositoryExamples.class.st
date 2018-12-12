@@ -26,7 +26,8 @@ FakeRepositoryExamples >> aGtRlProjectRelease [
 		forBaseline: (self baselineOfMockRepo: #MockRepo) 
 		fromRepository: 'github://feenkcom/MockRepo/src'
 		withConfiguration: releaseConfiguration.
-	^ workflow executeReleaseActions
+	workflow releaseActions.
+	^ workflow rootProjectRelease 
 ]
 
 { #category : #'setUp-tearDown' }
@@ -52,7 +53,6 @@ FakeRepositoryExamples >> createNewRepoWithName: repoName [
 	
 	repoName asFileReference ensureDeleteAll .
 	repoFolder := repoName asFileReference.
-
 	repo:=IceRepositoryCreator new
 	location: repoFolder;
 	subdirectory: 'src';
@@ -75,7 +75,7 @@ FakeRepositoryExamples >> createNewRepoWithName: repoName [
 
 	dotProjectText := '{ ''srcDirectory'' : ''src'' }'.
 
-	baseline := ( repoFolder / 'src' / 'BaselineOf',repoName) ensureCreateDirectory.
+	baseline := ( repoFolder / 'src' / ('BaselineOf', repoName)) ensureCreateDirectory.
 
 	packagest := (baseline / 'package.st') ensureCreateFile.
 	packagest writeStreamDo: [ :stream | stream nextPutAll: 'Package { #name : #BaselineOf'; nextPutAll: repoName; nextPutAll: ' }' ].
@@ -83,11 +83,11 @@ FakeRepositoryExamples >> createNewRepoWithName: repoName [
 	dotProperties := (repoFolder / 'src' / '.properties') ensureCreateFile.
 	dotProperties writeStreamDo: [ :stream | stream nextPutAll: '{ #format : #tonel }' ].
 
-	dotProject := ( repoFolder / '.project' ) ensureCreateFile.
+	dotProject := (repoFolder / '.project') ensureCreateFile.
 	dotProject writeStreamDo: [ :stream | stream nextPutAll: dotProjectText ].
 
 	baselineClass := (baseline / 'BaselineOf',repoName,'.class.st') ensureCreateFile.
-	baselineCode.
+	
 	baselineClass  writeStreamDo: [ :stream | stream nextPutAll: baselineCode. stream flush. ].
 
 	repo workingCopy addPackage: (IcePackage named: #BaselineOf,repoName repository: repo).
