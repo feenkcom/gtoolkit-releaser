@@ -9,7 +9,7 @@ Class {
 
 { #category : #accessing }
 GtRlReleaseVersionMetadata class >> fileName [ 
-	^ '.baseline-versions.ston'
+	^ '.baseline-metadata.ston'
 ]
 
 { #category : #'instance creation' }
