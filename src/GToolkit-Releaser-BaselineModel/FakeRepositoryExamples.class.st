@@ -49,7 +49,7 @@ FakeRepositoryExamples >> baselineOfMockRepo: repoName [
 
 { #category : #'setUp-tearDown' }
 FakeRepositoryExamples >> createNewRepoWithName: repoName [
-	| repo repoFolder baselineCode packagest baselineClass baseline cls diff dotProjectText dotProperties dotProject|
+	| repo repoFolder packagest baseline diff dotProjectText dotProperties dotProject|
 	
 	repoName asFileReference ensureDeleteAll .
 	repoFolder := repoName asFileReference.
@@ -58,20 +58,7 @@ FakeRepositoryExamples >> createNewRepoWithName: repoName [
 	subdirectory: 'src';
 	createNewRepositoryNamed: repoName.
 
-	baselineCode := 'Class {
-		#name : #BaselineOf',repoName,',
-		#superclass : #BaselineOf,
-		#category : #BaselineOf',repoName,'
-	}
-	{ #category : #baselines }
-	BaselineOf',repoName,' >> baseline: spec [
-		<baseline>
-			spec for: #common do: [ 
-			spec
-				package: #',repoName,' ]
-	]'.
-
-	cls := self baselineOfMockRepo: repoName.
+	self baselineOfMockRepo: repoName.
 
 	dotProjectText := '{ ''srcDirectory'' : ''src'' }'.
 
@@ -85,10 +72,6 @@ FakeRepositoryExamples >> createNewRepoWithName: repoName [
 
 	dotProject := (repoFolder / '.project') ensureCreateFile.
 	dotProject writeStreamDo: [ :stream | stream nextPutAll: dotProjectText ].
-
-	baselineClass := (baseline / 'BaselineOf',repoName,'.class.st') ensureCreateFile.
-	
-	baselineClass  writeStreamDo: [ :stream | stream nextPutAll: baselineCode. stream flush. ].
 
 	repo workingCopy addPackage: (IcePackage named: #BaselineOf,repoName repository: repo).
 
