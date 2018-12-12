@@ -7,12 +7,26 @@ Class {
 { #category : #'setUp-tearDown' }
 FakeRepositoryExamples >> aGtRlProject [
 	| projectBuilder project |
+	IceRepository registry detect: [ :repo | repo name = #MockRepo ] ifFound: [:repo | repo forget].
 	self createNewRepoWithName: #MockRepo.
 	projectBuilder := GtRlModelBuilder new.
 	project := projectBuilder 
 		buildProjectFromBaselineClass: (self baselineOfMockRepo: #MockRepo)
-		withRepositoryDescription: 'urlOfMockRepo'. " we only use the urls as dictionary keys in examples"
+		withRepositoryDescription: 'github://feenkcom/MockRepo/src'. " we only use the urls as dictionary keys in examples"
 	^ project
+]
+
+{ #category : #'setUp-tearDown' }
+FakeRepositoryExamples >> aGtRlProjectRelease [
+	<gtExample>
+	| releaseConfiguration workflow |
+	self aGtRlProject.
+	releaseConfiguration := GtRlReleaserWorkflow gtoolkitReleaseConfiguration.
+	workflow := GtRlReleaserWorkflow 
+		forBaseline: (self baselineOfMockRepo: #MockRepo) 
+		fromRepository: 'github://feenkcom/MockRepo/src'
+		withConfiguration: releaseConfiguration.
+	^ workflow executeReleaseActions
 ]
 
 { #category : #'setUp-tearDown' }
@@ -64,7 +78,7 @@ FakeRepositoryExamples >> createNewRepoWithName: repoName [
 	baseline := ( repoFolder / 'src' / 'BaselineOf',repoName) ensureCreateDirectory.
 
 	packagest := (baseline / 'package.st') ensureCreateFile.
-	packagest writeStreamDo: [ :stream | stream nextPutAll: 'Package { #name : #BaselineOf',repoName,' }' ].
+	packagest writeStreamDo: [ :stream | stream nextPutAll: 'Package { #name : #BaselineOf'; nextPutAll: repoName; nextPutAll: ' }' ].
 
 	dotProperties := (repoFolder / 'src' / '.properties') ensureCreateFile.
 	dotProperties writeStreamDo: [ :stream | stream nextPutAll: '{ #format : #tonel }' ].
@@ -84,5 +98,7 @@ FakeRepositoryExamples >> createNewRepoWithName: repoName [
 			commitChanges: diff
 			withMessage: 'initial version'
 			force: true.
+	repo name: repoName.
+	IceRepository registerRepository: repo.
 	^ repo
 ]
