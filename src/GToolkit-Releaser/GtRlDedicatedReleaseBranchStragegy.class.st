@@ -23,7 +23,7 @@ GtRlDedicatedReleaseBranchStragegy >> commitAndTagRelease [
 { #category : #'private - actions' }
 GtRlDedicatedReleaseBranchStragegy >> configureNewVersionReleaseUsing: anUpdateWorkflow [
 	| nextVersionNumber |
-	nextVersionNumber := self nextVersionComputation releaseVersionForRepository: self repositoryRelease repository.
+	nextVersionNumber := self nextVersionComputation nextVersionNumberForRepository: self repositoryRelease repository.
 	self repositoryRelease 
 		version: nextVersionNumber.
 	self updateReleaseActionsUsing: anUpdateWorkflow.
