@@ -6,6 +6,7 @@ Class {
 		'customReleaseBranches',
 		'defaultVersionComputation',
 		'customVersionComputations',
+		'shouldForceNewRelease',
 		'ignoredProjects'
 	],
 	#category : #'GToolkit-Releaser'
@@ -41,6 +42,11 @@ GtRlReleaseConfiguration >> defaultVersionComputation [
 { #category : #accessing }
 GtRlReleaseConfiguration >> defaultVersionComputation: aVersionComputation [
 	defaultVersionComputation := aVersionComputation
+]
+
+{ #category : #accessing }
+GtRlReleaseConfiguration >> forceNewRelease [
+	shouldForceNewRelease := true
 ]
 
 { #category : #actions }
@@ -92,6 +98,11 @@ GtRlReleaseConfiguration >> setVersionComputationOfType: aVersionComputationType
 	aListOfProjectIds do: [ :aProjectId |
 		self setVersionComputation: aVersionComputationType new forProjectId: aProjectId  ]
 	
+]
+
+{ #category : #accessing }
+GtRlReleaseConfiguration >> shouldForceNewRelease [
+	^ shouldForceNewRelease ifNil: [ false ]
 ]
 
 { #category : #accessing }

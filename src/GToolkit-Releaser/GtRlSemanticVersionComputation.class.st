@@ -1,16 +1,16 @@
 Class {
-	#name : #GtRlSymbolicVersionComputation,
+	#name : #GtRlSemanticVersionComputation,
 	#superclass : #GtRlVersionComputation,
 	#category : #'GToolkit-Releaser'
 }
 
 { #category : #accessing }
-GtRlSymbolicVersionComputation >> nextSemanticVersionFrom: aSemanticVersion [
+GtRlSemanticVersionComputation >> nextSemanticVersionFrom: aSemanticVersion [
 	self subclassResponsibility
 ]
 
 { #category : #accessing }
-GtRlSymbolicVersionComputation >> releaseVersionForRepository: aRepository [
+GtRlSemanticVersionComputation >> releaseVersionForRepository: aRepository [
 	| tags semanticVersions |
 	tags := aRepository icebergRepository tags. 
 	semanticVersions := tags 

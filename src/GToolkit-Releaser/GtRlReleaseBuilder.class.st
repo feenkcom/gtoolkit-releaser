@@ -33,60 +33,57 @@ GtRlReleaseBuilder >> configuration: aReleaseConfiguration [
 ]
 
 { #category : #'private - configuration' }
-GtRlReleaseBuilder >> configureNormalRelease: aRepositoryRelease [
-	"Very ugly method. Fix later by having strategies for how to build the release."
-	| releaseStrategy releaseVersion latestVersionTag dependencyVersions latestRefenceBranchCommit |
+GtRlReleaseBuilder >> configureBranchStrategyForRelease: aRepositoryRelease [
+	| releaseStrategy releaseVersion |
 	releaseStrategy := GtRlDedicatedReleaseBranchStragegy new
 		releaseBranchName: (self releaseBranchForRepository: aRepositoryRelease repository);
 		referenceBranchName: aRepositoryRelease repository icebergRepository branchName.
 	releaseVersion := self releaseVersionForRepository: aRepositoryRelease repository.
+	aRepositoryRelease
+		version: releaseVersion;
+		releaseStrategy: releaseStrategy
+]
+
+{ #category : #'private - configuration' }
+GtRlReleaseBuilder >> configureNullReleaseStrategyForRelease: aRepositoryRelease [ 
+	^ aRepositoryRelease
+		version: (self releaseVersionForRepository: aRepositoryRelease repository);
+		releaseStrategy: GtRlNullReleaseBuildStragegy new
+]
+
+{ #category : #'private - configuration' }
+GtRlReleaseBuilder >> configureReleaseStrategyRelease: aRepositoryRelease [
+	| latestVersionTag latestRefenceBranchCommit releaseMetadata |
+
+	"1. If there is no release tag in the repository a new release is needed."
+	aRepositoryRelease semanticVersionTags isEmpty ifTrue: [
+		^ self configureBranchStrategyForRelease: aRepositoryRelease ].
 	
-	"1. if there is no tag a new release is needed"
-	aRepositoryRelease semanticVersionTags size = 0 ifTrue: [
-		^ aRepositoryRelease
-			version: releaseVersion;
-			releaseStrategy: releaseStrategy ].
-		
-	"2. latest release tag should include the latest commit from the reference branch"
+	"2. The latest release tag should include the latest commit from the reference branch."
 	latestVersionTag := aRepositoryRelease latestSemanticVersionTag.
-	latestRefenceBranchCommit := (aRepositoryRelease icebergRepository branchNamed: releaseStrategy referenceBranchName) commit.
+	latestRefenceBranchCommit := aRepositoryRelease icebergRepository branch commit.
 	(latestVersionTag commit isParentOf: latestRefenceBranchCommit) ifFalse: [
-		^ aRepositoryRelease
-			version: releaseVersion;
-			releaseStrategy: releaseStrategy ].
-		
-	"3. if any dependency needs to have a new version generate a new release"
-	dependencyVersions := (STON fromString: (latestVersionTag commit fileSystem / '.baseline-versions.ston') contents) at: 'repositories'.
-	(aRepositoryRelease childRepositoryReleases anySatisfy: [ :aChildRelease |
-		aChildRelease versionString ~= (dependencyVersions at: aChildRelease repository id) ]) ifTrue: [
-			^ aRepositoryRelease
-				version: releaseVersion;
-				releaseStrategy: releaseStrategy ].
+		^ self configureBranchStrategyForRelease: aRepositoryRelease ].
+	
+	"3. If any dependency has a different version than in the current release generate a new release"
+	releaseMetadata := GtRlReleaseVersionMetadata fromCommit: latestVersionTag commit.
+	(aRepositoryRelease matchesDependenciesIn: releaseMetadata) ifTrue: [
+		^ self configureBranchStrategyForRelease: aRepositoryRelease ].
 	
 	^ aRepositoryRelease
-			version: latestVersionTag gtAsSemanticVersionNumber;
-			releaseStrategy: GtRlNoReleaseStragegy new
-		
-	
-	
-	
+		version: latestVersionTag gtAsSemanticVersionNumber;
+		releaseStrategy: GtRlNullReleaseBuildStragegy new
 ]
 
 { #category : #'private - configuration' }
 GtRlReleaseBuilder >> configureRepositoryRelease: aRepositoryRelease [
-	"Very ugly method. Fix later by having strategies for how to build the release."
+	"Less then ideal solution. Could be improved by having strategies for how to build the release."
 	(self configuration shouldIgnoreProject: aRepositoryRelease repository id)
-		ifTrue: [  
-			aRepositoryRelease
-				version: (self releaseVersionForRepository: aRepositoryRelease repository);
-				releaseStrategy: GtRlNoReleaseStragegy new ]
-		ifFalse: [
-			"self configureNormalRelease: aRepositoryRelease"
-			aRepositoryRelease
-				version: (self releaseVersionForRepository: aRepositoryRelease repository);
-				releaseStrategy: (GtRlDedicatedReleaseBranchStragegy new
-					releaseBranchName: (self releaseBranchForRepository: aRepositoryRelease repository);
-					referenceBranchName: aRepositoryRelease repository icebergRepository branchName) ]
+		ifTrue: [ self configureNullReleaseStrategyForRelease: aRepositoryRelease ]
+		ifFalse: [ 
+			self configuration shouldForceNewRelease 
+				ifTrue: [ self configureBranchStrategyForRelease: aRepositoryRelease ]
+				ifFalse: [ self configureReleaseStrategyRelease: aRepositoryRelease ] ]
 ]
 
 { #category : #'private - building' }
