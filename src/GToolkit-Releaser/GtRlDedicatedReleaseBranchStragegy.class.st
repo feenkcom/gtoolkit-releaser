@@ -3,7 +3,9 @@ Class {
 	#superclass : #GtRlReleaseStragegy,
 	#instVars : [
 		'referenceBranchName',
-		'releaseBranchName'
+		'releaseBranchName',
+		'nextVersionComputation',
+		'shouldForceNewRelease'
 	],
 	#category : #'GToolkit-Releaser'
 }
@@ -16,6 +18,17 @@ GtRlDedicatedReleaseBranchStragegy >> commitAndTagRelease [
 		assert: [ iceRepository branchName = self releaseBranchName ]
 		description: 'The Iceberg repository needs to be on the release branch.'.
 	self repositoryRelease commitAndTagRelease
+]
+
+{ #category : #'private - actions' }
+GtRlDedicatedReleaseBranchStragegy >> configureNewVersionReleaseUsing: anUpdateWorkflow [
+	| nextVersionNumber |
+	nextVersionNumber := self nextVersionComputation releaseVersionForRepository: self repositoryRelease repository.
+	self repositoryRelease 
+		version: nextVersionNumber.
+	self updateReleaseActionsUsing: anUpdateWorkflow.
+		
+	
 ]
 
 { #category : #ui }
@@ -50,6 +63,23 @@ GtRlDedicatedReleaseBranchStragegy >> gtCommitsAncestryFor: aView [
 			view layout dominanceTree]
 ]
 
+{ #category : #initialization }
+GtRlDedicatedReleaseBranchStragegy >> initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration [
+	super initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration.
+	self
+		releaseBranchName: (aReleaseConfiguration releaseBranchForRepository: aRepositoryRelease repository);
+		referenceBranchName: aRepositoryRelease icebergRepository branchName;
+		nextVersionComputation: (aReleaseConfiguration releaseVersionComputationForRepository: aRepositoryRelease repository);
+		shouldForceNewRelease: aReleaseConfiguration shouldForceNewRelease
+]
+
+{ #category : #'private - actions' }
+GtRlDedicatedReleaseBranchStragegy >> isReferenceBranchMergedIn: anIceCommit [
+	| latestRefenceBranchCommit |
+	latestRefenceBranchCommit := self referenceBranch commit.
+	^ anIceCommit isParentOf: latestRefenceBranchCommit
+]
+
 { #category : #actions }
 GtRlDedicatedReleaseBranchStragegy >> mergeToReleaseBranch [
 	| icebergRepository |
@@ -58,6 +88,16 @@ GtRlDedicatedReleaseBranchStragegy >> mergeToReleaseBranch [
 		assert: [ icebergRepository branchName = self referenceBranchName ]
 		description: 'The Iceberg repository needs to be on the reference branch.'.
 	self repositoryRelease mergeToBranch: self releaseBranchName
+]
+
+{ #category : #accessing }
+GtRlDedicatedReleaseBranchStragegy >> nextVersionComputation [
+	^ nextVersionComputation
+]
+
+{ #category : #accessing }
+GtRlDedicatedReleaseBranchStragegy >> nextVersionComputation: aVersionComputation [
+	nextVersionComputation := aVersionComputation
 ]
 
 { #category : #'accessing - dynamic' }
@@ -90,7 +130,66 @@ GtRlDedicatedReleaseBranchStragegy >> releaseBranchName: aBranchName [
 	releaseBranchName := aBranchName
 ]
 
-{ #category : #'accessing - dynamic' }
-GtRlDedicatedReleaseBranchStragegy >> releaseTarget [
-	^ '#', self releaseBranchName
+{ #category : #accessing }
+GtRlDedicatedReleaseBranchStragegy >> shouldForceNewRelease [
+	^ shouldForceNewRelease
+]
+
+{ #category : #accessing }
+GtRlDedicatedReleaseBranchStragegy >> shouldForceNewRelease: aBoolean [
+	shouldForceNewRelease := aBoolean
+]
+
+{ #category : #actions }
+GtRlDedicatedReleaseBranchStragegy >> updateFor: anUpdateWorkflow [
+	| latestVersionTag releaseMetadata|
+	"1. If a new release if explicitly requested created it."
+	self shouldForceNewRelease ifTrue: [ 
+		^ self configureNewVersionReleaseUsing: anUpdateWorkflow ].
+	
+	"2. If there is no release tag in the repository a new release is needed."
+	self repositoryRelease semanticVersionTags ifEmpty: [
+		^ self configureNewVersionReleaseUsing: anUpdateWorkflow ].
+	
+	"3. If the latest release tag does not include the latest commit from the reference branch generate a new release."
+	latestVersionTag := self repositoryRelease latestSemanticVersionTag.
+	(self isReferenceBranchMergedIn: latestVersionTag commit) ifFalse: [
+		^ self configureNewVersionReleaseUsing: anUpdateWorkflow ].
+	
+	"4. If any dependency has a different version than in the current release generate a new release."
+	releaseMetadata := GtRlReleaseVersionMetadata fromCommit: latestVersionTag commit.
+	(self repositoryRelease matchesDependenciesIn: releaseMetadata) ifFalse: [
+		^ self configureNewVersionReleaseUsing: anUpdateWorkflow ].
+	
+	^ self repositoryRelease 
+		version: latestVersionTag gtAsSemanticVersionNumber;
+		resetReleaseActions
+]
+
+{ #category : #'private - actions' }
+GtRlDedicatedReleaseBranchStragegy >> updateReleaseActionsUsing: anUpdateWorkflow [
+	| mergeAction commitAction metadataAction |
+	self repositoryRelease resetReleaseActions.
+	
+	mergeAction := GtRlMergeToReleaseBranchAction new
+		repositoryRelease: self repositoryRelease;
+	 	order: anUpdateWorkflow nextActionOrder.
+	self repositoryRelease addReleaseAction: mergeAction.
+
+	(self repositoryRelease projectReleases reject: #isLeaf) do: [ :aProjectRelease | 
+		| baselineAction |
+		baselineAction := GtRlCompileBaselineReleaseAction new
+			projectRelease: aProjectRelease;
+			order: anUpdateWorkflow nextActionOrder.
+		aProjectRelease addReleaseAction: baselineAction ].
+		
+	metadataAction := GtRlExportReleaseMetadataAction new
+		repositoryRelease: self repositoryRelease;
+	 	order: anUpdateWorkflow nextActionOrder.
+	self repositoryRelease addReleaseAction: metadataAction.
+		
+	commitAction := GtRlCommitAndTagReleaseAction new
+		repositoryRelease: self repositoryRelease;
+	 	order: anUpdateWorkflow nextActionOrder.
+	self repositoryRelease addReleaseAction: commitAction
 ]

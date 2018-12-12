@@ -26,7 +26,10 @@ GtRlReleaseActionsGroup >> addAction: anAction [
 
 { #category : #adding }
 GtRlReleaseActionsGroup >> addActions: aCollectionOfActions [
-	^ actions addAll: aCollectionOfActions
+	aCollectionOfActions do: [ :anAction |
+		self addAction: anAction ].
+	^ aCollectionOfActions
+	
 ]
 
 { #category : #testing }
@@ -65,15 +68,20 @@ GtRlReleaseActionsGroup >> gtReleaseActionsFor: aView [
 			self format: anAction descriptionDetails for: anAction ]
 ]
 
-{ #category : #testing }
-GtRlReleaseActionsGroup >> ifNotEmpty: aBlock [
-	^ actions ifNotEmpty: aBlock
-]
-
 { #category : #initialization }
 GtRlReleaseActionsGroup >> initialize [ 
 	super initialize.
 	actions := OrderedCollection new
+]
+
+{ #category : #testing }
+GtRlReleaseActionsGroup >> isEmpty [
+	^ self actions isEmpty
+]
+
+{ #category : #actions }
+GtRlReleaseActionsGroup >> removeAll [
+	self actions removeAll.
 ]
 
 { #category : #sorting }

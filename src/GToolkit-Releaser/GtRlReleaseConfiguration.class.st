@@ -6,8 +6,8 @@ Class {
 		'customReleaseBranches',
 		'defaultVersionComputation',
 		'customVersionComputations',
-		'shouldForceNewRelease',
-		'ignoredProjects'
+		'customReleaseStrategies',
+		'shouldForceNewRelease'
 	],
 	#category : #'GToolkit-Releaser'
 }
@@ -16,6 +16,12 @@ Class {
 GtRlReleaseConfiguration >> customReleaseBranches [
 	^ customReleaseBranches ifNil: [ 
 		customReleaseBranches := Dictionary new ]
+]
+
+{ #category : #accessing }
+GtRlReleaseConfiguration >> customReleaseStrategies [
+	^ customReleaseStrategies ifNil: [ 
+		customReleaseStrategies := Dictionary new ]
 ]
 
 { #category : #accessing }
@@ -35,6 +41,11 @@ GtRlReleaseConfiguration >> defaultReleaseBranchName: aBranchName [
 ]
 
 { #category : #accessing }
+GtRlReleaseConfiguration >> defaultReleaseStrategy [
+	^ GtRlDedicatedReleaseBranchStragegy new
+]
+
+{ #category : #accessing }
 GtRlReleaseConfiguration >> defaultVersionComputation [
 	^ defaultVersionComputation
 ]
@@ -49,22 +60,6 @@ GtRlReleaseConfiguration >> forceNewRelease [
 	shouldForceNewRelease := true
 ]
 
-{ #category : #actions }
-GtRlReleaseConfiguration >> ignoreProject: aProjectId [
-	self ignoredProjects add: aProjectId
-]
-
-{ #category : #actions }
-GtRlReleaseConfiguration >> ignoreProjects: aColectionOfProjectsIds [
-	self ignoredProjects addAll: aColectionOfProjectsIds
-]
-
-{ #category : #accessing }
-GtRlReleaseConfiguration >> ignoredProjects [
-	^ ignoredProjects ifNil: [ 
-		ignoredProjects := OrderedCollection new ]
-]
-
 { #category : #'accessing - dynamic' }
 GtRlReleaseConfiguration >> releaseBranchForRepository: aRepository [
 	^ self customReleaseBranches 
@@ -73,12 +68,17 @@ GtRlReleaseConfiguration >> releaseBranchForRepository: aRepository [
 ]
 
 { #category : #'accessing - dynamic' }
-GtRlReleaseConfiguration >> releaseVersionForRepository: aRepository [
-	| versionComputation |
-	versionComputation := self customVersionComputations 
+GtRlReleaseConfiguration >> releaseStrategyForRepository: aRepository [
+	^ self customReleaseStrategies 
 		at: aRepository id 
-		ifAbsent: [ self defaultVersionComputation ].
-	^ versionComputation releaseVersionForRepository: aRepository
+		ifAbsent: [ self defaultReleaseStrategy ]
+]
+
+{ #category : #'accessing - dynamic' }
+GtRlReleaseConfiguration >> releaseVersionComputationForRepository: aRepository [
+	^ self customVersionComputations 
+		at: aRepository id 
+		ifAbsent: [ self defaultVersionComputation ]
 ]
 
 { #category : #actions }
@@ -88,24 +88,19 @@ GtRlReleaseConfiguration >> setReleaseBranch: aBranchName forProjectId: aProject
 ]
 
 { #category : #actions }
-GtRlReleaseConfiguration >> setVersionComputation: aVersionComputation forProjectId: aProjectId [
-	self customVersionComputations 
-		at: aProjectId put: aVersionComputation
+GtRlReleaseConfiguration >> setReleaseStrategy: aReleaseStrategy forProjectId: aProjectId [
+	self customReleaseStrategies 
+		at: aProjectId put: aReleaseStrategy
 ]
 
 { #category : #actions }
-GtRlReleaseConfiguration >> setVersionComputationOfType: aVersionComputationType forProjecs: aListOfProjectIds [
+GtRlReleaseConfiguration >> setReleaseStrategyOfType: aReleaseStrategy forProjecs: aListOfProjectIds [
 	aListOfProjectIds do: [ :aProjectId |
-		self setVersionComputation: aVersionComputationType new forProjectId: aProjectId  ]
+		self setReleaseStrategy: aReleaseStrategy new forProjectId: aProjectId ]
 	
 ]
 
 { #category : #accessing }
 GtRlReleaseConfiguration >> shouldForceNewRelease [
 	^ shouldForceNewRelease ifNil: [ false ]
-]
-
-{ #category : #accessing }
-GtRlReleaseConfiguration >> shouldIgnoreProject: aProjectId [
-	^ self ignoredProjects includes: aProjectId
 ]

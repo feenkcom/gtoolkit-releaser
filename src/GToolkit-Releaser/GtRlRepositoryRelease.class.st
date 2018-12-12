@@ -181,9 +181,15 @@ GtRlRepositoryRelease >> icebergRepository [
 	^ self repository icebergRepository
 ]
 
+{ #category : #initialize }
+GtRlRepositoryRelease >> initialize [
+	super initialize.
+	self releaseStrategy: GtRlNullReleaseStragegy new
+]
+
 { #category : #testing }
 GtRlRepositoryRelease >> isPassiveRelease [
-	^ self releaseStrategy isNil or: [ self releaseStrategy allowsReleaseGeneration not ]
+	^ self releaseActions isEmpty
 ]
 
 { #category : #'accessing - dynamic' }
@@ -245,9 +251,9 @@ GtRlRepositoryRelease >> projectReleases [
 GtRlRepositoryRelease >> releaseDetailsDescription [
 	^ String streamContents: [ :stream |
 		stream 
-			nextPutAll: (self version ifNil: [ '' ] ifNotNil: [ self version description ]);
+			nextPutAll: self version description;
 			nextPutAll: ', ';
-			nextPutAll: (self releaseStrategy ifNil: [ '' ] ifNotNil: [ self releaseStrategy releaseTarget ]) ]
+			nextPutAll: 'TODOOO' ]
 ]
 
 { #category : #accessing }
@@ -257,11 +263,7 @@ GtRlRepositoryRelease >> releaseStrategy [
 
 { #category : #accessing }
 GtRlRepositoryRelease >> releaseStrategy: aReleaseStrategy [
-	self 
-		assert: [ aReleaseStrategy repositoryRelease isNil ] 
-		description: 'The release strategy should not be attached at this point to any repository'.
-	releaseStrategy := aReleaseStrategy.
-	aReleaseStrategy repositoryRelease: self.
+	releaseStrategy := aReleaseStrategy
 ]
 
 { #category : #accessing }
