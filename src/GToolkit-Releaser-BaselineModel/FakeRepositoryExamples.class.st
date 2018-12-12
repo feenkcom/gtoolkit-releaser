@@ -18,7 +18,7 @@ FakeRepositoryExamples >> aGtRlProject [
 	diff := repository workingCopyDiff.
 	repository workingCopy 
 			commitChanges: diff
-			withMessage: 'initial version'
+			withMessage: 'baseline: method code'
 			force: true.
 	^ project
 ]
@@ -47,12 +47,15 @@ FakeRepositoryExamples >> addBaselineCode: project toClass: cls [
 
 { #category : #'setUp-tearDown' }
 FakeRepositoryExamples >> baselineClass: project [
-	^ BaselineOf subclass:#BaselineOf, project
+	| cls |
+	cls := BaselineOf subclass:#BaselineOf, project
 			instanceVariableNames: ''
 			classVariableNames: ''
 			poolDictionaries: ''
-			package: 'BaselineOf', project
-
+			package: 'BaselineOf', project.
+	cls compile: 'baseline: spec
+	<baseline>'.
+	^ cls
 ]
 
 { #category : #'setUp-tearDown' }
