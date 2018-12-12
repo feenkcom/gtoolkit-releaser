@@ -6,13 +6,19 @@ Class {
 
 { #category : #'setUp-tearDown' }
 FakeRepositoryExamples >> aGtRlProject [
-	| projectBuilder project |
+	| projectBuilder project repository diff|
 	IceRepository registry detect: [ :repo | repo name = #MockRepo ] ifFound: [:repo | repo forget].
-	self createNewRepoWithName: #MockRepo.
+	repository := self createNewRepoWithName: #MockRepo.
 	projectBuilder := GtRlModelBuilder new.
 	project := projectBuilder 
 		buildProjectFromBaselineClass: (self baselineOfMockRepo: #MockRepo)
 		withRepositoryDescription: 'github://feenkcom/MockRepo/src'. " we only use the urls as dictionary keys in examples"
+	self addBaselineCode: project.
+	diff := repository workingCopyDiff.
+	repository workingCopy 
+			commitChanges: diff
+			withMessage: 'initial version'
+			force: true.
 	^ project
 ]
 
@@ -28,6 +34,20 @@ FakeRepositoryExamples >> aGtRlProjectRelease [
 		withConfiguration: releaseConfiguration.
 	workflow releaseActions.
 	^ workflow rootProjectRelease 
+]
+
+{ #category : #'setUp-tearDown' }
+FakeRepositoryExamples >> addBaselineCode: project [
+	| cls name baselinecode |
+	name := project name.
+	cls := BaselineOf subclass:#BaselineOf, name
+			instanceVariableNames: ''
+			classVariableNames: ''
+			poolDictionaries: ''
+			package: 'BaselineOf', name.
+	baselinecode := project generateSourceWithProjectDependencies: Dictionary new.
+	cls compile: baselinecode.
+	^ cls
 ]
 
 { #category : #'setUp-tearDown' }
@@ -57,8 +77,6 @@ FakeRepositoryExamples >> createNewRepoWithName: repoName [
 	location: repoFolder;
 	subdirectory: 'src';
 	createNewRepositoryNamed: repoName.
-
-	self baselineOfMockRepo: repoName.
 
 	dotProjectText := '{ ''srcDirectory'' : ''src'' }'.
 
