@@ -4,6 +4,11 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
+{ #category : #printing }
+GtRlNullReleaseStragegy >> description [
+	^ 'Null'
+]
+
 { #category : #accessing }
 GtRlNullReleaseStragegy >> nullVersionNumber [
 	^ GtRlNullVersionNumber new

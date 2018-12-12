@@ -4,6 +4,11 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
+{ #category : #printing }
+GtRlBaselineTagReleaseStrategy >> description [
+	^ 'BaselineTag'
+]
+
 { #category : #'accessing - dynamic' }
 GtRlBaselineTagReleaseStrategy >> tagVersionNumber [
 	^ GtRlTagVersionNumber new 

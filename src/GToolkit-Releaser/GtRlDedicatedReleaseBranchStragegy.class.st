@@ -31,6 +31,11 @@ GtRlDedicatedReleaseBranchStragegy >> configureNewVersionReleaseUsing: anUpdateW
 	
 ]
 
+{ #category : #printing }
+GtRlDedicatedReleaseBranchStragegy >> description [
+	^ 'Branch #', (self releaseBranchName ifNil: [ 'missing' ])
+]
+
 { #category : #ui }
 GtRlDedicatedReleaseBranchStragegy >> gtCommitsAncestryFor: aView [
 	<gtView>

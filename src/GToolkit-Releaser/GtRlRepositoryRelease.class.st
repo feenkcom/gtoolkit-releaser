@@ -253,7 +253,7 @@ GtRlRepositoryRelease >> releaseDetailsDescription [
 		stream 
 			nextPutAll: self version description;
 			nextPutAll: ', ';
-			nextPutAll: 'TODOOO' ]
+			nextPutAll: self releaseStrategy description ]
 ]
 
 { #category : #accessing }

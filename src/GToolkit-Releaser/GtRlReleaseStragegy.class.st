@@ -7,6 +7,11 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
+{ #category : #printing }
+GtRlReleaseStragegy >> description [
+	self subclassResponsibility
+]
+
 { #category : #ui }
 GtRlReleaseStragegy >> gtCommitsAncestryFor: aView [
 	^ aView

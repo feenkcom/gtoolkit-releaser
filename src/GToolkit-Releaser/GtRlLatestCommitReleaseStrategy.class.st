@@ -10,6 +10,11 @@ GtRlLatestCommitReleaseStrategy >> commitVersionNumber [
 		commitId: self repositoryRelease icebergRepository headCommit id
 ]
 
+{ #category : #printing }
+GtRlLatestCommitReleaseStrategy >> description [
+	^ 'LatestCommit'
+]
+
 { #category : #accessing }
 GtRlLatestCommitReleaseStrategy >> updateFor: anUpdateWorkflow [
 	self repositoryRelease
