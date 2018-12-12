@@ -86,17 +86,22 @@ GtRlReleaserExportWorkflow >> gtRepositoryReleasesListFor: aView [
 	^ aView columnedList
 		title: 'Releases' translated;
 		items: [ self repositoriesReleasesInReleaseOrder ];
-		column: 'Repository' item: [ :aRepositoryRelease | aRepositoryRelease repository id ];
-		column: 'Version' do: [ :aColumn | 
-			aColumn 
-				item: #versionString;
-				width: 100 ]";
-		column: 'Release strategy' item: [ :aRepositoryRelease | aRepositoryRelease releaseStrategy releaseTarget ]"
+		column: 'Repository' item: [ :aRepositoryRelease | 
+			aRepositoryRelease decorateText: aRepositoryRelease repository id ];
+		column: 'Version' item: [ :aRepositoryRelease | 
+			aRepositoryRelease decorateText: aRepositoryRelease version description ];
+		column: 'Release strategy' item: [ :aRepositoryRelease | 
+			aRepositoryRelease decorateText: aRepositoryRelease releaseStrategy description ]
 ]
 
 { #category : #accessing }
 GtRlReleaserExportWorkflow >> releaseActions [
 	^ releaseActions
+]
+
+{ #category : #accessing }
+GtRlReleaserExportWorkflow >> repositoriesReleasesInReleaseOrder [
+	^ (self rootProjectRelease repositoryRelease withDeepCollect: #childRepositoryReleases) reversed
 ]
 
 { #category : #accessing }
