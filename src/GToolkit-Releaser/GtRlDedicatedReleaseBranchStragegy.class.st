@@ -1,11 +1,8 @@
 Class {
 	#name : #GtRlDedicatedReleaseBranchStragegy,
-	#superclass : #GtRlReleaseStragegy,
+	#superclass : #GtRlSemanticTagReleaseStrategy,
 	#instVars : [
-		'referenceBranchName',
-		'releaseBranchName',
-		'nextVersionComputation',
-		'shouldForceNewRelease'
+		'releaseBranchName'
 	],
 	#category : #'GToolkit-Releaser'
 }
@@ -18,17 +15,6 @@ GtRlDedicatedReleaseBranchStragegy >> commitAndTagRelease [
 		assert: [ iceRepository branchName = self releaseBranchName ]
 		description: 'The Iceberg repository needs to be on the release branch.'.
 	self repositoryRelease commitAndTagRelease
-]
-
-{ #category : #'private - actions' }
-GtRlDedicatedReleaseBranchStragegy >> configureNewVersionReleaseUsing: anUpdateWorkflow [
-	| nextVersionNumber |
-	nextVersionNumber := self nextVersionComputation nextVersionNumberForRepository: self repositoryRelease repository.
-	self repositoryRelease 
-		version: nextVersionNumber.
-	self updateReleaseActionsUsing: anUpdateWorkflow.
-		
-	
 ]
 
 { #category : #printing }
@@ -72,10 +58,7 @@ GtRlDedicatedReleaseBranchStragegy >> gtCommitsAncestryFor: aView [
 GtRlDedicatedReleaseBranchStragegy >> initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration [
 	super initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration.
 	self
-		releaseBranchName: (aReleaseConfiguration releaseBranchForRepository: aRepositoryRelease repository);
-		referenceBranchName: aRepositoryRelease icebergRepository branchName;
-		nextVersionComputation: (aReleaseConfiguration releaseVersionComputationForRepository: aRepositoryRelease repository);
-		shouldForceNewRelease: aReleaseConfiguration shouldForceNewRelease
+		releaseBranchName: (aReleaseConfiguration releaseBranchForRepository: aRepositoryRelease repository)
 ]
 
 { #category : #'private - actions' }
@@ -95,31 +78,6 @@ GtRlDedicatedReleaseBranchStragegy >> mergeToReleaseBranch [
 	self repositoryRelease mergeToBranch: self releaseBranchName
 ]
 
-{ #category : #accessing }
-GtRlDedicatedReleaseBranchStragegy >> nextVersionComputation [
-	^ nextVersionComputation
-]
-
-{ #category : #accessing }
-GtRlDedicatedReleaseBranchStragegy >> nextVersionComputation: aVersionComputation [
-	nextVersionComputation := aVersionComputation
-]
-
-{ #category : #'accessing - dynamic' }
-GtRlDedicatedReleaseBranchStragegy >> referenceBranch [
-	^ self repositoryRelease icebergRepository branchNamed: self referenceBranchName 
-]
-
-{ #category : #accessing }
-GtRlDedicatedReleaseBranchStragegy >> referenceBranchName [
-	^ referenceBranchName
-]
-
-{ #category : #accessing }
-GtRlDedicatedReleaseBranchStragegy >> referenceBranchName: aBranchName [
-	referenceBranchName := aBranchName
-]
-
 { #category : #'accessing - dynamic' }
 GtRlDedicatedReleaseBranchStragegy >> releaseBranch [
 	^ self repositoryRelease icebergRepository branchNamed: self releaseBranchName 
@@ -133,16 +91,6 @@ GtRlDedicatedReleaseBranchStragegy >> releaseBranchName [
 { #category : #accessing }
 GtRlDedicatedReleaseBranchStragegy >> releaseBranchName: aBranchName [
 	releaseBranchName := aBranchName
-]
-
-{ #category : #accessing }
-GtRlDedicatedReleaseBranchStragegy >> shouldForceNewRelease [
-	^ shouldForceNewRelease
-]
-
-{ #category : #accessing }
-GtRlDedicatedReleaseBranchStragegy >> shouldForceNewRelease: aBoolean [
-	shouldForceNewRelease := aBoolean
 ]
 
 { #category : #actions }
