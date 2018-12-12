@@ -276,6 +276,12 @@ GtRlRepositoryRelease >> repository: aRepository [
 	repository := aRepository
 ]
 
+{ #category : #actions }
+GtRlRepositoryRelease >> resetReleaseActions [
+	super resetReleaseActions.
+	self projectReleases do: #resetReleaseActions
+]
+
 { #category : #'accessing - dynamic' }
 GtRlRepositoryRelease >> semanticVersionTags [
 	^ self icebergRepository tags select: #gtIsSemanticVersion
