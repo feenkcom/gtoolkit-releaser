@@ -379,7 +379,8 @@ GtRlProject >> repository: aRepository [
 GtRlProject >> toolboxForBaselineWithProjectDependencies: projectDependenciesMap [
 	| projectNames toolbox |
 	projectNames := projectDependenciesMap collect: #key.
-  toolbox := (GtRlMetacelloToolBox baselineNamed: self baselineClass name)
+
+   toolbox := (GtRlMetacelloToolBox baselineNamed: self baselineClass name)
     createBaselineOfMethod: 'baseline:' inCategory: 'baseline';
 	addBaselineOfSection: #'common'
 		requiredProjects: projectNames

@@ -14,7 +14,7 @@ FakeRepositoryExamples >> aDependentGtRlProject [
 	project := projectBuilder 
 		buildProjectFromBaselineClass: cls
 		withRepositoryDescription: 'github://feenkcom/DependentMockRepo/src'. " we only use the urls as dictionary keys in examples"
-	self addBaselineCode: project toClass: cls withDependencies: {#MockRepo-> 'github://feenkcom/MockRepo/src'}.
+	self addBaselineCode: project toClass: cls withDependencies: {#MockRepo-> #('github://feenkcom/MockRepo/src')}.
 	diff := repository workingCopyDiff.
 	repository workingCopy 
 			commitChanges: diff
@@ -54,6 +54,13 @@ FakeRepositoryExamples >> aGtRlProject [
 			commitChanges: diff
 			withMessage: 'baseline: method code'
 			force: true.
+	
+	Metacello new
+   baseline: #MockRepo;
+   filetreeDirectory: (repository workingCopy fileSystem / 'src') fullName;
+	unregister;
+   load.
+
 	^ project
 ]
 
