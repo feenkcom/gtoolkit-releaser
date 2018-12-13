@@ -25,5 +25,5 @@ GtRlPushToOriginReleaseAction >> performAction [
 	self 
 		assert: [ self repositoryRelease hasRemoteOrigin ]
 		description: 'The Iceberg repository needs to have a remove origin where to push the release.'.
-	self repositoryRelease releaseBranch pushTo: self repositoryRelease remoteOrigin
+	self repositoryRelease releaseStrategy releaseBranch pushTo: self repositoryRelease remoteOrigin
 ]
