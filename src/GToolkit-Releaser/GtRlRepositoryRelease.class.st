@@ -176,6 +176,13 @@ GtRlRepositoryRelease >> gtRepoMapFor: aView [
 			mondrian layout custom: (GtGradHorizontalDominanceCenteredTreeLayout new levelDistance: 50; nodeDistance: 10)]
 ]
 
+{ #category : #testing }
+GtRlRepositoryRelease >> hasRemoteOrigin [
+	^ self icebergRepository remotes 
+		anySatisfy: [ :iceRemote | iceRemote name = #origin ]
+		
+]
+
 { #category : #accessing }
 GtRlRepositoryRelease >> icebergRepository [
 	^ self repository icebergRepository
@@ -264,6 +271,13 @@ GtRlRepositoryRelease >> releaseStrategy [
 { #category : #accessing }
 GtRlRepositoryRelease >> releaseStrategy: aReleaseStrategy [
 	releaseStrategy := aReleaseStrategy
+]
+
+{ #category : #'accessing - dynamic' }
+GtRlRepositoryRelease >> remoteOrigin [
+	^ self icebergRepository remotes 
+		detect: [ :iceRemote | iceRemote name = #origin ]
+		
 ]
 
 { #category : #accessing }

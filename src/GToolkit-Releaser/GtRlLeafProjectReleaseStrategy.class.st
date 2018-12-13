@@ -4,24 +4,16 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
-{ #category : #actions }
-GtRlLeafProjectReleaseStrategy >> commitAndTagRelease [
-	| iceRepository |
-	iceRepository := self repositoryRelease icebergRepository.
-	self 
-		assert: [ iceRepository branchName = self referenceBranchName ]
-		description: 'The Iceberg repository needs to be on the release branch.'.
-	self repositoryRelease commitAndTagRelease
-]
-
 { #category : #printing }
 GtRlLeafProjectReleaseStrategy >> description [
 	^ 'LeafRelease'
 ]
 
-{ #category : #accessing }
-GtRlLeafProjectReleaseStrategy >> releaseBranchName [
-	^ self referenceBranchName
+{ #category : #initialization }
+GtRlLeafProjectReleaseStrategy >> initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration [
+	super initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration.
+	self
+		releaseBranchName: aRepositoryRelease icebergRepository branchName
 ]
 
 { #category : #accessing }

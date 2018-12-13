@@ -2,20 +2,10 @@ Class {
 	#name : #GtRlDedicatedBranchReleaseStragegy,
 	#superclass : #GtRlSemanticTagReleaseStrategy,
 	#instVars : [
-		'releaseBranchName'
+		'referenceBranchName'
 	],
 	#category : #'GToolkit-Releaser'
 }
-
-{ #category : #actions }
-GtRlDedicatedBranchReleaseStragegy >> commitAndTagRelease [
-	| iceRepository |
-	iceRepository := self repositoryRelease icebergRepository.
-	self 
-		assert: [ iceRepository branchName = self releaseBranchName ]
-		description: 'The Iceberg repository needs to be on the release branch.'.
-	self repositoryRelease commitAndTagRelease
-]
 
 { #category : #printing }
 GtRlDedicatedBranchReleaseStragegy >> description [
@@ -58,6 +48,7 @@ GtRlDedicatedBranchReleaseStragegy >> gtCommitsAncestryFor: aView [
 GtRlDedicatedBranchReleaseStragegy >> initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration [
 	super initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration.
 	self
+		referenceBranchName: aRepositoryRelease icebergRepository branchName;
 		releaseBranchName: (aReleaseConfiguration releaseBranchForRepository: aRepositoryRelease repository)
 ]
 
@@ -79,18 +70,18 @@ GtRlDedicatedBranchReleaseStragegy >> mergeToReleaseBranch [
 ]
 
 { #category : #'accessing - dynamic' }
-GtRlDedicatedBranchReleaseStragegy >> releaseBranch [
-	^ self repositoryRelease icebergRepository branchNamed: self releaseBranchName 
+GtRlDedicatedBranchReleaseStragegy >> referenceBranch [
+	^ self repositoryRelease icebergRepository branchNamed: self referenceBranchName 
 ]
 
 { #category : #accessing }
-GtRlDedicatedBranchReleaseStragegy >> releaseBranchName [
-	^ releaseBranchName
+GtRlDedicatedBranchReleaseStragegy >> referenceBranchName [
+	^ referenceBranchName
 ]
 
 { #category : #accessing }
-GtRlDedicatedBranchReleaseStragegy >> releaseBranchName: aBranchName [
-	releaseBranchName := aBranchName
+GtRlDedicatedBranchReleaseStragegy >> referenceBranchName: aBranchName [
+	referenceBranchName := aBranchName
 ]
 
 { #category : #actions }
@@ -121,7 +112,7 @@ GtRlDedicatedBranchReleaseStragegy >> updateFor: anUpdateWorkflow [
 
 { #category : #'private - actions' }
 GtRlDedicatedBranchReleaseStragegy >> updateReleaseActionsUsing: anUpdateWorkflow [
-	| mergeAction commitAction metadataAction |
+	| mergeAction commitAction metadataAction pushAction |
 	self repositoryRelease resetReleaseActions.
 	
 	mergeAction := GtRlMergeToReleaseBranchAction new
@@ -144,5 +135,11 @@ GtRlDedicatedBranchReleaseStragegy >> updateReleaseActionsUsing: anUpdateWorkflo
 	commitAction := GtRlCommitAndTagReleaseAction new
 		repositoryRelease: self repositoryRelease;
 	 	order: anUpdateWorkflow nextActionOrder.
-	self repositoryRelease addReleaseAction: commitAction
+	self repositoryRelease addReleaseAction: commitAction.
+	
+	self repositoryRelease hasRemoteOrigin ifTrue: [
+		pushAction := GtRlPushToOriginReleaseAction new
+			repositoryRelease: self repositoryRelease;
+	 		order: anUpdateWorkflow nextActionOrder.
+		self repositoryRelease addReleaseAction: pushAction ]
 ]
