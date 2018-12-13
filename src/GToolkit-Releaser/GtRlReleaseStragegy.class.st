@@ -37,3 +37,13 @@ GtRlReleaseStragegy >> repositoryRelease: aRepositoryRelease [
 GtRlReleaseStragegy >> updateFor: anUpdateWorkflow [
 	self subclassResponsibility
 ]
+
+{ #category : #'actions - building' }
+GtRlReleaseStragegy >> updatePostBuildActionsUsing: anUpdateWorkflow [
+	"By default do nothing. Subclasses should implement this to create actions."
+]
+
+{ #category : #'actions - building' }
+GtRlReleaseStragegy >> updateReleaseActionsUsing: anUpdateWorkflow [
+	"By default do nothing. Subclasses should implement this to create actions."
+]

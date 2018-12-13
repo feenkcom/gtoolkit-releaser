@@ -2,20 +2,31 @@ Class {
 	#name : #GtRlSemanticTagReleaseStrategy,
 	#superclass : #GtRlReleaseStragegy,
 	#instVars : [
-		'referenceBranchName',
+		'releaseBranchName',
 		'nextVersionComputation',
 		'shouldForceNewRelease'
 	],
 	#category : #'GToolkit-Releaser'
 }
 
+{ #category : #actions }
+GtRlSemanticTagReleaseStrategy >> commitAndTagRelease [
+	| iceRepository |
+	iceRepository := self repositoryRelease icebergRepository.
+	self 
+		assert: [ iceRepository branchName = self releaseBranchName ]
+		description: 'The Iceberg repository needs to be on the release branch.'.
+	self repositoryRelease commitAndTagRelease
+]
+
 { #category : #'private - actions' }
-GtRlSemanticTagReleaseStrategy >> configureNewVersionReleaseUsing: anUpdateWorkflow [
+GtRlSemanticTagReleaseStrategy >> configureNewVersionRelease [
 	| nextVersionNumber |
 	nextVersionNumber := self nextVersionComputation nextVersionNumberForRepository: self repositoryRelease repository.
 	self repositoryRelease 
+		resetReleaseActions;
+		markAsActive;
 		version: nextVersionNumber.
-	self updateReleaseActionsUsing: anUpdateWorkflow.
 		
 	
 ]
@@ -24,7 +35,6 @@ GtRlSemanticTagReleaseStrategy >> configureNewVersionReleaseUsing: anUpdateWorkf
 GtRlSemanticTagReleaseStrategy >> initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration [
 	super initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration.
 	self
-		referenceBranchName: aRepositoryRelease icebergRepository branchName;
 		nextVersionComputation: (aReleaseConfiguration releaseVersionComputationForRepository: aRepositoryRelease repository);
 		shouldForceNewRelease: aReleaseConfiguration shouldForceNewRelease
 ]
@@ -40,18 +50,18 @@ GtRlSemanticTagReleaseStrategy >> nextVersionComputation: aVersionComputation [
 ]
 
 { #category : #'accessing - dynamic' }
-GtRlSemanticTagReleaseStrategy >> referenceBranch [
-	^ self repositoryRelease icebergRepository branchNamed: self referenceBranchName 
+GtRlSemanticTagReleaseStrategy >> releaseBranch [
+	^ self repositoryRelease icebergRepository branchNamed: self releaseBranchName 
 ]
 
 { #category : #accessing }
-GtRlSemanticTagReleaseStrategy >> referenceBranchName [
-	^ referenceBranchName
+GtRlSemanticTagReleaseStrategy >> releaseBranchName [
+	^ releaseBranchName
 ]
 
 { #category : #accessing }
-GtRlSemanticTagReleaseStrategy >> referenceBranchName: aBranchName [
-	referenceBranchName := aBranchName
+GtRlSemanticTagReleaseStrategy >> releaseBranchName: aBranchName [
+	releaseBranchName := aBranchName
 ]
 
 { #category : #accessing }
@@ -64,7 +74,14 @@ GtRlSemanticTagReleaseStrategy >> shouldForceNewRelease: aBoolean [
 	shouldForceNewRelease := aBoolean
 ]
 
-{ #category : #'private - actions' }
-GtRlSemanticTagReleaseStrategy >> updateReleaseActionsUsing: anUpdateWorkflow [
-	self subclassResponsibility
+{ #category : #'actions - building' }
+GtRlSemanticTagReleaseStrategy >> updatePostBuildActionsUsing: anUpdateWorkflow [
+	| pushAction |
+	self repositoryRelease isPassiveRelease ifTrue: [ ^ self ].
+	
+	self repositoryRelease hasRemoteOrigin ifTrue: [
+		pushAction := GtRlPushToOriginReleaseAction new
+			repositoryRelease: self repositoryRelease;
+	 		order: anUpdateWorkflow nextActionOrder.
+		self repositoryRelease addReleaseAction: pushAction ]
 ]

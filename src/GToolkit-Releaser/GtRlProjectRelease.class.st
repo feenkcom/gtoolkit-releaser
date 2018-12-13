@@ -66,7 +66,7 @@ GtRlProjectRelease >> gtProjectMapFor: aView [
 		painting: [ :mondrian |
 			mondrian nodes 
 				shape: [ :aProjectRelease ||textColor|
-					textColor := (aProjectRelease isPassiveRelease or: [ aProjectRelease isLeaf ])
+					textColor := (aProjectRelease hasReleaseActions not or: [ aProjectRelease isLeaf ])
 						ifTrue: [ Color gray ] ifFalse: [ Color black ].
 					BlTextElement new 
 						text: ((
@@ -100,11 +100,6 @@ GtRlProjectRelease >> gtRepoMapFor: aView [
 { #category : #testing }
 GtRlProjectRelease >> isLeaf [
 	^ self project isLeaf
-]
-
-{ #category : #testing }
-GtRlProjectRelease >> isPassiveRelease [
-	^ self repositoryRelease isPassiveRelease
 ]
 
 { #category : #accessing }

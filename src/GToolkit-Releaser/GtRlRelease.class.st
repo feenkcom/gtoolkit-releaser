@@ -13,21 +13,14 @@ GtRlRelease >> addReleaseAction: aReleaseAction [
 ]
 
 { #category : #ui }
-GtRlRelease >> decorateText: aStringOrText [
-	^ self isPassiveRelease
-		ifTrue: [ aStringOrText asRopedText foreground: Color gray ] 
-		ifFalse: [ aStringOrText asRopedText]
-]
-
-{ #category : #ui }
 GtRlRelease >> gtReleaseActionsFor: aView [
 	<gtView>
 	^ self releaseActions gtReleaseActionsFor: aView
 ]
 
 { #category : #testing }
-GtRlRelease >> isPassiveRelease [
-	self subclassResponsibility 
+GtRlRelease >> hasReleaseActions [ 
+	^ self releaseActions isEmpty not
 ]
 
 { #category : #accessing }
