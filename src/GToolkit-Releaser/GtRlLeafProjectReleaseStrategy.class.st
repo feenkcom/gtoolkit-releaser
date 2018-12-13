@@ -28,9 +28,9 @@ GtRlLeafProjectReleaseStrategy >> updateFor: anUpdateWorkflow [
 	self repositoryRelease semanticVersionTags ifEmpty: [
 		^ self configureNewVersionReleaseUsing: anUpdateWorkflow ].
 	
-	"3. If the latest release is not the head commit of the reference branch generate a new release."
+	"3. If the latest release is not the head commit of the release branch generate a new release."
 	latestVersionTag := self repositoryRelease latestSemanticVersionTag.
-	(latestVersionTag commit = self referenceBranch commit) ifFalse: [
+	(latestVersionTag commit = self releaseBranch commit) ifFalse: [
 		^ self configureNewVersionReleaseUsing: anUpdateWorkflow ].
 	
 	"Use the latest releae instead of generating a new one."
