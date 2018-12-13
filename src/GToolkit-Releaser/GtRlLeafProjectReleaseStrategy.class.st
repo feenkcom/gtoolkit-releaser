@@ -21,7 +21,7 @@ GtRlLeafProjectReleaseStrategy >> description [
 
 { #category : #accessing }
 GtRlLeafProjectReleaseStrategy >> releaseBranchName [
-	^ self referenceBranch 
+	^ self referenceBranchName
 ]
 
 { #category : #accessing }
