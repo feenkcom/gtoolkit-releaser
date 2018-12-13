@@ -20,6 +20,11 @@ GtRlLeafProjectReleaseStrategy >> description [
 ]
 
 { #category : #accessing }
+GtRlLeafProjectReleaseStrategy >> releaseBranchName [
+	^ self referenceBranch 
+]
+
+{ #category : #accessing }
 GtRlLeafProjectReleaseStrategy >> updateFor: anUpdateWorkflow [
 	| latestVersionTag |
 	

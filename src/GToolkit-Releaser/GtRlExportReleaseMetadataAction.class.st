@@ -11,7 +11,7 @@ GtRlExportReleaseMetadataAction >> description [
 
 { #category : #printing }
 GtRlExportReleaseMetadataAction >> descriptionDetails [
-	^ 'Export for each repository the version that is loaded in the current version'
+	^ 'Export ', GtRlReleaseVersionMetadata fileName
 ]
 
 { #category : #ui }
