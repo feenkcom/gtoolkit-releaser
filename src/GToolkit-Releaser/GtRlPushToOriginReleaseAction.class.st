@@ -22,8 +22,21 @@ GtRlPushToOriginReleaseAction >> name [
 
 { #category : #actions }
 GtRlPushToOriginReleaseAction >> performAction [
+	| branch remote |
+	branch := self repositoryRelease icebergRepository branch.
 	self 
-		assert: [ self repositoryRelease hasRemoteOrigin ]
-		description: 'The Iceberg repository needs to have a remove origin where to push the release.'.
-	self repositoryRelease releaseStrategy releaseBranch pushTo: self repositoryRelease remoteOrigin
+		assert: [ self repositoryRelease icebergRepository branchName = self repositoryRelease releaseStrategy releaseBranchName ]
+		description: 'The Iceberg repository needs to be on the release branch.'.
+	self 
+		assert: [ branch hasUpstream or: [ self repositoryRelease hasRemoteOrigin ] ]
+		description: 'The release branch or the Iceberg repository need to have a remove origin where to push the release.'.
+	
+	remote := branch hasUpstream
+		ifTrue: [ branch upstream remote ]
+		ifFalse: [ self repositoryRelease remoteOrigin ].
+		
+	self repositoryRelease icebergRepository branch pushTo: remote. 
+	
+	"Does not work due to exception"
+	"self repositoryRelease releaseStrategy releaseBranch pushTo: remote"
 ]
