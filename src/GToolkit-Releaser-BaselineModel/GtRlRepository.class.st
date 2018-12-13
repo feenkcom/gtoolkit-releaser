@@ -15,27 +15,6 @@ GtRlRepository class >> fromUrlString: aString [
 		url: (ZnUrl fromString: aString)
 ]
 
-{ #category : #'as yet unclassified' }
-GtRlRepository class >> gtRepositories [
-	| project builder repoToBaselinesMap allProjects |
-	builder := GtRlModelBuilder new.
-	repoToBaselinesMap := IdentityDictionary  new.
-	project := builder 
-		buildProjectFromBaselineClass: BaselineOfGToolkit
-		withRepositoryDescription: 'github://feenkcom/gtoolkit/src'.
-	allProjects := project withDeepCollect: #childProjects.
-	(allProjects "select: #isGToolkitProject") do:[ :aProject |
-		repoToBaselinesMap 
-			at: aProject githubRepoURL asSymbol
-			ifPresent: [ :aFkRlRepository | aFkRlRepository addProject: aProject ] 
-			ifAbsentPut: [|repository| 
-				repository := GtRlRepository fromUrlString: aProject githubRepoURL. 
-				repository addProject: aProject. 
-				repository ] ].
-	^ repoToBaselinesMap.
-
-]
-
 { #category : #comparing }
 GtRlRepository >> = anotherObject [
 	self == anotherObject
