@@ -18,5 +18,5 @@ GtRlNullReleaseStragegy >> nullVersionNumber [
 GtRlNullReleaseStragegy >> updateFor: anUpdateWorkflow [
 	self repositoryRelease
 		version: self nullVersionNumber;
-		resetReleaseActions
+		makePassiveRelease
 ]

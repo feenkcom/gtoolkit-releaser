@@ -19,5 +19,5 @@ GtRlBaselineTagReleaseStrategy >> tagVersionNumber [
 GtRlBaselineTagReleaseStrategy >> updateFor: anUpdateWorkflow [
 	self repositoryRelease
 		version: self tagVersionNumber;
-		resetReleaseActions
+		makePassiveRelease
 ]

@@ -19,5 +19,5 @@ GtRlLatestCommitReleaseStrategy >> description [
 GtRlLatestCommitReleaseStrategy >> updateFor: anUpdateWorkflow [
 	self repositoryRelease
 		version: self commitVersionNumber;
-		resetReleaseActions
+		makePassiveRelease
 ]

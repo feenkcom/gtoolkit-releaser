@@ -22,30 +22,32 @@ GtRlLeafProjectReleaseStrategy >> updateFor: anUpdateWorkflow [
 	
 	"1. If a new release if explicitly requested created it."
 	self shouldForceNewRelease ifTrue: [ 
-		^ self configureNewVersionReleaseUsing: anUpdateWorkflow ].
+		^ self configureNewVersionRelease ].
 	
 	"2. If there is no release tag in the repository a new release is needed."
 	self repositoryRelease semanticVersionTags ifEmpty: [
-		^ self configureNewVersionReleaseUsing: anUpdateWorkflow ].
+		^ self configureNewVersionRelease ].
 	
 	"3. If the latest release is not the head commit of the release branch generate a new release."
 	latestVersionTag := self repositoryRelease latestSemanticVersionTag.
 	(latestVersionTag commit = self releaseBranch commit) ifFalse: [
-		^ self configureNewVersionReleaseUsing: anUpdateWorkflow ].
+		^ self configureNewVersionRelease ].
 	
 	"Use the latest releae instead of generating a new one."
 	^ self repositoryRelease 
 		version: latestVersionTag gtAsSemanticVersionNumber;
-		resetReleaseActions
+		makePassiveRelease
 ]
 
-{ #category : #'private - actions' }
+{ #category : #'actions - building' }
 GtRlLeafProjectReleaseStrategy >> updateReleaseActionsUsing: anUpdateWorkflow [
 	| commitAction |
 	self repositoryRelease resetReleaseActions.
+	self repositoryRelease isPassiveRelease ifTrue: [ ^ self ].
 	
 	commitAction := GtRlCommitAndTagReleaseAction new
 		repositoryRelease: self repositoryRelease;
 	 	order: anUpdateWorkflow nextActionOrder.
-	self repositoryRelease addReleaseAction: commitAction
+	self repositoryRelease addReleaseAction: commitAction.
+	
 ]

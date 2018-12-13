@@ -52,7 +52,7 @@ GtRlDedicatedBranchReleaseStragegy >> initializeFor: aRepositoryRelease fromConf
 		releaseBranchName: (aReleaseConfiguration releaseBranchForRepository: aRepositoryRelease repository)
 ]
 
-{ #category : #'private - actions' }
+{ #category : #'private - testing' }
 GtRlDedicatedBranchReleaseStragegy >> isReferenceBranchMergedIn: anIceCommit [
 	| latestRefenceBranchCommit |
 	latestRefenceBranchCommit := self referenceBranch commit.
@@ -89,31 +89,32 @@ GtRlDedicatedBranchReleaseStragegy >> updateFor: anUpdateWorkflow [
 	| latestVersionTag releaseMetadata|
 	"1. If a new release if explicitly requested created it."
 	self shouldForceNewRelease ifTrue: [ 
-		^ self configureNewVersionReleaseUsing: anUpdateWorkflow ].
+		^ self configureNewVersionRelease ].
 	
 	"2. If there is no release tag in the repository a new release is needed."
 	self repositoryRelease semanticVersionTags ifEmpty: [
-		^ self configureNewVersionReleaseUsing: anUpdateWorkflow ].
+		^ self configureNewVersionRelease ].
 	
 	"3. If the latest release tag does not include the latest commit from the reference branch generate a new release."
 	latestVersionTag := self repositoryRelease latestSemanticVersionTag.
 	(self isReferenceBranchMergedIn: latestVersionTag commit) ifFalse: [
-		^ self configureNewVersionReleaseUsing: anUpdateWorkflow ].
+		^ self configureNewVersionRelease ].
 	
 	"4. If any dependency has a different version than in the current release generate a new release."
 	releaseMetadata := GtRlReleaseVersionMetadata fromCommit: latestVersionTag commit.
 	(self repositoryRelease matchesDependenciesIn: releaseMetadata) ifFalse: [
-		^ self configureNewVersionReleaseUsing: anUpdateWorkflow ].
+		^ self configureNewVersionRelease ].
 	
 	^ self repositoryRelease 
 		version: latestVersionTag gtAsSemanticVersionNumber;
-		resetReleaseActions
+		makePassiveRelease
 ]
 
-{ #category : #'private - actions' }
+{ #category : #'actions - building' }
 GtRlDedicatedBranchReleaseStragegy >> updateReleaseActionsUsing: anUpdateWorkflow [
-	| mergeAction commitAction metadataAction pushAction |
+	| mergeAction commitAction metadataAction |
 	self repositoryRelease resetReleaseActions.
+	self repositoryRelease isPassiveRelease ifTrue: [ ^ self ].
 	
 	mergeAction := GtRlMergeToReleaseBranchAction new
 		repositoryRelease: self repositoryRelease;
@@ -136,10 +137,4 @@ GtRlDedicatedBranchReleaseStragegy >> updateReleaseActionsUsing: anUpdateWorkflo
 		repositoryRelease: self repositoryRelease;
 	 	order: anUpdateWorkflow nextActionOrder.
 	self repositoryRelease addReleaseAction: commitAction.
-	
-	self repositoryRelease hasRemoteOrigin ifTrue: [
-		pushAction := GtRlPushToOriginReleaseAction new
-			repositoryRelease: self repositoryRelease;
-	 		order: anUpdateWorkflow nextActionOrder.
-		self repositoryRelease addReleaseAction: pushAction ]
 ]

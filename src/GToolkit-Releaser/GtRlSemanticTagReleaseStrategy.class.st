@@ -20,12 +20,13 @@ GtRlSemanticTagReleaseStrategy >> commitAndTagRelease [
 ]
 
 { #category : #'private - actions' }
-GtRlSemanticTagReleaseStrategy >> configureNewVersionReleaseUsing: anUpdateWorkflow [
+GtRlSemanticTagReleaseStrategy >> configureNewVersionRelease [
 	| nextVersionNumber |
 	nextVersionNumber := self nextVersionComputation nextVersionNumberForRepository: self repositoryRelease repository.
 	self repositoryRelease 
+		resetReleaseActions;
+		markAsActive;
 		version: nextVersionNumber.
-	self updateReleaseActionsUsing: anUpdateWorkflow.
 		
 	
 ]
@@ -73,7 +74,14 @@ GtRlSemanticTagReleaseStrategy >> shouldForceNewRelease: aBoolean [
 	shouldForceNewRelease := aBoolean
 ]
 
-{ #category : #'private - actions' }
-GtRlSemanticTagReleaseStrategy >> updateReleaseActionsUsing: anUpdateWorkflow [
-	self subclassResponsibility
+{ #category : #'actions - building' }
+GtRlSemanticTagReleaseStrategy >> updatePostBuildActionsUsing: anUpdateWorkflow [
+	| pushAction |
+	self repositoryRelease isPassiveRelease ifTrue: [ ^ self ].
+	
+	self repositoryRelease hasRemoteOrigin ifTrue: [
+		pushAction := GtRlPushToOriginReleaseAction new
+			repositoryRelease: self repositoryRelease;
+	 		order: anUpdateWorkflow nextActionOrder.
+		self repositoryRelease addReleaseAction: pushAction ]
 ]

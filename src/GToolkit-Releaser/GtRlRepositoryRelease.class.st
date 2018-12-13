@@ -3,6 +3,7 @@ Class {
 	#superclass : #GtRlRelease,
 	#instVars : [
 		'version',
+		'isPassiveRelease',
 		'releaseStrategy',
 		'repository',
 		'projectReleases'
@@ -46,6 +47,13 @@ GtRlRepositoryRelease >> commitAndTagRelease [
 		force: true.
 	iceRepository branch commit ensureCreateTag: self versionString.
 		
+]
+
+{ #category : #ui }
+GtRlRepositoryRelease >> decorateText: aStringOrText [
+	^ self isPassiveRelease
+		ifTrue: [ aStringOrText asRopedText foreground: Color gray ] 
+		ifFalse: [ aStringOrText asRopedText]
 ]
 
 { #category : #printing }
@@ -150,7 +158,7 @@ GtRlRepositoryRelease >> gtRepoMapFor: aView [
 				forEach: [ :aRepositoryRelease | 
 					mondrian nodes
 						shape: [ :aProjectRelease ||textColor text|
-							textColor := (aProjectRelease isPassiveRelease or: [ aProjectRelease isLeaf ])
+							textColor := (aProjectRelease hasReleaseActions  or: [ aProjectRelease isLeaf ])
 								ifTrue: [ Color gray ] ifFalse: [ Color black ].
 							text := aProjectRelease project name asRopedText foreground: textColor.
 							(BlTextElement text: text)
@@ -196,7 +204,7 @@ GtRlRepositoryRelease >> initialize [
 
 { #category : #testing }
 GtRlRepositoryRelease >> isPassiveRelease [
-	^ self releaseActions isEmpty
+	^ isPassiveRelease
 ]
 
 { #category : #'accessing - dynamic' }
@@ -206,6 +214,22 @@ GtRlRepositoryRelease >> latestSemanticVersionTag [
 		thenCollect: [ :anIceTag | 
 			anIceTag -> anIceTag gtAsSemanticVersionNumber]) sorted: [ :a :b |
 				a value <= b value ]) last key
+]
+
+{ #category : #actions }
+GtRlRepositoryRelease >> makePassiveRelease [
+	self markAsPassive.
+	self resetReleaseActions
+]
+
+{ #category : #actions }
+GtRlRepositoryRelease >> markAsActive [
+	isPassiveRelease := false
+]
+
+{ #category : #actions }
+GtRlRepositoryRelease >> markAsPassive [
+	isPassiveRelease := true
 ]
 
 { #category : #testing }

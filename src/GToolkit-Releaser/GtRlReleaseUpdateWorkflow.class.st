@@ -25,6 +25,12 @@ GtRlReleaseUpdateWorkflow >> repositoriesInReleaseOrderFor: aProjectRelease [
 
 { #category : #updating }
 GtRlReleaseUpdateWorkflow >> update: aProjectRelease [
-	(self repositoriesInReleaseOrderFor: aProjectRelease) do: [ :aRepositoryRelease | 
-		aRepositoryRelease releaseStrategy updateFor: self ].
+	| repositories |
+	repositories := self repositoriesInReleaseOrderFor: aProjectRelease.
+	repositories do: [ :aRepositoryRelease | 
+		aRepositoryRelease releaseStrategy 
+			updateFor: self;
+			updateReleaseActionsUsing: self ].
+	repositories do: [ :aRepositoryRelease | 
+		aRepositoryRelease releaseStrategy updatePostBuildActionsUsing: self ].
 ]
