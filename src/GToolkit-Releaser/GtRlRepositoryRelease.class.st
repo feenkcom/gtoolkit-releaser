@@ -158,7 +158,7 @@ GtRlRepositoryRelease >> gtRepoMapFor: aView [
 				forEach: [ :aRepositoryRelease | 
 					mondrian nodes
 						shape: [ :aProjectRelease ||textColor text|
-							textColor := (aProjectRelease hasReleaseActions  or: [ aProjectRelease isLeaf ])
+							textColor := (aProjectRelease hasReleaseActions not or: [ aProjectRelease isLeaf ])
 								ifTrue: [ Color gray ] ifFalse: [ Color black ].
 							text := aProjectRelease project name asRopedText foreground: textColor.
 							(BlTextElement text: text)
@@ -199,12 +199,13 @@ GtRlRepositoryRelease >> icebergRepository [
 { #category : #initialize }
 GtRlRepositoryRelease >> initialize [
 	super initialize.
-	self releaseStrategy: GtRlNullReleaseStragegy new
+	self version: GtRlNullVersionNumber new.
+	self releaseStrategy: GtRlNullReleaseStragegy new.
 ]
 
 { #category : #testing }
 GtRlRepositoryRelease >> isPassiveRelease [
-	^ isPassiveRelease
+	^ isPassiveRelease ifNil: [ true ]
 ]
 
 { #category : #'accessing - dynamic' }
