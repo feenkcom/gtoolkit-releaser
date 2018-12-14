@@ -6,7 +6,7 @@ You can load the whole code in Pharo 7.0 using the following snippet:
 ```
 EpMonitor current disable.
 Metacello new
-   baseline: 'FeenkReleaser';
+   baseline: 'GToolkitReleaser';
    repository: 'github://feenkcom/gtoolkit-releaser/src';
    load.
 EpMonitor current enable.
