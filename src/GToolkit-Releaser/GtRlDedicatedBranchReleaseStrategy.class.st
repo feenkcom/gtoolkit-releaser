@@ -1,5 +1,5 @@
 Class {
-	#name : #GtRlDedicatedBranchReleaseStragegy,
+	#name : #GtRlDedicatedBranchReleaseStrategy,
 	#superclass : #GtRlSemanticTagReleaseStrategy,
 	#instVars : [
 		'referenceBranchName'
@@ -8,12 +8,12 @@ Class {
 }
 
 { #category : #printing }
-GtRlDedicatedBranchReleaseStragegy >> description [
+GtRlDedicatedBranchReleaseStrategy >> description [
 	^ 'Branch #', (self releaseBranchName ifNil: [ 'missing' ])
 ]
 
 { #category : #ui }
-GtRlDedicatedBranchReleaseStragegy >> gtCommitsAncestryFor: aView [
+GtRlDedicatedBranchReleaseStrategy >> gtCommitsAncestryFor: aView [
 	<gtView>
 	^ aView mondrian
 		title: 'Commits ancestry' translated;
@@ -45,7 +45,7 @@ GtRlDedicatedBranchReleaseStragegy >> gtCommitsAncestryFor: aView [
 ]
 
 { #category : #initialization }
-GtRlDedicatedBranchReleaseStragegy >> initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration [
+GtRlDedicatedBranchReleaseStrategy >> initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration [
 	super initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration.
 	self
 		referenceBranchName: aRepositoryRelease icebergRepository branchName;
@@ -53,14 +53,14 @@ GtRlDedicatedBranchReleaseStragegy >> initializeFor: aRepositoryRelease fromConf
 ]
 
 { #category : #'private - testing' }
-GtRlDedicatedBranchReleaseStragegy >> isReferenceBranchMergedIn: anIceCommit [
+GtRlDedicatedBranchReleaseStrategy >> isReferenceBranchMergedIn: anIceCommit [
 	| latestRefenceBranchCommit |
 	latestRefenceBranchCommit := self referenceBranch commit.
 	^ anIceCommit isParentOf: latestRefenceBranchCommit
 ]
 
 { #category : #actions }
-GtRlDedicatedBranchReleaseStragegy >> mergeToReleaseBranch [
+GtRlDedicatedBranchReleaseStrategy >> mergeToReleaseBranch [
 	| icebergRepository |
 	icebergRepository := self repositoryRelease icebergRepository.
 	self 
@@ -70,22 +70,22 @@ GtRlDedicatedBranchReleaseStragegy >> mergeToReleaseBranch [
 ]
 
 { #category : #'accessing - dynamic' }
-GtRlDedicatedBranchReleaseStragegy >> referenceBranch [
+GtRlDedicatedBranchReleaseStrategy >> referenceBranch [
 	^ self repositoryRelease icebergRepository branchNamed: self referenceBranchName 
 ]
 
 { #category : #accessing }
-GtRlDedicatedBranchReleaseStragegy >> referenceBranchName [
+GtRlDedicatedBranchReleaseStrategy >> referenceBranchName [
 	^ referenceBranchName
 ]
 
 { #category : #accessing }
-GtRlDedicatedBranchReleaseStragegy >> referenceBranchName: aBranchName [
+GtRlDedicatedBranchReleaseStrategy >> referenceBranchName: aBranchName [
 	referenceBranchName := aBranchName
 ]
 
 { #category : #actions }
-GtRlDedicatedBranchReleaseStragegy >> updateFor: anUpdateWorkflow [
+GtRlDedicatedBranchReleaseStrategy >> updateFor: anUpdateWorkflow [
 	| latestVersionTag releaseMetadata|
 	"1. If a new release if explicitly requested created it."
 	self shouldForceNewRelease ifTrue: [ 
@@ -111,7 +111,7 @@ GtRlDedicatedBranchReleaseStragegy >> updateFor: anUpdateWorkflow [
 ]
 
 { #category : #'actions - building' }
-GtRlDedicatedBranchReleaseStragegy >> updateReleaseActionsUsing: anUpdateWorkflow [
+GtRlDedicatedBranchReleaseStrategy >> updateReleaseActionsUsing: anUpdateWorkflow [
 	| mergeAction commitAction metadataAction |
 	self repositoryRelease resetReleaseActions.
 	self repositoryRelease isPassiveRelease ifTrue: [ ^ self ].

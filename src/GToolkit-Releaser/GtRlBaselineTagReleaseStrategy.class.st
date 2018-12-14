@@ -1,6 +1,6 @@
 Class {
 	#name : #GtRlBaselineTagReleaseStrategy,
-	#superclass : #GtRlReleaseStragegy,
+	#superclass : #GtRlReleaseStrategy,
 	#category : #'GToolkit-Releaser'
 }
 

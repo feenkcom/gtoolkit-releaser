@@ -43,7 +43,7 @@ GtRlReleaseConfiguration >> defaultReleaseBranchName: aBranchName [
 
 { #category : #accessing }
 GtRlReleaseConfiguration >> defaultReleaseStrategy [
-	^ GtRlDedicatedBranchReleaseStragegy new
+	^ GtRlDedicatedBranchReleaseStrategy new
 ]
 
 { #category : #accessing }

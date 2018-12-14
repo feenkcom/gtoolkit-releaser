@@ -200,7 +200,7 @@ GtRlRepositoryRelease >> icebergRepository [
 GtRlRepositoryRelease >> initialize [
 	super initialize.
 	self version: GtRlNullVersionNumber new.
-	self releaseStrategy: GtRlNullReleaseStragegy new.
+	self releaseStrategy: GtRlNullReleaseStrategy new.
 ]
 
 { #category : #testing }

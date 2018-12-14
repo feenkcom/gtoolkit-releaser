@@ -1,6 +1,6 @@
 Class {
 	#name : #GtRlLatestCommitReleaseStrategy,
-	#superclass : #GtRlReleaseStragegy,
+	#superclass : #GtRlReleaseStrategy,
 	#category : #'GToolkit-Releaser'
 }
 

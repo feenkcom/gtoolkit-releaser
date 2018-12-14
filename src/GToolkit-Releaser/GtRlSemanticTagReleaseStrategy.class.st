@@ -1,6 +1,6 @@
 Class {
 	#name : #GtRlSemanticTagReleaseStrategy,
-	#superclass : #GtRlReleaseStragegy,
+	#superclass : #GtRlReleaseStrategy,
 	#instVars : [
 		'releaseBranchName',
 		'nextVersionComputation',

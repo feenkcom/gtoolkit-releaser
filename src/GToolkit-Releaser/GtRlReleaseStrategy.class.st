@@ -1,5 +1,5 @@
 Class {
-	#name : #GtRlReleaseStragegy,
+	#name : #GtRlReleaseStrategy,
 	#superclass : #Object,
 	#instVars : [
 		'repositoryRelease'
@@ -8,42 +8,42 @@ Class {
 }
 
 { #category : #printing }
-GtRlReleaseStragegy >> description [
+GtRlReleaseStrategy >> description [
 	self subclassResponsibility
 ]
 
 { #category : #ui }
-GtRlReleaseStragegy >> gtCommitsAncestryFor: aView [
+GtRlReleaseStrategy >> gtCommitsAncestryFor: aView [
 	^ aView
 ]
 
 { #category : #initialization }
-GtRlReleaseStragegy >> initializeFor: aRepositoryRelease fromConfiguration: aBuildConfiguration [
+GtRlReleaseStrategy >> initializeFor: aRepositoryRelease fromConfiguration: aBuildConfiguration [
 	self repositoryRelease: aRepositoryRelease.
 	aRepositoryRelease releaseStrategy: self.
 ]
 
 { #category : #accessing }
-GtRlReleaseStragegy >> repositoryRelease [
+GtRlReleaseStrategy >> repositoryRelease [
 	^ repositoryRelease
 ]
 
 { #category : #accessing }
-GtRlReleaseStragegy >> repositoryRelease: aRepositoryRelease [
+GtRlReleaseStrategy >> repositoryRelease: aRepositoryRelease [
 	repositoryRelease := aRepositoryRelease
 ]
 
 { #category : #accessing }
-GtRlReleaseStragegy >> updateFor: anUpdateWorkflow [
+GtRlReleaseStrategy >> updateFor: anUpdateWorkflow [
 	self subclassResponsibility
 ]
 
 { #category : #'actions - building' }
-GtRlReleaseStragegy >> updatePostBuildActionsUsing: anUpdateWorkflow [
+GtRlReleaseStrategy >> updatePostBuildActionsUsing: anUpdateWorkflow [
 	"By default do nothing. Subclasses should implement this to create actions."
 ]
 
 { #category : #'actions - building' }
-GtRlReleaseStragegy >> updateReleaseActionsUsing: anUpdateWorkflow [
+GtRlReleaseStrategy >> updateReleaseActionsUsing: anUpdateWorkflow [
 	"By default do nothing. Subclasses should implement this to create actions."
 ]

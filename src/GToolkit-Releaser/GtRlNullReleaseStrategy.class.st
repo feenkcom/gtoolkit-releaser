@@ -1,21 +1,21 @@
 Class {
-	#name : #GtRlNullReleaseStragegy,
-	#superclass : #GtRlReleaseStragegy,
+	#name : #GtRlNullReleaseStrategy,
+	#superclass : #GtRlReleaseStrategy,
 	#category : #'GToolkit-Releaser'
 }
 
 { #category : #printing }
-GtRlNullReleaseStragegy >> description [
+GtRlNullReleaseStrategy >> description [
 	^ 'Null'
 ]
 
 { #category : #accessing }
-GtRlNullReleaseStragegy >> nullVersionNumber [
+GtRlNullReleaseStrategy >> nullVersionNumber [
 	^ GtRlNullVersionNumber new
 ]
 
 { #category : #actions }
-GtRlNullReleaseStragegy >> updateFor: anUpdateWorkflow [
+GtRlNullReleaseStrategy >> updateFor: anUpdateWorkflow [
 	self repositoryRelease
 		version: self nullVersionNumber;
 		makePassiveRelease
