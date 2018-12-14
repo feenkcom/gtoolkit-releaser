@@ -20,7 +20,8 @@ FakeRepositoryExamples >> aDependentGtRlProjectRelease [
 
 { #category : #'setUp-tearDown' }
 FakeRepositoryExamples >> aGtRlProject: projectName withDependencies: dependencyNames [
-	| projectBuilder project repository diff cls |
+	| projectBuilder project repository diff cls baselineName |
+	baselineName := (#BaselineOf, projectName) asSymbol.
 	IceRepository registry detect: [ :repo | repo name = projectName ] ifFound: [:repo | repo forget].
 	repository := self createNewRepoWithName: projectName.
 	projectBuilder := GtRlModelBuilder new.
@@ -28,17 +29,19 @@ FakeRepositoryExamples >> aGtRlProject: projectName withDependencies: dependency
 	project := projectBuilder 
 		buildProjectFromBaselineClass: cls
 		withRepositoryDescription: 'github://feenkcom/', projectName, '/src'. 
-	self addBaselineCode: project toClass: cls withDependencies: dependencyNames .
-	project addPackage: (GtRlPackage new name: #BaselineOf, projectName; 
+	
+	project addPackage: (GtRlPackage new name: baselineName; 
 								dependencies: (dependencyNames collect: [ :each | each key ]) ).
-	repository workingCopy addPackageNamed: #BaselineOf, projectName.
+	self addBaselineCode: project toClass: cls withDependencies: dependencyNames.							
+	repository workingCopy addPackageNamed: baselineName.
+	
 	diff := repository workingCopyDiff.
 	repository workingCopy 
 			commitChanges: diff
 			withMessage: 'baseline: method code'
 			force: true.
 	
-	Smalltalk globals at: #BaselineOf, projectName ifAbsent: [ 
+	Smalltalk globals at: baselineName ifAbsent: [
 		Metacello new
 	   baseline: projectName;
 	   filetreeDirectory: (repository workingCopy fileSystem / 'src') fullName;
