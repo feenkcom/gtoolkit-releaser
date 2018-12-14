@@ -4,30 +4,11 @@ Class {
 	#category : #'GToolkit-Releaser-BaselineModel-Tests'
 }
 
-{ #category : #'setUp-tearDown' }
-FakeRepositoryExamples >> aDependentGtRlProject [
-	| projectBuilder project repository diff cls |
-	IceRepository registry detect: [ :repo | repo name = #DependentMockRepo ] ifFound: [:repo | repo forget].
-	repository := self createNewRepoWithName: #DependentMockRepo.
-	projectBuilder := GtRlModelBuilder new.
-	cls := self baselineClass: #DependentMockRepo.
-	project := projectBuilder 
-		buildProjectFromBaselineClass: cls
-		withRepositoryDescription: 'github://feenkcom/DependentMockRepo/src'. " we only use the urls as dictionary keys in examples"
-	self addBaselineCode: project toClass: cls withDependencies: {#MockRepo-> #('github://feenkcom/MockRepo/src')}.
-	diff := repository workingCopyDiff.
-	repository workingCopy 
-			commitChanges: diff
-			withMessage: 'baseline: method code'
-			force: true.
-	^ project
-]
-
-{ #category : #'setUp-tearDown' }
+{ #category : #example }
 FakeRepositoryExamples >> aDependentGtRlProjectRelease [
 	<gtExample>
 	| releaseConfiguration workflow project |
-	project := self aDependentGtRlProject.
+	project := self aGtRlProject: #DependentMockRepo withDependencies: {#MockRepo -> #('github://feenkcom/MockRepo/src')}.
 	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
 	workflow := GtRlReleaserExportWorkflow 
 		forBaseline: project baselineClass  
@@ -38,37 +19,39 @@ FakeRepositoryExamples >> aDependentGtRlProjectRelease [
 ]
 
 { #category : #'setUp-tearDown' }
-FakeRepositoryExamples >> aGtRlProject [
+FakeRepositoryExamples >> aGtRlProject: projectName withDependencies: dependencyNames [
 	| projectBuilder project repository diff cls |
-	IceRepository registry detect: [ :repo | repo name = #MockRepo ] ifFound: [:repo | repo forget].
-	repository := self createNewRepoWithName: #MockRepo.
+	IceRepository registry detect: [ :repo | repo name = projectName ] ifFound: [:repo | repo forget].
+	repository := self createNewRepoWithName: projectName.
 	projectBuilder := GtRlModelBuilder new.
-	cls := self baselineClass: #MockRepo.
+	cls := self baselineClass: projectName.
 	project := projectBuilder 
 		buildProjectFromBaselineClass: cls
-		withRepositoryDescription: 'github://feenkcom/MockRepo/src'. " we only use the urls as dictionary keys in examples"
-	project addPackage: (GtRlPackage new name: #BaselineOfMockRepo; dependencies: OrderedCollection new).
-	self addBaselineCode: project toClass: cls.
+		withRepositoryDescription: 'github://feenkcom/', projectName, '/src'. 
+	self addBaselineCode: project toClass: cls withDependencies: dependencyNames .
+	project addPackage: (GtRlPackage new name: #BaselineOf, projectName; 
+								dependencies: (dependencyNames collect: [ :each | each key ]) ).
+	repository workingCopy addPackageNamed: #BaselineOf, projectName.
 	diff := repository workingCopyDiff.
 	repository workingCopy 
 			commitChanges: diff
 			withMessage: 'baseline: method code'
 			force: true.
 	
-	Metacello new
-   baseline: #MockRepo;
-   filetreeDirectory: (repository workingCopy fileSystem / 'src') fullName;
-	unregister;
-   load.
+	Smalltalk globals at: #BaselineOf, projectName ifAbsent: [ 
+		Metacello new
+	   baseline: projectName;
+	   filetreeDirectory: (repository workingCopy fileSystem / 'src') fullName;
+	   load].
 
 	^ project
 ]
 
-{ #category : #'setUp-tearDown' }
+{ #category : #example }
 FakeRepositoryExamples >> aGtRlProjectRelease [
 	<gtExample>
 	| releaseConfiguration workflow project |
-	project := self aGtRlProject.
+	project := self aGtRlProject: #MockRepo withDependencies: OrderedCollection new.
 	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
 	workflow := GtRlReleaserExportWorkflow 
 		forBaseline: project baselineClass  
@@ -76,14 +59,6 @@ FakeRepositoryExamples >> aGtRlProjectRelease [
 		withConfiguration: releaseConfiguration.
 	workflow releaseActions.
 	^ workflow rootProjectRelease 
-]
-
-{ #category : #'setUp-tearDown' }
-FakeRepositoryExamples >> addBaselineCode: project toClass: cls [
-	| baselinecode |
-	baselinecode := project generateSourceWithProjectDependencies: Dictionary new.
-	cls compile: baselinecode.
-	^ cls
 ]
 
 { #category : #'setUp-tearDown' }
