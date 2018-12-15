@@ -6,7 +6,6 @@ Class {
 
 { #category : #example }
 FakeRepositoryExamples >> aDependentGtRlProjectRelease [
-	<gtExample>
 	| releaseConfiguration workflow project |
 	project := self aGtRlProject: #DependentMockRepo withDependencies: {#MockRepo -> #('github://feenkcom/MockRepo/src')}.
 	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
@@ -52,7 +51,6 @@ FakeRepositoryExamples >> aGtRlProject: projectName withDependencies: dependency
 
 { #category : #example }
 FakeRepositoryExamples >> aGtRlProjectRelease [
-	<gtExample>
 	| releaseConfiguration workflow project |
 	project := self aGtRlProject: #MockRepo withDependencies: OrderedCollection new.
 	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
