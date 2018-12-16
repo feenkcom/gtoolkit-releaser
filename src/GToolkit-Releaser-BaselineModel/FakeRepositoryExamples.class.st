@@ -6,33 +6,43 @@ Class {
 
 { #category : #example }
 FakeRepositoryExamples >> aDependentGtRlProjectRelease [
-	<gtExample>
-	| releaseConfiguration workflow project |
-	project := self aGtRlProject: #DependentMockRepo withDependencies: {#MockRepo -> #('github://feenkcom/MockRepo/src')}.
-	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
-	workflow := GtRlReleaserExportWorkflow 
-		forBaseline: project baselineClass  
-		fromRepository: 'github://feenkcom/DependentMockRepo/src'
-		withConfiguration: releaseConfiguration.
-	workflow releaseActions.
-	^ workflow rootProjectRelease 
+	| releaseConfiguration project releaseBuilder release mockRepoFiletreeURL|
+	IceRepository registry detect: [ :repo | repo name = 'MockRepo'] ifFound: [:repo | 
+		mockRepoFiletreeURL := 'filetree://', repo codeDirectory absolutePath fullName. 
+		project := self aGtRlProject: #DependentMockRepo withDependencies: {#MockRepo -> {mockRepoFiletreeURL}}.
+		releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
+		releaseBuilder := GtRlReleaseBuilder new
+			configuration: releaseConfiguration. 
+		release := releaseBuilder buildReleaseForProject: project.
+		^ GtRlReleaserExportWorkflow new
+			rootProjectRelease: release
+	]
+	
+
 ]
 
 { #category : #'setUp-tearDown' }
 FakeRepositoryExamples >> aGtRlProject: projectName withDependencies: dependencyNames [
-	| projectBuilder project repository diff cls baselineName |
+	| projectBuilder project repository diff cls baselineName filetreeDir |
 	baselineName := (#BaselineOf, projectName) asSymbol.
 	IceRepository registry detect: [ :repo | repo name = projectName ] ifFound: [:repo | repo forget].
 	repository := self createNewRepoWithName: projectName.
+	filetreeDir := (repository workingCopy fileSystem / 'src') fullName.
 	projectBuilder := GtRlModelBuilder new.
 	cls := self baselineClass: projectName.
 	project := projectBuilder 
 		buildProjectFromBaselineClass: cls
-		withRepositoryDescription: 'github://feenkcom/', projectName, '/src'. 
-	
+		withRepositoryDescription: 'filetree:/', filetreeDir. 
+
 	project addPackage: (GtRlPackage new name: baselineName; 
 								dependencies: (dependencyNames collect: [ :each | each key ]) ).
-	self addBaselineCode: project toClass: cls withDependencies: dependencyNames.							
+								
+	self addBaselineCode: project toClass: cls withDependencies: dependencyNames.
+			
+	project := projectBuilder 
+		buildProjectFromBaselineClass: cls
+		withRepositoryDescription: 'filetree:/', filetreeDir. 
+						
 	repository workingCopy addPackageNamed: baselineName.
 	
 	diff := repository workingCopyDiff.
@@ -41,10 +51,14 @@ FakeRepositoryExamples >> aGtRlProject: projectName withDependencies: dependency
 			withMessage: 'baseline: method code'
 			force: true.
 	
-	Smalltalk globals at: baselineName ifAbsent: [
+	(Metacello image
+    project: projectName;
+    list)
+    detect: [ :each | true ]
+    ifNone:  [
 		Metacello new
 	   baseline: projectName;
-	   filetreeDirectory: (repository workingCopy fileSystem / 'src') fullName;
+	   filetreeDirectory: filetreeDir;
 	   load].
 
 	^ project
@@ -53,15 +67,15 @@ FakeRepositoryExamples >> aGtRlProject: projectName withDependencies: dependency
 { #category : #example }
 FakeRepositoryExamples >> aGtRlProjectRelease [
 	<gtExample>
-	| releaseConfiguration workflow project |
+	| releaseConfiguration releaseBuilder project release |
 	project := self aGtRlProject: #MockRepo withDependencies: OrderedCollection new.
 	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
-	workflow := GtRlReleaserExportWorkflow 
-		forBaseline: project baselineClass  
-		fromRepository: 'github://feenkcom/MockRepo/src'
-		withConfiguration: releaseConfiguration.
-	workflow releaseActions.
-	^ workflow rootProjectRelease 
+	releaseBuilder := GtRlReleaseBuilder new
+		configuration: releaseConfiguration. 
+	release := releaseBuilder buildReleaseForProject: project.
+	^ GtRlReleaserExportWorkflow new
+		rootProjectRelease: release
+
 ]
 
 { #category : #'setUp-tearDown' }
@@ -91,7 +105,7 @@ FakeRepositoryExamples >> createNewRepoWithName: repoName [
 	
 	repoName asFileReference ensureDeleteAll .
 	repoFolder := repoName asFileReference.
-	repo:=IceRepositoryCreator new
+	repo := IceRepositoryCreator new
 	location: repoFolder;
 	subdirectory: 'src';
 	createNewRepositoryNamed: repoName.

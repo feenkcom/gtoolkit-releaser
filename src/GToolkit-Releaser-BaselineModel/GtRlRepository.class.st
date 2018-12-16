@@ -236,8 +236,9 @@ GtRlRepository >> projects [
 
 { #category : #accessing }
 GtRlRepository >> repositoryName [
-	| firstPathSegment |
-	firstPathSegment := self url segments first.
+	| firstPathSegment size |
+	size := self url segments size. 
+	firstPathSegment := self url segments at:(size-1).
 	^ (firstPathSegment includes: $:)
 		ifTrue: [ firstPathSegment copyUpTo: $: ]
 		ifFalse: [ firstPathSegment ]
