@@ -66,7 +66,6 @@ FakeRepositoryExamples >> aGtRlProject: projectName withDependencies: dependency
 
 { #category : #example }
 FakeRepositoryExamples >> aGtRlProjectRelease [
-	<gtExample>
 	| releaseConfiguration releaseBuilder project release |
 	project := self aGtRlProject: #MockRepo withDependencies: OrderedCollection new.
 	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
