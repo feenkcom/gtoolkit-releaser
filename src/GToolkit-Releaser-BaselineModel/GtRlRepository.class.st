@@ -236,12 +236,14 @@ GtRlRepository >> projects [
 
 { #category : #accessing }
 GtRlRepository >> repositoryName [
-	| firstPathSegment size |
+	| nameSegment size segmentIndex |
 	size := self url segments size. 
-	firstPathSegment := self url segments at:(size-1).
-	^ (firstPathSegment includes: $:)
-		ifTrue: [ firstPathSegment copyUpTo: $: ]
-		ifFalse: [ firstPathSegment ]
+	segmentIndex := size - 1. 
+	segmentIndex == 0 ifTrue: [ segmentIndex :=1  ].
+	nameSegment := self url segments at: segmentIndex.
+	^ (nameSegment includes: $:)
+		ifTrue: [ nameSegment copyUpTo: $: ]
+		ifFalse: [ nameSegment ]
 ]
 
 { #category : #accessing }

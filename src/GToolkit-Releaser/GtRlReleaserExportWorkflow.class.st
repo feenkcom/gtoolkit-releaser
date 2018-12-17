@@ -8,6 +8,17 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
+{ #category : #releasing }
+GtRlReleaserExportWorkflow class >> buildGToolkitRelease [
+	| releaseConfiguration workflow |
+	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
+	workflow := GtRlReleaserExportWorkflow 
+		forBaseline: BaselineOfGToolkit 
+		fromRepository: 'github://feenkcom/gtoolkit/src'
+		withConfiguration: releaseConfiguration.
+	^ workflow
+]
+
 { #category : #'instance creation' }
 GtRlReleaserExportWorkflow class >> forBaseline: aBaselineClass fromRepository: aRepositoryUrl withConfiguration: aReleaseConfiguration [
 	| projectBuilder releaseBuilder project release |
@@ -45,12 +56,8 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 
 { #category : #releasing }
 GtRlReleaserExportWorkflow class >> performGToolkitRelease [
-	| releaseConfiguration workflow |
-	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
-	workflow := GtRlReleaserExportWorkflow 
-		forBaseline: BaselineOfGToolkit 
-		fromRepository: 'github://feenkcom/gtoolkit/src'
-		withConfiguration: releaseConfiguration.
+	| workflow |
+	workflow := self buildGToolkitRelease.
 	^ workflow executeReleaseActions.
 ]
 

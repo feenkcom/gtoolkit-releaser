@@ -111,6 +111,30 @@ ReleaserExamples >> baselineClass: project [
 	^ cls
 ]
 
+{ #category : #example }
+ReleaserExamples >> createCommitProject [
+	| commitProject stream commitProjectURL |
+	commitProject := self aGtRlProject: #CommitProject withDependencies: OrderedCollection new. 
+	stream := String new writeStream.
+	commitProject repository url printOn: stream.
+	commitProjectURL := stream contents.
+	^ commitProjectURL
+
+
+]
+
+{ #category : #example }
+ReleaserExamples >> createLatestProject [
+	| latestProject stream latestProjectURL |
+	latestProject := self aGtRlProject: #LatestProject withDependencies: OrderedCollection new.  
+	stream := String new writeStream.
+	latestProject repository url printOn: stream.
+	latestProjectURL := stream contents.
+	^ latestProjectURL
+
+
+]
+
 { #category : #'setUp-tearDown' }
 ReleaserExamples >> createNewRepoWithName: repoName [
 	| repo repoFolder packagest baseline diff dotProjectText dotProperties dotProject|
@@ -150,19 +174,11 @@ ReleaserExamples >> createNewRepoWithName: repoName [
 
 { #category : #example }
 ReleaserExamples >> createProjectWithThreeDependencies [
-	| releaseConfiguration project releaseBuilder release commitProject latestProject stream tagProjectURL commitProjectURL latestProjectURL |
+	| releaseConfiguration project releaseBuilder release tagProjectURL commitProjectURL latestProjectURL |
 	
 	tagProjectURL := self createTagProject.
-	
-	commitProject := self aGtRlProject: #CommitProject withDependencies: OrderedCollection new. 
-	stream := String new writeStream.
-	commitProject repository url printOn: stream.
-	commitProjectURL := stream contents.
-	
-	latestProject := self aGtRlProject: #LatestProject withDependencies: OrderedCollection new.  
-	stream := String new writeStream.
-	latestProject repository url printOn: stream.
-	latestProjectURL := stream contents.
+	commitProjectURL := self createCommitProject.
+	latestProjectURL := self createLatestProject. 
 	
 	project := self aGtRlProject: 
 		#ExampleProject withDependencies: {#TagProject -> {tagProjectURL}.  
@@ -203,6 +219,7 @@ ReleaserExamples >> createTagProject [
 		fromRepository: tagProjectURL
 		withConfiguration: releaseConfiguration.
 	 workflow executeReleaseActions.
+	"TODO: add assertions about actions"
 	^ tagProjectURL
 
 
