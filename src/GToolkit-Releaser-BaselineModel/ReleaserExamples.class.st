@@ -1,11 +1,11 @@
 Class {
-	#name : #FakeRepositoryExamples,
+	#name : #ReleaserExamples,
 	#superclass : #Object,
 	#category : #'GToolkit-Releaser-BaselineModel-Tests'
 }
 
 { #category : #example }
-FakeRepositoryExamples >> aDependentGtRlProjectRelease [
+ReleaserExamples >> aDependentGtRlProjectRelease [
 	| releaseConfiguration project releaseBuilder release mockRepoFiletreeURL|
 	IceRepository registry detect: [ :repo | repo name = 'MockRepo'] ifFound: [:repo | 
 		mockRepoFiletreeURL := 'filetree://', repo codeDirectory absolutePath fullName. 
@@ -22,7 +22,7 @@ FakeRepositoryExamples >> aDependentGtRlProjectRelease [
 ]
 
 { #category : #'setUp-tearDown' }
-FakeRepositoryExamples >> aGtRlProject: projectName withDependencies: dependencyNames [
+ReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames [
 	| projectBuilder project repository diff cls baselineName filetreeDir |
 	baselineName := (#BaselineOf, projectName) asSymbol.
 	IceRepository registry detect: [ :repo | repo name = projectName ] ifFound: [:repo | repo forget].
@@ -65,7 +65,7 @@ FakeRepositoryExamples >> aGtRlProject: projectName withDependencies: dependency
 ]
 
 { #category : #example }
-FakeRepositoryExamples >> aGtRlProjectRelease [
+ReleaserExamples >> aGtRlProjectRelease [
 	| releaseConfiguration releaseBuilder project release |
 	project := self aGtRlProject: #MockRepo withDependencies: OrderedCollection new.
 	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
@@ -78,7 +78,7 @@ FakeRepositoryExamples >> aGtRlProjectRelease [
 ]
 
 { #category : #example }
-FakeRepositoryExamples >> aGtRlProjectRelease: projectName [
+ReleaserExamples >> aGtRlProjectRelease: projectName [
 	| releaseConfiguration releaseBuilder project release |
 	project := self aGtRlProject: projectName withDependencies: OrderedCollection new.
 	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
@@ -91,7 +91,7 @@ FakeRepositoryExamples >> aGtRlProjectRelease: projectName [
 ]
 
 { #category : #'setUp-tearDown' }
-FakeRepositoryExamples >> addBaselineCode: project toClass: cls withDependencies: dependenciesMap [
+ReleaserExamples >> addBaselineCode: project toClass: cls withDependencies: dependenciesMap [
 	| baselinecode |
 	baselinecode := project generateSourceWithProjectDependencies: dependenciesMap.
 	cls compile: baselinecode.
@@ -99,7 +99,7 @@ FakeRepositoryExamples >> addBaselineCode: project toClass: cls withDependencies
 ]
 
 { #category : #example }
-FakeRepositoryExamples >> allKindsOfProjectsConfiguration [
+ReleaserExamples >> allKindsOfProjectsConfiguration [
 ^ GtRlReleaseConfiguration new
 	defaultVersionNumber: (GtRlSemanticVersionNumber major:0 minor: 0 patch: 1);
 	defaultReleaseBranchName: 'release';
@@ -107,7 +107,7 @@ FakeRepositoryExamples >> allKindsOfProjectsConfiguration [
 ]
 
 { #category : #'setUp-tearDown' }
-FakeRepositoryExamples >> baselineClass: project [
+ReleaserExamples >> baselineClass: project [
 	| cls |
 	cls := BaselineOf subclass:#BaselineOf, project
 			instanceVariableNames: ''
@@ -120,7 +120,7 @@ FakeRepositoryExamples >> baselineClass: project [
 ]
 
 { #category : #'setUp-tearDown' }
-FakeRepositoryExamples >> createNewRepoWithName: repoName [
+ReleaserExamples >> createNewRepoWithName: repoName [
 	| repo repoFolder packagest baseline diff dotProjectText dotProperties dotProject|
 	
 	repoName asFileReference ensureDeleteAll .
@@ -157,10 +157,10 @@ FakeRepositoryExamples >> createNewRepoWithName: repoName [
 ]
 
 { #category : #example }
-FakeRepositoryExamples >> createProjectWithThreeDependencies [
+ReleaserExamples >> createProjectWithThreeDependencies [
 	| releaseConfiguration project releaseBuilder release tagProject commitProject latestProject stream tagProjectURL commitProjectURL latestProjectURL workflow|
 	
-	tagProject := FakeRepositoryExamples new aGtRlProject: #TagProject withDependencies: OrderedCollection new.
+	tagProject := ReleaserExamples new aGtRlProject: #TagProject withDependencies: OrderedCollection new.
 	stream := String new writeStream.
 	tagProject repository url printOn: stream.
 	tagProjectURL := stream contents.
