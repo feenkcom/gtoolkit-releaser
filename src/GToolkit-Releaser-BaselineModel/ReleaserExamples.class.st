@@ -98,14 +98,6 @@ ReleaserExamples >> addBaselineCode: project toClass: cls withDependencies: depe
 	^ cls
 ]
 
-{ #category : #example }
-ReleaserExamples >> allKindsOfProjectsConfiguration [
-^ GtRlReleaseConfiguration new
-	defaultVersionNumber: (GtRlSemanticVersionNumber major:0 minor: 0 patch: 1);
-	defaultReleaseBranchName: 'release';
-	defaultVersionComputation: GtRlPatchVersionComputation new
-]
-
 { #category : #'setUp-tearDown' }
 ReleaserExamples >> baselineClass: project [
 	| cls |
@@ -158,20 +150,10 @@ ReleaserExamples >> createNewRepoWithName: repoName [
 
 { #category : #example }
 ReleaserExamples >> createProjectWithThreeDependencies [
-	| releaseConfiguration project releaseBuilder release tagProject commitProject latestProject stream tagProjectURL commitProjectURL latestProjectURL workflow|
+	| releaseConfiguration project releaseBuilder release commitProject latestProject stream tagProjectURL commitProjectURL latestProjectURL |
 	
-	tagProject := ReleaserExamples new aGtRlProject: #TagProject withDependencies: OrderedCollection new.
-	stream := String new writeStream.
-	tagProject repository url printOn: stream.
-	tagProjectURL := stream contents.
+	tagProjectURL := self createTagProject.
 	
-	releaseConfiguration := self allKindsOfProjectsConfiguration.
-	workflow := GtRlReleaserExportWorkflow 
-		forBaseline: tagProject baselineClass 
-		fromRepository: tagProjectURL
-		withConfiguration: releaseConfiguration.
-	 workflow executeReleaseActions.
-
 	commitProject := self aGtRlProject: #CommitProject withDependencies: OrderedCollection new. 
 	stream := String new writeStream.
 	commitProject repository url printOn: stream.
@@ -186,7 +168,8 @@ ReleaserExamples >> createProjectWithThreeDependencies [
 		#ExampleProject withDependencies: {#TagProject -> {tagProjectURL}.  
 														#CommitProject -> {commitProjectURL} . 
 														#LatestProject -> {latestProjectURL}}.
-	
+												
+	releaseConfiguration := self genericReleaseConfiguration.
 	releaseConfiguration setReleaseStrategyOfType: 
 		GtRlLeafProjectReleaseStrategy 
 		forProjecs: { latestProjectURL };
@@ -204,4 +187,31 @@ ReleaserExamples >> createProjectWithThreeDependencies [
 		rootProjectRelease: release
 
 
+]
+
+{ #category : #example }
+ReleaserExamples >> createTagProject [
+	| releaseConfiguration tagProject stream tagProjectURL workflow|
+	
+	tagProject := ReleaserExamples new aGtRlProject: #TagProject withDependencies: OrderedCollection new.
+	stream := String new writeStream.
+	tagProject repository url printOn: stream.
+	tagProjectURL := stream contents.
+	releaseConfiguration := self genericReleaseConfiguration.
+	workflow := GtRlReleaserExportWorkflow 
+		forBaseline: tagProject baselineClass 
+		fromRepository: tagProjectURL
+		withConfiguration: releaseConfiguration.
+	 workflow executeReleaseActions.
+	^ tagProjectURL
+
+
+]
+
+{ #category : #example }
+ReleaserExamples >> genericReleaseConfiguration [
+^ GtRlReleaseConfiguration new
+	defaultVersionNumber: (GtRlSemanticVersionNumber major:0 minor: 0 patch: 1);
+	defaultReleaseBranchName: 'release';
+	defaultVersionComputation: GtRlPatchVersionComputation new
 ]
