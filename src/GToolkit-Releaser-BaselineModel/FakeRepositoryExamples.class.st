@@ -32,7 +32,7 @@ FakeRepositoryExamples >> aGtRlProject: projectName withDependencies: dependency
 	cls := self baselineClass: projectName.
 	project := projectBuilder 
 		buildProjectFromBaselineClass: cls
-		withRepositoryDescription: 'filetree:/', filetreeDir. 
+		withRepositoryDescription: 'filetree://', filetreeDir. 
 
 	project addPackage: (GtRlPackage new name: baselineName; 
 								dependencies: (dependencyNames collect: [ :each | each key ]) ).
@@ -41,7 +41,7 @@ FakeRepositoryExamples >> aGtRlProject: projectName withDependencies: dependency
 			
 	project := projectBuilder 
 		buildProjectFromBaselineClass: cls
-		withRepositoryDescription: 'filetree:/', filetreeDir. 
+		withRepositoryDescription: 'filetree://', filetreeDir. 
 						
 	repository workingCopy addPackageNamed: baselineName.
 	
@@ -77,12 +77,33 @@ FakeRepositoryExamples >> aGtRlProjectRelease [
 
 ]
 
+{ #category : #example }
+FakeRepositoryExamples >> aGtRlProjectRelease: projectName [
+	| releaseConfiguration releaseBuilder project release |
+	project := self aGtRlProject: projectName withDependencies: OrderedCollection new.
+	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
+	releaseBuilder := GtRlReleaseBuilder new
+		configuration: releaseConfiguration. 
+	release := releaseBuilder buildReleaseForProject: project.
+	^ GtRlReleaserExportWorkflow new
+		rootProjectRelease: release
+
+]
+
 { #category : #'setUp-tearDown' }
 FakeRepositoryExamples >> addBaselineCode: project toClass: cls withDependencies: dependenciesMap [
 	| baselinecode |
 	baselinecode := project generateSourceWithProjectDependencies: dependenciesMap.
 	cls compile: baselinecode.
 	^ cls
+]
+
+{ #category : #example }
+FakeRepositoryExamples >> allKindsOfProjectsConfiguration [
+^ GtRlReleaseConfiguration new
+	defaultVersionNumber: (GtRlSemanticVersionNumber major:0 minor: 0 patch: 1);
+	defaultReleaseBranchName: 'release';
+	defaultVersionComputation: GtRlPatchVersionComputation new
 ]
 
 { #category : #'setUp-tearDown' }
@@ -133,4 +154,54 @@ FakeRepositoryExamples >> createNewRepoWithName: repoName [
 	repo name: repoName.
 	IceRepository registerRepository: repo.
 	^ repo
+]
+
+{ #category : #example }
+FakeRepositoryExamples >> createProjectWithThreeDependencies [
+	| releaseConfiguration project releaseBuilder release tagProject commitProject latestProject stream tagProjectURL commitProjectURL latestProjectURL workflow|
+	
+	tagProject := FakeRepositoryExamples new aGtRlProject: #TagProject withDependencies: OrderedCollection new.
+	stream := String new writeStream.
+	tagProject repository url printOn: stream.
+	tagProjectURL := stream contents.
+	
+	releaseConfiguration := self allKindsOfProjectsConfiguration.
+	workflow := GtRlReleaserExportWorkflow 
+		forBaseline: tagProject baselineClass 
+		fromRepository: tagProjectURL
+		withConfiguration: releaseConfiguration.
+	 workflow executeReleaseActions.
+
+	commitProject := self aGtRlProject: #CommitProject withDependencies: OrderedCollection new. 
+	stream := String new writeStream.
+	commitProject repository url printOn: stream.
+	commitProjectURL := stream contents.
+	
+	latestProject := self aGtRlProject: #LatestProject withDependencies: OrderedCollection new.  
+	stream := String new writeStream.
+	latestProject repository url printOn: stream.
+	latestProjectURL := stream contents.
+	
+	project := self aGtRlProject: 
+		#ExampleProject withDependencies: {#TagProject -> {tagProjectURL}.  
+														#CommitProject -> {commitProjectURL} . 
+														#LatestProject -> {latestProjectURL}}.
+	
+	releaseConfiguration setReleaseStrategyOfType: 
+		GtRlLeafProjectReleaseStrategy 
+		forProjecs: { latestProjectURL };
+	setReleaseStrategyOfType: 
+		GtRlLatestCommitReleaseStrategy 
+			forProjecs: { commitProjectURL};
+	setReleaseStrategyOfType: 
+		GtRlBaselineTagReleaseStrategy 
+		forProjecs: { tagProjectURL }.
+		
+	releaseBuilder := GtRlReleaseBuilder new
+		configuration: releaseConfiguration. 
+	release := releaseBuilder buildReleaseForProject: project.
+	^ GtRlReleaserExportWorkflow new
+		rootProjectRelease: release
+
+
 ]
