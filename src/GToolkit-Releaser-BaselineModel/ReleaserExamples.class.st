@@ -1,25 +1,11 @@
 Class {
 	#name : #ReleaserExamples,
 	#superclass : #Object,
+	#instVars : [
+		'normalProjectURL'
+	],
 	#category : #'GToolkit-Releaser-BaselineModel-Tests'
 }
-
-{ #category : #example }
-ReleaserExamples >> aDependentGtRlProjectRelease [
-	| releaseConfiguration project releaseBuilder release mockRepoFiletreeURL|
-	IceRepository registry detect: [ :repo | repo name = 'MockRepo'] ifFound: [:repo | 
-		mockRepoFiletreeURL := 'filetree://', repo codeDirectory absolutePath fullName. 
-		project := self aGtRlProject: #DependentMockRepo withDependencies: {#MockRepo -> {mockRepoFiletreeURL}}.
-		releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
-		releaseBuilder := GtRlReleaseBuilder new
-			configuration: releaseConfiguration. 
-		release := releaseBuilder buildReleaseForProject: project.
-		^ GtRlReleaserExportWorkflow new
-			rootProjectRelease: release
-	]
-	
-
-]
 
 { #category : #'setUp-tearDown' }
 ReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames [
@@ -65,19 +51,6 @@ ReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames 
 ]
 
 { #category : #example }
-ReleaserExamples >> aGtRlProjectRelease [
-	| releaseConfiguration releaseBuilder project release |
-	project := self aGtRlProject: #MockRepo withDependencies: OrderedCollection new.
-	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
-	releaseBuilder := GtRlReleaseBuilder new
-		configuration: releaseConfiguration. 
-	release := releaseBuilder buildReleaseForProject: project.
-	^ GtRlReleaserExportWorkflow new
-		rootProjectRelease: release
-
-]
-
-{ #category : #example }
 ReleaserExamples >> aGtRlProjectRelease: projectName [
 	| releaseConfiguration releaseBuilder project release |
 	project := self aGtRlProject: projectName withDependencies: OrderedCollection new.
@@ -109,30 +82,6 @@ ReleaserExamples >> baselineClass: project [
 	cls compile: 'baseline: spec
 	<baseline>'.
 	^ cls
-]
-
-{ #category : #example }
-ReleaserExamples >> createCommitProject [
-	| commitProject stream commitProjectURL |
-	commitProject := self aGtRlProject: #CommitProject withDependencies: OrderedCollection new. 
-	stream := String new writeStream.
-	commitProject repository url printOn: stream.
-	commitProjectURL := stream contents.
-	^ commitProjectURL
-
-
-]
-
-{ #category : #example }
-ReleaserExamples >> createLatestProject [
-	| latestProject stream latestProjectURL |
-	latestProject := self aGtRlProject: #LatestProject withDependencies: OrderedCollection new.  
-	stream := String new writeStream.
-	latestProject repository url printOn: stream.
-	latestProjectURL := stream contents.
-	^ latestProjectURL
-
-
 ]
 
 { #category : #'setUp-tearDown' }
@@ -173,17 +122,32 @@ ReleaserExamples >> createNewRepoWithName: repoName [
 ]
 
 { #category : #example }
-ReleaserExamples >> createProjectWithThreeDependencies [
-	| releaseConfiguration project releaseBuilder release tagProjectURL commitProjectURL latestProjectURL |
+ReleaserExamples >> createProject: projectName [
+	| project stream projectURL |
+	project := self aGtRlProject: projectName withDependencies: OrderedCollection new. 
+	stream := String new writeStream.
+	project repository url printOn: stream.
+	projectURL := stream contents.
+	^ projectURL
+
+
+]
+
+{ #category : #example }
+ReleaserExamples >> createProjectWithDependencies [
+	<gtExample>
+	| releaseConfiguration project releaseBuilder release tagProjectURL commitProjectURL latestProjectURL workflow releaseActions |
 	
 	tagProjectURL := self createTagProject.
-	commitProjectURL := self createCommitProject.
-	latestProjectURL := self createLatestProject. 
+	commitProjectURL := self createProject: #CommitProject.
+	latestProjectURL := self createProject: #LatestProject.
+	normalProjectURL := self createProject: #NormalProject.
 	
 	project := self aGtRlProject: 
 		#ExampleProject withDependencies: {#TagProject -> {tagProjectURL}.  
-														#CommitProject -> {commitProjectURL} . 
-														#LatestProject -> {latestProjectURL}}.
+														#CommitProject -> {commitProjectURL}. 
+														#LatestProject -> {latestProjectURL}.
+														#NormalProject -> {normalProjectURL}}.
 												
 	releaseConfiguration := self genericReleaseConfiguration.
 	releaseConfiguration setReleaseStrategyOfType: 
@@ -199,9 +163,16 @@ ReleaserExamples >> createProjectWithThreeDependencies [
 	releaseBuilder := GtRlReleaseBuilder new
 		configuration: releaseConfiguration. 
 	release := releaseBuilder buildReleaseForProject: project.
-	^ GtRlReleaserExportWorkflow new
-		rootProjectRelease: release
-
+	 
+	workflow :=  GtRlReleaserExportWorkflow new
+		rootProjectRelease: release;
+		updateReleaseActions.
+	releaseActions := workflow releaseActions actions.
+	self assert: releaseActions first name = 'Merge to release branch'.
+	self assert: releaseActions first repositoryRelease projectReleases first project name = 'NormalProject'.
+	self assert: releaseActions fourth repositoryRelease projectReleases first project name = 'LatestProject'.
+	self assert: releaseActions fifth repositoryRelease projectReleases first project name = 'ExampleProject'.
+	^ workflow
 
 ]
 
