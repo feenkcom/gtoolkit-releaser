@@ -56,7 +56,58 @@ ReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames 
 	^ project
 ]
 
-{ #category : #example }
+{ #category : #'setUp-tearDown' }
+ReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames inRepository: repository [
+	"repo := ex createNewRepository: #NewRepository.
+	ex aGtRlProject: #NewProject withDependencies:(OrderedCollection new) inRepository: repo.
+	ex aGtRlProject: #SecondProject withDependencies:(OrderedCollection new) inRepository: repo."
+	| projectBuilder project diff cls baselineName filetreeDir mcVersion|
+	baselineName := (#BaselineOf, projectName) asSymbol.
+	IceRepository registry detect: [ :repo | repo name = projectName ] ifFound: [:repo | repo forget].
+	filetreeDir := (repository workingCopy fileSystem / 'src') fullName.
+	projectBuilder := GtRlModelBuilder new.
+	cls := self baselineClass: projectName.
+	
+	mcVersion := cls project versions first.
+	project := GtRlProject new
+		name: (MetacelloScriptEngine baseNameOf: cls name); 
+		baselineVersion: mcVersion;
+		baselineClass: cls.
+	
+	projectBuilder updateDependenciesFor: project fromMCVersion: mcVersion.
+	projectBuilder projectsByBaselineClass at: cls put: project.
+
+	project addPackage: (GtRlPackage new name: baselineName; 
+								dependencies: (dependencyNames collect: [ :each | each key ]) ).
+								
+	self addBaselineCode: project toClass: cls withDependencies: dependencyNames.
+			
+	project := projectBuilder 
+		buildProjectFromBaselineClass: cls
+		withRepositoryDescription: 'filetree://', filetreeDir.
+						
+	repository workingCopy addPackageNamed: baselineName.
+	
+	diff := repository workingCopyDiff.
+	repository workingCopy 
+			commitChanges: diff
+			withMessage: 'baseline: method code'
+			force: true.
+	
+	(Metacello image
+    project: projectName;
+    list)
+    detect: [ :each | true ]
+    ifNone:  [
+		Metacello new
+	   baseline: projectName;
+	   filetreeDirectory: filetreeDir;
+	   load].
+
+	^ project
+]
+
+{ #category : #'setUp-tearDown' }
 ReleaserExamples >> aGtRlProjectRelease: projectName [
 	| releaseConfiguration releaseBuilder project release |
 	project := self aGtRlProject: projectName withDependencies: OrderedCollection new.
@@ -90,7 +141,7 @@ ReleaserExamples >> baselineClass: project [
 	^ cls
 ]
 
-{ #category : #example }
+{ #category : #'setUp-tearDown' }
 ReleaserExamples >> computeProjectURL: project [
 	| projectURL stream  |
 	stream := String new writeStream.
@@ -138,7 +189,21 @@ ReleaserExamples >> createNewRepoWithName: repoName [
 	^ repo
 ]
 
-{ #category : #example }
+{ #category : #'setUp-tearDown' }
+ReleaserExamples >> createNewRepository: repoName [
+	| repo repoFolder |
+	
+	repoName asFileReference ensureDeleteAll .
+	repoFolder := repoName asFileReference.
+	repo := IceRepositoryCreator new
+	location: repoFolder;
+	subdirectory: 'src';
+	createNewRepositoryNamed: repoName.
+	IceRepository registerRepository: repo.
+	^ repo
+]
+
+{ #category : #'setUp-tearDown' }
 ReleaserExamples >> createProject: projectName [
 	| project |
 	project := self aGtRlProject: projectName withDependencies: OrderedCollection new.
@@ -190,7 +255,7 @@ ReleaserExamples >> createProjectWithDependencies [
 
 ]
 
-{ #category : #example }
+{ #category : #'setUp-tearDown' }
 ReleaserExamples >> createTagProject [
 	| releaseConfiguration tagProject tagProjectURL workflow|
 	
@@ -208,7 +273,7 @@ ReleaserExamples >> createTagProject [
 
 ]
 
-{ #category : #example }
+{ #category : #'setUp-tearDown' }
 ReleaserExamples >> genericReleaseConfiguration [
 ^ GtRlReleaseConfiguration new
 	defaultVersionNumber: (GtRlSemanticVersionNumber major:0 minor: 0 patch: 1);
@@ -216,11 +281,10 @@ ReleaserExamples >> genericReleaseConfiguration [
 	defaultVersionComputation: GtRlPatchVersionComputation new
 ]
 
-{ #category : #example }
+{ #category : #'setUp-tearDown' }
 ReleaserExamples >> getProject: projectName [
 	| project |
 	projects ifNil: [ projects := IdentityDictionary new].
-	
 	projects keys 
 		detect: [ :key | key includesSubstring: ('' join: { '/' . projectName . '/'}) ] 
 		ifFound:[ :p | project := projects at: p. self inform: 'got it from cache' ] 
@@ -255,7 +319,7 @@ ReleaserExamples >> perpetualReleaseProject [
 	^ workflow
 ]
 
-{ #category : #example }
+{ #category : #'setUp-tearDown' }
 ReleaserExamples >> projects [ 
 	^ projects
 ]
