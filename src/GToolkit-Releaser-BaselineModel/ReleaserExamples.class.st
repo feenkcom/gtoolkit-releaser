@@ -2,7 +2,7 @@ Class {
 	#name : #ReleaserExamples,
 	#superclass : #Object,
 	#instVars : [
-		'normalProjectURL'
+		'projects'
 	],
 	#category : #'GToolkit-Releaser-BaselineModel-Tests'
 }
@@ -84,6 +84,17 @@ ReleaserExamples >> baselineClass: project [
 	^ cls
 ]
 
+{ #category : #example }
+ReleaserExamples >> computeProjectURL: project [
+	| projectURL stream  |
+	stream := String new writeStream.
+	project repository url printOn: stream.
+	projectURL := stream contents.
+	^ projectURL
+
+
+]
+
 { #category : #'setUp-tearDown' }
 ReleaserExamples >> createNewRepoWithName: repoName [
 	| repo repoFolder packagest baseline diff dotProjectText dotProperties dotProject|
@@ -123,12 +134,9 @@ ReleaserExamples >> createNewRepoWithName: repoName [
 
 { #category : #example }
 ReleaserExamples >> createProject: projectName [
-	| project stream projectURL |
-	project := self aGtRlProject: projectName withDependencies: OrderedCollection new. 
-	stream := String new writeStream.
-	project repository url printOn: stream.
-	projectURL := stream contents.
-	^ projectURL
+	| project |
+	project := self aGtRlProject: projectName withDependencies: OrderedCollection new.
+	^ self computeProjectURL: project. 
 
 
 ]
@@ -136,7 +144,7 @@ ReleaserExamples >> createProject: projectName [
 { #category : #example }
 ReleaserExamples >> createProjectWithDependencies [
 	<gtExample>
-	| releaseConfiguration project releaseBuilder release tagProjectURL commitProjectURL latestProjectURL workflow releaseActions |
+	| releaseConfiguration project releaseBuilder release tagProjectURL commitProjectURL latestProjectURL workflow releaseActions normalProjectURL |
 	
 	tagProjectURL := self createTagProject.
 	commitProjectURL := self createProject: #CommitProject.
@@ -145,9 +153,9 @@ ReleaserExamples >> createProjectWithDependencies [
 	
 	project := self aGtRlProject: 
 		#ExampleProject withDependencies: {#TagProject -> {tagProjectURL}.  
-														#CommitProject -> {commitProjectURL}. 
-														#LatestProject -> {latestProjectURL}.
-														#NormalProject -> {normalProjectURL}}.
+													 #CommitProject -> {commitProjectURL}. 
+													 #LatestProject -> {latestProjectURL}.
+													 #NormalProject -> {normalProjectURL}}.
 												
 	releaseConfiguration := self genericReleaseConfiguration.
 	releaseConfiguration setReleaseStrategyOfType: 
@@ -178,12 +186,10 @@ ReleaserExamples >> createProjectWithDependencies [
 
 { #category : #example }
 ReleaserExamples >> createTagProject [
-	| releaseConfiguration tagProject stream tagProjectURL workflow|
+	| releaseConfiguration tagProject tagProjectURL workflow|
 	
 	tagProject := ReleaserExamples new aGtRlProject: #TagProject withDependencies: OrderedCollection new.
-	stream := String new writeStream.
-	tagProject repository url printOn: stream.
-	tagProjectURL := stream contents.
+	tagProjectURL := self computeProjectURL: tagProject.
 	releaseConfiguration := self genericReleaseConfiguration.
 	workflow := GtRlReleaserExportWorkflow 
 		forBaseline: tagProject baselineClass 
@@ -202,4 +208,48 @@ ReleaserExamples >> genericReleaseConfiguration [
 	defaultVersionNumber: (GtRlSemanticVersionNumber major:0 minor: 0 patch: 1);
 	defaultReleaseBranchName: 'release';
 	defaultVersionComputation: GtRlPatchVersionComputation new
+]
+
+{ #category : #example }
+ReleaserExamples >> getProject: projectName [
+	| project |
+	projects ifNil: [ projects := IdentityDictionary new].
+	
+	projects keys 
+		detect: [ :key | key includesSubstring: ('' join: { '/' . projectName . '/'}) ] 
+		ifFound:[ :p | project := projects at: p. self inform: 'got it from cache' ] 
+		ifNone:[ project := self aGtRlProject: projectName withDependencies: OrderedCollection new.
+		 projects at:(self computeProjectURL: project) put: project].
+	^ project.
+
+
+]
+
+{ #category : #example }
+ReleaserExamples >> perpetualReleaseProject [
+	<gtExample>
+	| project releaseConfiguration releaseBuilder release workflow iceRepository diff|
+	project := self getProject: #PerpetualReleaseProject.
+	releaseConfiguration := self genericReleaseConfiguration.
+	
+	releaseBuilder := GtRlReleaseBuilder new
+		configuration: releaseConfiguration. 
+	release := releaseBuilder buildReleaseForProject: project.
+	iceRepository := release repositoryRelease icebergRepository.
+	diff := iceRepository workingCopyDiff.
+		
+	workflow :=  GtRlReleaserExportWorkflow new
+		rootProjectRelease: release;
+		updateReleaseActions.
+	workflow executeReleaseActions.
+	iceRepository workingCopy 
+		commitChanges: diff
+		withMessage: 'new commit'
+		force: true.
+	^ workflow
+]
+
+{ #category : #example }
+ReleaserExamples >> projects [ 
+	^ projects
 ]
