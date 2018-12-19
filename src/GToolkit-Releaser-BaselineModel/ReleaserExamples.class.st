@@ -9,16 +9,22 @@ Class {
 
 { #category : #'setUp-tearDown' }
 ReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames [
-	| projectBuilder project repository diff cls baselineName filetreeDir |
+	| projectBuilder project repository diff cls baselineName filetreeDir mcVersion|
 	baselineName := (#BaselineOf, projectName) asSymbol.
 	IceRepository registry detect: [ :repo | repo name = projectName ] ifFound: [:repo | repo forget].
 	repository := self createNewRepoWithName: projectName.
 	filetreeDir := (repository workingCopy fileSystem / 'src') fullName.
 	projectBuilder := GtRlModelBuilder new.
 	cls := self baselineClass: projectName.
-	project := projectBuilder 
-		buildProjectFromBaselineClass: cls
-		withRepositoryDescription: 'filetree://', filetreeDir. 
+	
+	mcVersion := cls project versions first.
+	project := GtRlProject new
+		name: (MetacelloScriptEngine baseNameOf: cls name); 
+		baselineVersion: mcVersion;
+		baselineClass: cls.
+	
+	projectBuilder updateDependenciesFor: project fromMCVersion: mcVersion.
+	projectBuilder projectsByBaselineClass at: cls put: project.
 
 	project addPackage: (GtRlPackage new name: baselineName; 
 								dependencies: (dependencyNames collect: [ :each | each key ]) ).
@@ -27,7 +33,7 @@ ReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames 
 			
 	project := projectBuilder 
 		buildProjectFromBaselineClass: cls
-		withRepositoryDescription: 'filetree://', filetreeDir. 
+		withRepositoryDescription: 'filetree://', filetreeDir.
 						
 	repository workingCopy addPackageNamed: baselineName.
 	
