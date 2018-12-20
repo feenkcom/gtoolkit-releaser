@@ -63,7 +63,7 @@ ReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames 
 	ex aGtRlProject: #SecondProject withDependencies:(OrderedCollection new) inRepository: repo."
 	| projectBuilder project diff cls baselineName filetreeDir mcVersion|
 	baselineName := (#BaselineOf, projectName) asSymbol.
-	IceRepository registry detect: [ :repo | repo name = projectName ] ifFound: [:repo | repo forget].
+	IceRepository registry detect: [ :repo | repo name = repository name ] ifFound: [:repo | repo forget].
 	filetreeDir := (repository workingCopy fileSystem / 'src') fullName.
 	projectBuilder := GtRlModelBuilder new.
 	cls := self baselineClass: projectName.
