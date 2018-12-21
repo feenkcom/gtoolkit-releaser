@@ -1,3 +1,11 @@
+"
+!!!GToolkit-Releaser
+
+Releaser allows creating reproducible Pharo images from github Baselines. 
+
+
+${example:}$
+"
 Class {
 	#name : #ReleaserExamples,
 	#superclass : #Object,
