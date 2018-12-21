@@ -1,10 +1,30 @@
 "
 !!!GToolkit-Releaser
 
-Releaser allows creating reproducible Pharo images from github Baselines. 
+Releaser allows creating reproducible Pharo images from github Baselines. This is achieved by merging the master branch into the release branch, rewriting the baseline class repository URLs with the new version number and then tagging each repository with the version number so that the baseline will load.
 
+Each baseline is modeled as a ${class:name=GtRlProject}$ and each repository as a ${class:name=GtRlRepository}$.
+A project can depend on other projects, as specified by it's baseline.
+For example: ${method:name=BaselineOfGToolkitInspector>>#baseline:}$
 
-${example:}$
+Bootstrapping the releaser model is as easy as 
+[[[ 
+projectBuilder := GtRlModelBuilder new.
+project := projectBuilder 
+		buildProjectFromBaselineClass: BaselineOfGToolkit
+		withRepositoryDescription: 'github://feenkcom/gtoolkit'.
+]]]
+
+For demo purposes, we've programatically created an example project: ${example:ReleaserExamples>>#perpetualReleaseProject}$. 
+
+Executing a release involves using a configuration ${class:name=GtRlReleaseConfiguration}$, a release builder ${class:name=GtRlReleaseBuilder}$ and a ${class:name=GtRlReleaserExportWorkflow}$:
+${example:ReleaserExamples>>#executePerpetualReleaseProject}$
+
+Releaser will recusively go through the entire repository graph and execute the release. However, there are cases where a Releaser should not execute any actions, or where the dependency should be on a certain commit id or a tag. The following example shows a generated repository that dependens in multiple ways on other generated repositories. 
+${example:ReleaserExamples>>#createProjectWithDependencies}$
+
+The way in which it depends on the other repositories is defined in the release configuration.
+
 "
 Class {
 	#name : #ReleaserExamples,
@@ -347,6 +367,30 @@ ReleaserExamples >> createTagProject [
 
 ]
 
+{ #category : #example }
+ReleaserExamples >> executePerpetualReleaseProject [
+	<gtExample>
+	| project releaseConfiguration releaseBuilder release workflow iceRepository diff|
+	project := self perpetualReleaseProject.
+	releaseConfiguration := self genericReleaseConfiguration.
+	
+	releaseBuilder := GtRlReleaseBuilder new
+		configuration: releaseConfiguration. 
+	release := releaseBuilder buildReleaseForProject: project.
+	iceRepository := release repositoryRelease icebergRepository.
+	diff := iceRepository workingCopyDiff.
+		
+	workflow :=  GtRlReleaserExportWorkflow new
+		rootProjectRelease: release;
+		updateReleaseActions.
+	workflow executeReleaseActions.
+	iceRepository workingCopy 
+		commitChanges: diff
+		withMessage: 'new commit'
+		force: true.
+	^ workflow
+]
+
 { #category : #'setUp-tearDown' }
 ReleaserExamples >> genericReleaseConfiguration [
 ^ GtRlReleaseConfiguration new
@@ -372,25 +416,7 @@ ReleaserExamples >> getProject: projectName [
 { #category : #example }
 ReleaserExamples >> perpetualReleaseProject [
 	<gtExample>
-	| project releaseConfiguration releaseBuilder release workflow iceRepository diff|
-	project := self getProject: #PerpetualReleaseProject.
-	releaseConfiguration := self genericReleaseConfiguration.
-	
-	releaseBuilder := GtRlReleaseBuilder new
-		configuration: releaseConfiguration. 
-	release := releaseBuilder buildReleaseForProject: project.
-	iceRepository := release repositoryRelease icebergRepository.
-	diff := iceRepository workingCopyDiff.
-		
-	workflow :=  GtRlReleaserExportWorkflow new
-		rootProjectRelease: release;
-		updateReleaseActions.
-	workflow executeReleaseActions.
-	iceRepository workingCopy 
-		commitChanges: diff
-		withMessage: 'new commit'
-		force: true.
-	^ workflow
+	^ self getProject: #PerpetualReleaseProject.
 ]
 
 { #category : #'setUp-tearDown' }
