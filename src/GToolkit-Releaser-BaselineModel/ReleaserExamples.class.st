@@ -1,12 +1,16 @@
 "
-!!!GToolkit-Releaser
+!GToolkit-Releaser
+
+!!Purpose
 
 Releaser allows creating reproducible Pharo images from github Baselines. This is achieved by merging the master branch into the release branch, rewriting the baseline class repository URLs with the new version number and then tagging each repository with the version number so that the baseline will load.
 
+!!Model
 Each baseline is modeled as a ${class:name=GtRlProject}$ and each repository as a ${class:name=GtRlRepository}$.
 A project can depend on other projects, as specified by it's baseline.
 For example: ${method:name=BaselineOfGToolkitInspector>>#baseline:}$
 
+!!How to use
 Bootstrapping the releaser model is as easy as 
 [[[ 
 projectBuilder := GtRlModelBuilder new.
@@ -15,8 +19,9 @@ project := projectBuilder
 		withRepositoryDescription: 'github://feenkcom/gtoolkit'.
 ]]]
 
+!!!Project with no dependencies
 For demo purposes, we've programatically created an example project: ${example:ReleaserExamples>>#perpetualReleaseProject}$. 
-
+!!!Executing a release
 Executing a release involves using a configuration ${class:name=GtRlReleaseConfiguration}$, a release builder ${class:name=GtRlReleaseBuilder}$ and a ${class:name=GtRlReleaserExportWorkflow}$:
 ${example:ReleaserExamples>>#executePerpetualReleaseProject}$
 
@@ -24,6 +29,8 @@ Releaser will recusively go through the entire repository graph and execute the 
 ${example:ReleaserExamples>>#createProjectWithDependencies}$
 
 The way in which it depends on the other repositories is defined in the release configuration.
+
+Releaser is debuggable in the sense that a Workflow will have a list of action objects ready to be inspected before any actual change has been made to any repository. The actions can be viewed in the ""Release actions"" tab of a GtRlReleaserExportWorkflow object.
 
 "
 Class {
