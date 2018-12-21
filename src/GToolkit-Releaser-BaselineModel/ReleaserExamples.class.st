@@ -25,10 +25,16 @@ For demo purposes, we've programatically created an example project: ${example:R
 Executing a release involves using a configuration ${class:name=GtRlReleaseConfiguration}$, a release builder ${class:name=GtRlReleaseBuilder}$ and a ${class:name=GtRlReleaserExportWorkflow}$:
 ${example:ReleaserExamples>>#executePerpetualReleaseProject}$
 
+!!!Project with dependencies
 Releaser will recusively go through the entire repository graph and execute the release. However, there are cases where a Releaser should not execute any actions, or where the dependency should be on a certain commit id or a tag. The following example shows a generated repository that dependens in multiple ways on other generated repositories. 
 ${example:ReleaserExamples>>#createProjectWithDependencies}$
 
-The way in which it depends on the other repositories is defined in the release configuration.
+The way in which it depends on the other repositories is defined in the release configuration by configuring different release strategies for different projects. 
+
+	- GtRlLeafProjectReleaseStrategy will create a new release if the repository has new commits
+	- GtRlDedicatedBranchReleaseStrategy will create a new release if the repository has new commits or if any of its dependencies has new commits
+	- GtRlBaselineTagReleaseStrategy allows setting a dependency to a specific version defined by a git tag
+	- GtRlLatestCommitReleaseStrategy allows depending on the latest commit of a third party repository (such as a library)
 
 Releaser is debuggable in the sense that a Workflow will have a list of action objects ready to be inspected before any actual change has been made to any repository. The actions can be viewed in the ""Release actions"" tab of a GtRlReleaserExportWorkflow object.
 
