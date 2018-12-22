@@ -28,6 +28,16 @@ GtRlReleaseVersionMetadata >> data: aDictionary [
 	data := aDictionary
 ]
 
+{ #category : #ui }
+GtRlReleaseVersionMetadata >> gtRepositoryVersionsFor: aView [
+	<gtView>
+	^ aView columnedList
+		title: 'Repositories';
+		items: [ self repositoryData associations ];
+		column: 'Repository' item: [ :assoc | assoc key ];
+		column: 'Version' item: [ :assoc | assoc value ]
+]
+
 { #category : #testing }
 GtRlReleaseVersionMetadata >> hasVersionForRelease: aRepositoryRelease [
 	^ self repositoryData includesKey: aRepositoryRelease repository id

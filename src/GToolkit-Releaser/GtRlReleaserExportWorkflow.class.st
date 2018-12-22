@@ -111,7 +111,7 @@ GtRlReleaserExportWorkflow >> releaseActions [
 
 { #category : #accessing }
 GtRlReleaserExportWorkflow >> repositoriesReleasesInReleaseOrder [
-	^ (self rootProjectRelease repositoryRelease withDeepCollect: #childRepositoryReleases) reversed
+	^ GtRlReleaseOrderTraversal new releaseOrderFor: self rootProjectRelease repositoryRelease
 ]
 
 { #category : #accessing }

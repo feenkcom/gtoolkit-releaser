@@ -20,7 +20,7 @@ GtRlReleaseUpdateWorkflow >> nextActionOrder [
 
 { #category : #'accessing - dynamic' }
 GtRlReleaseUpdateWorkflow >> repositoriesInReleaseOrderFor: aProjectRelease [
-	^ (aProjectRelease repositoryRelease withDeepCollect: #childRepositoryReleases) reversed
+	^ GtRlReleaseOrderTraversal new releaseOrderFor: aProjectRelease repositoryRelease
 ]
 
 { #category : #updating }
@@ -32,5 +32,5 @@ GtRlReleaseUpdateWorkflow >> update: aProjectRelease [
 			updateFor: self;
 			updateReleaseActionsUsing: self ].
 	repositories do: [ :aRepositoryRelease | 
-		aRepositoryRelease releaseStrategy updatePostBuildActionsUsing: self ].
+		aRepositoryRelease releaseStrategy updatePostBuildActionsUsing: self ]. 
 ]
