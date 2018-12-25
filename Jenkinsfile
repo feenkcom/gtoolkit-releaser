@@ -1,10 +1,10 @@
 pipeline {
     agent any
     stages {
-        stage('Echo') {
+        stage('Build gtoolkit') {
             steps {
-                echo "Executing ${env.BUILD_ID} on ${env.JENKINS_URL}"
                 build '/gtoolkit'
+                echo "gtoolkit build done."
             }
         }
     }
