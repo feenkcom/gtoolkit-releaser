@@ -85,27 +85,40 @@ GtRlDedicatedBranchReleaseStrategy >> referenceBranchName: aBranchName [
 	referenceBranchName := aBranchName
 ]
 
-{ #category : #actions }
-GtRlDedicatedBranchReleaseStrategy >> updateFor: anUpdateWorkflow [
+{ #category : #'private - testing' }
+GtRlDedicatedBranchReleaseStrategy >> shouldCreateNewRelease [
 	| latestVersionTag releaseMetadata|
+	
 	"1. If a new release if explicitly requested created it."
 	self shouldForceNewRelease ifTrue: [ 
-		^ self configureNewVersionRelease ].
+		^ true ].
 	
 	"2. If there is no release tag in the repository a new release is needed."
 	self repositoryRelease semanticVersionTags ifEmpty: [
-		^ self configureNewVersionRelease ].
+		^ true ].
 	
 	"3. If the latest release tag does not include the latest commit from the reference branch generate a new release."
 	latestVersionTag := self repositoryRelease latestSemanticVersionTag.
 	(self isReferenceBranchMergedIn: latestVersionTag commit) ifFalse: [
-		^ self configureNewVersionRelease ].
+		^ true ].
 	
 	"4. If any dependency has a different version than in the current release generate a new release."
 	releaseMetadata := GtRlReleaseVersionMetadata fromCommit: latestVersionTag commit.
 	(self repositoryRelease matchesDependenciesIn: releaseMetadata) ifFalse: [
+		^ true ].
+	
+	^ false
+]
+
+{ #category : #actions }
+GtRlDedicatedBranchReleaseStrategy >> updateFor: anUpdateWorkflow [
+	| latestVersionTag |
+	
+	self shouldCreateNewRelease ifTrue: [ 
 		^ self configureNewVersionRelease ].
 	
+	"If a new release is not requires used the latest semantic tag and make the release passive."
+	latestVersionTag := self repositoryRelease latestSemanticVersionTag.	
 	^ self repositoryRelease 
 		version: latestVersionTag gtAsSemanticVersionNumber;
 		makePassiveRelease
