@@ -23,6 +23,11 @@ GtRlReleaseStrategy >> initializeFor: aRepositoryRelease fromConfiguration: aBui
 	aRepositoryRelease releaseStrategy: self.
 ]
 
+{ #category : #testing }
+GtRlReleaseStrategy >> isNullReleaseStrategy [
+	^ false
+]
+
 { #category : #accessing }
 GtRlReleaseStrategy >> repositoryRelease [
 	^ repositoryRelease

@@ -9,6 +9,11 @@ GtRlNullReleaseStrategy >> description [
 	^ 'Null'
 ]
 
+{ #category : #testing }
+GtRlNullReleaseStrategy >> isNullReleaseStrategy [
+	^ true
+]
+
 { #category : #accessing }
 GtRlNullReleaseStrategy >> nullVersionNumber [
 	^ GtRlNullVersionNumber new
