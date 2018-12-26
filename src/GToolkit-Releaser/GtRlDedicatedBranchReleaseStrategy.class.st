@@ -15,6 +15,7 @@ GtRlDedicatedBranchReleaseStrategy >> description [
 { #category : #ui }
 GtRlDedicatedBranchReleaseStrategy >> gtCommitsAncestryFor: aView [
 	<gtView>
+	self repositoryRelease ifNil: [ ^ aView ].
 	^ aView mondrian
 		title: 'Commits ancestry' translated;
 		priority: 100;

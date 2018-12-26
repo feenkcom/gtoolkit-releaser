@@ -32,7 +32,7 @@ GtRlReleaseVersionMetadata >> data: aDictionary [
 GtRlReleaseVersionMetadata >> gtRepositoryVersionsFor: aView [
 	<gtView>
 	^ aView columnedList
-		title: 'Repositories';
+		title: 'Repositories' translated;
 		items: [ self repositoryData associations ];
 		column: 'Repository' item: [ :assoc | assoc key ];
 		column: 'Version' item: [ :assoc | assoc value ]
