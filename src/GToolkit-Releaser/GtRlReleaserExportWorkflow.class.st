@@ -34,6 +34,16 @@ GtRlReleaserExportWorkflow class >> forBaseline: aBaselineClass fromRepository: 
 		rootProjectRelease: release
 ]
 
+{ #category : #'instance creation' }
+GtRlReleaserExportWorkflow class >> forProject: aProject withConfiguration: aReleaseConfiguration [
+	| releaseBuilder release |
+	releaseBuilder := GtRlReleaseBuilder new
+		configuration: aReleaseConfiguration. 
+	release := releaseBuilder buildReleaseForProject: aProject.
+	^ self new
+		rootProjectRelease: release
+]
+
 { #category : #releasing }
 GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 	^ GtRlReleaseConfiguration new

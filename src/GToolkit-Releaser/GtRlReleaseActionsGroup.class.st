@@ -32,6 +32,11 @@ GtRlReleaseActionsGroup >> addActions: aCollectionOfActions [
 	
 ]
 
+{ #category : #accessing }
+GtRlReleaseActionsGroup >> count [
+	^ self actions size
+]
+
 { #category : #testing }
 GtRlReleaseActionsGroup >> do: aBlock [
 	^ actions do: aBlock
