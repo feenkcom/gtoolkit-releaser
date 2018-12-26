@@ -333,9 +333,9 @@ ReleaserExamples >> createProjectWithDependencies [
 		rootProjectRelease: release;
 		updateReleaseActions.
 	releaseActions := workflow releaseActions actions.
-	self assert: releaseActions first name = 'Merge to release branch'.
-	self assert: releaseActions first repositoryRelease projectReleases first project name = 'NormalProject'.
-	self assert: releaseActions fourth repositoryRelease projectReleases first project name = 'LatestProject'.
+	self assert: releaseActions first name = 'Commit and tag release'.
+	self assert: releaseActions first repositoryRelease projectReleases first project name = 'LatestProject'.
+	self assert: releaseActions fourth repositoryRelease projectReleases first project name = 'NormalProject'.
 	self assert: releaseActions fifth repositoryRelease projectReleases first project name = 'ExampleProject'.
 	^ workflow
 
