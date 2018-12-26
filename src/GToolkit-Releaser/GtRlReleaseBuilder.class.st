@@ -17,7 +17,7 @@ GtRlReleaseBuilder class >> forConfiguration: aReleaseConfiguration [
 GtRlReleaseBuilder >> buildReleaseForProject: aProject [
 	| projectRelease |
 	projectRelease := self structureBuilder buildStructureForProject: aProject.
-	self updateWorkflow update: projectRelease.
+	self updateWorkflow updateProject: projectRelease.
 	^ projectRelease 
 ]
 

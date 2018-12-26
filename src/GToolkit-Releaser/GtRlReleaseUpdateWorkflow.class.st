@@ -19,14 +19,19 @@ GtRlReleaseUpdateWorkflow >> nextActionOrder [
 ]
 
 { #category : #'accessing - dynamic' }
-GtRlReleaseUpdateWorkflow >> repositoriesInReleaseOrderFor: aProjectRelease [
-	^ GtRlReleaseOrderTraversal new releaseOrderFor: aProjectRelease repositoryRelease
+GtRlReleaseUpdateWorkflow >> repositoriesInReleaseOrderFor: aRepositoryRelease [
+	^ GtRlReleaseOrderTraversal new releaseOrderFor: aRepositoryRelease
 ]
 
 { #category : #updating }
-GtRlReleaseUpdateWorkflow >> update: aProjectRelease [
+GtRlReleaseUpdateWorkflow >> updateProject: aRootProjectRelease [
+	self updateRepository: aRootProjectRelease repositoryRelease
+]
+
+{ #category : #updating }
+GtRlReleaseUpdateWorkflow >> updateRepository: aRootRepositoryRelease [
 	| repositories |
-	repositories := self repositoriesInReleaseOrderFor: aProjectRelease.
+	repositories := self repositoriesInReleaseOrderFor: aRootRepositoryRelease.
 	repositories do: [ :aRepositoryRelease | 
 		aRepositoryRelease releaseStrategy 
 			updateFor: self;
