@@ -259,9 +259,9 @@ ReleaserExamples >> createNewRepoWithName: repoName [
 	repoName asFileReference ensureDeleteAll .
 	repoFolder := repoName asFileReference.
 	repo := IceRepositoryCreator new
-	location: repoFolder;
-	subdirectory: 'src';
-	createNewRepositoryNamed: repoName.
+		location: repoFolder;
+		subdirectory: 'src';
+		createNewRepositoryNamed: repoName.
 
 	dotProjectText := '{ ''srcDirectory'' : ''src'' }'.
 

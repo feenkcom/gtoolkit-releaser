@@ -323,7 +323,7 @@ GtRlRepositoryRelease >> resetReleaseActions [
 
 { #category : #'accessing - dynamic' }
 GtRlRepositoryRelease >> semanticVersionTags [
-	^ self icebergRepository tags select: #gtIsSemanticVersion
+	^ self icebergRepository gtSemanticVersionsTags
 ]
 
 { #category : #'accessing - dynamic' }

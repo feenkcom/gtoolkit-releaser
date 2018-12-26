@@ -33,6 +33,11 @@ IceRepository >> gtRemoteBranchesFor: aView [
 ]
 
 { #category : #'*GToolkit-Releaser-IcebergExtensions' }
+IceRepository >> gtSemanticVersionsTags [
+	^ self tags select: #gtIsSemanticVersion
+]
+
+{ #category : #'*GToolkit-Releaser-IcebergExtensions' }
 IceRepository >> gtTagsFor: aView [
 	<gtView>
 	^ aView list 
