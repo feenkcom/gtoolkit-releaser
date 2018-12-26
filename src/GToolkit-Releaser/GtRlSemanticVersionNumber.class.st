@@ -25,6 +25,15 @@ GtRlSemanticVersionNumber >> <= aFkRlSemanticVersion [
 	^ true.
 ]
 
+{ #category : #comparing }
+GtRlSemanticVersionNumber >> = anObject [
+	self == anObject ifTrue: [ ^ true ].
+	self class = anObject class ifFalse: [ ^ false ].
+	^ self major = anObject major and: [ 
+		 self minor = anObject minor and: [ 
+			self patch = anObject patch ] ]
+]
+
 { #category : #accessing }
 GtRlSemanticVersionNumber >> initialize [ 
 	major := 0. 

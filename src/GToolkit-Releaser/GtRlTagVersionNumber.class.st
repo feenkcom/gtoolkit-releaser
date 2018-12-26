@@ -7,6 +7,13 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
+{ #category : #comparing }
+GtRlTagVersionNumber >> = anObject [
+	self == anObject ifTrue: [ ^ true ].
+	self class = anObject class ifFalse: [ ^ false ].
+	^ self tagName = anObject tagName
+]
+
 { #category : #accessing }
 GtRlTagVersionNumber >> tagName [
 	^ tagName

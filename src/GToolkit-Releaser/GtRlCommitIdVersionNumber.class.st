@@ -7,6 +7,13 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
+{ #category : #comparing }
+GtRlCommitIdVersionNumber >> = anObject [
+	self == anObject ifTrue: [ ^ true ].
+	self class = anObject class ifFalse: [ ^ false ].
+	^ self commitId = anObject commitId
+]
+
 { #category : #accessing }
 GtRlCommitIdVersionNumber >> commitId [ 
 	^ commitId 
