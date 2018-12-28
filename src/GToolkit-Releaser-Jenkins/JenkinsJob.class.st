@@ -25,6 +25,14 @@ JenkinsJob >> client: anObject [
 ]
 
 { #category : #accessing }
+JenkinsJob >> gtLastBuildLogFor: aView [
+	<gtView>
+	^ aView textEditor 
+		title: 'Last Build Log';
+		text: self lastBuildLog 
+]
+
+{ #category : #accessing }
 JenkinsJob >> lastBuildLog [
 	^ client get: ('' join: 
 	{ url . 
