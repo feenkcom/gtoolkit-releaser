@@ -1,3 +1,13 @@
+"
+I build the graph of projects and repositories for a given Metacello baseline. The constructed graph represents the loading configurations for the given baseline used by Releaser.
+
+I only work with Metacello baselines that:
+	- have no cycles in the loading configuration 
+	- do not use groups
+	- do not use explicit repositories for packages
+	- only use the #'common' spec
+
+"
 Class {
 	#name : #GtRlModelBuilder,
 	#superclass : #Object,

@@ -1,3 +1,13 @@
+"
+I model a package that is loaded by a project.
+
+I have as main attributes:
+	- the name of the package 
+	- the project that contains me
+	- dependencies to other packages or projects
+	
+I do not have an explicit repository. I am placed in the same repository as the project that contains me.
+"
 Class {
 	#name : #GtRlPackage,
 	#superclass : #GtRlNode,

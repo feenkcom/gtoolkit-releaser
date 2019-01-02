@@ -1,3 +1,15 @@
+"
+I model a project that resides within a repository, has dependencies to other projects and loads certain packages from the repository. I correspond to a Monticello baseline.
+
+I have as main attributes: 
+	- the name of the project
+	- the list of packages loaded by the project 
+	- the repositry containing the project 
+	- a list of child and parent projects representing my dependencies to other projects
+	
+
+	
+"
 Class {
 	#name : #GtRlProject,
 	#superclass : #GtRlNode,
