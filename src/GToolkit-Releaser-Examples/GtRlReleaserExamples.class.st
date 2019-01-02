@@ -20,14 +20,14 @@ project := projectBuilder
 ]]]
 
 !!!Project with no dependencies
-For demo purposes, we've programatically created an example project: ${example:ReleaserExamples>>#perpetualReleaseProject}$. 
+For demo purposes, we've programatically created an example project: ${example:GtRlReleaserExamples>>#perpetualReleaseProject}$. 
 !!!Executing a release
 Executing a release involves using a configuration ${class:name=GtRlReleaseConfiguration}$, a release builder ${class:name=GtRlReleaseBuilder}$ and a ${class:name=GtRlReleaserExportWorkflow}$:
-${example:ReleaserExamples>>#executePerpetualReleaseProject}$
+${example:GtRlReleaserExamples>>#executePerpetualReleaseProject}$
 
 !!!Project with dependencies
 Releaser will recusively go through the entire repository graph and execute the release. However, there are cases where a Releaser should not execute any actions, or where the dependency should be on a certain commit id or a tag. The following example shows a generated repository that dependens in multiple ways on other generated repositories. 
-${example:ReleaserExamples>>#createProjectWithDependencies}$
+${example:GtRlReleaserExamples>>#createProjectWithDependencies}$
 
 The way in which it depends on the other repositories is defined in the release configuration by configuring different release strategies for different projects. 
 
@@ -40,16 +40,16 @@ Releaser is debuggable in the sense that a Workflow will have a list of action o
 
 "
 Class {
-	#name : #ReleaserExamples,
+	#name : #GtRlReleaserExamples,
 	#superclass : #Object,
 	#instVars : [
 		'projects'
 	],
-	#category : #'GToolkit-Releaser-BaselineModel-Tests'
+	#category : #'GToolkit-Releaser-Examples'
 }
 
 { #category : #'setUp-tearDown' }
-ReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames [
+GtRlReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames [
 	| projectBuilder project repository diff cls baselineName filetreeDir mcVersion|
 	baselineName := (#BaselineOf, projectName) asSymbol.
 	IceRepository registry detect: [ :repo | repo name = projectName ] ifFound: [:repo | repo forget].
@@ -98,7 +98,7 @@ ReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames 
 ]
 
 { #category : #creation }
-ReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames inRepository: repository [
+GtRlReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames inRepository: repository [
 	| projectBuilder project diff cls baselineName filetreeDir mcVersion|
 	baselineName := (#BaselineOf, projectName) asSymbol.
 	IceRepository registry detect: [ :repo | repo name = repository name ] ifFound: [:repo | repo forget].
@@ -146,7 +146,7 @@ ReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames 
 ]
 
 { #category : #creation }
-ReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames inRepository: repository using: projectBuilder [
+GtRlReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames inRepository: repository using: projectBuilder [
 	| project diff cls baselineName filetreeDir mcVersion|
 	baselineName := (#BaselineOf, projectName) asSymbol.
 	IceRepository registry detect: [ :repo | repo name = repository name ] ifFound: [:repo | repo forget].
@@ -194,7 +194,7 @@ ReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames 
 ]
 
 { #category : #'setUp-tearDown' }
-ReleaserExamples >> aGtRlProjectRelease: projectName [
+GtRlReleaserExamples >> aGtRlProjectRelease: projectName [
 	| releaseConfiguration releaseBuilder project release |
 	project := self aGtRlProject: projectName withDependencies: OrderedCollection new.
 	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
@@ -207,7 +207,7 @@ ReleaserExamples >> aGtRlProjectRelease: projectName [
 ]
 
 { #category : #'setUp-tearDown' }
-ReleaserExamples >> addBaselineCode: project toClass: cls withDependencies: dependenciesMap [
+GtRlReleaserExamples >> addBaselineCode: project toClass: cls withDependencies: dependenciesMap [
 	| baselinecode |
 	baselinecode := project generateSourceWithProjectDependencies: dependenciesMap.
 	cls compile: baselinecode.
@@ -215,7 +215,7 @@ ReleaserExamples >> addBaselineCode: project toClass: cls withDependencies: depe
 ]
 
 { #category : #'setUp-tearDown' }
-ReleaserExamples >> baselineClass: project [
+GtRlReleaserExamples >> baselineClass: project [
 	| cls |
 	cls := BaselineOf subclass:#BaselineOf, project
 			instanceVariableNames: ''
@@ -228,7 +228,7 @@ ReleaserExamples >> baselineClass: project [
 ]
 
 { #category : #'setUp-tearDown' }
-ReleaserExamples >> computeProjectURL: project [
+GtRlReleaserExamples >> computeProjectURL: project [
 	| projectURL stream  |
 	stream := String new writeStream.
 	project repository url printOn: stream.
@@ -239,7 +239,7 @@ ReleaserExamples >> computeProjectURL: project [
 ]
 
 { #category : #creation }
-ReleaserExamples >> createNewIceRepositoryRepository: repoName [
+GtRlReleaserExamples >> createNewIceRepositoryRepository: repoName [
 	| repo repoFolder |
 	
 	repoName asFileReference ensureDeleteAll .
@@ -253,7 +253,7 @@ ReleaserExamples >> createNewIceRepositoryRepository: repoName [
 ]
 
 { #category : #'setUp-tearDown' }
-ReleaserExamples >> createNewRepoWithName: repoName [
+GtRlReleaserExamples >> createNewRepoWithName: repoName [
 	| repo repoFolder packagest baseline diff dotProjectText dotProperties dotProject|
 	
 	repoName asFileReference ensureDeleteAll .
@@ -290,7 +290,7 @@ ReleaserExamples >> createNewRepoWithName: repoName [
 ]
 
 { #category : #'setUp-tearDown' }
-ReleaserExamples >> createProject: projectName [
+GtRlReleaserExamples >> createProject: projectName [
 	| project |
 	project := self aGtRlProject: projectName withDependencies: OrderedCollection new.
 	^ self computeProjectURL: project. 
@@ -299,7 +299,7 @@ ReleaserExamples >> createProject: projectName [
 ]
 
 { #category : #example }
-ReleaserExamples >> createProjectWithDependencies [
+GtRlReleaserExamples >> createProjectWithDependencies [
 	<gtExample>
 	| releaseConfiguration project releaseBuilder release tagProjectURL commitProjectURL latestProjectURL workflow releaseActions normalProjectURL |
 	
@@ -342,7 +342,7 @@ ReleaserExamples >> createProjectWithDependencies [
 ]
 
 { #category : #example }
-ReleaserExamples >> createRepoWithTwoProjects [
+GtRlReleaserExamples >> createRepoWithTwoProjects [
 	<gtExample>
 	| oneRepo anotherRepo mainRepo mainProject oneProject anotherProject oneProjectURL anotherProjectURL dependencies sideProject projectBuilder |
 	projectBuilder := GtRlModelBuilder new.
@@ -363,10 +363,10 @@ ReleaserExamples >> createRepoWithTwoProjects [
 ]
 
 { #category : #'setUp-tearDown' }
-ReleaserExamples >> createTagProject [
+GtRlReleaserExamples >> createTagProject [
 	| releaseConfiguration tagProject tagProjectURL workflow|
 	
-	tagProject := ReleaserExamples new aGtRlProject: #TagProject withDependencies: OrderedCollection new.
+	tagProject := GtRlReleaserExamples new aGtRlProject: #TagProject withDependencies: OrderedCollection new.
 	tagProjectURL := self computeProjectURL: tagProject.
 	releaseConfiguration := self genericReleaseConfiguration.
 	workflow := GtRlReleaserExportWorkflow 
@@ -381,7 +381,7 @@ ReleaserExamples >> createTagProject [
 ]
 
 { #category : #example }
-ReleaserExamples >> executePerpetualReleaseProject [
+GtRlReleaserExamples >> executePerpetualReleaseProject [
 	<gtExample>
 	| project releaseConfiguration releaseBuilder release workflow iceRepository diff|
 	project := self perpetualReleaseProject.
@@ -405,7 +405,7 @@ ReleaserExamples >> executePerpetualReleaseProject [
 ]
 
 { #category : #'setUp-tearDown' }
-ReleaserExamples >> genericReleaseConfiguration [
+GtRlReleaserExamples >> genericReleaseConfiguration [
 ^ GtRlReleaseConfiguration new
 	defaultVersionNumber: (GtRlSemanticVersionNumber major:0 minor: 0 patch: 1);
 	defaultReleaseBranchName: 'release';
@@ -413,7 +413,7 @@ ReleaserExamples >> genericReleaseConfiguration [
 ]
 
 { #category : #'setUp-tearDown' }
-ReleaserExamples >> getProject: projectName [
+GtRlReleaserExamples >> getProject: projectName [
 	| project |
 	projects ifNil: [ projects := IdentityDictionary new].
 	projects keys 
@@ -427,12 +427,12 @@ ReleaserExamples >> getProject: projectName [
 ]
 
 { #category : #example }
-ReleaserExamples >> perpetualReleaseProject [
+GtRlReleaserExamples >> perpetualReleaseProject [
 	<gtExample>
 	^ self getProject: #PerpetualReleaseProject.
 ]
 
 { #category : #'setUp-tearDown' }
-ReleaserExamples >> projects [ 
+GtRlReleaserExamples >> projects [ 
 	^ projects
 ]

@@ -1,6 +1,6 @@
 Class {
 	#name : #GtRlLeafRepositoryReleaseExamples,
-	#superclass : #ReleaserExamples,
+	#superclass : #GtRlReleaserExamples,
 	#category : #'GToolkit-Releaser-Examples'
 }
 
