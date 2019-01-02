@@ -256,8 +256,8 @@ GtRlReleaserExamples >> createNewIceRepositoryRepository: repoName [
 GtRlReleaserExamples >> createNewRepoWithName: repoName [
 	| repo repoFolder packagest baseline diff dotProjectText dotProperties dotProject|
 	
-	repoName asFileReference ensureDeleteAll .
-	repoFolder := repoName asFileReference.
+	repoFolder := (FileLocator localDirectory / #'gtoolkit-releaser' / repoName) asFileReference.
+	repoFolder ensureDeleteAll .
 	repo := IceRepositoryCreator new
 		location: repoFolder;
 		subdirectory: 'src';
