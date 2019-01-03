@@ -5,21 +5,6 @@ Class {
 }
 
 { #category : #'examples - basic' }
-GtRlProjectExamples >> projectWithActions [
-	<gtExample>
-	| project |
-	project := self projectWithName.
-	project 
-		preLoadAction: #anAction;
-		postLoadAction: #anotherAction.
-	
-	self assert: project preLoadAction equals: #anAction.
-	self assert: project postLoadAction equals: #anotherAction.
-	
-	^ project
-]
-
-{ #category : #'examples - basic' }
 GtRlProjectExamples >> projectWithBaselineClass [
 	<gtExample>
 	| project |
@@ -112,12 +97,39 @@ GtRlProjectExamples >> projectWithPackages [
 ]
 
 { #category : #'examples - basic' }
+GtRlProjectExamples >> projectWithPostLoadAction [
+	<gtExample>
+	| project |
+	project := self projectWithName.
+	project baselineClass: BaselineOfGtRlBaselineExampleStandaloneWithActions.
+	project postLoadAction: #postloadAction:.
+	
+	self assert: project postLoadAction equals: #postloadAction:.
+	self assert: (BaselineOfGtRlBaselineExampleStandaloneWithActions includesSelector: #postloadAction:).
+	
+	^ project
+]
+
+{ #category : #'examples - basic' }
+GtRlProjectExamples >> projectWithPreLoadAction [
+	<gtExample>
+	| project |
+	project := self projectWithName.
+	project baselineClass: BaselineOfGtRlBaselineExampleStandaloneWithActions.
+	project preLoadAction: #preloadAction:.
+	
+	self assert: project preLoadAction equals: #preloadAction:.
+	self assert: (BaselineOfGtRlBaselineExampleStandaloneWithActions includesSelector: #preloadAction:).
+	
+	^ project
+]
+
+{ #category : #'examples - basic' }
 GtRlProjectExamples >> projectWithRepository [
 	<gtExample>
 	| project repository |
-	project := self projectWithName.
 	repository := GtRlRepositoryExamples new repositoryWithGithubUrlNoVersion.
-	
+	project := self projectWithName.
 	project linkWithRepository: repository.
 	
 	self assert: project repository equals: repository.

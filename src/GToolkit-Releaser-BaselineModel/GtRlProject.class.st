@@ -238,21 +238,30 @@ GtRlProject >> parentProjects [
 
 { #category : #accessing }
 GtRlProject >> postLoadAction [
+	"Return the action for executing after the project was loaded.
+	${example:GtRlProjectExamples>>#projectWithPostLoadAction}$
+	"
 	^ postLoadAction
 ]
 
 { #category : #accessing }
 GtRlProject >> postLoadAction: aSymbol [
+	"Set a selector existing in the baseline class that will be executed after the project is loaded.
+	${example:GtRlProjectExamples>>#projectWithPostLoadAction}$"
 	postLoadAction := aSymbol
 ]
 
 { #category : #accessing }
 GtRlProject >> preLoadAction [
+	"Return the action for executing before the project is loaded.
+	${example:GtRlProjectExamples>>#projectWithPreLoadAction}$"
 	^ preLoadAction
 ]
 
 { #category : #accessing }
 GtRlProject >> preLoadAction: aSymbol [
+	"Set a selector existing in the baseline class that will be executed after the project is loaded.
+	${example:GtRlProjectExamples>>#projectWithPreLoadAction}$"
 	preLoadAction := aSymbol
 ]
 

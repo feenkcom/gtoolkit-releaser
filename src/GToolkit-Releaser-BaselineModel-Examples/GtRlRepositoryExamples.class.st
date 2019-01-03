@@ -11,6 +11,7 @@ GtRlRepositoryExamples >> repositoryEqualityExample [
 	| repository |
 	repository := self repositoryWithGithubUrlNoVersion.
 
+	self assert: repository = repository.
 	self assert: repository = (GtRlRepository fromUrlString: repository urlString).
 	self assert: (repository = self repositoryWithGithubUrlExplicitTagVersion) not.
 	
