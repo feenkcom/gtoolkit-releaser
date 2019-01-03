@@ -27,6 +27,12 @@ Class {
 	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
 
+{ #category : #'instance creation' }
+GtRlProject class >> withName: projectName [
+	^ self new
+		name: projectName
+]
+
 { #category : #adding }
 GtRlProject >> addChildProject: aChildProject [ 
 	self childProjects add: aChildProject.
@@ -97,11 +103,6 @@ GtRlProject >> basicAddParentProject: aParentProject [
 { #category : #accessing }
 GtRlProject >> childProjects [
 	^ childProjects
-]
-
-{ #category : #'accessing - dynamic' }
-GtRlProject >> childProjectsNames [
-	^ self childProjects collect: #name
 ]
 
 { #category : #actions }
