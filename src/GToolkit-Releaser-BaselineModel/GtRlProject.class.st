@@ -131,10 +131,12 @@ GtRlProject >> gtChildProjectsFor: aView [
 { #category : #ui }
 GtRlProject >> gtMCProjectMapFor: aView [
 	<gtView>
-	^ self baselineVersion ifNotNil: [ :aBaselineVersion |
-		(aBaselineVersion gtProjectMapFor: aView)
-			title: 'MC Map';
-			priority: 70 ]
+	^ self baselineVersion 
+		ifNil: [ aView ]
+		ifNotNil: [ :aBaselineVersion |
+			(aBaselineVersion gtProjectMapFor: aView)
+				title: 'MC Map' translated;
+				priority: 70 ]
 ]
 
 { #category : #ui }
@@ -186,6 +188,7 @@ GtRlProject >> gtRepoMapFor: aView [
 { #category : #ui }
 GtRlProject >> gtSourceFor: aView [
 	<gtView> 
+	self baselineVersion ifNil: [ ^ aView ].
 	^ aView textEditor
 		title: 'Source' translated;
 		text: [ String streamContents: [ :s | 
