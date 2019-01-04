@@ -11,11 +11,14 @@ Class {
 { #category : #releasing }
 GtRlReleaserExportWorkflow class >> buildGToolkitRelease [
 	| releaseConfiguration workflow |
-	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
-	workflow := GtRlReleaserExportWorkflow 
-		forBaseline: BaselineOfGToolkit 
-		fromRepository: 'github://feenkcom/gtoolkit/src'
-		withConfiguration: releaseConfiguration.
+	TranscriptLogger runDuring: [  
+		releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
+		releaseConfiguration asBeaconSignal emit.
+		workflow := GtRlReleaserExportWorkflow 
+			forBaseline: BaselineOfGToolkit 
+			fromRepository: 'github://feenkcom/gtoolkit/src'
+			withConfiguration: releaseConfiguration.
+	].
 	^ workflow
 ]
 
