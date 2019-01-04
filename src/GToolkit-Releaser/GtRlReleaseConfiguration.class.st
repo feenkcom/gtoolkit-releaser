@@ -68,6 +68,11 @@ GtRlReleaseConfiguration >> defaultVersionNumber: aVersionNumber [
 ]
 
 { #category : #accessing }
+GtRlReleaseConfiguration >> emit [
+	^ GtRlReleaseConfigurationSignal emit: self.
+]
+
+{ #category : #accessing }
 GtRlReleaseConfiguration >> forceNewRelease [
 	shouldForceNewRelease := true
 ]
