@@ -244,7 +244,7 @@ GtRlRepository >> projects [
 	^ projects
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - dynamic' }
 GtRlRepository >> repositoryName [
 	| nameSegment size segmentIndex |
 	size := self url segments size. 

@@ -27,6 +27,12 @@ Class {
 	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
 
+{ #category : #'instance creation' }
+GtRlProject class >> withName: projectName [
+	^ self new
+		name: projectName
+]
+
 { #category : #adding }
 GtRlProject >> addChildProject: aChildProject [ 
 	self childProjects add: aChildProject.
@@ -99,11 +105,6 @@ GtRlProject >> childProjects [
 	^ childProjects
 ]
 
-{ #category : #'accessing - dynamic' }
-GtRlProject >> childProjectsNames [
-	^ self childProjects collect: #name
-]
-
 { #category : #actions }
 GtRlProject >> compileBaselineWithProjectDependencies: projectDependenciesMap [
 	| toolbox |
@@ -131,10 +132,12 @@ GtRlProject >> gtChildProjectsFor: aView [
 { #category : #ui }
 GtRlProject >> gtMCProjectMapFor: aView [
 	<gtView>
-	^ self baselineVersion ifNotNil: [ :aBaselineVersion |
-		(aBaselineVersion gtProjectMapFor: aView)
-			title: 'MC Map';
-			priority: 70 ]
+	^ self baselineVersion 
+		ifNil: [ aView ]
+		ifNotNil: [ :aBaselineVersion |
+			(aBaselineVersion gtProjectMapFor: aView)
+				title: 'MC Map' translated;
+				priority: 70 ]
 ]
 
 { #category : #ui }
@@ -186,6 +189,7 @@ GtRlProject >> gtRepoMapFor: aView [
 { #category : #ui }
 GtRlProject >> gtSourceFor: aView [
 	<gtView> 
+	self baselineVersion ifNil: [ ^ aView ].
 	^ aView textEditor
 		title: 'Source' translated;
 		text: [ String streamContents: [ :s | 
@@ -234,21 +238,30 @@ GtRlProject >> parentProjects [
 
 { #category : #accessing }
 GtRlProject >> postLoadAction [
+	"Return the action for executing after the project was loaded.
+	${example:GtRlProjectExamples>>#projectWithPostLoadAction}$
+	"
 	^ postLoadAction
 ]
 
 { #category : #accessing }
 GtRlProject >> postLoadAction: aSymbol [
+	"Set a selector existing in the baseline class that will be executed after the project is loaded.
+	${example:GtRlProjectExamples>>#projectWithPostLoadAction}$"
 	postLoadAction := aSymbol
 ]
 
 { #category : #accessing }
 GtRlProject >> preLoadAction [
+	"Return the action for executing before the project is loaded.
+	${example:GtRlProjectExamples>>#projectWithPreLoadAction}$"
 	^ preLoadAction
 ]
 
 { #category : #accessing }
 GtRlProject >> preLoadAction: aSymbol [
+	"Set a selector existing in the baseline class that will be executed after the project is loaded.
+	${example:GtRlProjectExamples>>#projectWithPreLoadAction}$"
 	preLoadAction := aSymbol
 ]
 

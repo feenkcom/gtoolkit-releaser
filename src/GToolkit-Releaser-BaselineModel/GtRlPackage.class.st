@@ -29,6 +29,12 @@ GtRlPackage >> dependencies: aSymbolArray [
 	dependencies := aSymbolArray
 ]
 
+{ #category : #initialization }
+GtRlPackage >> initialize [ 	
+	super initialize.
+	dependencies := OrderedCollection new
+]
+
 { #category : #accessing }
 GtRlPackage >> name [
 	^ name
