@@ -109,6 +109,7 @@ GtRlReleaseConfiguration >> setReleaseBranch: aBranchName forProjectId: aProject
 
 { #category : #actions }
 GtRlReleaseConfiguration >> setReleaseStrategy: aReleaseStrategy forProjectId: aProjectId [
+	(GtRlProjectReleaseStrategySignal project: aProjectId strategy: aReleaseStrategy) emit.
 	self customReleaseStrategies 
 		at: aProjectId put: aReleaseStrategy
 ]
