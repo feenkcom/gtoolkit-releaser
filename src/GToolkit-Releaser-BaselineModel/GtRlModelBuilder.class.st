@@ -126,7 +126,7 @@ GtRlModelBuilder >> updateProjectDependenciesFor: currentProject fromMCVersion: 
 			shouldReject := aMetacelloProjectSpec version notNil and: [ 
 				aMetacelloProjectSpec version name = 'baseline' ].
 			shouldReject ifFalse: [ 
-				('Ignoring dependency ', aMetacelloProjectSpec className, ' of ', currentProject name) logCr ].
+				StringSignal emit: ('Ignoring dependency ', aMetacelloProjectSpec className, ' of ', currentProject name) ].
 			shouldReject ])
 		collect: [ :aMCProjectSpec | 
 			self buildProjectFromMetacelloSpec: aMCProjectSpec ].
