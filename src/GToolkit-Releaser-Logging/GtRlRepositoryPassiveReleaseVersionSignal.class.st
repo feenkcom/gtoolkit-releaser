@@ -17,9 +17,9 @@ GtRlRepositoryPassiveReleaseVersionSignal class >> repositoryRelease: aRepositor
 
 { #category : #accessing }
 GtRlRepositoryPassiveReleaseVersionSignal >> printOneLineContentsOn: stream [
-	repositoryRelease printOn: stream. 
+	(version versionString truncateTo:6) printOn: stream. 
 	stream nextPutAll: ' '. 
-	version printOn: stream. 
+	repositoryRelease repository url printOn: stream. 
 ]
 
 { #category : #accessing }
