@@ -17,6 +17,7 @@ GtRlLatestCommitReleaseStrategy >> description [
 
 { #category : #accessing }
 GtRlLatestCommitReleaseStrategy >> updateFor: anUpdateWorkflow [
+	(GtRlRepositoryReleaseVersionSignal repositoryRelease: self repositoryRelease version: self commitVersionNumber) emit.
 	self repositoryRelease
 		version: self commitVersionNumber;
 		makePassiveRelease

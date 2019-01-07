@@ -21,6 +21,7 @@ GtRlNullReleaseStrategy >> nullVersionNumber [
 
 { #category : #actions }
 GtRlNullReleaseStrategy >> updateFor: anUpdateWorkflow [
+	(GtRlRepositoryReleaseVersionSignal repositoryRelease: self repositoryRelease version: self nullVersionNumber) emit.
 	self repositoryRelease
 		version: self nullVersionNumber;
 		makePassiveRelease

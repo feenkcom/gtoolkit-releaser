@@ -17,6 +17,7 @@ GtRlBaselineTagReleaseStrategy >> tagVersionNumber [
 
 { #category : #accessing }
 GtRlBaselineTagReleaseStrategy >> updateFor: anUpdateWorkflow [
+	(GtRlRepositoryReleaseVersionSignal repositoryRelease: self repositoryRelease version: self tagVersionNumber) emit.
 	self repositoryRelease
 		version: self tagVersionNumber;
 		makePassiveRelease
