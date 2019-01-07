@@ -213,6 +213,7 @@ GtRlProject >> isLeaf [
 { #category : #actions }
 GtRlProject >> linkWithRepository: aRepository [
 	self repository: aRepository.
+	(GtRlProjectLinkWithRepositorySignal project: self repository: aRepository) emit.
 	aRepository addProject: self
 ]
 
