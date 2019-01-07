@@ -13,6 +13,7 @@ BaselineOfGToolkitReleaser >> baseline: spec [
 			package: 'GToolkit-Releaser' with: [ spec requires: #('GToolkit-Releaser-BaselineModel') ];
 			package: 'GToolkit-Releaser-IcebergExtensions' with: [ spec requires: #('GToolkit-Releaser') ];
 			package: 'GToolkit-Releaser-Logging';
+			package: 'GToolkit-Releaser-Jenkins';
 			package: 'GToolkit-Releaser-BaselineModel-SystemOneExamples';
 			package: 'GToolkit-Releaser-BaselineModel-SystemThreeExamples';
 			package: 'GToolkit-Releaser-BaselineModel-SystemTwoExamples';
