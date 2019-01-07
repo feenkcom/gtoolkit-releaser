@@ -27,6 +27,7 @@ GtRlReleaseStructureBuilder >> buildStructureForProject: aProject [
 			at: aChildProject
 			ifAbsentPut: [ self buildStructureForProject: aChildProject ].
 		projectRelease addChildRelease: childProjectRelease ].
+	(GtRlProjectReleaseStructureSignal projectRelease: projectRelease repositoryRelease: repositoryRelease) emit.
 	^ projectRelease
 ]
 
