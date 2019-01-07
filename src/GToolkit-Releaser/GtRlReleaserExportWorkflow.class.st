@@ -58,9 +58,6 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 	setReleaseStrategyOfType: GtRlLatestCommitReleaseStrategy forProjecs: {
 		'github://kursjan/petitparser2'.
 		'github://j-brant/SmaCC/src'.
-		'github://syrel/Sparta/src'.
-		'github://pharo-graphics/Bloc/src'.
-		'github://pharo-graphics/Brick/src'.
 		'github://pharo-project/pharo-beacon/repository'.
 		'github://svenvc/NeoJSON/repository'};
 	setReleaseStrategyOfType: GtRlBaselineTagReleaseStrategy forProjecs: {
