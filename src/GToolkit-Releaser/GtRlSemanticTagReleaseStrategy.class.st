@@ -23,6 +23,7 @@ GtRlSemanticTagReleaseStrategy >> commitAndTagRelease [
 GtRlSemanticTagReleaseStrategy >> configureNewVersionRelease [
 	| nextVersionNumber |
 	nextVersionNumber := self nextVersionComputation nextVersionNumberForRepository: self repositoryRelease repository.
+	(GtRlRepositoryActiveReleaseVersionSignal repositoryRelease: self repositoryRelease version: nextVersionNumber) emit.
 	self repositoryRelease 
 		resetReleaseActions;
 		markAsActive;

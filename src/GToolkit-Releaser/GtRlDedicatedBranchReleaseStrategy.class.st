@@ -120,7 +120,7 @@ GtRlDedicatedBranchReleaseStrategy >> updateFor: anUpdateWorkflow [
 	"If a new release is not requires used the latest semantic tag and make the release passive."
 	latestVersionTag := self repositoryRelease latestSemanticVersionTag.
 	
-	(GtRlRepositoryReleaseVersionSignal repositoryRelease: self repositoryRelease 
+	(GtRlRepositoryPassiveReleaseVersionSignal repositoryRelease: self repositoryRelease 
 			version: latestVersionTag gtAsSemanticVersionNumber) emit.
 			
 	^ self repositoryRelease 

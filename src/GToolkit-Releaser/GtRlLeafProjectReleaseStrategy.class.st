@@ -33,7 +33,7 @@ GtRlLeafProjectReleaseStrategy >> updateFor: anUpdateWorkflow [
 	(latestVersionTag commit = self releaseBranch commit) ifFalse: [
 		^ self configureNewVersionRelease ].
 	
-	(GtRlRepositoryReleaseVersionSignal repositoryRelease: self repositoryRelease 
+	(GtRlRepositoryPassiveReleaseVersionSignal repositoryRelease: self repositoryRelease 
 		version: latestVersionTag gtAsSemanticVersionNumber) emit.
 	
 	"Use the latest releae instead of generating a new one."

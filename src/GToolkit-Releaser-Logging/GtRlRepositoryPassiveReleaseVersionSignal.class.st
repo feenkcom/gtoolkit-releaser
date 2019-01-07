@@ -1,5 +1,5 @@
 Class {
-	#name : #GtRlRepositoryReleaseVersionSignal,
+	#name : #GtRlRepositoryPassiveReleaseVersionSignal,
 	#superclass : #BeaconSignal,
 	#instVars : [
 		'repositoryRelease',
@@ -9,35 +9,35 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-GtRlRepositoryReleaseVersionSignal class >> repositoryRelease: aRepositoryRelease version: aVersion [
+GtRlRepositoryPassiveReleaseVersionSignal class >> repositoryRelease: aRepositoryRelease version: aVersion [
 	^ self new
 	repositoryRelease: aRepositoryRelease;
 	version: aVersion.
 ]
 
 { #category : #accessing }
-GtRlRepositoryReleaseVersionSignal >> printOneLineContentsOn: stream [
+GtRlRepositoryPassiveReleaseVersionSignal >> printOneLineContentsOn: stream [
 	repositoryRelease printOn: stream. 
 	stream nextPutAll: ' '. 
 	version printOn: stream. 
 ]
 
 { #category : #accessing }
-GtRlRepositoryReleaseVersionSignal >> repositoryRelease [
+GtRlRepositoryPassiveReleaseVersionSignal >> repositoryRelease [
 	^ repositoryRelease
 ]
 
 { #category : #accessing }
-GtRlRepositoryReleaseVersionSignal >> repositoryRelease: anObject [
+GtRlRepositoryPassiveReleaseVersionSignal >> repositoryRelease: anObject [
 	repositoryRelease := anObject
 ]
 
 { #category : #accessing }
-GtRlRepositoryReleaseVersionSignal >> version [
+GtRlRepositoryPassiveReleaseVersionSignal >> version [
 	^ version
 ]
 
 { #category : #accessing }
-GtRlRepositoryReleaseVersionSignal >> version: anObject [
+GtRlRepositoryPassiveReleaseVersionSignal >> version: anObject [
 	version := anObject
 ]
