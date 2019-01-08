@@ -2,16 +2,14 @@ Class {
 	#name : #GtRlCreateReleaseActionSignal,
 	#superclass : #BeaconSignal,
 	#instVars : [
-		'release',
 		'action'
 	],
 	#category : #'GToolkit-Releaser-Logging'
 }
 
 { #category : #'as yet unclassified' }
-GtRlCreateReleaseActionSignal class >> release: aRelease action: anAction [
+GtRlCreateReleaseActionSignal class >> action: anAction [
 	^ self new 
-	  release: aRelease;
 	  action: anAction 
 ]
 
@@ -27,10 +25,5 @@ GtRlCreateReleaseActionSignal >> action: anObject [
 
 { #category : #accessing }
 GtRlCreateReleaseActionSignal >> printOneLineContentsOn: stream [
-	stream nextPutAll: release nodeName; nextPutAll: ' action: '; nextPutAll: action name; nextPutAll: ' '; nextPutAll: action order printString 
-]
-
-{ #category : #accessing }
-GtRlCreateReleaseActionSignal >> release: anObject [
-	release := anObject
+	stream nextPutAll: action repositoryRelease nodeName; nextPutAll: ' action: '; nextPutAll: action name; nextPutAll: ' '; nextPutAll: action order printString 
 ]
