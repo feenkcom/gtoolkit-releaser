@@ -102,6 +102,11 @@ GtRlProjectRelease >> isLeaf [
 	^ self project isLeaf
 ]
 
+{ #category : #actions }
+GtRlProjectRelease >> nodeName [
+	^ project name
+]
+
 { #category : #accessing }
 GtRlProjectRelease >> parentReleases [
 	^ parentReleases ifNil: [ 

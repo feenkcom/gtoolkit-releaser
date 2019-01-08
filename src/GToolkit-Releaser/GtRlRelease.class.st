@@ -9,6 +9,7 @@ Class {
 
 { #category : #accessing }
 GtRlRelease >> addReleaseAction: aReleaseAction [
+	(GtRlAddReleaseActionSignal release: self action: aReleaseAction) emit.
 	^ self releaseActions addAction: aReleaseAction
 ]
 
@@ -21,6 +22,11 @@ GtRlRelease >> gtReleaseActionsFor: aView [
 { #category : #testing }
 GtRlRelease >> hasReleaseActions [ 
 	^ self releaseActions isEmpty not
+]
+
+{ #category : #accessing }
+GtRlRelease >> nodeName [
+	self subclassResponsibility
 ]
 
 { #category : #accessing }

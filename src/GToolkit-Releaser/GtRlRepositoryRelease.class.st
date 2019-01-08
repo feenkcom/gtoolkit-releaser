@@ -305,6 +305,11 @@ GtRlRepositoryRelease >> mergeToBranch: aBranchName [
 		executeWithAcceptingLeftOnConflict.
 ]
 
+{ #category : #printing }
+GtRlRepositoryRelease >> nodeName [
+	^ self repository id
+]
+
 { #category : #'accessing - dynamic' }
 GtRlRepositoryRelease >> parentRepositoryReleases [
 	^ (self projectReleases flatCollect: [ :aProjectRelease | 

@@ -21,6 +21,7 @@ GtRlReleaseAction >> descriptionDetails [
 { #category : #actions }
 GtRlReleaseAction >> execute [
 	isExecuted ifTrue: [ Error signal: 'Action already executed' ].
+	(GtRlExecuteActionSignal action:self) emit.
 	[ self performAction ] 
 		ensure: [ isExecuted := true ].
 ]
