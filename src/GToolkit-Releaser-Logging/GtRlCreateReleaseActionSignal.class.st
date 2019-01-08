@@ -1,5 +1,5 @@
 Class {
-	#name : #GtRlAddReleaseActionSignal,
+	#name : #GtRlCreateReleaseActionSignal,
 	#superclass : #BeaconSignal,
 	#instVars : [
 		'release',
@@ -9,33 +9,28 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-GtRlAddReleaseActionSignal class >> release: aRelease action: anAction [
+GtRlCreateReleaseActionSignal class >> release: aRelease action: anAction [
 	^ self new 
 	  release: aRelease;
 	  action: anAction 
 ]
 
 { #category : #accessing }
-GtRlAddReleaseActionSignal >> action [
+GtRlCreateReleaseActionSignal >> action [
 	^ action
 ]
 
 { #category : #accessing }
-GtRlAddReleaseActionSignal >> action: anObject [
+GtRlCreateReleaseActionSignal >> action: anObject [
 	action := anObject
 ]
 
 { #category : #accessing }
-GtRlAddReleaseActionSignal >> printOneLineContentsOn: stream [
+GtRlCreateReleaseActionSignal >> printOneLineContentsOn: stream [
 	stream nextPutAll: release nodeName; nextPutAll: ' action: '; nextPutAll: action name; nextPutAll: ' '; nextPutAll: action order printString 
 ]
 
 { #category : #accessing }
-GtRlAddReleaseActionSignal >> release1 [
-	^ release
-]
-
-{ #category : #accessing }
-GtRlAddReleaseActionSignal >> release: anObject [
+GtRlCreateReleaseActionSignal >> release: anObject [
 	release := anObject
 ]

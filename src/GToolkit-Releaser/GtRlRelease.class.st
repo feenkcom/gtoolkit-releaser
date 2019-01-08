@@ -9,7 +9,7 @@ Class {
 
 { #category : #accessing }
 GtRlRelease >> addReleaseAction: aReleaseAction [
-	(GtRlAddReleaseActionSignal release: self action: aReleaseAction) emit.
+	(GtRlCreateReleaseActionSignal release: self action: aReleaseAction) emit.
 	^ self releaseActions addAction: aReleaseAction
 ]
 
