@@ -28,6 +28,15 @@ GtRlRepositoryRelease >> allChildRepositoryReleases [
 	^ self withDeepCollect: #childRepositoryReleases
 ]
 
+{ #category : #ui }
+GtRlRepositoryRelease >> allReleaseActions [
+	| allActions |
+	allActions := self projectReleases 
+		inject: self releaseActions
+		into: [ :all :current | all, current releaseActions ].
+	^ allActions sortedByOrder
+]
+
 { #category : #'accessing - dynamic' }
 GtRlRepositoryRelease >> childRepositoryReleases [
 	^ (self projectReleases flatCollect: [ :aProjectRelease | 
@@ -140,7 +149,7 @@ GtRlRepositoryRelease >> gtRepoMapFor: aView [
 						zIndex: 1;
 						constraintsDo: [ :c |
 							c padding: (BlInsets all: 5).
-							c horizontal fitContent.
+							c horizontal matchParent.
 							c vertical fitContent ].
 					label := BlTextElement new
 						text: (aRepositoryRelease description asRopedText foreground: textColor);
@@ -153,7 +162,7 @@ GtRlRepositoryRelease >> gtRepoMapFor: aView [
 					children graph beChildrenContainer.
 					container
 						addChild: label;
-						addChild: children. ];
+						addChild: children.];
 				with: repos;
 				forEach: [ :aRepositoryRelease | 
 					mondrian nodes
@@ -166,7 +175,32 @@ GtRlRepositoryRelease >> gtRepoMapFor: aView [
 									c padding: (BlInsets all: 2).
 									c linear horizontal alignCenter ] ];
 						with: aRepositoryRelease projectReleases.
-					mondrian layout vertical ].
+						aRepositoryRelease isPassiveRelease ifFalse: [ 
+							mondrian nodes
+								shape: [ :aReleaseAction |
+									|orderContainer|
+									orderContainer := BlElement new
+									layout: BlLinearLayout horizontal;
+									zIndex: 1;
+									constraintsDo: [ :c |
+										c padding: (BlInsets all: 2).
+										c horizontal fitContent.
+										c vertical fitContent ].
+									orderContainer graph beChildrenContainer.
+									orderContainer ];
+								with: {aRepositoryRelease};
+								forEach: [ :aRepoRelease |
+									| text |
+									mondrian nodes 
+										shape: [ :aReleaseAction | 
+											text := aReleaseAction order printString asRopedText.
+											(BlTextElement text: text)
+												constraintsDo: [ :c | 
+													c padding: (BlInsets all: 2)]];
+										with: aRepoRelease allReleaseActions actions.
+									mondrian layout custom: BlLinearLayout horizontal
+									 ]].
+					mondrian layout vertical].
 			mondrian edges
 				shape: [
 					BlParabollaArcElement new 
