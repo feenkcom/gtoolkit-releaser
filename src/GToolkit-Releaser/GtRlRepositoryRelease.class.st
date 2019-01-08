@@ -149,7 +149,7 @@ GtRlRepositoryRelease >> gtRepoMapFor: aView [
 						zIndex: 1;
 						constraintsDo: [ :c |
 							c padding: (BlInsets all: 5).
-							c horizontal matchParent.
+							c horizontal fitContent.
 							c vertical fitContent ].
 					label := BlTextElement new
 						text: (aRepositoryRelease description asRopedText foreground: textColor);
