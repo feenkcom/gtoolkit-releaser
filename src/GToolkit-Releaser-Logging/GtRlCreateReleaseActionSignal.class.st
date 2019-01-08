@@ -1,27 +1,8 @@
 Class {
 	#name : #GtRlCreateReleaseActionSignal,
-	#superclass : #BeaconSignal,
-	#instVars : [
-		'action'
-	],
+	#superclass : #GtRlActionSignal,
 	#category : #'GToolkit-Releaser-Logging'
 }
-
-{ #category : #'as yet unclassified' }
-GtRlCreateReleaseActionSignal class >> action: anAction [
-	^ self new 
-	  action: anAction 
-]
-
-{ #category : #accessing }
-GtRlCreateReleaseActionSignal >> action [
-	^ action
-]
-
-{ #category : #accessing }
-GtRlCreateReleaseActionSignal >> action: anObject [
-	action := anObject
-]
 
 { #category : #accessing }
 GtRlCreateReleaseActionSignal >> printOneLineContentsOn: stream [
