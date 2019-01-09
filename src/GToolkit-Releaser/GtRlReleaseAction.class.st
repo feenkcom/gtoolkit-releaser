@@ -18,10 +18,20 @@ GtRlReleaseAction >> descriptionDetails [
 	^ ''
 ]
 
+{ #category : #accessing }
+GtRlReleaseAction >> emitCreationSignal [
+	(GtRlCreateReleaseActionSignal action: self) emit.
+]
+
+{ #category : #accessing }
+GtRlReleaseAction >> emitExecutionSignal [
+	(GtRlExecuteActionSignal action: self) emit.
+]
+
 { #category : #actions }
 GtRlReleaseAction >> execute [
 	isExecuted ifTrue: [ Error signal: 'Action already executed' ].
-	(GtRlExecuteActionSignal action:self) emit.
+	self emitExecutionSignal.
 	[ self performAction ] 
 		ensure: [ isExecuted := true ].
 ]
