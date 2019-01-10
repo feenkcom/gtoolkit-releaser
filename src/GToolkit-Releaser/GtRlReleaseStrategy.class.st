@@ -1,3 +1,10 @@
+"
+I model a strategy for executing a repository release.
+
+My main responsabilities consist in updating a repository release by computing and setting its version number and creating the necessary release actions. I add release actions to both the repository release and its project releases. The API method that does the update of a repository release is ${method:GtRlReleaseStrategy>>#updateFor:}$.
+
+I should be initialize based on a ${class:GtRlReleaseConfiguration}$ instance used to configure various aspects of the release process.
+"
 Class {
 	#name : #GtRlReleaseStrategy,
 	#superclass : #Object,

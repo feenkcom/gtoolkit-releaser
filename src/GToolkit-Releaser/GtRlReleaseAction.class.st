@@ -1,3 +1,8 @@
+"
+I model an action executed during the creation of a new release version.
+
+My main API method for executing the actions is ${method:GtRlReleaseAction>>#execute}$. Since release actions can have side effects, like creating tags, or merging branches I ensure that I am executed only once. Subclasses should implement ${method:GtRlReleaseAction>>#performAction}$ to provide a concrete execution logic.
+"
 Class {
 	#name : #GtRlReleaseAction,
 	#superclass : #Object,
