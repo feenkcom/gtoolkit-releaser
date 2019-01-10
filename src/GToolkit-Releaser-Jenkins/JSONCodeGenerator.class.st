@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'packageOrganizer'
 	],
-	#category : #'GToolkit-Releaser-Jenkins-Model'
+	#category : #'GToolkit-Releaser-Jenkins-Generator'
 }
 
 { #category : #accessing }
@@ -29,5 +29,5 @@ JSONCodeGenerator >> initialize [
 JSONCodeGenerator >> modelFrom: aDictionary [
 	|fullClassName|
 	fullClassName := aDictionary at: #'_class'.
-	^ self ensureClass: fullClassName
+	^ (self ensureClass: fullClassName) new.
 ]

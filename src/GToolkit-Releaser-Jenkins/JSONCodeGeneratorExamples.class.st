@@ -8,7 +8,7 @@ Class {
 JSONCodeGeneratorExamples >> hudsonClass [
 	<gtExample>
 	| theClass |
-	theClass := JSONCodeGenerator new modelFrom: self hudsonExampleAsDictionary.
+	theClass := (JSONCodeGenerator new modelFrom: self hudsonExampleAsDictionary) class.
 	self assert: theClass name equals: #Hudson.
 	self assert: theClass package name equals: 'HudsonModel'.
 	^ theClass
@@ -22,6 +22,15 @@ JSONCodeGeneratorExamples >> hudsonExampleAsDictionary [
 	self assert: dictionary keys size equals: 2.
 	^ dictionary 
 	
+]
+
+{ #category : #'as yet unclassified' }
+JSONCodeGeneratorExamples >> hudsonObject [
+	<gtExample>
+	| theObject |
+	theObject := (JSONCodeGenerator new modelFrom: self hudsonExampleAsDictionary).
+
+	^ theObject
 ]
 
 { #category : #'as yet unclassified' }
