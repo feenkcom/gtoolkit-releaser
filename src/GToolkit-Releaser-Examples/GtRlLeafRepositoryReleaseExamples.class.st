@@ -286,7 +286,7 @@ GtRlLeafRepositoryReleaseExamples >> releaseWorkflowWithDedicatedBranchForSecond
 { #category : #'examples - workflows' }
 GtRlLeafRepositoryReleaseExamples >> releaseWorkflowWithLatestCommitForInitialVersion [
 	<gtExample>
-	"I updated the actions and version of a repository release using its release strategy."
+	"I execute a release workflow for a release that uses the commit as the release version."
 	| release exportWorkflow |
 	release := self releaseWithLatestCommitStrategyOnNoVersionRepo.	
 	exportWorkflow := GtRlReleaserExportWorkflow new
