@@ -27,7 +27,12 @@ JSONCodeGenerator >> initialize [
 
 { #category : #accessing }
 JSONCodeGenerator >> modelFrom: aDictionary [
-	|fullClassName|
+	|fullClassName theClass theObject|
 	fullClassName := aDictionary at: #'_class'.
-	^ (self ensureClass: fullClassName) new.
+	theClass := (self ensureClass: fullClassName).
+	theObject := theClass new.
+	aDictionary keysAndValuesDo: [ :key :value | key ~= '_class' ifTrue: [
+			theClass addInstVarNamed: key.
+			] ].
+	^ theObject.
 ]

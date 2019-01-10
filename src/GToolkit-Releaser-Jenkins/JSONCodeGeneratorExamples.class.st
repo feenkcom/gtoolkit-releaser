@@ -4,7 +4,7 @@ Class {
 	#category : #'GToolkit-Releaser-Jenkins-Examples'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
 JSONCodeGeneratorExamples >> hudsonClass [
 	<gtExample>
 	| theClass |
@@ -14,7 +14,7 @@ JSONCodeGeneratorExamples >> hudsonClass [
 	^ theClass
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
 JSONCodeGeneratorExamples >> hudsonExampleAsDictionary [
 	<gtExample>
 	|dictionary|
@@ -24,16 +24,15 @@ JSONCodeGeneratorExamples >> hudsonExampleAsDictionary [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
 JSONCodeGeneratorExamples >> hudsonObject [
 	<gtExample>
 	| theObject |
 	theObject := (JSONCodeGenerator new modelFrom: self hudsonExampleAsDictionary).
-
 	^ theObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
 JSONCodeGeneratorExamples >> hudsonPrettyStringExample [
 	^ '{
   "_class" : "hudson.model.Hudson",
