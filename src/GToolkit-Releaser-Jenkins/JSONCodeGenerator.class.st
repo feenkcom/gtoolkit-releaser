@@ -11,7 +11,8 @@ Class {
 JSONCodeGenerator >> ensureClass: aFullClassName [
 	|fullPackageName|
 	fullPackageName := (aFullClassName findTokens: '.') allButLast fold:[:first :second| first capitalized, second capitalized].
-	^ self ensurePackage: fullPackageName.
+	self ensurePackage: fullPackageName.
+	^ (Object subclass: (aFullClassName findTokens: '.') last) category: fullPackageName.
 ]
 
 { #category : #accessing }
