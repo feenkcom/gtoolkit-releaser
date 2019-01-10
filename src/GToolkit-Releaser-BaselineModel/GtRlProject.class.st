@@ -57,11 +57,6 @@ GtRlProject >> addPackages: aCollection [
 		self addPackage: aPackage ]
 ]
 
-{ #category : #'accessing - dynamic' }
-GtRlProject >> allChildrenProjects [
-	^ self withDeepCollect: #childProjects 
-]
-
 { #category : #accessing }
 GtRlProject >> baselineClass [
 	^ baselineClass
@@ -155,12 +150,12 @@ GtRlProject >> gtProjectMapFor: aView [
 	<gtView>
 	^ aView mondrian
 		title: 'Project map' translated;
-		priority: 60;
+		priority: 1;
 		painting: [ :mondrian |
 			mondrian nodes 
 				shape: [ :aProject |
 					BlTextElement new text: aProject name asRopedText ];
-				with: self allChildrenProjects.
+				with: self withAllChildrenProjects.
 			mondrian edges
 				shape: [
 					BlLineElement new 
@@ -313,4 +308,16 @@ GtRlProject >> toolboxForBaselineWithProjectDependencies: projectDependenciesMap
 		toolbox methodSpec methodSections first versionSpec postLoadDoIt: self postLoadAction ].
 	
 	^ toolbox
+]
+
+{ #category : #'accessing - dynamic' }
+GtRlProject >> withAllChildrenProjects [
+	^ self withDeepCollect: #childProjects 
+]
+
+{ #category : #'accessing - dynamic' }
+GtRlProject >> withAllRepositories [
+	"Return all repositores that can be reached from the this project, 
+	including the repository holding this project."
+	^ (self withDeep: #childProjects  collect: #repository) removeDuplicates
 ]
