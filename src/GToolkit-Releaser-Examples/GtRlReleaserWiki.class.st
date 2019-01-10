@@ -17,17 +17,17 @@ This sections introduces the main concepts in GtReleaser by showing how to creat
 !!! Example system 
 To exemplify releaser in more details we use a dummy system that simulates a real system having multiple baselines spread across multiple repositories. The main baseline of this system is given by the class ${class:BaselineOfGtRlBaselineExampleSystemOne}$. In total this project uses seven baselines. The dependencies between these baselines are shown in the picture below.
 
-${example:GtRlReleaserUsageExamples>>#systemOneProject|previewShow=#gtProjectMapFor:|noCode|previewHeight=300}$
+${example:GtRlReleaserWiki>>#systemOneProject|previewShow=#gtProjectMapFor:|noCode|previewHeight=300}$
 
 Another way to look at these baselines is to group them based on the repoitory containing them, as shown below. In our case we have six distinct repositories. One repository contains two baselines and the others a single baseline. For this dummny system, all repos are github repos belonging to the user *example*.
 
-${example:GtRlReleaserUsageExamples>>#systemOneProject|previewShow=#gtRepoMapFor:|noCode|previewHeight=300}$ 
+${example:GtRlReleaserWiki>>#systemOneProject|previewShow=#gtRepoMapFor:|noCode|previewHeight=300}$ 
 
 !! Default configuration
 
 Assuming that we just started developing this system and we do not have any release we need to create the first one. As a first example, we can use a standard configuration with default options. We can obtain it by instantiating the class ${class:GtRlReleaseConfiguration}$.
 
-${example:GtRlReleaserUsageExamples>>#basicReleaseConfiguration|previewShow=#gtDefaultOptionsFor:|previewHeight=200|previewExpanded}$
+${example:GtRlReleaserWiki>>#basicReleaseConfiguration|previewShow=#gtDefaultOptionsFor:|previewHeight=200|previewExpanded}$
 
 The five available options are:
 	- *Release strategy*: The strategy for creating the actual release. By default a new release is created on a dedicated release branch. The other available release strategies are subclasses of ${class:GtRlReleaseStrategy}$:
@@ -42,15 +42,15 @@ Several of these options can be configure for each indivudual repository from th
 
 Internally GtReleaser relies on two distinct models: one for capturing the dependencies between baselines and another for generating the new release based on a given configuration. Before a new release can be made the user needs to create the first model, capturing dependencies between baselines. This is an instance of ${class:GtRlProject}$ and is created using a ${class:GtRlModelBuilder}$ by giving it a reference to the main baseline and the git url of the project (the url is needed as it is not present in the baseline).
 
-${example:GtRlReleaserUsageExamples>>#systemOneProject|previewHeight=300|previewExpanded}$
+${example:GtRlReleaserWiki>>#systemOneProject|previewHeight=300|previewExpanded}$
 
 On top of this dependency model, a release model indicates for each project what is the version number of the release. This is an instance of ${class:GtRlRepositoryRelease}$ and decorates the previously created project. This object is created using an instance of ${class:GtRlReleaseBuilder}$ that gets as a parameter a configuration.
 
-${example:GtRlReleaserUsageExamples>>#releaseWithNoVersionAndDefaultConfigurationNoTest}$
+${example:GtRlReleaserWiki>>#releaseWithNoVersionAndDefaultConfigurationNoTest}$
 
 Running this code returns the release object, that adds information like version numbers to every release. 
 
-${example:GtRlReleaserUsageExamples>>#releaseWithNoVersionAndDefaultConfiguration|previewShow=#gtProjectMapFor:|previewHeight=300|noCode}$
+${example:GtRlReleaserWiki>>#releaseWithNoVersionAndDefaultConfiguration|previewShow=#gtProjectMapFor:|previewHeight=300|noCode}$
 
 
 
