@@ -4,8 +4,8 @@ I model a repository that contains projects.
 I have as main attributes:
 	- an url used to identify the repository, following the same conventions as Metacello;
 	- a list of contained projects. 
-	
-I can have indirect child and parent repositories, depending on the relations between projects.  
+
+I can have indirect child and parent repositories, depending on the relations between the projects that I contain.  
 I can be linked to an ${class:IceRepository}$ that provides the concrete repository holding the code.
 "
 Class {
