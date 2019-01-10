@@ -8,8 +8,34 @@ Class {
 		'jobs',
 		'znclient'
 	],
-	#category : #'GToolkit-Releaser-Jenkins'
+	#category : #'GToolkit-Releaser-Jenkins-Model'
 }
+
+{ #category : #accessing }
+JenkinsClient >> allJobsResponse [
+	| jobsArray |
+	jobs ifNil: [ 
+		jobs := znclient get: ('' join: { url . '/api/json?tree=jobs[name]&pretty=true'}).
+	].
+	^ jobs
+]
+
+{ #category : #accessing }
+JenkinsClient >> gtJobsFor: aView [
+	<gtView>
+	^ aView columnedList
+		title: 'Jobs' translated;
+		priority: 10;
+		items: [ self jobs ];
+		column: 'Name' translated do: [ :aColumn | 
+			aColumn 
+				item: [ :job | job name ]; 
+				matchParent ];
+		column: 'URL' translated do: [ :aColumn | 
+			aColumn 
+				item: [ :job | job url ]; 
+				matchParent ]
+]
 
 { #category : #accessing }
 JenkinsClient >> jobs [
