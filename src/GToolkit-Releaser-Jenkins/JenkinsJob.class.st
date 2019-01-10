@@ -6,7 +6,7 @@ Class {
 		'client',
 		'url'
 	],
-	#category : #'GToolkit-Releaser-Jenkins'
+	#category : #'GToolkit-Releaser-Jenkins-Model'
 }
 
 { #category : #'as yet unclassified' }

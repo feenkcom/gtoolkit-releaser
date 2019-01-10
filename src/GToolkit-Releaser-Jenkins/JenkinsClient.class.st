@@ -8,7 +8,7 @@ Class {
 		'jobs',
 		'znclient'
 	],
-	#category : #'GToolkit-Releaser-Jenkins'
+	#category : #'GToolkit-Releaser-Jenkins-Model'
 }
 
 { #category : #accessing }

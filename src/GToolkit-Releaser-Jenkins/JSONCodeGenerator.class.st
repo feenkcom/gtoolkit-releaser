@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'packageOrganizer'
 	],
-	#category : #'GToolkit-Releaser-Jenkins'
+	#category : #'GToolkit-Releaser-Jenkins-Model'
 }
 
 { #category : #accessing }
