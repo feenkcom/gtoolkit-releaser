@@ -10,7 +10,7 @@ JSONCodeGeneratorExamples >> hudsonClass [
 	| theClass |
 	theClass := (JSONCodeGenerator new modelFrom: self hudsonExampleAsDictionary) class.
 	self assert: theClass name equals: #Hudson.
-	self assert: theClass package name equals: 'HudsonModel'.
+	self assert: theClass package name equals: 'GToolkit-Releaser-Jenkins'.
 	^ theClass
 ]
 

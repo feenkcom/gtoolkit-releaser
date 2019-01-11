@@ -5,5 +5,10 @@ Class {
 		'name',
 		'_parent'
 	],
-	#category : #'GToolkit-Releaser-Jenkins-HudsonModel'
+	#category : #'GToolkit-Releaser-Jenkins-Generated-HudsonModel'
 }
+
+{ #category : #accessing }
+FreeStyleProject >> name [
+	^ name
+]
