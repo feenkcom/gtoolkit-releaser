@@ -13,6 +13,7 @@ JSONCodeGenerator >> ensureClass: aFullClassName [
 	|fullPackageName classSymbol |
 	fullPackageName := (aFullClassName findTokens: '.') allButLast 
 		fold:[:first :second | first capitalized, second capitalized].
+	fullPackageName := 'GToolkit-Releaser-Jenkins-',fullPackageName.
 	self ensurePackage: fullPackageName.
 	classSymbol := (aFullClassName findTokens: '.') last.
 	^ classSymbol asClassInEnvironment: Smalltalk globals 
