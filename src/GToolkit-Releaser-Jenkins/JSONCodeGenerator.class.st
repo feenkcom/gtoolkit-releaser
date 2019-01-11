@@ -9,10 +9,17 @@ Class {
 
 { #category : #accessing }
 JSONCodeGenerator >> ensureClass: aFullClassName [
-	|fullPackageName|
+	|fullPackageName classSymbol |
 	fullPackageName := (aFullClassName findTokens: '.') allButLast fold:[:first :second| first capitalized, second capitalized].
 	self ensurePackage: fullPackageName.
-	^ (Object subclass: (aFullClassName findTokens: '.') last) category: fullPackageName.
+	classSymbol := (aFullClassName findTokens: '.') last.
+	^ classSymbol asClassInEnvironment: Smalltalk globals ifAbsent: [ (Object subclass: (aFullClassName findTokens: '.') last) category: fullPackageName. ].
+]
+
+{ #category : #accessing }
+JSONCodeGenerator >> ensureInstVarNamed: aSymbol inClass: aClass [
+	aClass instVarNames detect: [:name | name = aSymbol] ifNone: [ aClass addInstVarNamed: aSymbol ].
+
 ]
 
 { #category : #accessing }
@@ -32,7 +39,13 @@ JSONCodeGenerator >> modelFrom: aDictionary [
 	theClass := (self ensureClass: fullClassName).
 	theObject := theClass new.
 	aDictionary keysAndValuesDo: [ :key :value | key ~= '_class' ifTrue: [
-			theClass addInstVarNamed: key.
-			] ].
+		self ensureInstVarNamed: key asSymbol inClass: theClass.
+		value isArray 
+		ifFalse: [ theObject instVarNamed: key asSymbol put: value. ];
+		ifTrue: [
+			| array |
+			array := OrderedCollection new.
+			value do: [ :eachValue | array add: (self modelFrom: eachValue)].
+			theObject instVarNamed: key asSymbol put: array ]]].
 	^ theObject.
 ]
