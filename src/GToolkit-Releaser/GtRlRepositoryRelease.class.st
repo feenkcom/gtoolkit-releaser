@@ -1,14 +1,14 @@
 "
-I model a release for a repository by decorating a ${class:GtRlRepository}$ instance with a concrete release versions.
+I model a release for a repository by decorating a ${class:GtRlRepository}$ instance with a concrete version number.
 
-My main responsability is to store a concrete release version and a release strategy that computes that release version. I do not know how to determine the release version and create the actual list of actions. The release strategy is responsible with computing the version for the release and creating the list of actions for generating that version.
+My main responsability is to store a concrete version number and a release strategy that computes that version number. I do not know how to determine the version number and create the actual list of actions. The release strategy is responsible with computing the version number for the release and creating the list of actions for generating that version number.
 
-I must have a release version and a release strategy, but I can have an empty list of actions. This can happen if no action is required to generate the release version. For example, if the release version is a hash of an existing commit that already exists, no action is further necessary. In that case I am a passive release. However, I can turn from a passive release to an active release, or viceversa, if my release strategy is changed.
+I must have a version number and a release strategy, but I can have an empty list of actions. This can happen if the version number already exists. For example, if the version number is a hash of an existing commit that already exists, no action is further necessary. In that case I am a passive release. However, I can turn from a passive release to an active release, or viceversa, if my release strategy is changed.
 
 I have as main attributes:
 	- repository: the ${class:GtRlRepository}$ for which I do a release;
 	- projectReleases: the list of project releases for the projects contained in the repository that I reference. 
-	- version: the version corresponding to this release
+	- version: the version number corresponding to this release
 	- releaseStrategy: the strategy that creates the actions for generating the release version
 	- isPassiveRelease: a flag set when creating the release indicating if the release if passive; If this flag is set no actions will be generated for the project; TODO: ideally I should be removed and a passive release should just be a release that has no actions. I exist due to the way actions are added to a release by a release strategy.
 	

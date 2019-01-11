@@ -4,6 +4,12 @@ Class {
 	#category : #'GToolkit-Releaser-BaselineModel-SystemOneExamples'
 }
 
+{ #category : #accessing }
+BaselineOfGtRlBaselineExampleSystemOne class >> itself [
+	<gtExample>
+	^ self
+]
+
 { #category : #baselines }
 BaselineOfGtRlBaselineExampleSystemOne >> baseline: spec [
 	<baseline>

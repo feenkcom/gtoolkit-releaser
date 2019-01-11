@@ -33,7 +33,7 @@ GtRlReleaseConfiguration >> customVersionComputations [
 
 { #category : #accessing }
 GtRlReleaseConfiguration >> defaultReleaseBranchName [
-	^ defaultReleaseBranchName
+	^ defaultReleaseBranchName ifNil: [ 'release' ]
 ]
 
 { #category : #accessing }
@@ -47,8 +47,14 @@ GtRlReleaseConfiguration >> defaultReleaseStrategy [
 ]
 
 { #category : #accessing }
+GtRlReleaseConfiguration >> defaultShouldForceNewRelease [
+	^ false
+]
+
+{ #category : #accessing }
 GtRlReleaseConfiguration >> defaultVersionComputation [
-	^ defaultVersionComputation
+	^ defaultVersionComputation ifNil: [ 
+		GtRlPatchVersionComputation new ]
 ]
 
 { #category : #accessing }
@@ -75,6 +81,22 @@ GtRlReleaseConfiguration >> emit [
 { #category : #accessing }
 GtRlReleaseConfiguration >> forceNewRelease [
 	shouldForceNewRelease := true
+]
+
+{ #category : #ui }
+GtRlReleaseConfiguration >> gtDefaultOptionsFor: aView [
+	<gtView>
+	^ aView columnedList
+		title: 'Defaults';
+		items: [ { 
+			'Release strategy' -> self defaultReleaseStrategy.
+			'Release branch' -> self defaultReleaseBranchName.
+			'Version number' -> self defaultVersionNumber.
+			'Version computation' -> self defaultVersionComputation.
+			'Force release' -> self defaultShouldForceNewRelease } ];
+		column: 'Option' item: #key;
+		column: 'Default value' item: #value;
+		send: #value
 ]
 
 { #category : #'accessing - dynamic' }

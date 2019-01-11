@@ -191,6 +191,11 @@ GtRlRepository >> icebergRepository [
 ]
 
 { #category : #'accessing - dynamic' }
+GtRlRepository >> icebergRepository: aIcebergRepository [
+	icebergRepository := aIcebergRepository
+]
+
+{ #category : #'accessing - dynamic' }
 GtRlRepository >> id [ 	
 	| urlCopy |
 	urlCopy := self url copy.
