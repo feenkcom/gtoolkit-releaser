@@ -40,7 +40,10 @@ JSONCodeGenerator >> modelFrom: aDictionary [
 	theObject := theClass new.
 	aDictionary keysAndValuesDo: [ :key :value | key ~= '_class' ifTrue: [
 		self ensureInstVarNamed: key asSymbol inClass: theClass.
-		self setAttribute: key toValue: value inObject: theObject]].
+		self setAttribute: key toValue: value inObject: theObject.
+		value isArray ifTrue: [ 
+			 
+			 ]]].
 	^ theObject.
 ]
 
@@ -53,7 +56,9 @@ JSONCodeGenerator >> setAttribute: key toValue: value inObject: theObject [
 			array := value collect: [ :eachValue | 
 				| childObject | 
 				childObject := self modelFrom: eachValue.
+				self ensureInstVarNamed: #_parent inClass: childObject class.
 				childObject instVarNamed: #_parent put: theObject.
+				childObject
 				].
 			theObject instVarNamed: key asSymbol put: array ]
 ]
