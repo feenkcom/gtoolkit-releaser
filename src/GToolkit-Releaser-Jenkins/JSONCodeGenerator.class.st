@@ -2,7 +2,8 @@ Class {
 	#name : #JSONCodeGenerator,
 	#superclass : #Object,
 	#instVars : [
-		'packageOrganizer'
+		'packageOrganizer',
+		'_parent'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generator'
 }
@@ -10,10 +11,13 @@ Class {
 { #category : #accessing }
 JSONCodeGenerator >> ensureClass: aFullClassName [
 	|fullPackageName classSymbol |
-	fullPackageName := (aFullClassName findTokens: '.') allButLast fold:[:first :second| first capitalized, second capitalized].
+	fullPackageName := (aFullClassName findTokens: '.') allButLast 
+		fold:[:first :second | first capitalized, second capitalized].
 	self ensurePackage: fullPackageName.
 	classSymbol := (aFullClassName findTokens: '.') last.
-	^ classSymbol asClassInEnvironment: Smalltalk globals ifAbsent: [ (Object subclass: (aFullClassName findTokens: '.') last) category: fullPackageName. ].
+	^ classSymbol asClassInEnvironment: Smalltalk globals 
+		ifAbsent: [ (Object subclass: (aFullClassName findTokens: '.') last)
+								  category: fullPackageName ].
 ]
 
 { #category : #accessing }
@@ -40,11 +44,9 @@ JSONCodeGenerator >> modelFrom: aDictionary [
 	theObject := theClass new.
 	aDictionary keysAndValuesDo: [ :key :value | key ~= '_class' ifTrue: [
 		self ensureInstVarNamed: key asSymbol inClass: theClass.
-		self setAttribute: key toValue: value inObject: theObject.
-		value isArray ifTrue: [ 
-			 
-			 ]]].
+		self setAttribute: key toValue: value inObject: theObject]].
 	^ theObject.
+
 ]
 
 { #category : #reflection }
