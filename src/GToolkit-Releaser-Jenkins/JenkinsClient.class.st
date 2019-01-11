@@ -13,7 +13,6 @@ Class {
 
 { #category : #accessing }
 JenkinsClient >> allJobsResponse [
-	| jobsArray |
 	jobs ifNil: [ 
 		jobs := znclient get: ('' join: { url . '/api/json?tree=jobs[name]&pretty=true'}).
 	].
@@ -38,13 +37,11 @@ JenkinsClient >> gtJobsFor: aView [
 ]
 
 { #category : #accessing }
-JenkinsClient >> jobs [
-	| jobsArray |
-	jobs ifNil: [ 
-		jobs := znclient get: ('' join: { url . '/api/json?tree=jobs[name]'}).
-	].
-	jobsArray := (STON fromString: jobs) at: 'jobs'.
-	^ jobsArray collect: [ :job | JenkinsJob name: (job at:'name') client: znclient url: url]
+JenkinsClient >> model [
+	| codeGenerator |
+	codeGenerator := JSONCodeGenerator new.
+	jobs := znclient get: ('' join: { url . '/api/json?tree=jobs[name]&pretty=true'}).
+	^ codeGenerator modelFrom: (NeoJSONReader fromString: jobs)
 ]
 
 { #category : #accessing }
