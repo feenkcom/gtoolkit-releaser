@@ -2,18 +2,38 @@ Class {
 	#name : #FreeStyleProject,
 	#superclass : #JenkinsURL,
 	#instVars : [
-		'name',
+		'_name',
 		'_parent',
 		'_actions',
 		'_property',
 		'_lastSuccessfulBuild',
 		'_buildable',
-		'_name',
 		'_color',
 		'_lastBuild',
 		'__class',
 		'_scm',
-		'_builds'
+		'_builds',
+		'_fullName',
+		'_downstreamProjects',
+		'_upstreamProjects',
+		'_displayNameOrNull',
+		'_queueItem',
+		'_keepDependencies',
+		'_concurrentBuild',
+		'_fullDisplayName',
+		'_lastUnsuccessfulBuild',
+		'_description',
+		'_healthReport',
+		'_lastUnstableBuild',
+		'_labelExpression',
+		'_lastCompletedBuild',
+		'_displayName',
+		'_url',
+		'_nextBuildNumber',
+		'_firstBuild',
+		'_inQueue',
+		'_lastFailedBuild',
+		'_lastStableBuild'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-HudsonModel'
 }
@@ -22,14 +42,14 @@ Class {
 FreeStyleProject >> get [
 	| codeGenerator json|
 	codeGenerator := JSONCodeGenerator new.
-	json := self znclient get: ('' join: { _parent url . '/' . url . '/' . name . '/api/json?pretty=true'}).
+	json := self znclient get: ('' join: { _parent url . '/' . url . '/' . _name . '/api/json?pretty=true'}).
 	codeGenerator updateObject: self with: (NeoJSONReader fromString: json).
 
 ]
 
 { #category : #accessing }
 FreeStyleProject >> name [
-	^ name
+	^ _name
 ]
 
 { #category : #accessing }

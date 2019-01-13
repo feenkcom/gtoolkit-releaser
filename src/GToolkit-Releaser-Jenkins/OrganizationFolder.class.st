@@ -2,16 +2,15 @@ Class {
 	#name : #OrganizationFolder,
 	#superclass : #JenkinsURL,
 	#instVars : [
-		'name',
-		'_parent',
-		'_name'
+		'_name',
+		'_parent'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-JenkinsBranch'
 }
 
 { #category : #accessing }
 OrganizationFolder >> name [
-	^ name
+	^ _name
 ]
 
 { #category : #accessing }

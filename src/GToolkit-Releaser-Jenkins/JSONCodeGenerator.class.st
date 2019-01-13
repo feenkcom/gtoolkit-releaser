@@ -65,7 +65,7 @@ JSONCodeGenerator >> setAttribute: key toValue: value inObject: theObject [
 				childObject isNotNil ifTrue: [ 
 				self ensureInstVarNamed: '_parent' inClass: childObject class.
 				childObject instVarNamed: '_parent' put: theObject.
-				childObject url: key allButLast.
+				childObject url: (key allButLast) allButFirst.
 				].
 				childObject].
 			theObject instVarNamed: key asSymbol put: array ]
