@@ -38,10 +38,13 @@ JenkinsClient >> gtJobsFor: aView [
 
 { #category : #accessing }
 JenkinsClient >> model [
-	| codeGenerator |
+	| codeGenerator model |
 	codeGenerator := JSONCodeGenerator new.
 	jobs := znclient get: ('' join: { url . '/api/json?tree=jobs[name]&pretty=true'}).
-	^ codeGenerator modelFrom: (NeoJSONReader fromString: jobs)
+	model := codeGenerator modelFrom: (NeoJSONReader fromString: jobs).
+	model url: url.
+	model znclient: znclient.
+	^ model.
 ]
 
 { #category : #accessing }

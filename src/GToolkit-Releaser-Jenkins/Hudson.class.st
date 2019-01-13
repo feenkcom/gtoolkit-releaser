@@ -1,6 +1,6 @@
 Class {
 	#name : #Hudson,
-	#superclass : #Object,
+	#superclass : #JenkinsURL,
 	#instVars : [
 		'jobs'
 	],

@@ -1,6 +1,6 @@
 Class {
 	#name : #OrganizationFolder,
-	#superclass : #Object,
+	#superclass : #JenkinsURL,
 	#instVars : [
 		'name',
 		'_parent'
@@ -11,4 +11,9 @@ Class {
 { #category : #accessing }
 OrganizationFolder >> name [
 	^ name
+]
+
+{ #category : #accessing }
+OrganizationFolder >> znclient [ 
+	^ _parent znclient 
 ]
