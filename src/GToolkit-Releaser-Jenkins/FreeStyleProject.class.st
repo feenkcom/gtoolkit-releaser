@@ -3,7 +3,17 @@ Class {
 	#superclass : #JenkinsURL,
 	#instVars : [
 		'name',
-		'_parent'
+		'_parent',
+		'_actions',
+		'_property',
+		'_lastSuccessfulBuild',
+		'_buildable',
+		'_name',
+		'_color',
+		'_lastBuild',
+		'__class',
+		'_scm',
+		'_builds'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-HudsonModel'
 }

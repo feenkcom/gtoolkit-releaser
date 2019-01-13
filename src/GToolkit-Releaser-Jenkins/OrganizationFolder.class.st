@@ -3,7 +3,8 @@ Class {
 	#superclass : #JenkinsURL,
 	#instVars : [
 		'name',
-		'_parent'
+		'_parent',
+		'_name'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-JenkinsBranch'
 }

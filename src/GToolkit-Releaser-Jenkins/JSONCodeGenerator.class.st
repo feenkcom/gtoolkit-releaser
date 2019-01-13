@@ -44,8 +44,10 @@ JSONCodeGenerator >> modelFrom: aDictionary [
 	theClass := (self ensureClass: fullClassName).
 	theObject := theClass new.
 	aDictionary keysAndValuesDo: [ :key :value | key ~= '_class' ifTrue: [
-		self ensureInstVarNamed: key asSymbol inClass: theClass.
-		self setAttribute: key toValue: value inObject: theObject]].
+		|varname|
+		varname := ('_',key) asSymbol.
+		self ensureInstVarNamed: varname inClass: theClass.
+		self setAttribute: varname toValue: value inObject: theObject]].
 	^ theObject].
 	^ nil
 	
@@ -60,11 +62,12 @@ JSONCodeGenerator >> setAttribute: key toValue: value inObject: theObject [
 			array := value collect: [ :eachValue | 
 				| childObject | 
 				childObject := self modelFrom: eachValue.
+				childObject isNotNil ifTrue: [ 
 				self ensureInstVarNamed: '_parent' inClass: childObject class.
 				childObject instVarNamed: '_parent' put: theObject.
 				childObject url: key allButLast.
-				childObject
 				].
+				childObject].
 			theObject instVarNamed: key asSymbol put: array ]
 ]
 
@@ -74,13 +77,13 @@ JSONCodeGenerator >> updateObject: theObject with: aDictionary [
 		 key := ('_',assoc key).
 		 value := assoc value.
 		 key ~= '_class' ifTrue: [
-		self inform: key.
-		self ensureInstVarNamed: (key) asSymbol inClass: theObject class.
-		self setAttribute: key toValue: value inObject: theObject]] displayingProgress: [:assoc | |key value|
-		 key := assoc key.
-		 value := assoc value.
-		('importing ' , key)
-		].
+			
+		 	self ensureInstVarNamed: (key) asSymbol inClass: theObject class.
+		 	self setAttribute: key toValue: value inObject: theObject]]
+		 displayingProgress: [:assoc | |key value|
+		 	key := assoc key.
+		 	value := assoc value.
+			('importing ' , key)].
 	^ theObject.
 
 ]

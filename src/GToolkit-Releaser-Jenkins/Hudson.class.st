@@ -2,7 +2,8 @@ Class {
 	#name : #Hudson,
 	#superclass : #JenkinsURL,
 	#instVars : [
-		'jobs'
+		'jobs',
+		'_jobs'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-HudsonModel'
 }
