@@ -1,6 +1,19 @@
 Class {
 	#name : #GtRlSystemOneModelExamples,
 	#superclass : #Object,
+	#instVars : [
+		'projectComponentA',
+		'projectComponentBUtil',
+		'projectComponentC',
+		'projectComponentD',
+		'projectComponentDModuleA',
+		'repositoryComponentA',
+		'repositoryComponentB',
+		'repositoryComponentC',
+		'repositoryComponentD',
+		'repositoryComponentDModuleA',
+		'projectComponentBMain'
+	],
 	#category : #'GToolkit-Releaser-BaselineModel-Examples'
 }
 
@@ -24,106 +37,124 @@ GtRlSystemOneModelExamples >> assertStandaloneRepository: aRepository [
 { #category : #'examples - projects' }
 GtRlSystemOneModelExamples >> projectComponentA [
 	<gtExample>
-	| project repository |
-	project := GtRlProject new
-		name: 'GtRlBaselineExampleComponentA';
-		baselineClass: BaselineOfGtRlBaselineExampleComponentA;
-		baselineVersion: BaselineOfGtRlBaselineExampleComponentA project version.
-	repository := self repositoryComponentA.
-	project
-		linkWithRepository: repository.
+	^ projectComponentA ifNil: [
+		| project repository |
+		project := GtRlProject new
+			name: 'GtRlBaselineExampleComponentA';
+			baselineClass: BaselineOfGtRlBaselineExampleComponentA;
+			baselineVersion: BaselineOfGtRlBaselineExampleComponentA project version.
+		repository := self repositoryComponentA.
+		project
+			linkWithRepository: repository.
 	
-	self assertBaseline: BaselineOfGtRlBaselineExampleComponentA forProject: project.
-	self assert: project repository equals: repository.
-	self assert: repository projects asArray equals: { project }.
+		self assertBaseline: BaselineOfGtRlBaselineExampleComponentA forProject: project.
+		self assert: project repository equals: repository.
+		self assert: repository projects asArray equals: { project }.
 	
-	^ project
+		projectComponentA := project ]
 ]
 
 { #category : #'examples - projects' }
-GtRlSystemOneModelExamples >> projectComponentB [
+GtRlSystemOneModelExamples >> projectComponentBMain [
 	<gtExample>
-	| projectBMain projectBUtil repository |
-	projectBMain := GtRlProject new
-		name: 'GtRlBaselineExampleComponentBMain';
-		baselineClass: BaselineOfGtRlBaselineExampleComponentBMain;
-		baselineVersion: BaselineOfGtRlBaselineExampleComponentBMain project version.
-	projectBUtil := GtRlProject new
-		name: 'GtRlBaselineExampleComponentBUtil';
-		baselineClass: BaselineOfGtRlBaselineExampleComponentBUtil;
-		baselineVersion: BaselineOfGtRlBaselineExampleComponentBUtil project version.
-	repository := self repositoryComponentB.
-	projectBMain linkWithRepository: repository.
-	projectBUtil linkWithRepository: repository.
-	projectBMain addChildProject: projectBUtil.
+	^ projectComponentBMain ifNil: [ 
+		| projectBMain projectBUtil repository |
+		projectBMain := GtRlProject new
+			name: 'GtRlBaselineExampleComponentBMain';
+			baselineClass: BaselineOfGtRlBaselineExampleComponentBMain;
+			baselineVersion: BaselineOfGtRlBaselineExampleComponentBMain project version.
+		projectBUtil := self projectComponentBUtil.
+		projectBMain addChildProject: projectBUtil.
+		repository := self repositoryComponentB.
+		projectBMain linkWithRepository: repository.
 	
-	self assertBaseline: BaselineOfGtRlBaselineExampleComponentBMain forProject: projectBMain.
-	self assertBaseline: BaselineOfGtRlBaselineExampleComponentBUtil forProject: projectBUtil.
-	self assert: repository projects asArray equals: { projectBMain .  projectBUtil }.
-	self assert: repository childRepositories isEmpty.
+		self assertBaseline: BaselineOfGtRlBaselineExampleComponentBMain forProject: projectBMain.
+		self assert: repository projects asArray equals: { projectBUtil . projectBMain }.
+		self assert: repository childRepositories isEmpty.
 	
-	^ projectBMain
+		projectComponentBMain := projectBMain ]
+]
+
+{ #category : #'examples - projects' }
+GtRlSystemOneModelExamples >> projectComponentBUtil [
+	<gtExample>
+	^ projectComponentBUtil ifNil: [
+		| project repository |
+		project := GtRlProject new
+			name: 'GtRlBaselineExampleComponentBUtil';
+			baselineClass: BaselineOfGtRlBaselineExampleComponentBUtil;
+			baselineVersion: BaselineOfGtRlBaselineExampleComponentBUtil project version.
+		repository := self repositoryComponentB.
+		project linkWithRepository: repository.
+	
+		self assertBaseline: BaselineOfGtRlBaselineExampleComponentBUtil forProject: project.
+		self assert: repository projects asArray equals: { project }.
+		self assert: repository childRepositories isEmpty.
+	
+		projectComponentBUtil := project ]
 ]
 
 { #category : #'examples - projects' }
 GtRlSystemOneModelExamples >> projectComponentC [
 	<gtExample>
-	| project repository |
-	project := GtRlProject new
-		name: 'GtRlBaselineExampleComponentC';
-		baselineClass: BaselineOfGtRlBaselineExampleComponentC;
-		baselineVersion: BaselineOfGtRlBaselineExampleComponentC project version.
-	repository := self repositoryComponentC.
-	project
-		linkWithRepository: repository.
+	^ projectComponentC ifNil: [ | project repository |
+		project := GtRlProject new
+			name: 'GtRlBaselineExampleComponentC';
+			baselineClass: BaselineOfGtRlBaselineExampleComponentC;
+			baselineVersion: BaselineOfGtRlBaselineExampleComponentC project version.
+		repository := self repositoryComponentC.
+		project
+			linkWithRepository: repository.
 	
-	self assertBaseline: BaselineOfGtRlBaselineExampleComponentC forProject: project.
-	self assert: project repository equals: repository.
-	self assert: repository projects asArray equals: { project }.
+		self assertBaseline: BaselineOfGtRlBaselineExampleComponentC forProject: project.
+		self assert: project repository equals: repository.
+		self assert: repository projects asArray equals: { project }.
 	
-	^ project
+		projectComponentC := project ]
 ]
 
 { #category : #'examples - projects' }
 GtRlSystemOneModelExamples >> projectComponentD [
 	<gtExample>
-	| projectD projectDModuleA repository |
-	projectD := GtRlProject new
-		name: 'GtRlBaselineExampleComponentD';
-		baselineClass: BaselineOfGtRlBaselineExampleComponentD;
-		baselineVersion: BaselineOfGtRlBaselineExampleComponentD project version.
-	projectDModuleA := self projectComponentDModuleA.
-	repository := self repositoryComponentD.
-	projectD
-		linkWithRepository: repository;
-		addChildProject: projectDModuleA.
+	^ projectComponentD ifNil: [
+		| projectD projectDModuleA repository |
+		projectD := GtRlProject new
+			name: 'GtRlBaselineExampleComponentD';
+			baselineClass: BaselineOfGtRlBaselineExampleComponentD;
+			baselineVersion: BaselineOfGtRlBaselineExampleComponentD project version.
+		projectDModuleA := self projectComponentDModuleA.
+		repository := self repositoryComponentD.
+		projectD
+			linkWithRepository: repository;
+			addChildProject: projectDModuleA.
 	
-	self assertBaseline: BaselineOfGtRlBaselineExampleComponentD forProject: projectD.
-	self assert: projectD repository equals: repository.
-	self assert: repository projects asArray equals: { projectD }.
-	self assert: repository childRepositories asArray equals: { projectDModuleA repository }.
-	self assert: projectD childProjects asArray equals: { projectDModuleA }.
+		self assertBaseline: BaselineOfGtRlBaselineExampleComponentD forProject: projectD.
+		self assert: projectD repository equals: repository.
+		self assert: repository projects asArray equals: { projectD }.
+		self assert: repository childRepositories asArray equals: { projectDModuleA repository }.
+		self assert: projectD childProjects asArray equals: { projectDModuleA }.
 	
-	^ projectD
+		projectComponentD := projectD ]
 ]
 
 { #category : #'examples - projects' }
 GtRlSystemOneModelExamples >> projectComponentDModuleA [
 	<gtExample>
-	| project repository |
-	project := GtRlProject new
-		name: 'GtRlBaselineExampleComponentDModuleA';
-		baselineClass: BaselineOfGtRlBaselineExampleComponentDModuleA;
-		baselineVersion: BaselineOfGtRlBaselineExampleComponentDModuleA project version.
-	repository := self repositoryComponentDModuleA.
-	project
-		linkWithRepository: repository.
+	^ projectComponentDModuleA ifNil: [ 
+		| project repository |
+		project := GtRlProject new
+			name: 'GtRlBaselineExampleComponentDModuleA';
+			baselineClass: BaselineOfGtRlBaselineExampleComponentDModuleA;
+			baselineVersion: BaselineOfGtRlBaselineExampleComponentDModuleA project version.
+		repository := self repositoryComponentDModuleA.
+		project
+			linkWithRepository: repository.
 	
-	self assertBaseline: BaselineOfGtRlBaselineExampleComponentDModuleA forProject: project.
-	self assert: project repository equals: repository.
-	self assert: repository projects asArray equals: { project }.
+		self assertBaseline: BaselineOfGtRlBaselineExampleComponentDModuleA forProject: project.
+		self assert: project repository equals: repository.
+		self assert: repository projects asArray equals: { project }.
 	
-	^ project
+		projectComponentDModuleA := project ]
 ]
 
 { #category : #'examples - projects' }
@@ -135,7 +166,7 @@ GtRlSystemOneModelExamples >> projectSystem [
 		baselineClass: BaselineOfGtRlBaselineExampleSystemOne;
 		baselineVersion: BaselineOfGtRlBaselineExampleSystemOne project version.
 	componentA := self projectComponentA.
-	componentB := self projectComponentB.
+	componentB := self projectComponentBMain.
 	componentC := self projectComponentC.
 	componentD := self projectComponentD.
 	repository := self repositorySystem.
@@ -155,61 +186,61 @@ GtRlSystemOneModelExamples >> projectSystem [
 { #category : #'examples - repositories' }
 GtRlSystemOneModelExamples >> repositoryComponentA [
 	<gtExample>
-	| repository |
-	repository := GtRlRepository fromUrlString: 'github://example/ComponentA/src'.
+	^ repositoryComponentA ifNil: [
+		repositoryComponentA := GtRlRepository fromUrlString: 'github://example/ComponentA/src'.
 	
-	self assert: repository id equals: 'github://example/ComponentA/src'.
-	self assertStandaloneRepository: repository.
+		self assert: repositoryComponentA id equals: 'github://example/ComponentA/src'.
+		self assertStandaloneRepository: repositoryComponentA.
 	
-	^ repository
+		repositoryComponentA ]
 ]
 
 { #category : #'examples - repositories' }
 GtRlSystemOneModelExamples >> repositoryComponentB [
 	<gtExample>
-	| repository |
-	repository := GtRlRepository fromUrlString: 'github://example/ComponentB/src'.
+	^ repositoryComponentB ifNil: [ 
+		repositoryComponentB := GtRlRepository fromUrlString: 'github://example/ComponentB/src'.
 	
-	self assert: repository id equals: 'github://example/ComponentB/src'.
-	self assertStandaloneRepository: repository.
-	
-	^ repository
+		self assert: repositoryComponentB id equals: 'github://example/ComponentB/src'.
+		self assertStandaloneRepository: repositoryComponentB.
+		
+		repositoryComponentB ]
 ]
 
 { #category : #'examples - repositories' }
 GtRlSystemOneModelExamples >> repositoryComponentC [
 	<gtExample>
-	| repository |
-	repository := GtRlRepository fromUrlString: 'github://example/ComponentC/src'.
+	^ repositoryComponentC ifNil: [ 
+		repositoryComponentC := GtRlRepository fromUrlString: 'github://example/ComponentC/src'.
 	
-	self assert: repository id equals: 'github://example/ComponentC/src'.
-	self assertStandaloneRepository: repository.
+		self assert: repositoryComponentC id equals: 'github://example/ComponentC/src'.
+		self assertStandaloneRepository: repositoryComponentC.
 	
-	^ repository
+		repositoryComponentC ]
 ]
 
 { #category : #'examples - repositories' }
 GtRlSystemOneModelExamples >> repositoryComponentD [
 	<gtExample>
-	| repository |
-	repository := GtRlRepository fromUrlString: 'github://example/ComponentD/src'.
+	^ repositoryComponentD ifNil: [
+		repositoryComponentD := GtRlRepository fromUrlString: 'github://example/ComponentD/src'.
 	
-	self assert: repository id equals: 'github://example/ComponentD/src'.
-	self assertStandaloneRepository: repository.
+		self assert: repositoryComponentD id equals: 'github://example/ComponentD/src'.
+		self assertStandaloneRepository: repositoryComponentD.
 	
-	^ repository
+		repositoryComponentD ]
 ]
 
 { #category : #'examples - repositories' }
 GtRlSystemOneModelExamples >> repositoryComponentDModuleA [
 	<gtExample>
-	| repository |
-	repository := GtRlRepository fromUrlString: 'github://example/ComponentDModuleA/src'.
+	^ repositoryComponentDModuleA ifNil: [ 
+		repositoryComponentDModuleA := GtRlRepository fromUrlString: 'github://example/ComponentDModuleA/src'.
 	
-	self assert: repository id equals: 'github://example/ComponentDModuleA/src'.
-	self assertStandaloneRepository: repository.
+		self assert: repositoryComponentDModuleA id equals: 'github://example/ComponentDModuleA/src'.
+		self assertStandaloneRepository: repositoryComponentDModuleA.
 	
-	^ repository
+		repositoryComponentDModuleA ]
 ]
 
 { #category : #'examples - repositories' }

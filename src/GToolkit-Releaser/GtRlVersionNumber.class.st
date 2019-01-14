@@ -14,6 +14,11 @@ GtRlVersionNumber >> description [
 	^ self versionString
 ]
 
+{ #category : #testing }
+GtRlVersionNumber >> isNullVersion [
+	^ false
+]
+
 { #category : #printing }
 GtRlVersionNumber >> printOn: aStream [
 	super printOn: aStream.

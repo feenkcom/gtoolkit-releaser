@@ -9,7 +9,7 @@ Class {
 
 { #category : #printing }
 GtRlNullReleaseStrategy >> description [
-	^ 'Null'
+	^ 'null'
 ]
 
 { #category : #testing }

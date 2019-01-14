@@ -11,7 +11,12 @@ GtRlNullVersionNumber >> = anObject [
 	^ true
 ]
 
+{ #category : #testing }
+GtRlNullVersionNumber >> isNullVersion [
+	^ true
+]
+
 { #category : #accessing }
 GtRlNullVersionNumber >> versionString [
-	^ '<unknown>'
+	^ 'unknown'
 ]
