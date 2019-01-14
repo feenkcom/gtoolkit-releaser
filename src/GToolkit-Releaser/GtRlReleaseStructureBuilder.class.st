@@ -1,3 +1,14 @@
+"
+I traverse a baseline model and create an equivalent release model. 
+
+I work as follows:
+	- for each ${class:GtRlProject}$ I create a ${class:GtRlProjectRelease}$
+	- for each ${class:GtRlRepository}$ I create a ${class:GtRlRepositoryRelease}$
+	- for each repository and project release I create child/parent relations based on the relations between projects and repositories.
+	
+I also use the given ${class:GtRlReleaseConfiguration}$ instance to initialize each repository release with a release strategy.
+
+"
 Class {
 	#name : #GtRlReleaseStructureBuilder,
 	#superclass : #Object,
@@ -18,15 +29,11 @@ GtRlReleaseStructureBuilder class >> forConfiguration: aReleaseConfiguration [
 { #category : #building }
 GtRlReleaseStructureBuilder >> buildStructureForProject: aProject [
 	| projectRelease repositoryRelease |
-	projectRelease := GtRlProjectRelease new project: aProject.
+	projectRelease := GtRlProjectRelease forProject: aProject.
 	repositoryRelease := self ensureRepositoryReleaseFor: aProject repository.
 	repositoryRelease addProjectRelease: projectRelease.
-	aProject childProjects do: [ :aChildProject |
-		| childProjectRelease |
-		childProjectRelease := self projectReleasesMap
-			at: aChildProject
-			ifAbsentPut: [ self buildStructureForProject: aChildProject ].
-		projectRelease addChildRelease: childProjectRelease ].
+	self createChildrenForProjectRelease: projectRelease.
+	
 	(GtRlProjectReleaseStructureSignal projectRelease: projectRelease repositoryRelease: repositoryRelease) emit.
 	^ projectRelease
 ]
@@ -39,6 +46,16 @@ GtRlReleaseStructureBuilder >> configuration [
 { #category : #accessing }
 GtRlReleaseStructureBuilder >> configuration: aReleaseConfiguration [
 	configuration := aReleaseConfiguration
+]
+
+{ #category : #'private - building' }
+GtRlReleaseStructureBuilder >> createChildrenForProjectRelease: projectRelease. [
+	projectRelease project childProjects do: [ :aChildProject |
+		| childProjectRelease |
+		childProjectRelease := self projectReleasesMap
+			at: aChildProject
+			ifAbsentPut: [ self buildStructureForProject: aChildProject ].
+		projectRelease addChildRelease: childProjectRelease ]
 ]
 
 { #category : #'private - building' }

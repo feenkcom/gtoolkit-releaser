@@ -22,6 +22,12 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
+{ #category : #'instance creation' }
+GtRlProjectRelease class >> forProject: aProject [
+	^ self new
+		project: aProject
+]
+
 { #category : #accessing }
 GtRlProjectRelease >> addChildRelease: aProjectRelease [
 	aProjectRelease parentReleases add: self.

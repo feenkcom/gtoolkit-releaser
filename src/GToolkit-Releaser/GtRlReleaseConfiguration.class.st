@@ -73,7 +73,7 @@ GtRlReleaseConfiguration >> defaultVersionNumber: aVersionNumber [
 	defaultVersionNumber := aVersionNumber
 ]
 
-{ #category : #accessing }
+{ #category : #logging }
 GtRlReleaseConfiguration >> emit [
 	^ GtRlReleaseConfigurationSignal emit: self.
 ]
@@ -99,21 +99,21 @@ GtRlReleaseConfiguration >> gtDefaultOptionsFor: aView [
 		send: #value
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : #'options - accessing' }
 GtRlReleaseConfiguration >> releaseBranchForRepository: aRepository [
 	^ self customReleaseBranches 
 		at: aRepository id 
 		ifAbsent: [ self defaultReleaseBranchName ]
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : #'options - accessing' }
 GtRlReleaseConfiguration >> releaseStrategyForRepository: aRepository [
 	^ self customReleaseStrategies 
 		at: aRepository id 
 		ifAbsent: [ self defaultReleaseStrategy ]
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : #'options - accessing' }
 GtRlReleaseConfiguration >> releaseVersionComputationForRepository: aRepository [
 	| versionComputation |
 	versionComputation := self customVersionComputations 
@@ -143,7 +143,7 @@ GtRlReleaseConfiguration >> setReleaseStrategyOfType: aReleaseStrategy forProjec
 	
 ]
 
-{ #category : #accessing }
+{ #category : #'options - accessing' }
 GtRlReleaseConfiguration >> shouldForceNewRelease [
 	^ shouldForceNewRelease ifNil: [ false ]
 ]

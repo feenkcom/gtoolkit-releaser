@@ -1,3 +1,11 @@
+"
+I am responsible with creating a new release model from a baseline model following a given configuration.
+
+My main API method for creating the release model is ${method:GtRlReleaseBuilder>>#buildReleaseForProject:}$.
+To create the release I use two other classes:
+	- ${class:GtRlReleaseStructureBuilder}$ - builds the structure of release from a baseline model;
+	- ${class:GtRlReleaseUpdateWorkflow}$ - updates the version number and strategy for releases based on the given configuration.
+"
 Class {
 	#name : #GtRlReleaseBuilder,
 	#superclass : #Object,
