@@ -9,5 +9,5 @@ Class {
 
 { #category : #'meta-data' }
 ManifestGToolkitReleaser class >> description [ 
-	^ 'I provide a model for creating a new release version for a loading configuration.'
+	^ 'I provide a model for creating a new release version for a baseline.'
 ]

@@ -1,7 +1,13 @@
 "
-I model an action executed during the creation of a new release version.
+I model an action executed during the creation of a new release version on projects and repository releases that are not passive.
 
-My main API method for executing the actions is ${method:GtRlReleaseAction>>#execute}$. Since release actions can have side effects, like creating tags, or merging branches I ensure that I am executed only once. Subclasses should implement ${method:GtRlReleaseAction>>#performAction}$ to provide a concrete execution logic.
+My main API method for executing the actions is ${method:GtRlReleaseAction>>#execute}$. Since release actions can have side effects, like creating tags, or merging branches I ensure that I am executed only once. 
+
+Subclasses should implement:
+	- ${method:GtRlReleaseAction>>#performAction}$ to provide a concrete execution logic;
+	- ${method:GtRlReleaseAction>>#repositoryRelease}$ to return the repository release that this action affects. 
+
+I provide an order attribute that can be used to order the actions of a release and ensure that they are executed in the correct order.
 "
 Class {
 	#name : #GtRlReleaseAction,
@@ -23,18 +29,22 @@ GtRlReleaseAction >> descriptionDetails [
 	^ ''
 ]
 
-{ #category : #accessing }
+{ #category : #logging }
 GtRlReleaseAction >> emitCreationSignal [
 	(GtRlCreateReleaseActionSignal action: self) emit.
 ]
 
-{ #category : #accessing }
+{ #category : #logging }
 GtRlReleaseAction >> emitExecutionSignal [
 	(GtRlExecuteActionSignal action: self) emit.
 ]
 
 { #category : #actions }
 GtRlReleaseAction >> execute [
+	self 
+		assert: [ self repositoryRelease isPassiveRelease not ] 
+		description: 'Release actions should only be executed on releases that are not passive.'.
+	
 	isExecuted ifTrue: [ Error signal: 'Action already executed' ].
 	self emitExecutionSignal.
 	[ self performAction ] 
