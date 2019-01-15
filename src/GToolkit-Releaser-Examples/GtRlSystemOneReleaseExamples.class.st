@@ -36,7 +36,6 @@ GtRlSystemOneReleaseExamples >> projectReleaseComponentA [
 GtRlSystemOneReleaseExamples >> projectReleaseComponentBMain [
 	<gtExample>
 	| projectReleaseBMain projectReleaseBUtil repositoryRelease |
-	"self halt."
 	projectReleaseBUtil := self projectReleaseComponentBUtil.
 	projectReleaseBMain := GtRlProjectRelease new
 		project: self projectComponentBMain.
@@ -60,7 +59,6 @@ GtRlSystemOneReleaseExamples >> projectReleaseComponentBMain [
 GtRlSystemOneReleaseExamples >> projectReleaseComponentBUtil [
 	<gtExample>
 	| projectReleaseBUtil repositoryRelease |
-	
 	projectReleaseBUtil := GtRlProjectRelease new
 		project: self projectComponentBUtil.
 	repositoryRelease := self repositoryReleaseComponentB.	
