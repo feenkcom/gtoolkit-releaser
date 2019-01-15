@@ -40,6 +40,7 @@ Class {
 
 { #category : #accessing }
 FreeStyleProject >> builds [ 
+	_builds ifNil: [ self get ].
 	^ _builds
 ]
 
@@ -56,31 +57,23 @@ FreeStyleProject >> get [
 FreeStyleProject >> gtBuildsFor: aView [
 	<gtView>
 	^ aView columnedList
-		title: 'Jobs' translated;
+		title: 'Builds' translated;
 		priority: 10;
 		items: [ self builds ];
-		column: 'Name' translated do: [ :aColumn | 
+		column: 'ID' translated do: [ :aColumn | 
 			aColumn 
 				item: [ :build | build number ]; 
-				matchParent ];
+				width: 30 ];
+		column: 'Result' translated do: [ :aColumn | 
+			aColumn 
+				item: [ :build | |result| result := ''.
+					 build result ifNotNil: [ result := build result ].
+					result ]; 
+				width: 80 ];
 		column: 'URL' translated do: [ :aColumn | 
 			aColumn 
 				item: [ :build | build url ]; 
 				matchParent ]
-]
-
-{ #category : #accessing }
-FreeStyleProject >> lastBuildLog [
-	| buildURL codeGenerator json |
-	_lastBuild isDictionary ifTrue: [ 
-		buildURL := (_lastBuild at:'url'), '/api/json?pretty=true'.
-		codeGenerator := JSONCodeGenerator new.
-		json := self znclient get: buildURL.
-		_lastBuild := FreeStyleBuild new.
-		_lastBuild parent: self.
-		codeGenerator updateObject: _lastBuild with: (NeoJSONReader fromString: json)]
-	
-	
 ]
 
 { #category : #accessing }

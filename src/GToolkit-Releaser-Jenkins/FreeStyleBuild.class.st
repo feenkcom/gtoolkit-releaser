@@ -29,7 +29,17 @@ Class {
 
 { #category : #accessing }
 FreeStyleBuild >> buildLog [
+	_result isNil ifTrue: [ self get].
 	^ self znclient get: ('' join: { self url . '/consoleText'})
+]
+
+{ #category : #accessing }
+FreeStyleBuild >> get [
+	| codeGenerator json|
+	codeGenerator := JSONCodeGenerator new.
+	json := self znclient get: ('' join: { _url . '/api/json?pretty=true'}).
+	codeGenerator updateObject: self with: (NeoJSONReader fromString: json).
+
 ]
 
 { #category : #accessing }
@@ -48,6 +58,11 @@ FreeStyleBuild >> number [
 { #category : #accessing }
 FreeStyleBuild >> parent: theParent [
 	_parent := theParent 
+]
+
+{ #category : #accessing }
+FreeStyleBuild >> result [
+	^ _result
 ]
 
 { #category : #accessing }
