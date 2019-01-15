@@ -22,5 +22,5 @@ Hudson >> gtJobsFor: aView [
 
 { #category : #accessing }
 Hudson >> jobs [
-	^ jobs
+	^ _jobs
 ]
