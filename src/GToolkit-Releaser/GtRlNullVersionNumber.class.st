@@ -1,3 +1,6 @@
+"
+I am null version number that can be used instead of ==nil==.
+"
 Class {
 	#name : #GtRlNullVersionNumber,
 	#superclass : #GtRlVersionNumber,
