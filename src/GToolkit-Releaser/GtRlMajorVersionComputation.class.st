@@ -1,3 +1,6 @@
+"
+I increment the major number of a semantic version.
+"
 Class {
 	#name : #GtRlMajorVersionComputation,
 	#superclass : #GtRlSemanticVersionComputation,

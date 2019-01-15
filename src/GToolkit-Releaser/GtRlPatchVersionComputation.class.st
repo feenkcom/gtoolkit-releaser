@@ -1,3 +1,6 @@
+"
+I increment the patch number of a semantic version.
+"
 Class {
 	#name : #GtRlPatchVersionComputation,
 	#superclass : #GtRlSemanticVersionComputation,

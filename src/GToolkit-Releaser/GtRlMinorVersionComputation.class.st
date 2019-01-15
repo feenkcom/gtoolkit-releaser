@@ -1,3 +1,6 @@
+"
+I increment the minor number of a semantic version.
+"
 Class {
 	#name : #GtRlMinorVersionComputation,
 	#superclass : #GtRlSemanticVersionComputation,
