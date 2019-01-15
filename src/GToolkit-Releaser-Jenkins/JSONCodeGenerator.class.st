@@ -16,8 +16,9 @@ JSONCodeGenerator >> ensureClass: aFullClassName [
 	fullPackageName := 'GToolkit-Releaser-Jenkins-Generated-',fullPackageName.
 	self ensurePackage: fullPackageName.
 	classSymbol := (aFullClassName findTokens: '.') last.
+	classSymbol := classSymbol copyReplaceAll: '$' with: '_'.
 	^ classSymbol asClassInEnvironment: Smalltalk globals 
-		ifAbsent: [ (JenkinsURL subclass: (aFullClassName findTokens: '.') last)
+		ifAbsent: [ (JenkinsURL subclass: classSymbol)
 								  category: fullPackageName ].
 ]
 
@@ -61,13 +62,13 @@ JSONCodeGenerator >> setAttribute: key toValue: value inObject: theObject [
 			| array |
 			array := value collect: [ :eachValue | 
 				| childObject | 
-				childObject := self modelFrom: eachValue.
-				childObject isNotNil ifTrue: [ 
-				self ensureInstVarNamed: '_parent' inClass: childObject class.
-				childObject instVarNamed: '_parent' put: theObject.
-				childObject url: (key allButLast) allButFirst.
-				].
-				childObject].
+				eachValue isDictionary ifTrue: [ 
+					childObject := self modelFrom: eachValue.
+					childObject isNotNil ifTrue: [ 
+						self ensureInstVarNamed: '_parent' inClass: childObject class.
+						childObject instVarNamed: '_parent' put: theObject.
+						childObject url: (key allButLast) allButFirst].
+					childObject]].
 			theObject instVarNamed: key asSymbol put: array ]
 ]
 
