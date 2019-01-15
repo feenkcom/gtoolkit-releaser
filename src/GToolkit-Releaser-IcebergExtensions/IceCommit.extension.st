@@ -74,8 +74,3 @@ IceCommit >> gtDetailsFor: aView [
 		column: 'Property' item: #key;
 		column: 'Value' item: #value
 ]
-
-{ #category : #'*GToolkit-Releaser-IcebergExtensions' }
-IceCommit >> gtHasSemanticVersionTag [
-	^ self tags anySatisfy: #gtIsSemanticVersion
-]
