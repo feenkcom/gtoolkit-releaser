@@ -16,7 +16,11 @@ GtRlSemanticTagReleaseStrategy >> commitAndTagRelease [
 	self 
 		assert: [ iceRepository branchName = self releaseBranchName ]
 		description: 'The Iceberg repository needs to be on the release branch.'.
-	self repositoryRelease commitAndTagRelease
+	self repositoryRelease commitAndTagRelease.
+	
+	self 
+		assert: [ iceRepository isDirty not ]
+		description: 'After committing the changes needed for the release there should be no other changes in the repository'
 ]
 
 { #category : #'private - actions' }
