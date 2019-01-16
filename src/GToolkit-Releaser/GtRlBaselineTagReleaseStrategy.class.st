@@ -12,7 +12,7 @@ GtRlBaselineTagReleaseStrategy >> description [
 { #category : #'accessing - dynamic' }
 GtRlBaselineTagReleaseStrategy >> tagVersionNumber [
 	^ GtRlTagVersionNumber new 
-		tagName: self repositoryRelease icebergRepository tags first name
+		tagName: self repositoryRelease icebergRepository tags last name
 ]
 
 { #category : #accessing }
