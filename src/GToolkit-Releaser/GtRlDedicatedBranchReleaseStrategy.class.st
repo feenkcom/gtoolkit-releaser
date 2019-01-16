@@ -65,6 +65,9 @@ GtRlDedicatedBranchReleaseStrategy >> mergeToReleaseBranch [
 	| icebergRepository |
 	icebergRepository := self repositoryRelease icebergRepository.
 	self 
+		assert: [ icebergRepository isDirty not ]
+		description: 'There should be no changes in the repository when switching to the release branch.'.
+	self 
 		assert: [ icebergRepository branchName = self referenceBranchName ]
 		description: 'The Iceberg repository needs to be on the reference branch.'.
 	self repositoryRelease mergeToBranch: self releaseBranchName
