@@ -19,7 +19,7 @@ GtRlSemanticTagReleaseStrategy >> commitAndTagRelease [
 	self repositoryRelease commitAndTagRelease.
 	
 	self 
-		assert: [ iceRepository isDirty not ]
+		assert: [ iceRepository isModified not ]
 		description: 'After committing the changes needed for the release there should be no other changes in the repository'
 ]
 
