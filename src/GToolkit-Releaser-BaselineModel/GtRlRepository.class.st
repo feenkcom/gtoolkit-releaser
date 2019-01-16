@@ -217,6 +217,16 @@ GtRlRepository >> isLeaf [
 	^ self childRepositories isEmpty
 ]
 
+{ #category : #testing }
+GtRlRepository >> nameSegment [
+	| size segmentIndex |
+	size := self url segments size. 
+	segmentIndex := size - 1. 
+	segmentIndex == 0 ifTrue: [ segmentIndex := 1 ].
+	^ self url segments at: segmentIndex.
+	
+]
+
 { #category : #'accessing - dynamic' }
 GtRlRepository >> parentRepositories [ 
 	^ (projects flatCollect: [ :aProject | 
@@ -251,11 +261,8 @@ GtRlRepository >> projects [
 
 { #category : #'accessing - dynamic' }
 GtRlRepository >> repositoryName [
-	| nameSegment size segmentIndex |
-	size := self url segments size. 
-	segmentIndex := size - 1. 
-	segmentIndex == 0 ifTrue: [ segmentIndex :=1  ].
-	nameSegment := self url segments at: segmentIndex.
+	| nameSegment |
+	nameSegment := self nameSegment.
 	^ (nameSegment includes: $:)
 		ifTrue: [ nameSegment copyUpTo: $: ]
 		ifFalse: [ nameSegment ]
@@ -282,4 +289,13 @@ GtRlRepository >> urlWithVersion: aVersionString [
 	currentUrl := self url copy.
 	currentUrl segments at: 1 put: self projectName,':', aVersionString. 
 	^ currentUrl
+]
+
+{ #category : #accessing }
+GtRlRepository >> versionString [
+	| nameSegment |
+	nameSegment := self nameSegment.
+	^ (nameSegment includes: $:)
+		ifTrue: [ nameSegment copyAfter: $: ]
+		ifFalse: [ Error signal: 'The repository does not have a version number.' ]
 ]

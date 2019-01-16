@@ -39,11 +39,6 @@ GtRlRepositoryRelease >> addProjectRelease: aProjectRelease [
 	^ self projectReleases add: aProjectRelease
 ]
 
-{ #category : #'accessing - dynamic' }
-GtRlRepositoryRelease >> allChildRepositoryReleases [
-	^ self withDeepCollect: #childRepositoryReleases
-]
-
 { #category : #ui }
 GtRlRepositoryRelease >> allReleaseActions [
 	| allActions |
@@ -422,4 +417,9 @@ GtRlRepositoryRelease >> versionsMetadata [
 	repositoriesByVersion := (self childRepositoryReleases collect: [ :aRepositoryRelease |
 		aRepositoryRelease repository id -> aRepositoryRelease versionString ]) asDictionary.
 	^ {'repositories' -> repositoriesByVersion } asDictionary
+]
+
+{ #category : #'accessing - dynamic' }
+GtRlRepositoryRelease >> withChildRepositoryReleases [
+	^ self withDeepCollect: #childRepositoryReleases
 ]

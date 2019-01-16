@@ -14,6 +14,11 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
+{ #category : #assertions }
+GtRlReleaseStrategy >> assertCompatibleWithRepository: aRepository [
+	"I assert if the given repository can be handled by the strategy."
+]
+
 { #category : #printing }
 GtRlReleaseStrategy >> description [
 	self subclassResponsibility
@@ -26,6 +31,8 @@ GtRlReleaseStrategy >> gtCommitsAncestryFor: aView [
 
 { #category : #initialization }
 GtRlReleaseStrategy >> initializeFor: aRepositoryRelease fromConfiguration: aBuildConfiguration [
+	self assertCompatibleWithRepository: aRepositoryRelease repository. 
+	
 	self repositoryRelease: aRepositoryRelease.
 	aRepositoryRelease releaseStrategy: self.
 ]

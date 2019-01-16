@@ -60,7 +60,7 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://j-brant/SmaCC/src'.
 		'github://pharo-project/pharo-beacon/repository'.
 		'github://svenvc/NeoJSON/repository'};
-	setReleaseStrategyOfType: GtRlBaselineTagReleaseStrategy forProjecs: {
+	setReleaseStrategyOfType: GtRlLoadedTagReleaseStrategy forProjecs: {
 		'github://noha/mustache/repository'.
 		'github://sbragagnolo/taskit'.
 		'github://feenkcom/Containers-PropertyEnvironment'.

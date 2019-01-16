@@ -4,6 +4,13 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
+{ #category : #assertions }
+GtRlLatestCommitReleaseStrategy >> assertCompatibleWithRepository: aRepositoryRelease [
+	self 
+		assert: [ aRepositoryRelease childRepositories isEmpty ] 
+		description: 'The commit id can be used as a release version only for repositories that do not have any children'.
+]
+
 { #category : #accessing }
 GtRlLatestCommitReleaseStrategy >> commitVersionNumber [
 	^ GtRlCommitIdVersionNumber new

@@ -322,7 +322,7 @@ GtRlReleaserExamples >> createProjectWithDependencies [
 		GtRlLatestCommitReleaseStrategy 
 			forProjecs: { commitProjectURL};
 	setReleaseStrategyOfType: 
-		GtRlBaselineTagReleaseStrategy 
+		GtRlLoadedTagReleaseStrategy 
 		forProjecs: { tagProjectURL }.
 		
 	releaseBuilder := GtRlReleaseBuilder new
