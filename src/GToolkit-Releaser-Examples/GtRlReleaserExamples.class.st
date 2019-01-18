@@ -301,6 +301,7 @@ GtRlReleaserExamples >> createProject: projectName [
 { #category : #example }
 GtRlReleaserExamples >> createProjectWithDependencies [
 	<gtExample>
+	<noTest>
 	| releaseConfiguration project releaseBuilder release tagProjectURL commitProjectURL latestProjectURL workflow releaseActions normalProjectURL |
 	
 	tagProjectURL := self createTagProject.
