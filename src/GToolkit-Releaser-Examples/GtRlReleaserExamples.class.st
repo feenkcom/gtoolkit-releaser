@@ -320,10 +320,10 @@ GtRlReleaserExamples >> createProjectWithDependencies [
 		GtRlLeafProjectReleaseStrategy 
 		forProjecs: { latestProjectURL };
 	setReleaseStrategyOfType: 
-		GtRlLatestCommitReleaseStrategy 
+		GtRlHeadCommitReleaseStrategy 
 			forProjecs: { commitProjectURL};
 	setReleaseStrategyOfType: 
-		GtRlLoadedTagReleaseStrategy 
+		GtRlBaselineTagReleaseStrategy 
 		forProjecs: { tagProjectURL }.
 		
 	releaseBuilder := GtRlReleaseBuilder new

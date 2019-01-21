@@ -75,11 +75,11 @@ GtRlLeafRepositoryReleaseExamples >> basicReleaseWithBranchStrategyOnNoVersionsR
 { #category : #'examples - releases' }
 GtRlLeafRepositoryReleaseExamples >> basicReleaseWithLatestCommitStrategyOnNoVersionRepo [
 	<gtExample>
-	"I create a repository release that has a latest commit release strategy."
+	"I create a repository release that has a head commit release strategy."
 	| releaseStrategy repositoryRelease |
 	
 	repositoryRelease := self basicReleaseStructureWithNoVersions.
-	releaseStrategy := self latestCommitReleaseStrategy.
+	releaseStrategy := self headCommitReleaseStrategy.
 	repositoryRelease releaseStrategy: releaseStrategy.	
 	releaseStrategy repositoryRelease: repositoryRelease.
 
@@ -125,12 +125,12 @@ GtRlLeafRepositoryReleaseExamples >> defaultReleaseConfiguration [
 ]
 
 { #category : #'examples - strategies' }
-GtRlLeafRepositoryReleaseExamples >> latestCommitReleaseStrategy [
+GtRlLeafRepositoryReleaseExamples >> headCommitReleaseStrategy [
 	<gtExample>
-	"I create a release strategy that uses the latest commit."
+	"I create a release strategy that uses the head commit."
 	| releaseStrategy |
 	
-	releaseStrategy := GtRlLatestCommitReleaseStrategy new.
+	releaseStrategy := GtRlHeadCommitReleaseStrategy new.
 	self assert: releaseStrategy description  equals: 'LatestCommit'.
 	
 	^ releaseStrategy
@@ -235,7 +235,7 @@ GtRlLeafRepositoryReleaseExamples >> releaseWithBranchStrategyOnOneVersionRepo [
 GtRlLeafRepositoryReleaseExamples >> releaseWithLatestCommitStrategyOnNoVersionRepo [
 	<gtExample>
 	"I create a reposiory release with no version that has its actions and 
-	versions updated using its latest commit release strategy."
+	versions updated using its head commit release strategy."
 	| release updateWorkflow |
 	release := self basicReleaseWithLatestCommitStrategyOnNoVersionRepo.	
 	updateWorkflow := GtRlReleaseUpdateWorkflow new.

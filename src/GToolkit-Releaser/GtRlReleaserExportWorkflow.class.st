@@ -55,12 +55,12 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 	defaultVersionComputation: GtRlPatchVersionComputation new;	
 	setReleaseStrategyOfType: GtRlLeafProjectReleaseStrategy forProjecs: {
 		'github://feenkcom/gtoolkit-releaser/src' };
-	setReleaseStrategyOfType: GtRlLatestCommitReleaseStrategy forProjecs: {
+	setReleaseStrategyOfType: GtRlHeadCommitReleaseStrategy forProjecs: {
 		'github://kursjan/petitparser2'.
 		'github://j-brant/SmaCC/src'.
 		'github://pharo-project/pharo-beacon/repository'.
 		'github://svenvc/NeoJSON/repository'};
-	setReleaseStrategyOfType: GtRlLoadedTagReleaseStrategy forProjecs: {
+	setReleaseStrategyOfType: GtRlBaselineTagReleaseStrategy forProjecs: {
 		'github://noha/mustache/repository'.
 		'github://sbragagnolo/taskit'.
 		'github://feenkcom/Containers-PropertyEnvironment'.

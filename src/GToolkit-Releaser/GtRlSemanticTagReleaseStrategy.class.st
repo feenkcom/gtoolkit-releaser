@@ -1,3 +1,16 @@
+"
+I am a release strategy that uses a new tag named based on semantic versioning as the version number.
+
+I mode an active release that needs to execute actions. The actual actions depend on my subclasses however the common ones are:
+	- make a new commit and tag it with the version number of this release;
+	- push the commit to origin, if a remote origin can be found.
+	
+I offer the following configuration options: 
+	- releaseBranch: the branch on which the release tag will be generated;
+	- nextVersionComputation: the logic used to determine the next symbolic version number. See the subclasses of ${class:GtRlSemanticVersionComputation}$ for available options;
+	- shouldForceNewRelease: By default I try to detect if a new release is neccessary. This flag indicate that a new release should be forced even if no new changes are detected.
+
+"
 Class {
 	#name : #GtRlSemanticTagReleaseStrategy,
 	#superclass : #GtRlReleaseStrategy,
@@ -69,6 +82,11 @@ GtRlSemanticTagReleaseStrategy >> releaseBranchName: aBranchName [
 	releaseBranchName := aBranchName
 ]
 
+{ #category : #testing }
+GtRlSemanticTagReleaseStrategy >> shouldCreateNewRelease [
+	self subclassResponsibility
+]
+
 { #category : #accessing }
 GtRlSemanticTagReleaseStrategy >> shouldForceNewRelease [
 	^ shouldForceNewRelease
@@ -77,6 +95,25 @@ GtRlSemanticTagReleaseStrategy >> shouldForceNewRelease [
 { #category : #accessing }
 GtRlSemanticTagReleaseStrategy >> shouldForceNewRelease: aBoolean [
 	shouldForceNewRelease := aBoolean
+]
+
+{ #category : #accessing }
+GtRlSemanticTagReleaseStrategy >> updateFor: anUpdateWorkflow [
+	| latestVersionTag |
+	
+	self shouldCreateNewRelease ifTrue: [ 
+		^ self configureNewVersionRelease ].
+	
+	"If a new release is not requires used the latest semantic tag and make the release passive."
+	latestVersionTag := self repositoryRelease latestSemanticVersionTag.
+	
+	(GtRlRepositoryPassiveReleaseVersionSignal repositoryRelease: self repositoryRelease 
+		version: latestVersionTag gtAsSemanticVersionNumber) emit.
+	
+	"Use the latest releae instead of generating a new one."
+	^ self repositoryRelease 
+		version: latestVersionTag gtAsSemanticVersionNumber;
+		makePassiveRelease
 ]
 
 { #category : #'actions - building' }

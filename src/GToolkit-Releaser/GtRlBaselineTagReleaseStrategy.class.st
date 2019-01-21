@@ -1,11 +1,21 @@
+"
+I am a release strategy that uses the current loaded tag for a repository as the version number.
+
+I indicate a passive release as no actions need to be executed. The version number already exists in the repository.
+I should only be used for repositories that have no child repositories or when all child repositories also use this strategy, as I hardcode an existing tag.
+As I am passive I do not export any metadata. Even if the repository has child repositories there will be no metadata exported. Because of this I do not use metadata to check previous versions (it is not reliable).
+
+I am a valid release strategy only when all Monticello baselines that load this project use the same tag to load it. 
+See ${method:GtRlBaselineTagReleaseStrategy>>#assertCompatibleWithRepository:}$ for assertions that check when I can be used.
+"
 Class {
-	#name : #GtRlLoadedTagReleaseStrategy,
+	#name : #GtRlBaselineTagReleaseStrategy,
 	#superclass : #GtRlReleaseStrategy,
 	#category : #'GToolkit-Releaser'
 }
 
 { #category : #assertions }
-GtRlLoadedTagReleaseStrategy >> assertCompatibleWithRepository: aRepository [
+GtRlBaselineTagReleaseStrategy >> assertCompatibleWithRepository: aRepository [
 	self 
 		assert: [ aRepository hasVersion ]
 		description: 'The repository should have an explicit version loaded through the baseline'.
@@ -22,18 +32,18 @@ GtRlLoadedTagReleaseStrategy >> assertCompatibleWithRepository: aRepository [
 ]
 
 { #category : #printing }
-GtRlLoadedTagReleaseStrategy >> description [
+GtRlBaselineTagReleaseStrategy >> description [
 	^ 'BaselineTag'
 ]
 
 { #category : #'accessing - dynamic' }
-GtRlLoadedTagReleaseStrategy >> loadedTagVersionNumber [
+GtRlBaselineTagReleaseStrategy >> loadedTagVersionNumber [
 	^ GtRlTagVersionNumber new 
 		tagName: self repositoryRelease repository versionString
 ]
 
 { #category : #accessing }
-GtRlLoadedTagReleaseStrategy >> updateFor: anUpdateWorkflow [
+GtRlBaselineTagReleaseStrategy >> updateFor: anUpdateWorkflow [
 	self 
 		assert: [ self repositoryRelease withChildRepositoryReleases allSatisfy: [ :aRelease |
 				aRelease releaseStrategy class = self class ] ] 

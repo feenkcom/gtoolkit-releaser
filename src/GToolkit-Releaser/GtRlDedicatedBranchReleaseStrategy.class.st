@@ -1,3 +1,15 @@
+"
+I am a release strategy that uses a dedicated release branch for creating the release.
+
+To perform the release I generate actions for: 
+	- checking out the release branch and merging the current branch into the release branch;
+	- compiling updated Monticelo baselines for the project releases contained in the repository that point to the version numbers of those project releases; 
+	- exporting metatada containing the version numbers used for each child repository;
+	- make a new commit on the release branch and tag it with the version number of this release;
+	- push the commit to origin, if a remote origin can be found.
+	
+See ${method:GtRlDedicatedBranchReleaseStrategy>>#shouldCreateNewRelease}$ for the cases when I generate a new release.
+"
 Class {
 	#name : #GtRlDedicatedBranchReleaseStrategy,
 	#superclass : #GtRlSemanticTagReleaseStrategy,
@@ -88,7 +100,7 @@ GtRlDedicatedBranchReleaseStrategy >> referenceBranchName: aBranchName [
 	referenceBranchName := aBranchName
 ]
 
-{ #category : #'private - testing' }
+{ #category : #testing }
 GtRlDedicatedBranchReleaseStrategy >> shouldCreateNewRelease [
 	| latestVersionTag releaseMetadata|
 	
@@ -111,24 +123,6 @@ GtRlDedicatedBranchReleaseStrategy >> shouldCreateNewRelease [
 		^ true ].
 	
 	^ false
-]
-
-{ #category : #actions }
-GtRlDedicatedBranchReleaseStrategy >> updateFor: anUpdateWorkflow [
-	| latestVersionTag |
-	
-	self shouldCreateNewRelease ifTrue: [ 
-		^ self configureNewVersionRelease ].
-	
-	"If a new release is not requires used the latest semantic tag and make the release passive."
-	latestVersionTag := self repositoryRelease latestSemanticVersionTag.
-	
-	(GtRlRepositoryPassiveReleaseVersionSignal repositoryRelease: self repositoryRelease 
-			version: latestVersionTag gtAsSemanticVersionNumber) emit.
-			
-	^ self repositoryRelease 
-		version: latestVersionTag gtAsSemanticVersionNumber;
-		makePassiveRelease
 ]
 
 { #category : #'actions - building' }
