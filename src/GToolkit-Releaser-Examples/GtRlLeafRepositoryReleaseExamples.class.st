@@ -131,7 +131,7 @@ GtRlLeafRepositoryReleaseExamples >> headCommitReleaseStrategy [
 	| releaseStrategy |
 	
 	releaseStrategy := GtRlHeadCommitReleaseStrategy new.
-	self assert: releaseStrategy description  equals: 'LatestCommit'.
+	self assert: releaseStrategy description  equals: 'HeadCommit'.
 	
 	^ releaseStrategy
 	
