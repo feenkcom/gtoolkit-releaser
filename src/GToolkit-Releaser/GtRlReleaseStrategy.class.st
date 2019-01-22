@@ -31,7 +31,7 @@ GtRlReleaseStrategy >> gtCommitsAncestryFor: aView [
 
 { #category : #initialization }
 GtRlReleaseStrategy >> initializeFor: aRepositoryRelease fromConfiguration: aBuildConfiguration [
-	self assertCompatibleWithRepository: aRepositoryRelease repository. 
+	self assertCompatibleWithRepository: aRepositoryRelease. 
 	
 	self repositoryRelease: aRepositoryRelease.
 	aRepositoryRelease releaseStrategy: self.
