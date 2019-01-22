@@ -15,20 +15,18 @@ Class {
 }
 
 { #category : #assertions }
-GtRlBaselineTagReleaseStrategy >> assertCompatibleWithRepository: aRepositoryRelease [
-	| repository |
-	repository := aRepositoryRelease repository.
+GtRlBaselineTagReleaseStrategy >> assertCompatibleWithRepository: aRepository [
 	self 
-		assert: [ repository hasVersion ]
+		assert: [ aRepository hasVersion ]
 		description: 'The repository should have an explicit version loaded through the baseline'.
 	self 
-		assert: [ repository icebergRepository headCommit tags isNotEmpty ]
+		assert: [ aRepository icebergRepository headCommit tags isNotEmpty ]
 		description: 'The head commit in the repository should contain a tag, otherwise this strategy is not appropriate'.
 	self
 		assert: [ 
 			| loadedVersion |
-			loadedVersion := repository versionString.
-			repository icebergRepository headCommit tags anySatisfy: [ :aTag | 
+			loadedVersion := aRepository versionString.
+			aRepository icebergRepository headCommit tags anySatisfy: [ :aTag | 
 				aTag name = loadedVersion ] ]
 		description: 'The current version loaded in the image should be a tag present in the head commit.'.
 ]

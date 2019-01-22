@@ -13,11 +13,13 @@ Class {
 }
 
 { #category : #assertions }
-GtRlLeafProjectReleaseStrategy >> assertCompatibleWithRepository: aRepositoryRelease [
-	aRepositoryRelease projectReleases do: [ :projectRelease | 
-		self 
-		assert: [ projectRelease childReleases isEmpty ] 
-		description: 'This strategy can be used only for project releases that have no children' ]
+GtRlLeafProjectReleaseStrategy >> assertCompatibleWithRepository: aRepository [
+	self 
+		assert: [ aRepository projects size == 1 ] 
+		description: 'This strategy can be used only for repositories with one project'.
+	self 
+		assert: [ aRepository projects first childProjects isEmpty ] 
+		description: 'This strategy can be used only for repositories with one project with no dependencies' 
 	
 	
 ]
