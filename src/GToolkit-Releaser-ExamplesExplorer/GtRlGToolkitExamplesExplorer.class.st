@@ -18,7 +18,7 @@ GtRlGToolkitExamplesExplorer class >> buildForGToolkitProject [
 GtRlGToolkitExamplesExplorer >> gtViewAllExamplesFor: aView [
 	<gtView>
 	^ ((GtExampleGroup withAll: Smalltalk gtExamplesContained) gtExamplesFor: aView)
-		title: 'All example' translated;
+		title: 'All examples' translated;
 		priority: 20
 ]
 
