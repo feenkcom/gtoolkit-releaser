@@ -19,6 +19,11 @@ Class {
 	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
 
+{ #category : #converting }
+GtRlPackage >> asRPackage [
+	^ self name asPackage
+]
+
 { #category : #accessing }
 GtRlPackage >> dependencies [
 	^ dependencies
