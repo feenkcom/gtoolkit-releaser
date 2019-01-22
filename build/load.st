@@ -1,6 +1,10 @@
 "load latest version"
 EpMonitor current disable.
 Metacello new
+   baseline: 'Beacon';
+   repository: 'github://pharo-project/pharo-beacon/repository';
+   load.
+Metacello new
    baseline: 'GToolkitExamples';
    repository: 'github://feenkcom/gtoolkit-examples/src';
    load.
