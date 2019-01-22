@@ -1,6 +1,14 @@
 "load latest version"
 EpMonitor current disable.
 Metacello new
+   githubUser: 'pharo-contributions' project: 'DeepTraverser' commitish: 'master' path: 'src';
+   baseline: 'DeepTraverser';
+   load.
+Metacello new
+  repository: 'github://svenvc/NeoJSON/repository';
+  baseline: 'NeoJSON';
+  load.
+Metacello new
    baseline: 'Beacon';
    repository: 'github://pharo-project/pharo-beacon/repository';
    load.
