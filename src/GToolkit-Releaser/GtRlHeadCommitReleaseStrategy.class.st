@@ -16,7 +16,7 @@ Class {
 { #category : #assertions }
 GtRlHeadCommitReleaseStrategy >> assertCompatibleWithRepository: aRepositoryRelease [
 	self 
-		assert: [ aRepositoryRelease childRepositories isEmpty ] 
+		assert: [ aRepositoryRelease repository childRepositories isEmpty ] 
 		description: 'The commit id can be used as a release version only for repositories that do not have any children'.
 ]
 
