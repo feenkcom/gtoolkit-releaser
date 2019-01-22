@@ -1,7 +1,7 @@
 "load latest version"
 EpMonitor current disable.
 Metacello new
-   githubUser: 'pharo-contributions' project: 'DeepTraverser' commitish: 'master' path: 'src';
+   githubUser: 'feenkcom' project: 'DeepTraverser' commitish: 'master' path: 'src';
    baseline: 'DeepTraverser';
    load.
 Metacello new
