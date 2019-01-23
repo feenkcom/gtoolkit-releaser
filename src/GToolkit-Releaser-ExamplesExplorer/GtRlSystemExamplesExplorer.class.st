@@ -3,8 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'rootProject',
-		'repositoryExplorersMap',
-		'projectExplorersMap'
+		'repositoryExplorers'
 	],
 	#category : #'GToolkit-Releaser-ExamplesExplorer'
 }
@@ -27,28 +26,15 @@ GtRlSystemExamplesExplorer >> gtViewRepositoriesListFor: aView [
 ]
 
 { #category : #initialization }
-GtRlSystemExamplesExplorer >> initialize [
-	super initialize.
-	repositoryExplorersMap := OrderedDictionary new.
-	projectExplorersMap := OrderedDictionary new.
-]
-
-{ #category : #initialization }
 GtRlSystemExamplesExplorer >> initializeForRootProject: aProject [
 	rootProject := aProject.
-	repositoryExplorersMap removeAll.
-	projectExplorersMap removeAll.
-	rootProject withAllRepositories do: [ :aRepository |
-		| repositoryExplorer |
-		repositoryExplorer := GtRlRepositoryExamplesExplorer forRepository: aRepository.
-		repositoryExplorersMap at: aRepository put: repositoryExplorer.
-		repositoryExplorer projectExplorers do: [ :aProjectExplorer |
-			projectExplorersMap at: aProjectExplorer project put: aProjectExplorer ] ]
+	repositoryExplorers := rootProject withAllRepositories collect: [ :aRepository |
+		GtRlRepositoryExamplesExplorer forRepository: aRepository ]
 ]
 
 { #category : #accessing }
 GtRlSystemExamplesExplorer >> repositoryExplorers [
-	^ repositoryExplorersMap values
+	^ repositoryExplorers
 ]
 
 { #category : #accessing }
