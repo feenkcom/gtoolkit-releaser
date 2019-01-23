@@ -15,7 +15,7 @@ GtRlGToolkitExamplesExplorer class >> buildForGToolkitProject [
 ]
 
 { #category : #ui }
-GtRlGToolkitExamplesExplorer >> gtViewAllExamplesFor: aView [
+GtRlGToolkitExamplesExplorer >> gtViewAllExamplesInImageFor: aView [
 	<gtView>
 	^ ((GtExampleGroup withAll: Smalltalk gtExamplesContained) gtExamplesFor: aView)
 		title: 'All examples' translated;

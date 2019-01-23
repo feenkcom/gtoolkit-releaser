@@ -7,6 +7,18 @@ Class {
 	#category : #'GToolkit-Releaser-IcebergExtensions'
 }
 
+{ #category : #'instance creation' }
+GtRlIceRegistry class >> forAllIcebergRepositories [
+	^ self new 
+		repositories: IceRepository registry
+]
+
+{ #category : #'instance creation' }
+GtRlIceRegistry class >> forRepositories: aCollection [
+	^ self new 	
+		repositories: aCollection
+]
+
 { #category : #private }
 GtRlIceRegistry >> fromTextToRopedText: aText [
 	"Conversion just for this particular case."
@@ -25,13 +37,20 @@ GtRlIceRegistry >> gtRepositoriesListFor: aView [
 	<gtView>
 	^ aView columnedList
 		title: 'Repositories' translated;
-		items: [ IceRepository registry collect: [ :each | IceTipRepositoryModel on: each ] ];
+		items: [ self repositoryModels ];
 		column: 'Name' item: [ :aRepositoryModel | 
 			self fromTextToRopedText: aRepositoryModel descriptionWithDecoration ];
 		column: 'Branch' item: [ :aRepositoryModel | aRepositoryModel branchName ];
 		column: 'Status' item: [ :aRepositoryModel | 
 			self fromTextToRopedText: aRepositoryModel status ];
-		send: [ :aRepositoryModel | aRepositoryModel entity ]
+		send: [ :aRepositoryModel | aRepositoryModel entity ];
+		actionStencil: [ :aTab | 
+			BrButton new  
+				look: BrGlamorousButtonWithLabelLook;
+				label: 'Fetch';
+				action: [ 
+					self repositoryModels do: #fetch.
+					"aTab viewContentElement phlow update" ] ]
 		
 		
 ]
@@ -44,4 +63,15 @@ GtRlIceRegistry >> repositories [
 { #category : #accessing }
 GtRlIceRegistry >> repositories: aCollection [
 	repositories := aCollection
+]
+
+{ #category : #accessing }
+GtRlIceRegistry >> repositoryModels [
+	^ self repositories collect: [ :each | 
+		IceTipRepositoryModel on: each ]
+]
+
+{ #category : #enumerating }
+GtRlIceRegistry >> select: aBloc [
+	^ self class forRepositories: (self repositories select: aBloc)
 ]
