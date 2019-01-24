@@ -17,8 +17,7 @@ pipeline {
         }
         stage('Build gtoolkit') {
             steps {
-                build '/gtoolkit'
-                echo "gtoolkit build done."
+                build(job: '../gtoolkit/master', wait: false)
             }
         }
     }
