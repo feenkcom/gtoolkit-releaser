@@ -1,6 +1,15 @@
 Extension { #name : #IceRepository }
 
 { #category : #'*GToolkit-Releaser-IcebergExtensions' }
+IceRepository >> gtActionFetchFor: anAction [
+	<gtAction>
+	^ anAction button
+		label: 'Fetch';
+		action: [ 
+			(IceTipRepositoryModel on: self) fetch ]
+]
+
+{ #category : #'*GToolkit-Releaser-IcebergExtensions' }
 IceRepository >> gtLocalBranchesFor: aView [
 	<gtView>
 	^ aView list  
