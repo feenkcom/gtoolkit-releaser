@@ -56,3 +56,29 @@ IceRepository >> gtTagsFor: aView [
 		itemFormat: [ :anIceTag |
 			anIceTag name, ' [', (anIceTag commit id first: 7), ']' ]
 ]
+
+{ #category : #'*GToolkit-Releaser-IcebergExtensions' }
+IceRepository >> gtViewIncomingCommitsFor: aView [
+	<gtView>
+	| incomingCommits |
+	incomingCommits := GtRlIceCommitsGroup forCommits: self incomingCommits.
+	^ incomingCommits commits
+		ifEmpty: [ aView ]
+		ifNotEmpty: [ 
+			(incomingCommits gtViewCommitsListFor: aView)
+				title: 'Incoming commits';
+				priority: 10 ]
+]
+
+{ #category : #'*GToolkit-Releaser-IcebergExtensions' }
+IceRepository >> gtViewOutgoingCommitsFor: aView [
+	<gtView>
+	| outgoingCommits |
+	outgoingCommits := GtRlIceCommitsGroup forCommits: self outgoingCommits.
+	^ outgoingCommits commits
+		ifEmpty: [ aView ]
+		ifNotEmpty: [ 
+			(outgoingCommits gtViewCommitsListFor: aView)
+				title: 'Outgoing commits';
+				priority: 12 ]
+]
