@@ -25,9 +25,11 @@ GtRlSemanticVersionNumber class >> major: majorNumber minor: minorNumber patch: 
 
 { #category : #comparison }
 GtRlSemanticVersionNumber >> <= aFkRlSemanticVersion [ 
-	self major > aFkRlSemanticVersion major ifTrue: [ ^ false ] .
-	self minor > aFkRlSemanticVersion minor ifTrue: [ ^ false ] .
-	self patch > aFkRlSemanticVersion patch ifTrue: [ ^ false ] .
+	self major > aFkRlSemanticVersion major ifTrue: [ ^ false ].
+		self major = aFkRlSemanticVersion major ifTrue: [ 
+			self minor > aFkRlSemanticVersion minor ifTrue: [ ^ false ].
+			self minor = aFkRlSemanticVersion minor ifTrue: [ 
+				self patch > aFkRlSemanticVersion patch ifTrue: [ ^ false ]]].
 	^ true.
 ]
 

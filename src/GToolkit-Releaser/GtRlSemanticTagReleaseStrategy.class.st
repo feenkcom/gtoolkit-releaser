@@ -17,7 +17,8 @@ Class {
 	#instVars : [
 		'releaseBranchName',
 		'nextVersionComputation',
-		'shouldForceNewRelease'
+		'shouldForceNewRelease',
+		'enforcedVersion'
 	],
 	#category : #'GToolkit-Releaser'
 }
@@ -40,6 +41,10 @@ GtRlSemanticTagReleaseStrategy >> commitAndTagRelease [
 GtRlSemanticTagReleaseStrategy >> configureNewVersionRelease [
 	| nextVersionNumber |
 	nextVersionNumber := self nextVersionComputation nextVersionNumberForRepository: self repositoryRelease repository.
+	
+	(enforcedVersion isNotNil and:[ nextVersionNumber <= enforcedVersion ]) ifTrue: [ 
+		nextVersionNumber := enforcedVersion ].
+	
 	(GtRlRepositoryActiveReleaseVersionSignal repositoryRelease: self repositoryRelease version: nextVersionNumber) emit.
 	self repositoryRelease 
 		resetReleaseActions;
@@ -49,11 +54,22 @@ GtRlSemanticTagReleaseStrategy >> configureNewVersionRelease [
 	
 ]
 
+{ #category : #accessing }
+GtRlSemanticTagReleaseStrategy >> enforcedVersion [
+	^ enforcedVersion
+]
+
+{ #category : #accessing }
+GtRlSemanticTagReleaseStrategy >> enforcedVersion: aVersion [
+	enforcedVersion := aVersion
+]
+
 { #category : #initialization }
 GtRlSemanticTagReleaseStrategy >> initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration [
 	super initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration.
 	self
 		nextVersionComputation: (aReleaseConfiguration releaseVersionComputationForRepository: aRepositoryRelease repository);
+		enforcedVersion: aReleaseConfiguration enforcedVersion;
 		shouldForceNewRelease: aReleaseConfiguration shouldForceNewRelease
 ]
 

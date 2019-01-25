@@ -22,6 +22,22 @@ GtRlReleaserExportWorkflow class >> buildGToolkitRelease [
 	^ workflow
 ]
 
+{ #category : #releasing }
+GtRlReleaserExportWorkflow class >> buildGToolkitRelease: version [
+	| releaseConfiguration workflow |
+	TranscriptLogger runDuring: [  
+		releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
+		releaseConfiguration enforcedVersion: version.
+		releaseConfiguration forceNewRelease.
+		releaseConfiguration emit.
+		workflow := GtRlReleaserExportWorkflow 
+			forBaseline: BaselineOfGToolkit 
+			fromRepository: 'github://feenkcom/gtoolkit/src'
+			withConfiguration: releaseConfiguration.
+	].
+	^ workflow
+]
+
 { #category : #'instance creation' }
 GtRlReleaserExportWorkflow class >> forBaseline: aBaselineClass fromRepository: aRepositoryUrl withConfiguration: aReleaseConfiguration [
 	| projectBuilder releaseBuilder project release |

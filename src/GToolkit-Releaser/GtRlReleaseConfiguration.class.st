@@ -8,7 +8,8 @@ Class {
 		'customVersionComputations',
 		'customReleaseStrategies',
 		'shouldForceNewRelease',
-		'defaultVersionNumber'
+		'defaultVersionNumber',
+		'enforcedVersion'
 	],
 	#category : #'GToolkit-Releaser'
 }
@@ -76,6 +77,16 @@ GtRlReleaseConfiguration >> defaultVersionNumber: aVersionNumber [
 { #category : #logging }
 GtRlReleaseConfiguration >> emit [
 	^ GtRlReleaseConfigurationSignal emit: self.
+]
+
+{ #category : #accessing }
+GtRlReleaseConfiguration >> enforcedVersion [
+	^ enforcedVersion
+]
+
+{ #category : #accessing }
+GtRlReleaseConfiguration >> enforcedVersion: version [
+	enforcedVersion := version
 ]
 
 { #category : #accessing }
