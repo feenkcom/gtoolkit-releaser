@@ -74,6 +74,18 @@ GtRlReleaserExportWorkflow class >> performGToolkitRelease [
 	^ workflow executeReleaseActions.
 ]
 
+{ #category : #releasing }
+GtRlReleaserExportWorkflow class >> switchAllRepositoriesBackToMasterBranch [
+	((IceRepository registry select: [ :repo | (LGitRepository on: repo location) 
+		repositoryReference isNotNil ]) 
+			select: [ :repo | repo head name = 'release' ]) 
+				do: [ :repo | repo checkoutBranch: 'master' ].
+
+	((IceRepository registry select: [ :repo | (LGitRepository on: repo location) 
+		repositoryReference isNotNil ]) 
+			select: [ :repo | repo head name = 'master' ]) do: [ :repo | repo pull ].
+]
+
 { #category : #actions }
 GtRlReleaserExportWorkflow >> executeReleaseActions [
 	^ self releaseActions execute
