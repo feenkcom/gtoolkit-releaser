@@ -1,6 +1,16 @@
 Extension { #name : #IceLibgitRepository }
 
 { #category : #'*GToolkit-Releaser-IcebergExtensions' }
+IceLibgitRepository >> gtActionFetchFor: anAction [
+	<gtAction>
+	self isMissing ifTrue: [ ^ anAction ].
+	^ anAction button
+		label: 'Fetch';
+		action: [ 
+			(IceTipRepositoryModel on: self) fetch ]
+]
+
+{ #category : #'*GToolkit-Releaser-IcebergExtensions' }
 IceLibgitRepository >> gtLocalBranchesFor: aView [
 	self isMissing ifTrue: [ ^ aView ].
 	^ super gtLocalBranchesFor: aView

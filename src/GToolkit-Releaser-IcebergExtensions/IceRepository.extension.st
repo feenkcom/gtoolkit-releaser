@@ -1,15 +1,6 @@
 Extension { #name : #IceRepository }
 
 { #category : #'*GToolkit-Releaser-IcebergExtensions' }
-IceRepository >> gtActionFetchFor: anAction [
-	<gtAction>
-	^ anAction button
-		label: 'Fetch';
-		action: [ 
-			(IceTipRepositoryModel on: self) fetch ]
-]
-
-{ #category : #'*GToolkit-Releaser-IcebergExtensions' }
 IceRepository >> gtLocalBranchesFor: aView [
 	<gtView>
 	^ aView list  
@@ -62,12 +53,17 @@ IceRepository >> gtViewIncomingCommitsFor: aView [
 	<gtView>
 	| incomingCommits |
 	incomingCommits := GtRlIceCommitsGroup forCommits: self incomingCommits.
-	^ incomingCommits commits
-		ifEmpty: [ aView ]
-		ifNotEmpty: [ 
-			(incomingCommits gtViewCommitsListFor: aView)
-				title: 'Incoming commits';
-				priority: 10 ]
+	incomingCommits commits ifEmpty: [ ^ aView ].
+	
+	^ (incomingCommits gtViewCommitsListFor: aView)
+		title: 'Incoming commits' translated;
+		priority: 10;
+		actionButtonLabel: 'Merge' action: [ 
+			| remoteBranch |
+			remoteBranch := self branch upstream remote 
+				remoteBranchNamed: self branch name 
+				ifAbsent: [ self branch ].
+			self workingCopy mergeCommit: remoteBranch commit ]
 ]
 
 { #category : #'*GToolkit-Releaser-IcebergExtensions' }
