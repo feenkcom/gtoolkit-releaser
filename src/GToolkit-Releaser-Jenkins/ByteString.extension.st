@@ -1,6 +1,6 @@
 Extension { #name : #ByteString }
 
-{ #category : #'*GToolkit-Releaser' }
+{ #category : #'*GToolkit-Releaser-Jenkins' }
 ByteString >> asGtRlSemanticVersionNumber [
 	|tokens withoutPrefix|
 	withoutPrefix := self withoutPrefix: 'v' .
