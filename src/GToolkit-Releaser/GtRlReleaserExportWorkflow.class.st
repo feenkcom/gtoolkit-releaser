@@ -151,6 +151,11 @@ GtRlReleaserExportWorkflow >> releaseActions [
 ]
 
 { #category : #accessing }
+GtRlReleaserExportWorkflow >> releaseCreationActions [
+	^ self releaseActions reject: [ :action | action class = GtRlPushToOriginReleaseAction ]
+]
+
+{ #category : #accessing }
 GtRlReleaserExportWorkflow >> repositoriesReleasesInReleaseOrder [
 	^ GtRlReleaseOrderTraversal new releaseOrderFor: self rootProjectRelease repositoryRelease
 ]

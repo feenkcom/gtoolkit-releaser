@@ -91,6 +91,14 @@ GtRlReleaseActionsGroup >> isEmpty [
 	^ self actions isEmpty
 ]
 
+{ #category : #filtering }
+GtRlReleaseActionsGroup >> reject: aBlockClosure [ 
+	^ self class new
+		addActions: (self actions reject: aBlockClosure);
+		yourself
+		 
+]
+
 { #category : #actions }
 GtRlReleaseActionsGroup >> removeAll [
 	self actions removeAll.
