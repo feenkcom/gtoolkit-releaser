@@ -4,6 +4,16 @@ Class {
 	#category : #'GToolkit-Releaser-Jenkins'
 }
 
+{ #category : #accessing }
+GtRlReleaserCommandLineHandler class >> commandName [
+	^ 'releasegtoolkit'
+]
+
+{ #category : #accessing }
+GtRlReleaserCommandLineHandler class >> description [
+	^ 'GtRlReleaserCommand line utility'
+]
+
 { #category : #activation }
 GtRlReleaserCommandLineHandler >> activate [
 	self activateHelp
@@ -14,5 +24,5 @@ GtRlReleaserCommandLineHandler >> activate [
 		ifTrue: [ GtRlReleaserExportWorkflow buildGToolkitRelease ]
 		ifFalse:[ | semanticVersion | semanticVersion := self argumentAt:1 asGtRlSemanticVersionNumber.
 			GtRlReleaserExportWorkflow buildGToolkitRelease: semanticVersion].
-	
+	self quit.
 ]
