@@ -13,13 +13,9 @@ IceRepository >> gtLocalBranchesFor: aView [
 { #category : #'*GToolkit-Releaser-IcebergExtensions' }
 IceRepository >> gtPackagesFor: aView [
 	<gtView>
-	^ aView columnedList 
-		priority: 15;
-		title: 'Packages' translated;
-		items: [ (IceSortingStrategy new first: #modified) sort: self workingCopy packages ];
-		column: 'Name' item: #gtPackageDescription;
-		column: 'Status' item: #gtPackageStatus
-		
+	^ self workingCopy 
+		ifNil: [ aView ]
+		ifNotNil: [ self workingCopy gtPackagesFor: aView ]
 ]
 
 { #category : #'*GToolkit-Releaser-IcebergExtensions' }
