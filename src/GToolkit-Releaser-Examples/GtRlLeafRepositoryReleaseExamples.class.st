@@ -37,7 +37,7 @@ GtRlLeafRepositoryReleaseExamples >> basicReleaseStructureWithNoVersions [
 	"I create a repository release for a project by manually creating and linking the necessary release objects."
 	| project projectRelease repositoryRelease |
 	
-	project := self getProject: #RepositoryReleaseWithNoVersions. 
+	project := self projectAWithNoVersion. 
 	projectRelease := GtRlProjectRelease new 
 		project: project.
 	repositoryRelease := GtRlRepositoryRelease new
@@ -109,21 +109,6 @@ GtRlLeafRepositoryReleaseExamples >> dedicatedBranchReleaseStrategy [
 	^ releaseStrategy
 ]
 
-{ #category : #'examples - configs' }
-GtRlLeafRepositoryReleaseExamples >> defaultReleaseConfiguration [
-	<gtExample>
-	| releaseConfiguration |
-	releaseConfiguration := GtRlReleaseConfiguration new
-		defaultVersionNumber: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0);
-		defaultReleaseBranchName: 'release';
-		defaultVersionComputation: GtRlMinorVersionComputation new.
-		
-	self assert: releaseConfiguration shouldForceNewRelease not.
-	self assert: releaseConfiguration defaultReleaseBranchName equals: 'release'.
-		
-	^ releaseConfiguration
-]
-
 { #category : #'examples - strategies' }
 GtRlLeafRepositoryReleaseExamples >> headCommitReleaseStrategy [
 	<gtExample>
@@ -138,42 +123,12 @@ GtRlLeafRepositoryReleaseExamples >> headCommitReleaseStrategy [
 	
 ]
 
-{ #category : #'examples - projecs' }
-GtRlLeafRepositoryReleaseExamples >> projectWithOneReleasedVersion [
-	<gtExample>
-	"I create project for a repository that has one release."
-	| project releaseWorkflow semanticTags |
-	
-	project := self getProject: #RepositoryReleaseWithNoVersions. 
-	releaseWorkflow := GtRlReleaserExportWorkflow 
-		forProject: project withConfiguration: self defaultReleaseConfiguration.
-	releaseWorkflow executeReleaseActions.
-	
-	semanticTags := project repository icebergRepository gtSemanticVersionsTags.
-	self assert: semanticTags size equals: 1.
-	self assert: semanticTags first name equals: 'v0.1.0'.
-	
-	^ project
-]
-
-{ #category : #'examples - configs' }
-GtRlLeafRepositoryReleaseExamples >> releaseConfigurationForcingRelease [
-	<gtExample>
-	| releaseConfiguration |
-	releaseConfiguration := self defaultReleaseConfiguration.
-	releaseConfiguration forceNewRelease.
-		
-	self assert: releaseConfiguration shouldForceNewRelease.
-		
-	^ releaseConfiguration
-]
-
 { #category : #'examples - releases' }
 GtRlLeafRepositoryReleaseExamples >> releaseWithBranchStrategyForcingReleaseOnOneVersionRepo [
 	<gtExample>
 	"I create a repository release for a repository with one version and a branch release strategy that forces a new release."
 	| project releaseBuiler projectRelease repositoryRelease |
-	project := self projectWithOneReleasedVersion.
+	project := self projectWithOneReleasedVersionAndNoChanges.
 	releaseBuiler := GtRlReleaseBuilder new
 		configuration: self releaseConfigurationForcingRelease.
 	projectRelease := releaseBuiler buildReleaseForProject: project.
@@ -217,7 +172,7 @@ GtRlLeafRepositoryReleaseExamples >> releaseWithBranchStrategyOnOneVersionRepo [
 	<gtExample>
 	"I create a repository release for a repository with one version and a branch release strategy."
 	| project releaseBuiler projectRelease repositoryRelease |
-	project := self projectWithOneReleasedVersion.
+	project := self projectWithOneReleasedVersionAndNoChanges.
 	releaseBuiler := GtRlReleaseBuilder new
 		configuration: self defaultReleaseConfiguration.
 	projectRelease := releaseBuiler buildReleaseForProject: project.

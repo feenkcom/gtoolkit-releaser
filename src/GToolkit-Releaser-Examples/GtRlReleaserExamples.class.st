@@ -43,397 +43,325 @@ Class {
 	#name : #GtRlReleaserExamples,
 	#superclass : #Object,
 	#instVars : [
-		'projects'
+		'repositories'
 	],
 	#category : #'GToolkit-Releaser-Examples'
 }
 
-{ #category : #'setUp-tearDown' }
-GtRlReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames [
-	| projectBuilder project repository diff cls baselineName filetreeDir mcVersion|
-	baselineName := (#BaselineOf, projectName) asSymbol.
-	IceRepository registry detect: [ :repo | repo name = projectName ] ifFound: [:repo | repo forget].
-	repository := self createNewRepoWithName: projectName.
-	filetreeDir := (repository workingCopy fileSystem / 'src') fullName.
-	projectBuilder := GtRlModelBuilder new.
-	cls := self baselineClass: projectName.
-	
-	mcVersion := cls project versions first.
-	project := GtRlProject new
-		name: (MetacelloScriptEngine baseNameOf: cls name); 
-		baselineVersion: mcVersion;
-		baselineClass: cls.
-	
-	projectBuilder updateDependenciesFor: project fromMCVersion: mcVersion.
-	projectBuilder projectsByBaselineClass at: cls put: project.
-
-	project addPackage: (GtRlPackage new name: baselineName; 
-								dependencies: (dependencyNames collect: [ :each | each key ]) ).
-								
-	self addBaselineCode: project toClass: cls withDependencies: dependencyNames.
-			
-	project := projectBuilder 
-		buildProjectFromBaselineClass: cls
-		withRepositoryDescription: 'filetree://', filetreeDir.
-						
-	repository workingCopy addPackageNamed: baselineName.
-	
-	diff := repository workingCopyDiff.
-	repository workingCopy 
-			commitChanges: diff
-			withMessage: 'baseline: method code'
-			force: true.
-	
-	(Metacello image
-    project: projectName;
-    list)
-    detect: [ :each | true ]
-    ifNone:  [
-		Metacello new
-	   baseline: projectName;
-	   filetreeDirectory: filetreeDir;
-	   load].
-
-	^ project
+{ #category : #'creation projects' }
+GtRlReleaserExamples >> addNewMethodNamed: methodSelector toProject: targetProject [
+	targetProject baselineClass compileSilently: methodSelector,' 
+	"I am a new method"
+	^ 1 + 2 + 3' classified: 'new method'.
+	targetProject baselineClass package addMethod: targetProject baselineClass >> methodSelector.
 ]
 
-{ #category : #creation }
-GtRlReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames inRepository: repository [
-	| projectBuilder project diff cls baselineName filetreeDir mcVersion|
-	baselineName := (#BaselineOf, projectName) asSymbol.
-	IceRepository registry detect: [ :repo | repo name = repository name ] ifFound: [:repo | repo forget].
-	filetreeDir := (repository workingCopy fileSystem / 'src') fullName.
-	projectBuilder := GtRlModelBuilder new.
-	cls := self baselineClass: projectName.
-	
-	mcVersion := cls project versions first.
-	project := GtRlProject new
-		name: (MetacelloScriptEngine baseNameOf: cls name); 
-		baselineVersion: mcVersion;
-		baselineClass: cls.
-	
-	projectBuilder updateDependenciesFor: project fromMCVersion: mcVersion.
-	projectBuilder projectsByBaselineClass at: cls put: project.
-
-	project addPackage: (GtRlPackage new name: baselineName; 
-								dependencies: (dependencyNames collect: [ :each | each key ]) ).
-								
-	self addBaselineCode: project toClass: cls withDependencies: dependencyNames.
-			
-	project := projectBuilder 
-		buildProjectFromBaselineClass: cls
-		withRepositoryDescription: 'filetree://', filetreeDir.
-						
-	repository workingCopy addPackageNamed: baselineName.
-	
-	diff := repository workingCopyDiff.
-	repository workingCopy 
-			commitChanges: diff
-			withMessage: 'baseline: method code'
-			force: true.
-	
-	(Metacello image
-    project: projectName;
-    list)
-    detect: [ :each | true ]
-    ifNone: [
-		Metacello new
-	   baseline: projectName;
-	   filetreeDirectory: filetreeDir;
-	   load].
-
-	^ project
+{ #category : #private }
+GtRlReleaserExamples >> baselineClassForProjectName: projectName [
+	^ Smalltalk classNamed: ('BaselineOf', projectName)
 ]
 
-{ #category : #creation }
-GtRlReleaserExamples >> aGtRlProject: projectName withDependencies: dependencyNames inRepository: repository using: projectBuilder [
-	| project diff cls baselineName filetreeDir mcVersion|
-	baselineName := (#BaselineOf, projectName) asSymbol.
-	IceRepository registry detect: [ :repo | repo name = repository name ] ifFound: [:repo | repo forget].
-	filetreeDir := (repository workingCopy fileSystem / 'src') fullName.
-	
-	cls := self baselineClass: projectName.
-	
-	mcVersion := cls project versions first.
-	project := GtRlProject new
-		name: (MetacelloScriptEngine baseNameOf: cls name); 
-		baselineVersion: mcVersion;
-		baselineClass: cls.
-	
-	projectBuilder updateDependenciesFor: project fromMCVersion: mcVersion.
-	projectBuilder projectsByBaselineClass at: cls put: project.
-
-	project addPackage: (GtRlPackage new name: baselineName; 
-								dependencies: (dependencyNames collect: [ :each | each key ]) ).
-								
-	self addBaselineCode: project toClass: cls withDependencies: dependencyNames.
-			
-	project := projectBuilder 
-		buildProjectFromBaselineClass: cls
-		withRepositoryDescription: 'filetree://', filetreeDir.
-						
-	repository workingCopy addPackageNamed: baselineName.
-	
-	diff := repository workingCopyDiff.
-	repository workingCopy 
-			commitChanges: diff
-			withMessage: 'baseline: method code'
-			force: true.
-	
-	(Metacello image
-    project: projectName;
-    list)
-    detect: [ :each | true ]
-    ifNone: [
-		Metacello new
-	   baseline: projectName;
-	   filetreeDirectory: filetreeDir;
-	   load].
-
-	^ project
+{ #category : #'creation baselines' }
+GtRlReleaserExamples >> createBaselineForProjectNamed: projectName [
+	^ self 
+		createBaselineForProjectNamed: projectName 
+		withDependencies: #()
 ]
 
-{ #category : #'setUp-tearDown' }
-GtRlReleaserExamples >> aGtRlProjectRelease: projectName [
-	| releaseConfiguration releaseBuilder project release |
-	project := self aGtRlProject: projectName withDependencies: OrderedCollection new.
-	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
-	releaseBuilder := GtRlReleaseBuilder new
-		configuration: releaseConfiguration. 
-	release := releaseBuilder buildReleaseForProject: project.
-	^ GtRlReleaserExportWorkflow new
-		rootProjectRelease: release
-
-]
-
-{ #category : #'setUp-tearDown' }
-GtRlReleaserExamples >> addBaselineCode: project toClass: cls withDependencies: dependenciesMap [
-	| baselinecode |
-	baselinecode := project generateSourceWithProjectDependencies: dependenciesMap.
-	cls compile: baselinecode.
-	^ cls
-]
-
-{ #category : #'setUp-tearDown' }
-GtRlReleaserExamples >> baselineClass: project [
-	| cls |
-	cls := BaselineOf subclass:#BaselineOf, project
+{ #category : #'creation baselines' }
+GtRlReleaserExamples >> createBaselineForProjectNamed: projectName withDependencies: baselineDependencies [
+	| methodSourceCode dependenciesCode baselineClass baselinePackage | 
+	baselinePackage := RPackage named: 'BaselineOf', projectName.
+	
+	SystemAnnouncer uniqueInstance suspendAllWhile: [ 
+		baselineClass := BaselineOf subclass: 'BaselineOf', projectName
 			instanceVariableNames: ''
 			classVariableNames: ''
-			poolDictionaries: ''
-			package: 'BaselineOf', project.
-	cls compile: 'baseline: spec
-	<baseline>'.
-	^ cls
-]
-
-{ #category : #'setUp-tearDown' }
-GtRlReleaserExamples >> computeProjectURL: project [
-	| projectURL stream  |
-	stream := String new writeStream.
-	project repository url printOn: stream.
-	projectURL := stream contents.
-	^ projectURL
-
-
-]
-
-{ #category : #creation }
-GtRlReleaserExamples >> createNewIceRepositoryRepository: repoName [
-	| repo repoFolder |
+			package: 'BaselineOf', projectName ].
+	baselinePackage addClassDefinition: baselineClass.
 	
-	repoName asFileReference ensureDeleteAll .
-	repoFolder := repoName asFileReference.
-	repo := IceRepositoryCreator new
-	location: repoFolder;
-	subdirectory: 'src';
-	createNewRepositoryNamed: repoName.
-	IceRepository registerRepository: repo.
-	^ repo
+	dependenciesCode := ''.
+	baselineDependencies do: [ :aDependency |
+		dependenciesCode := dependenciesCode, '
+		spec 
+			baseline: ''', aDependency key ,''' with: [
+				spec repository: ''', aDependency value ,'''. ].' ].
+	
+	methodSourceCode := 'baseline: spec
+	<baseline>
+	spec for: #''common'' do: [',
+dependenciesCode,'
+	].'.
+	
+	baselineClass compileSilently: methodSourceCode classified: 'baseline'.
+	baselinePackage addMethod: baselineClass>>#baseline:.
+	
+	SystemAnnouncer uniqueInstance suspendAllWhile: [ 
+		RPackageOrganizer default registerPackage: baselinePackage ].
+	^ baselineClass
 ]
 
-{ #category : #'setUp-tearDown' }
-GtRlReleaserExamples >> createNewRepoWithName: repoName [
-	| repo repoFolder packagest baseline diff dotProjectText dotProperties dotProject|
+{ #category : #'creation repositories' }
+GtRlReleaserExamples >> createBasicIcebergRepositoryWithName: repositoryName [
+	| repository reposioryFolder |
 	
-	repoFolder := (FileLocator localDirectory / #'gtoolkit-releaser' / repoName) asFileReference.
-	repoFolder ensureDeleteAll .
-	repo := IceRepositoryCreator new
-		location: repoFolder;
+	reposioryFolder := (FileLocator localDirectory / #'gtoolkit-releaser' / repositoryName) asFileReference.
+	self assert: reposioryFolder exists not.
+	self assert: (IceRepository registry anySatisfy: [ :aRepo | aRepo name = repositoryName ]) not.
+	
+	repository := IceRepositoryCreator new
+		location: reposioryFolder;
 		subdirectory: 'src';
-		createNewRepositoryNamed: repoName.
+		ensureProjectFile;
+		createNewRepositoryNamed: repositoryName.
+	repository workingCopy 
+		commitWithMessage: 'Add properties and project files'.
 
-	dotProjectText := '{ ''srcDirectory'' : ''src'' }'.
-
-	baseline := ( repoFolder / 'src' / ('BaselineOf', repoName)) ensureCreateDirectory.
-
-	packagest := (baseline / 'package.st') ensureCreateFile.
-	packagest writeStreamDo: [ :stream | stream nextPutAll: 'Package { #name : #BaselineOf'; nextPutAll: repoName; nextPutAll: ' }' ].
-
-	dotProperties := (repoFolder / 'src' / '.properties') ensureCreateFile.
-	dotProperties writeStreamDo: [ :stream | stream nextPutAll: '{ #format : #tonel }' ].
-
-	dotProject := (repoFolder / '.project') ensureCreateFile.
-	dotProject writeStreamDo: [ :stream | stream nextPutAll: dotProjectText ].
-
-	repo workingCopy addPackage: (IcePackage named: #BaselineOf,repoName repository: repo).
-
-	diff := repo workingCopyDiff.
-
-	repo workingCopy 
-			commitChanges: diff
-			withMessage: 'initial version'
-			force: true.
-	repo name: repoName.
-	IceRepository registerRepository: repo.
-	^ repo
+	"Ideally do not register the repository with Iceberg.
+	Registered for now to make ot easy to debug."
+	IceRepository registerRepository: repository. 
+	
+	"Ensure the repo was creates successfully"
+	self assert: repository isMissing not.
+	self assert: repository isModified not.
+	self assert: repository branch name equals: 'master'.
+	self assert: repository branch commits size equals: 1.
+	
+	^ repository
 ]
 
-{ #category : #'setUp-tearDown' }
-GtRlReleaserExamples >> createProject: projectName [
-	| project |
-	project := self aGtRlProject: projectName withDependencies: OrderedCollection new.
-	^ self computeProjectURL: project. 
-
-
-]
-
-{ #category : #example }
-GtRlReleaserExamples >> createProjectWithDependencies [
-	<gtExample>
-	<noTest>
-	| releaseConfiguration project releaseBuilder release tagProjectURL commitProjectURL latestProjectURL workflow releaseActions normalProjectURL |
+{ #category : #'creation repositories' }
+GtRlReleaserExamples >> createIcebergRepositoryNamed: projectName withProjectDependencies: projectDependencies [
+	| repository baselineClass |
 	
-	tagProjectURL := self createTagProject.
-	commitProjectURL := self createProject: #CommitProject.
-	latestProjectURL := self createProject: #LatestProject.
-	normalProjectURL := self createProject: #NormalProject.
+	(self repositories includesKey: projectName) ifTrue: [ Error signal: 'Repository already present.' ].
 	
-	project := self aGtRlProject: 
-		#ExampleProject withDependencies: {#TagProject -> {tagProjectURL}.  
-													 #CommitProject -> {commitProjectURL}. 
-													 #LatestProject -> {latestProjectURL}.
-													 #NormalProject -> {normalProjectURL}}.
-												
-	releaseConfiguration := self genericReleaseConfiguration.
-	releaseConfiguration setReleaseStrategyOfType: 
-		GtRlLeafProjectReleaseStrategy 
-		forProjecs: { latestProjectURL };
-	setReleaseStrategyOfType: 
-		GtRlHeadCommitReleaseStrategy 
-			forProjecs: { commitProjectURL};
-	setReleaseStrategyOfType: 
-		GtRlBaselineTagReleaseStrategy 
-		forProjecs: { tagProjectURL }.
+	baselineClass := self 
+		createBaselineForProjectNamed: projectName 
+		withDependencies: (projectDependencies collect: [ :aProject | 
+			aProject name -> aProject repository urlString ]).
+	repository := self createBasicIcebergRepositoryWithName: projectName.
+	repository workingCopy 
+		addPackageNamed: baselineClass package name;
+		commitWithMessage: 'baseline: method code'.
 		
-	releaseBuilder := GtRlReleaseBuilder new
-		configuration: releaseConfiguration. 
-	release := releaseBuilder buildReleaseForProject: project.
-	 
-	workflow :=  GtRlReleaserExportWorkflow new
-		rootProjectRelease: release;
-		updateReleaseActions.
-	releaseActions := workflow releaseActions actions.
-	self assert: releaseActions first name = 'Commit and tag release'.
-	self assert: releaseActions first repositoryRelease projectReleases first project name = 'LatestProject'.
-	self assert: releaseActions fourth repositoryRelease projectReleases first project name = 'NormalProject'.
-	self assert: releaseActions fifth repositoryRelease projectReleases first project name = 'ExampleProject'.
-	^ workflow
+	self repositories at: projectName put: repository.
 
+	^ repository
 ]
 
-{ #category : #example }
-GtRlReleaserExamples >> createRepoWithTwoProjects [
+{ #category : #'creation repositories' }
+GtRlReleaserExamples >> createIcebergRepositoryWithEmptyBaselineNamed: projectName [
+	^ self createIcebergRepositoryNamed: projectName withProjectDependencies: #()
+]
+
+{ #category : #'creation projects' }
+GtRlReleaserExamples >> createSingleProjectWithName: projectName [
+	| icebergRepository repository project |
+	
+	icebergRepository := self createIcebergRepositoryWithEmptyBaselineNamed: projectName.
+	repository := (GtRlRepository fromUrlString: (self urlStringForProjectNamed: projectName)) 
+		icebergRepository: icebergRepository.
+	project := (self instantiateAndInitializeProjectWithName: projectName)
+		linkWithRepository: repository.
+	^ project
+]
+
+{ #category : #'examples - configs' }
+GtRlReleaserExamples >> defaultReleaseConfiguration [
 	<gtExample>
-	| oneRepo anotherRepo mainRepo mainProject oneProject anotherProject oneProjectURL anotherProjectURL dependencies sideProject projectBuilder |
-	projectBuilder := GtRlModelBuilder new.
-	oneRepo := self createNewIceRepositoryRepository: #OneRepository.
-	oneProject := self aGtRlProject: #OneProject withDependencies:(OrderedCollection new) inRepository: oneRepo using: projectBuilder. 
-	
-	anotherRepo := self createNewIceRepositoryRepository: #AnotherRepository.
-	anotherProject := self aGtRlProject: #AnotherProject withDependencies:(OrderedCollection new) inRepository: anotherRepo.
-	oneProjectURL := self computeProjectURL: oneProject.
-	anotherProjectURL := self computeProjectURL: anotherProject.
-	
-	mainRepo := self createNewIceRepositoryRepository: #MainRepository.
-	dependencies := {#OneProject -> {oneProjectURL}}.
-	mainProject := self aGtRlProject: #MainProject withDependencies:dependencies inRepository: mainRepo using: projectBuilder.
-	dependencies := {#AnotherProject -> {anotherProjectURL}}.
-	sideProject := self aGtRlProject: #SideProject withDependencies:dependencies inRepository: mainRepo using: projectBuilder.
-	^ sideProject repository
-]
-
-{ #category : #'setUp-tearDown' }
-GtRlReleaserExamples >> createTagProject [
-	| releaseConfiguration tagProject tagProjectURL workflow|
-	
-	tagProject := GtRlReleaserExamples new aGtRlProject: #TagProject withDependencies: OrderedCollection new.
-	tagProjectURL := self computeProjectURL: tagProject.
-	releaseConfiguration := self genericReleaseConfiguration.
-	workflow := GtRlReleaserExportWorkflow 
-		forBaseline: tagProject baselineClass 
-		fromRepository: tagProjectURL
-		withConfiguration: releaseConfiguration.
-	 workflow executeReleaseActions.
-	"TODO: add assertions about actions"
-	^ tagProjectURL
-
-
-]
-
-{ #category : #example }
-GtRlReleaserExamples >> executePerpetualReleaseProject [
-	<gtExample>
-	| project releaseConfiguration releaseBuilder release workflow iceRepository diff|
-	project := self perpetualReleaseProject.
-	releaseConfiguration := self genericReleaseConfiguration.
-	
-	releaseBuilder := GtRlReleaseBuilder new
-		configuration: releaseConfiguration. 
-	release := releaseBuilder buildReleaseForProject: project.
-	iceRepository := release repositoryRelease icebergRepository.
-	diff := iceRepository workingCopyDiff.
+	| releaseConfiguration |
+	releaseConfiguration := GtRlReleaseConfiguration new
+		defaultVersionNumber: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0);
+		defaultReleaseBranchName: 'release';
+		defaultVersionComputation: GtRlMinorVersionComputation new.
 		
-	workflow :=  GtRlReleaserExportWorkflow new
-		rootProjectRelease: release;
-		updateReleaseActions.
-	workflow executeReleaseActions.
-	iceRepository workingCopy 
-		commitChanges: diff
-		withMessage: 'new commit'
-		force: true.
-	^ workflow
+	self assert: releaseConfiguration shouldForceNewRelease not.
+	self assert: releaseConfiguration defaultReleaseBranchName equals: 'release'.
+		
+	^ releaseConfiguration
 ]
 
-{ #category : #'setUp-tearDown' }
-GtRlReleaserExamples >> genericReleaseConfiguration [
-^ GtRlReleaseConfiguration new
-	defaultVersionNumber: (GtRlSemanticVersionNumber major:0 minor: 0 patch: 1);
-	defaultReleaseBranchName: 'release';
-	defaultVersionComputation: GtRlPatchVersionComputation new
+{ #category : #private }
+GtRlReleaserExamples >> instantiateAndInitializeProjectWithName: projectName [
+	| baselineClass |
+	baselineClass := Smalltalk classNamed: ('BaselineOf', projectName).
+	^ GtRlProject new
+		name: projectName;
+		baselineVersion: baselineClass project version;
+		baselineClass: baselineClass
 ]
 
-{ #category : #'setUp-tearDown' }
-GtRlReleaserExamples >> getProject: projectName [
-	| project |
-	projects ifNil: [ projects := IdentityDictionary new].
-	projects keys 
-		detect: [ :key | key includesSubstring: ('' join: { '/' . projectName . '/'}) ] 
-		ifFound:[ :p | project := projects at: p. self inform: 'got it from cache' ] 
-		ifNone:[ project := self aGtRlProject: projectName withDependencies: OrderedCollection new.
-		 projects at:(self computeProjectURL: project) put: project].
-	^ project.
-
-
-]
-
-{ #category : #example }
-GtRlReleaserExamples >> perpetualReleaseProject [
+{ #category : #'examples - projecs' }
+GtRlReleaserExamples >> projectAWithNoVersion [
 	<gtExample>
-	^ self getProject: #PerpetualReleaseProject.
+	<after: #removeRepositoriesAndCode>
+	| projectName icebergRepository repository project |
+	projectName := 'RepositoryWithNoVersionA'.
+	
+	icebergRepository := self createIcebergRepositoryWithEmptyBaselineNamed: projectName.
+	repository := (GtRlRepository fromUrlString: (self urlStringForProjectNamed: projectName)) 
+		icebergRepository: icebergRepository.
+	
+	project := (self instantiateAndInitializeProjectWithName: projectName)
+		linkWithRepository: repository.
+	^ project
+]
+
+{ #category : #'examples - projecs' }
+GtRlReleaserExamples >> projectBWithNoVersion [
+	<gtExample>
+	<after: #removeRepositoriesAndCode>
+	| projectName icebergRepository repository project |
+	projectName := 'RepositoryWithNoVersionB'.
+	
+	icebergRepository := self createIcebergRepositoryWithEmptyBaselineNamed: projectName.
+	repository := (GtRlRepository fromUrlString: (self urlStringForProjectNamed: projectName)) 
+		icebergRepository: icebergRepository.
+	
+	project := (self instantiateAndInitializeProjectWithName: projectName)
+		linkWithRepository: repository.
+	^ project
+]
+
+{ #category : #'examples - projecs' }
+GtRlReleaserExamples >> projectStructureWithThreeDependencies [
+	<gtExample>
+	<after: #removeRepositoriesAndCode>
+	| project projectName projectA projectB projectC projectD icebergRepository |
+	projectName := 'ProjectWithThreeDependencies'.
+	
+	projectA := self projectAWithNoVersion.
+	projectB := self projectBWithNoVersion.
+	projectC := self projectWithTagAndNoVersion.
+	projectD := self projectWithOneReleasedVersionAndNoChanges.
+	
+	icebergRepository := self 
+		createIcebergRepositoryNamed: projectName 
+		withProjectDependencies: {projectA . projectB . projectC . projectD}.
+	
+	project := GtRlModelBuilder new
+		buildProjectFromBaselineClass: (self baselineClassForProjectName: projectName)
+		withRepositoryDescription: (self urlStringForProjectNamed: projectName).
+	
+	self assert: project repository icebergRepository equals: icebergRepository.
+	self assert: project childProjects size equals: 4.
+	self 
+		assert: (project childProjects collect: #name) asArray
+		equals: #(
+			'RepositoryWithNoVersionA' 
+			'RepositoryWithNoVersionB' 
+			'RepositoryWithTagAndNoVersion' 
+			'ProjectWithReleasedVersionAndNoChanges' ).
+		
+	^ project
+]
+
+{ #category : #'examples - projecs' }
+GtRlReleaserExamples >> projectWithOneReleasedVersionAndChanges [
+	<gtExample>
+	<after: #removeRepositoriesAndCode>
+	"I create project for a repository that has one release."
+	| project semanticTags icebergRepository |
+	
+	project := self createSingleProjectWithName: 'ProjectWithReleasedVersionAndChanges'.
+	icebergRepository := project repository icebergRepository.
+	
+	self releaseNewVersionForProject: project.
+	self addNewMethodNamed: #method1 toProject: project.
+	icebergRepository switchToBranchNamed: #master.
+	icebergRepository workingCopy forceCalculateDirtyPackages.
+	
+	semanticTags := icebergRepository gtSemanticVersionsTags.
+	self assert: semanticTags size equals: 1.
+	self assert: semanticTags first name equals: 'v0.1.0'.
+	self assert: icebergRepository isModified.
+	self assert: icebergRepository branchName equals: 'master'.
+	
+	^ project
+]
+
+{ #category : #'examples - projecs' }
+GtRlReleaserExamples >> projectWithOneReleasedVersionAndNoChanges [
+	<gtExample>
+	<after: #removeRepositoriesAndCode>
+	"I create project for a repository that has one release."
+	| project releaseWorkflow semanticTags |
+	
+	project := self createSingleProjectWithName: 'ProjectWithReleasedVersionAndNoChanges'. 
+	releaseWorkflow := GtRlReleaserExportWorkflow 
+		forProject: project withConfiguration: self defaultReleaseConfiguration.
+	releaseWorkflow executeReleaseActions.
+	
+	semanticTags := project repository icebergRepository gtSemanticVersionsTags.
+	self assert: semanticTags size equals: 1.
+	self assert: semanticTags first name equals: 'v0.1.0'.
+	self assert: project repository icebergRepository branchName equals: 'release'.
+	
+	^ project
+]
+
+{ #category : #'examples - projecs' }
+GtRlReleaserExamples >> projectWithTagAndNoVersion [
+	<gtExample>
+	<after: #removeRepositoriesAndCode>
+	| projectName icebergRepository repository project |
+	projectName := 'RepositoryWithTagAndNoVersion'.
+	
+	icebergRepository := self createIcebergRepositoryWithEmptyBaselineNamed: projectName.
+	icebergRepository createTag: 'tag-1.2.0'.
+	repository := (GtRlRepository fromUrlString: (self urlStringForProjectNamed: projectName))
+		icebergRepository: icebergRepository.
+		
+	project := (self instantiateAndInitializeProjectWithName: projectName)
+		linkWithRepository: repository.
+	^ project
+]
+
+{ #category : #'examples - configs' }
+GtRlReleaserExamples >> releaseConfigurationForcingRelease [
+	<gtExample>
+	| releaseConfiguration |
+	releaseConfiguration := self defaultReleaseConfiguration.
+	releaseConfiguration forceNewRelease.
+		
+	self assert: releaseConfiguration shouldForceNewRelease.
+		
+	^ releaseConfiguration
+]
+
+{ #category : #'creation projects' }
+GtRlReleaserExamples >> releaseNewVersionForProject: project [
+	| releaseWorkflow |
+	releaseWorkflow := GtRlReleaserExportWorkflow 
+		forProject: project withConfiguration: self defaultReleaseConfiguration.
+	releaseWorkflow executeReleaseActions.
 ]
 
 { #category : #'setUp-tearDown' }
-GtRlReleaserExamples >> projects [ 
-	^ projects
+GtRlReleaserExamples >> removeRepositoriesAndCode [
+	self repositories do: [ :anIcebergRepository |
+		IceRepository registry 
+			detect: [ :aRepo | aRepo name = anIcebergRepository name ] 
+			ifFound: [ :aRepo | aRepo forget ].
+		
+		"Remove all packages from the system"
+		anIcebergRepository workingCopy packages do: [ :aPackage |
+			SystemAnnouncer uniqueInstance suspendAllWhile: [ 
+				aPackage name asPackage removeFromSystem ] ].
+		
+		"Delete all files from disk related to this repository"
+		anIcebergRepository workingCopy fileSystem ensureDeleteAll ].
+	self repositories removeAll.
+]
+
+{ #category : #accessing }
+GtRlReleaserExamples >> repositories [ 
+	^ repositories ifNil: [ 
+		repositories := IdentityDictionary new ]
+]
+
+{ #category : #private }
+GtRlReleaserExamples >> urlStringForProjectNamed: projectName [
+	^ 'github://example/', projectName, '/src'
 ]
