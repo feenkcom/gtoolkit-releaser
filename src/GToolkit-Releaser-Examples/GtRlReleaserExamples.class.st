@@ -269,7 +269,7 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndChanges [
 	
 	self releaseNewVersionForProject: project.
 	self addNewMethodNamed: #method1 toProject: project.
-	icebergRepository switchToBranchNamed: #master.
+	icebergRepository switchToBranchNamed: 'master'.
 	icebergRepository workingCopy forceCalculateDirtyPackages.
 	
 	semanticTags := icebergRepository gtSemanticVersionsTags.
