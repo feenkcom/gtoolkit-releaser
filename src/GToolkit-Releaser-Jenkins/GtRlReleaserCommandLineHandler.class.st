@@ -22,9 +22,7 @@ GtRlReleaserCommandLineHandler >> activate [
 		[ self inform: 'Releaser has only one argument: the new version it should use. E.g.: v0.4.2'].
 	TranscriptLogger runDuring: [ 
 		self arguments isEmpty 
-			ifTrue: [ | w |
-				w := GtRlReleaserExportWorkflow buildGToolkitRelease.
-				w releaseCreationActions execute]
+			ifTrue: [ GtRlReleaserExportWorkflow performGToolkitRelease ]
 			ifFalse:[ | semanticVersion | semanticVersion := (self argumentAt:1) asGtRlSemanticVersionNumber.
 				GtRlReleaserExportWorkflow buildGToolkitRelease: semanticVersion].
 	].
