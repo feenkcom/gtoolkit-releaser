@@ -73,7 +73,6 @@ GtRlReleaserWiki >> basicReleaseConfiguration [
 { #category : #'examples - releases' }
 GtRlReleaserWiki >> releaseWithNoVersionAndDefaultConfiguration [
 	<gtExample> 
-	<noTest>	
 	| project release releaseBuilder |
 	project := self systemOneProjectWithNoVersions.
 	releaseBuilder := GtRlReleaseBuilder new

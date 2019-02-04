@@ -25,6 +25,14 @@ GtRlCommitAndTagReleaseAction >> descriptionDetails [
 		' [', self repositoryRelease versionString,']'
 ]
 
+{ #category : #ui }
+GtRlCommitAndTagReleaseAction >> gtViewCommitMessageFor: aView [
+	<gtView>
+	^ aView textEditor
+		title: 'Commit message' translated;
+		text: [ self releaseStrategy repositoryRelease commitMessageForRelease ]
+]
+
 { #category : #printing }
 GtRlCommitAndTagReleaseAction >> name [
 	^ 'Commit and tag release'

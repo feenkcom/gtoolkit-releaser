@@ -34,12 +34,6 @@ GtRlProjectRelease >> addChildRelease: aProjectRelease [
 	self childReleases add: aProjectRelease.
 ]
 
-{ #category : #traversing }
-GtRlProjectRelease >> allChildReleaseDo: aBloc [
-	aBloc value: self.
-	self childReleases do: aBloc
-]
-
 { #category : #'accessing - dynamic' }
 GtRlProjectRelease >> childProjectsWithRepositoryURL [
 	^ self childReleases collect: [ :aRelease |
@@ -120,6 +114,11 @@ GtRlProjectRelease >> isLeaf [
 	^ self project isLeaf
 ]
 
+{ #category : #accessing }
+GtRlProjectRelease >> name [
+	^ self project name.
+]
+
 { #category : #actions }
 GtRlProjectRelease >> nodeName [
 	^ project name
@@ -164,4 +163,9 @@ GtRlProjectRelease >> repositoryRelease: aRepositoryRelease [
 { #category : #accessing }
 GtRlProjectRelease >> version [
 	^ self repositoryRelease version
+]
+
+{ #category : #traversing }
+GtRlProjectRelease >> withAllChildProjectReleases [
+	^ self withDeepCollect: #childReleases
 ]
