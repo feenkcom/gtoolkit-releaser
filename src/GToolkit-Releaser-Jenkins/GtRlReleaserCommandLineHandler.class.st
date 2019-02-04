@@ -26,5 +26,5 @@ GtRlReleaserCommandLineHandler >> activate [
 			ifFalse:[ | semanticVersion | semanticVersion := (self argumentAt:1) asGtRlSemanticVersionNumber.
 				GtRlReleaserExportWorkflow buildGToolkitRelease: semanticVersion].
 	].
-	self quit.
+	Smalltalk snapshot: true andQuit: true.
 ]
