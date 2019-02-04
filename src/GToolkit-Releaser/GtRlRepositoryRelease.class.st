@@ -63,10 +63,28 @@ GtRlRepositoryRelease >> commitAndTagRelease [
 	diff := iceRepository workingCopyDiff.
 	iceRepository workingCopy 
 		commitChanges: diff
-		withMessage: 'Release version ', self versionString 
+		withMessage: self commitMessageForRelease
 		force: true.
 	iceRepository branch commit ensureCreateTag: self versionString.
-		
+]
+
+{ #category : #'accessing - dynamic' }
+GtRlRepositoryRelease >> commitMessageForRelease [
+	| localRootProjects |
+	
+	localRootProjects := self localRootProjects.
+	^ String streamContents: [ :stream |
+		stream 
+			nextPutAll: 'Release version ';
+			nextPutAll: self versionString.
+		"If more root projects are detected we do not know which one to choose."
+		localRootProjects size = 1 ifTrue: [ 
+			stream
+				lf; lf;
+				nextPutAll: 'Metacello new
+    baseline: ''', localRootProjects first name, ''';
+    repository: ''', self urlWithReleaseVersion asString,  ''';
+    load' ] ]
 ]
 
 { #category : #ui }
@@ -262,6 +280,17 @@ GtRlRepositoryRelease >> latestSemanticVersionTag [
 				a value <= b value ]) last key
 ]
 
+{ #category : #'accessing - dynamic' }
+GtRlRepositoryRelease >> localRootProjects [
+	| localRootProjects |
+	localRootProjects := self projectReleases select: [ :aProject |
+		| allChildren |
+		allChildren := aProject withAllChildProjectReleases.
+		self projectReleases allSatisfy: [ :anotherProject |
+			allChildren includes: anotherProject ] ].
+	^ localRootProjects
+]
+
 { #category : #actions }
 GtRlRepositoryRelease >> makePassiveRelease [
 	self markAsPassive.
@@ -419,7 +448,7 @@ GtRlRepositoryRelease >> versionsMetadata [
 	^ {'repositories' -> repositoriesByVersion } asDictionary
 ]
 
-{ #category : #'accessing - dynamic' }
-GtRlRepositoryRelease >> withChildRepositoryReleases [
+{ #category : #traversing }
+GtRlRepositoryRelease >> withAllChildRepositoryReleases [
 	^ self withDeepCollect: #childRepositoryReleases
 ]

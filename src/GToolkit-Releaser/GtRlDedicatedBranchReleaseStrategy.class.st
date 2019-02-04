@@ -21,7 +21,9 @@ Class {
 
 { #category : #printing }
 GtRlDedicatedBranchReleaseStrategy >> description [
-	^ 'Branch #', (self releaseBranchName ifNil: [ 'missing' ])
+	^ 'Branch ', (self releaseBranchName 
+		ifNil: [ '<missing>' ]
+		ifNotNil: [ :branchName | '#', branchName  ])
 ]
 
 { #category : #ui }
