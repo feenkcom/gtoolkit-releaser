@@ -23,8 +23,9 @@ GtRlReleaserCommandLineHandler >> activate [
 	TranscriptLogger runDuring: [ 
 		self arguments isEmpty 
 			ifTrue: [ GtRlReleaserExportWorkflow performGToolkitRelease ]
-			ifFalse:[ | semanticVersion | semanticVersion := (self argumentAt:1) asGtRlSemanticVersionNumber.
-				GtRlReleaserExportWorkflow buildGToolkitRelease: semanticVersion].
+			ifFalse:[ | semanticVersion w | semanticVersion := (self argumentAt:1) asGtRlSemanticVersionNumber.
+				w := GtRlReleaserExportWorkflow buildGToolkitRelease: semanticVersion.
+				w executeReleaseActions. ].
 	].
 	Smalltalk snapshot: true andQuit: true.
 ]
