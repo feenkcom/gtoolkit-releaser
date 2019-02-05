@@ -196,6 +196,7 @@ GtRlReleaserExamples >> instantiateAndInitializeProjectWithName: projectName [
 GtRlReleaserExamples >> projectAWithNoVersion [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
+	"I create a project that has no released version."
 	| projectName icebergRepository repository project |
 	projectName := 'RepositoryWithNoVersionA'.
 	
@@ -212,6 +213,7 @@ GtRlReleaserExamples >> projectAWithNoVersion [
 GtRlReleaserExamples >> projectBWithNoVersion [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
+	"I create a project that has no released version."
 	| projectName icebergRepository repository project |
 	projectName := 'RepositoryWithNoVersionB'.
 	
@@ -261,15 +263,15 @@ GtRlReleaserExamples >> projectStructureWithThreeDependencies [
 GtRlReleaserExamples >> projectWithOneReleasedVersionAndChanges [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
-	"I create project for a repository that has one release."
+	"I create project for a repository that has one release and changes staged for commit."
 	| project semanticTags icebergRepository |
 	
 	project := self createSingleProjectWithName: 'ProjectWithReleasedVersionAndChanges'.
 	icebergRepository := project repository icebergRepository.
-	
 	self releaseNewVersionForProject: project.
-	self addNewMethodNamed: #method1 toProject: project.
+	
 	icebergRepository switchToBranchNamed: 'master'.
+	self addNewMethodNamed: #method1 toProject: project.
 	icebergRepository workingCopy forceCalculateDirtyPackages.
 	
 	semanticTags := icebergRepository gtSemanticVersionsTags.
@@ -282,10 +284,38 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndChanges [
 ]
 
 { #category : #'examples - projecs' }
+GtRlReleaserExamples >> projectWithOneReleasedVersionAndNewCommit [
+	<gtExample>
+	<after: #removeRepositoriesAndCode>
+	"I create project for a repository that has one release 
+	and one more commit not yet part of a release."
+	| project semanticTags icebergRepository |
+	
+	project := self createSingleProjectWithName: 'ProjectWithReleasedVersionAndNewCommit'.
+	icebergRepository := project repository icebergRepository.
+	self releaseNewVersionForProject: project.
+	
+	icebergRepository switchToBranchNamed: 'master'.
+	self addNewMethodNamed: #method1 toProject: project.
+	icebergRepository workingCopy 
+		forceCalculateDirtyPackages
+		commitWithMessage: 'added new method'.
+	
+	semanticTags := icebergRepository gtSemanticVersionsTags.
+	self assert: semanticTags size equals: 1.
+	self assert: semanticTags first name equals: 'v0.1.0'.
+	self assert: semanticTags first commit ~= icebergRepository head commit.
+	self assert: icebergRepository isModified not.
+	self assert: icebergRepository branchName equals: 'master'.
+	
+	^ project
+]
+
+{ #category : #'examples - projecs' }
 GtRlReleaserExamples >> projectWithOneReleasedVersionAndNoChanges [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
-	"I create project for a repository that has one release."
+	"I create project for a repository that has one release and no new changes."
 	| project releaseWorkflow semanticTags |
 	
 	project := self createSingleProjectWithName: 'ProjectWithReleasedVersionAndNoChanges'. 

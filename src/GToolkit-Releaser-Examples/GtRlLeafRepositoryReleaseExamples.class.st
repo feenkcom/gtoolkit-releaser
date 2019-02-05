@@ -20,6 +20,16 @@ GtRlLeafRepositoryReleaseExamples >> assertExecutedActions: releaseActions [
 ]
 
 { #category : #assertions }
+GtRlLeafRepositoryReleaseExamples >> assertNewReleaseTagOnReleaseBranchFor: icebergRepository named: aString [
+	| headCommitTags |
+	headCommitTags := icebergRepository head commit tags.
+	self assert: icebergRepository branchName equals: 'release'.
+	self assert: headCommitTags size equals: 1.
+	self assert: headCommitTags first gtIsSemanticVersion.
+	self assert: headCommitTags first name equals: aString.
+]
+
+{ #category : #assertions }
 GtRlLeafRepositoryReleaseExamples >> assertReleaseActions: aRelease equalTypes: expectedActionTypesWithOrder [
 	| obtainedActions |
 	obtainedActions := aRelease releaseActions actions.
@@ -29,6 +39,20 @@ GtRlLeafRepositoryReleaseExamples >> assertReleaseActions: aRelease equalTypes: 
 		obtainedAction := obtainedActions at: index.
 		self assert: obtainedAction class equals: actionData key.
 		self assert: obtainedAction order equals: actionData value ].
+]
+
+{ #category : #assertions }
+GtRlLeafRepositoryReleaseExamples >> assertRepositoryReleaseWithBranchStrategy: repositoryRelease andNewVersion: aVersion [
+	self assert: repositoryRelease releaseStrategy shouldCreateNewRelease.
+	self assert: repositoryRelease isPassiveRelease not.
+	self assert: repositoryRelease version equals: aVersion.
+	self assert: repositoryRelease releaseActions isEmpty not.
+	self assertReleaseActions: repositoryRelease equalTypes: { 
+		GtRlMergeToReleaseBranchAction -> 1.
+		GtRlExportReleaseMetadataAction -> 2.
+		GtRlCommitAndTagReleaseAction -> 3 }.
+	
+
 ]
 
 { #category : #'examples - releases' }
@@ -49,6 +73,7 @@ GtRlLeafRepositoryReleaseExamples >> basicReleaseStructureWithNoVersions [
 	self assert: projectRelease parentReleases isEmpty.
 	self assert: projectRelease repositoryRelease equals: repositoryRelease.
 	self assert: repositoryRelease projectReleases asArray equals: { projectRelease }.
+	self assert: repositoryRelease semanticVersionTags isEmpty description: 'A newly created repository should have no release tags'.
 
 	^ repositoryRelease
 ]
@@ -66,7 +91,6 @@ GtRlLeafRepositoryReleaseExamples >> basicReleaseWithBranchStrategyOnNoVersionsR
 
 	self assert: releaseStrategy repositoryRelease equals: repositoryRelease.
 	self assert: repositoryRelease releaseStrategy equals: releaseStrategy.
-	self assert: repositoryRelease semanticVersionTags isEmpty description: 'A newly created repository should have no release tags'.
 	self assert: (repositoryRelease icebergRepository hasLocalBranchNamed: releaseStrategy releaseBranchName) not. 
 
 	^ repositoryRelease
@@ -134,14 +158,10 @@ GtRlLeafRepositoryReleaseExamples >> releaseWithBranchStrategyForcingReleaseOnOn
 	projectRelease := releaseBuiler buildReleaseForProject: project.
 	repositoryRelease := projectRelease repositoryRelease. 
 	
-	self assert: repositoryRelease isPassiveRelease not.
-	self assert: repositoryRelease version equals: (GtRlSemanticVersionNumber major: 0 minor: 2 patch: 0).
-	self assert: repositoryRelease releaseActions isEmpty not.
 	self assert: projectRelease releaseActions isEmpty.
-	self assertReleaseActions: repositoryRelease equalTypes: { 
-		GtRlMergeToReleaseBranchAction -> 1.
-		GtRlExportReleaseMetadataAction -> 2.
-		GtRlCommitAndTagReleaseAction -> 3 }.
+	self 
+		assertRepositoryReleaseWithBranchStrategy: repositoryRelease 
+		andNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 2 patch: 0).
 	
 	^ repositoryRelease
 ]
@@ -151,20 +171,16 @@ GtRlLeafRepositoryReleaseExamples >> releaseWithBranchStrategyOnNoVersionRepo [
 	<gtExample>
 	"I create a reposiory release with no version that has its actions and 
 	versions updated using its branch release strategy."
-	| release updateWorkflow |
-	release := self basicReleaseWithBranchStrategyOnNoVersionsRepo.	
+	| repositoryRelease updateWorkflow |
+	repositoryRelease := self basicReleaseWithBranchStrategyOnNoVersionsRepo.	
 	updateWorkflow := GtRlReleaseUpdateWorkflow new.
-	updateWorkflow updateRepository: release.
+	updateWorkflow updateRepository: repositoryRelease.
 	
-	self assert: release version equals: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0).
-	self assert: release isPassiveRelease not.
-	self assert: release releaseActions count equals: 3.
-	self assertReleaseActions: release equalTypes: { 
-		GtRlMergeToReleaseBranchAction -> 1.
-		GtRlExportReleaseMetadataAction -> 2.
-		GtRlCommitAndTagReleaseAction -> 3 }.
+	self 
+		assertRepositoryReleaseWithBranchStrategy: repositoryRelease 
+		andNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0).
 
-	^ release
+	^ repositoryRelease
 ]
 
 { #category : #'examples - releases' }
@@ -178,10 +194,30 @@ GtRlLeafRepositoryReleaseExamples >> releaseWithBranchStrategyOnOneVersionRepo [
 	projectRelease := releaseBuiler buildReleaseForProject: project.
 	repositoryRelease := projectRelease repositoryRelease. 
 	
+	self assert: repositoryRelease releaseStrategy shouldCreateNewRelease not.
 	self assert: repositoryRelease isPassiveRelease.
 	self assert: repositoryRelease version equals: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0).
 	self assert: repositoryRelease releaseActions isEmpty.
 	self assert: projectRelease releaseActions isEmpty.
+	
+	^ repositoryRelease
+]
+
+{ #category : #'examples - releases' }
+GtRlLeafRepositoryReleaseExamples >> releaseWithBranchStrategyOnOneVersionRepoWithNewCommit [
+	<gtExample>
+	"I create a repository release for a repository with one version and a new commit, having a branch release strategy."
+	| project releaseBuiler projectRelease repositoryRelease |
+	project := self projectWithOneReleasedVersionAndNewCommit.
+	releaseBuiler := GtRlReleaseBuilder new
+		configuration: self defaultReleaseConfiguration.
+	projectRelease := releaseBuiler buildReleaseForProject: project. 
+	repositoryRelease := projectRelease repositoryRelease.
+	
+	self assert: projectRelease releaseActions isEmpty.
+	self 
+		assertRepositoryReleaseWithBranchStrategy: repositoryRelease 
+		andNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 2 patch: 0).
 	
 	^ repositoryRelease
 ]
@@ -216,6 +252,9 @@ GtRlLeafRepositoryReleaseExamples >> releaseWorkflowWithDedicatedBranchForInitia
 	
 	self assert: release semanticVersionTags size equals: 1.
 	self assert: release semanticVersionTags first name equals: 'v0.1.0'.
+	self 
+		assertNewReleaseTagOnReleaseBranchFor: release icebergRepository
+		named: 'v0.1.0'.
 	self assertExecutedActions: exportWorkflow releaseActions.
 
 	^ exportWorkflow
@@ -233,6 +272,29 @@ GtRlLeafRepositoryReleaseExamples >> releaseWorkflowWithDedicatedBranchForSecond
 	
 	self assert: release semanticVersionTags size equals: 2.
 	self assert: release semanticVersionTags second name equals: 'v0.2.0'.
+	self 
+		assertNewReleaseTagOnReleaseBranchFor: release icebergRepository
+		named: 'v0.2.0'.
+	self assertExecutedActions: exportWorkflow releaseActions.
+
+	^ exportWorkflow
+]
+
+{ #category : #'examples - workflows' }
+GtRlLeafRepositoryReleaseExamples >> releaseWorkflowWithDedicatedBranchForSecondVersion [
+	<gtExample>
+	"I execute a release workflow for a release that has one previous versions, a new commit, and a branch release strategy that does not force a new release."
+	| release exportWorkflow |
+	release := self releaseWithBranchStrategyOnOneVersionRepoWithNewCommit.	
+	exportWorkflow := GtRlReleaserExportWorkflow new
+		rootProjectRelease: release projectReleases first.
+	exportWorkflow executeReleaseActions.
+	
+	self assert: release semanticVersionTags size equals: 2.
+	self assert: release semanticVersionTags second name equals: 'v0.2.0'.
+	self 
+		assertNewReleaseTagOnReleaseBranchFor: release icebergRepository
+		named: 'v0.2.0'.
 	self assertExecutedActions: exportWorkflow releaseActions.
 
 	^ exportWorkflow
