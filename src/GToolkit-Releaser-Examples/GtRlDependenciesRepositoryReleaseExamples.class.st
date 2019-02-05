@@ -117,7 +117,6 @@ GtRlDependenciesRepositoryReleaseExamples >> releaseWithBranchStrategyForReposit
 { #category : #'examples - workflows' }
 GtRlDependenciesRepositoryReleaseExamples >> releaseWorkflowWithDedicatedBranchForInitialVersionInMultipleRepositories [
 	<gtExample>
-	<noTest> "This does not work at the moment as the metacello toolbox wants configurations to be loaded in the image."
 	| release exportWorkflow |
 	release := self releaseWithBranchStrategyForRepositoriesWithNoVersionAndNoNewChanges.	
 	exportWorkflow := GtRlReleaserExportWorkflow new
@@ -142,7 +141,6 @@ GtRlDependenciesRepositoryReleaseExamples >> releaseWorkflowWithDedicatedBranchF
 { #category : #'examples - workflows' }
 GtRlDependenciesRepositoryReleaseExamples >> releaseWorkflowWithDedicatedBranchForRepositoriesWithNewCommit [
 	<gtExample>
-	
 	| release exportWorkflow |
 	release := self releaseWithBranchStrategyForRepositoriesWithNewCommit.	
 	exportWorkflow := GtRlReleaserExportWorkflow new
