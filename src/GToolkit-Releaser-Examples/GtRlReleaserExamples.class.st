@@ -109,6 +109,17 @@ GtRlReleaserExamples >> baselineClassForProjectName: projectName [
 	^ Smalltalk classNamed: ('BaselineOf', projectName)
 ]
 
+{ #category : #'creation projects' }
+GtRlReleaserExamples >> commiNewMethodNamed: methodSelector onMasterToProject: targetProject [
+	| icebergRepository |
+	icebergRepository := targetProject repository icebergRepository.
+	(icebergRepository branchNamed: 'master') checkout.
+	self addNewMethodNamed: #method1 toProject: targetProject.
+	icebergRepository workingCopy 
+		forceCalculateDirtyPackages
+		commitWithMessage: 'added method named', methodSelector.
+]
+
 { #category : #'creation baselines' }
 GtRlReleaserExamples >> createBaselineForProjectNamed: projectName [
 	^ self 
@@ -323,7 +334,7 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndChanges [
 	icebergRepository := project repository icebergRepository.
 	self releaseNewVersionForProject: project.
 	
-	icebergRepository switchToBranchNamed: 'master'.
+	(icebergRepository branchNamed: 'master') checkout.
 	self addNewMethodNamed: #method1 toProject: project.
 	icebergRepository workingCopy forceCalculateDirtyPackages.
 	
@@ -347,12 +358,7 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndNewCommit [
 	project := self createSingleProjectWithName: 'ProjectWithReleasedVersionAndNewCommit'.
 	icebergRepository := project repository icebergRepository.
 	self releaseNewVersionForProject: project.
-	
-	icebergRepository switchToBranchNamed: 'master'.
-	self addNewMethodNamed: #method1 toProject: project.
-	icebergRepository workingCopy 
-		forceCalculateDirtyPackages
-		commitWithMessage: 'added new method'.
+	self commiNewMethodNamed: #method1 onMasterToProject: project.
 	
 	semanticTags := icebergRepository gtSemanticVersionsTags.
 	self assert: semanticTags size equals: 1.
@@ -442,6 +448,13 @@ GtRlReleaserExamples >> removeRepositoriesAndCode [
 GtRlReleaserExamples >> repositories [ 
 	^ repositories ifNil: [ 
 		repositories := IdentityDictionary new ]
+]
+
+{ #category : #'creation projects' }
+GtRlReleaserExamples >> switchAllToMasterForProject: project [
+	(project repository withDeepCollect: #childRepositories) do: [ :aRepository |
+		self assert: (aRepository icebergRepository hasLocalBranchNamed: 'master').
+		(aRepository icebergRepository branchNamed: 'master') checkout ]
 ]
 
 { #category : #private }
