@@ -56,6 +56,54 @@ GtRlReleaserExamples >> addNewMethodNamed: methodSelector toProject: targetProje
 	targetProject baselineClass package addMethod: targetProject baselineClass >> methodSelector.
 ]
 
+{ #category : #assertions }
+GtRlReleaserExamples >> assertExecutedActions: releaseActions [
+	releaseActions do: [ :aReleaseAction |
+		self assert: aReleaseAction isExecuted  ]
+]
+
+{ #category : #assertions }
+GtRlReleaserExamples >> assertNewReleaseTagOnReleaseBranchFor: icebergRepository named: aString [
+	| headCommitTags |
+	headCommitTags := icebergRepository head commit tags.
+	self assert: icebergRepository branchName equals: 'release'.
+	self assert: headCommitTags size equals: 1.
+	self assert: headCommitTags first gtIsSemanticVersion.
+	self assert: headCommitTags first name equals: aString.
+]
+
+{ #category : #assertions }
+GtRlReleaserExamples >> assertReleaseActions: aRelease equalTypes: expectedActionTypesWithOrder [
+	| obtainedActions |
+	obtainedActions := aRelease releaseActions actions.
+	self assert: obtainedActions size equals: expectedActionTypesWithOrder size.
+	expectedActionTypesWithOrder withIndexDo: [ :actionData :index |
+		| obtainedAction |
+		obtainedAction := obtainedActions at: index.
+		self assert: obtainedAction class equals: actionData key.
+		self assert: obtainedAction order equals: actionData value ].
+]
+
+{ #category : #assertions }
+GtRlReleaserExamples >> assertRepositoryReleaseWithBranchStrategy: repositoryRelease andExistingVersion: aVersion [
+	self assert: repositoryRelease releaseStrategy shouldCreateNewRelease not.
+	self assert: repositoryRelease isPassiveRelease.
+	self assert: repositoryRelease version equals: aVersion.
+	self assert: repositoryRelease releaseActions isEmpty.
+	
+
+]
+
+{ #category : #assertions }
+GtRlReleaserExamples >> assertRepositoryReleaseWithBranchStrategy: repositoryRelease andNewVersion: aVersion [
+	self assert: repositoryRelease releaseStrategy shouldCreateNewRelease.
+	self assert: repositoryRelease isPassiveRelease not.
+	self assert: repositoryRelease version equals: aVersion.
+	self assert: repositoryRelease releaseActions isEmpty not.
+	
+
+]
+
 { #category : #private }
 GtRlReleaserExamples >> baselineClassForProjectName: projectName [
 	^ Smalltalk classNamed: ('BaselineOf', projectName)
@@ -192,7 +240,7 @@ GtRlReleaserExamples >> instantiateAndInitializeProjectWithName: projectName [
 		baselineClass: baselineClass
 ]
 
-{ #category : #'examples - projecs' }
+{ #category : #'examples - projects' }
 GtRlReleaserExamples >> projectAWithNoVersion [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
@@ -209,7 +257,7 @@ GtRlReleaserExamples >> projectAWithNoVersion [
 	^ project
 ]
 
-{ #category : #'examples - projecs' }
+{ #category : #'examples - projects' }
 GtRlReleaserExamples >> projectBWithNoVersion [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
@@ -226,12 +274,12 @@ GtRlReleaserExamples >> projectBWithNoVersion [
 	^ project
 ]
 
-{ #category : #'examples - projecs' }
-GtRlReleaserExamples >> projectStructureWithThreeDependencies [
+{ #category : #'examples - projects' }
+GtRlReleaserExamples >> projectStructureWithFourDependencies [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
 	| project projectName projectA projectB projectC projectD icebergRepository |
-	projectName := 'ProjectWithThreeDependencies'.
+	projectName := 'ProjectWithFourDependencies'.
 	
 	projectA := self projectAWithNoVersion.
 	projectB := self projectBWithNoVersion.
@@ -255,11 +303,16 @@ GtRlReleaserExamples >> projectStructureWithThreeDependencies [
 			'RepositoryWithNoVersionB' 
 			'RepositoryWithTagAndNoVersion' 
 			'ProjectWithReleasedVersionAndNoChanges' ).
+	
+	"Fix current issuues caused by projects not being loaded in the image"
+	project metacelloToolbox: GtRlMetacelloToolBoxWithSpecs new.
+	project childProjects do: [ :aProject |
+		project metacelloToolbox addSpecForBaselineClass: aProject baselineClass ].
 		
 	^ project
 ]
 
-{ #category : #'examples - projecs' }
+{ #category : #'examples - projects' }
 GtRlReleaserExamples >> projectWithOneReleasedVersionAndChanges [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
@@ -283,7 +336,7 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndChanges [
 	^ project
 ]
 
-{ #category : #'examples - projecs' }
+{ #category : #'examples - projects' }
 GtRlReleaserExamples >> projectWithOneReleasedVersionAndNewCommit [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
@@ -311,7 +364,7 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndNewCommit [
 	^ project
 ]
 
-{ #category : #'examples - projecs' }
+{ #category : #'examples - projects' }
 GtRlReleaserExamples >> projectWithOneReleasedVersionAndNoChanges [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
@@ -331,7 +384,7 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndNoChanges [
 	^ project
 ]
 
-{ #category : #'examples - projecs' }
+{ #category : #'examples - projects' }
 GtRlReleaserExamples >> projectWithTagAndNoVersion [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>

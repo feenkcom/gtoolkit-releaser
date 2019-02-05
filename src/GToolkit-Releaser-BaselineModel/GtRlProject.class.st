@@ -22,7 +22,8 @@ Class {
 		'childProjects',
 		'packages',
 		'preLoadAction',
-		'postLoadAction'
+		'postLoadAction',
+		'metacelloToolbox'
 	],
 	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
@@ -213,6 +214,17 @@ GtRlProject >> linkWithRepository: aRepository [
 ]
 
 { #category : #accessing }
+GtRlProject >> metacelloToolbox [
+	^ metacelloToolbox ifNil: [ GtRlMetacelloToolBox new  new ]
+]
+
+{ #category : #accessing }
+GtRlProject >> metacelloToolbox: aMetacelloToolbox [
+	"This only exists to make tests work without loading the baseline for tests packages."
+	metacelloToolbox := aMetacelloToolbox
+]
+
+{ #category : #accessing }
 GtRlProject >> name [ 	
 	^ name
 ]
@@ -284,7 +296,8 @@ GtRlProject >> toolboxForBaselineWithProjectDependencies: projectDependenciesMap
 	| projectNames toolbox |
 	projectNames := projectDependenciesMap collect: #key.
 
-   toolbox := (GtRlMetacelloToolBox baselineNamed: self baselineClass name)
+   toolbox := (self metacelloToolbox 
+	 baselineNamed: self baselineClass name)
     createBaselineOfMethod: 'baseline:' inCategory: 'baseline';
 	addBaselineOfSection: #'common'
 		requiredProjects: projectNames
