@@ -104,6 +104,14 @@ GtRlReleaseActionsGroup >> removeAll [
 	self actions removeAll.
 ]
 
+{ #category : #filtering }
+GtRlReleaseActionsGroup >> select: aBlockClosure [ 
+	^ self class new
+		addActions: (self actions select: aBlockClosure);
+		yourself
+		 
+]
+
 { #category : #sorting }
 GtRlReleaseActionsGroup >> sortedByOrder [
 	^ self class new

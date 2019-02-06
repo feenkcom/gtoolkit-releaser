@@ -115,12 +115,6 @@ GtRlReleaserExportWorkflow >> gtProjectMapFor: aView [
 ]
 
 { #category : #ui }
-GtRlReleaserExportWorkflow >> gtReleaseActionsFor: aView [
-	<gtView>
-	^ self releaseActions gtReleaseActionsFor: aView
-]
-
-{ #category : #ui }
 GtRlReleaserExportWorkflow >> gtRepoMapFor: aView [
 	<gtView>
 	^ self rootProjectRelease 
@@ -143,6 +137,22 @@ GtRlReleaserExportWorkflow >> gtRepositoryReleasesListFor: aView [
 			aRepositoryRelease decorateText: aRepositoryRelease releaseStrategy description ]
 ]
 
+{ #category : #ui }
+GtRlReleaserExportWorkflow >> gtViewPostCreationActionsFor: aView [
+	<gtView>
+	^ (self releasePostCreationActions gtReleaseActionsFor: aView)
+		title: 'Post actions' translated;
+		priority: 55
+]
+
+{ #category : #ui }
+GtRlReleaserExportWorkflow >> gtViewReleaseCreationActionsFor: aView [
+	<gtView>
+	^ (self releaseCreationActions gtReleaseActionsFor: aView)
+		title: 'Creation actions' translated;
+		priority: 50
+]
+
 { #category : #accessing }
 GtRlReleaserExportWorkflow >> releaseActions [
 	^ releaseActions
@@ -151,6 +161,11 @@ GtRlReleaserExportWorkflow >> releaseActions [
 { #category : #accessing }
 GtRlReleaserExportWorkflow >> releaseCreationActions [
 	^ self releaseActions reject: [ :action | action class = GtRlPushToOriginReleaseAction ]
+]
+
+{ #category : #accessing }
+GtRlReleaserExportWorkflow >> releasePostCreationActions [
+	^ self releaseActions select: [ :action | action class = GtRlPushToOriginReleaseAction ]
 ]
 
 { #category : #accessing }

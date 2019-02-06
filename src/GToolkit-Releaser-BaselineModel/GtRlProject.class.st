@@ -215,7 +215,7 @@ GtRlProject >> linkWithRepository: aRepository [
 
 { #category : #accessing }
 GtRlProject >> metacelloToolbox [
-	^ metacelloToolbox ifNil: [ GtRlMetacelloToolBox new  new ]
+	^ metacelloToolbox ifNil: [ GtRlMetacelloToolBox new ]
 ]
 
 { #category : #accessing }
