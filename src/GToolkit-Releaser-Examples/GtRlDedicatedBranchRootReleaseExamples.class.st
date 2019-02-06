@@ -11,17 +11,6 @@ GtRlDedicatedBranchRootReleaseExamples >> assertBaselineContentForProjectRelease
 		equals: projectRelease generateBaselineSource
 ]
 
-{ #category : #assertions }
-GtRlDedicatedBranchRootReleaseExamples >> assertRepositoryReleaseActions: aRelease  withOrders: actionsOrders [
-	self assert: actionsOrders size equals: 3.
-	self 
-		assertReleaseActions: aRelease  
-		equalTypes: { 
-			GtRlMergeToReleaseBranchAction -> actionsOrders first.
-			GtRlExportReleaseMetadataAction -> actionsOrders second.
-			GtRlCommitAndTagReleaseAction -> actionsOrders third}.
-]
-
 { #category : #'examples - releases' }
 GtRlDedicatedBranchRootReleaseExamples >> releaseForFourRepositoriesWithNewCommit [
 	<gtExample>
@@ -38,21 +27,14 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseForFourRepositoriesWithNewCommi
 		configuration: self defaultReleaseConfiguration.
 	projectRelease := releaseBuiler buildReleaseForProject: project.
 	
-	self assertReleaseActions: projectRelease equalTypes: { 
-		GtRlCompileBaselineReleaseAction -> 5 }.
-	self
-		assertRepositoryReleaseWithBranchStrategy: projectRelease repositoryRelease 
-		andNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 2 patch: 0).
 	self 
-		assertRepositoryReleaseActions: projectRelease repositoryRelease 
-		withOrders: {4. 6. 7}.
-	
-	self
-		assertRepositoryReleaseWithBranchStrategy: projectRelease childReleases first repositoryRelease
-		andNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 2 patch: 0).
+		assertReleaseWithBranchStrategy: projectRelease 
+		withNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 2 patch: 0) 
+		withCompileAndNoPushActionsStartingAt: 4.
 	self 
-		assertRepositoryReleaseActions: projectRelease childReleases first repositoryRelease  
-		withOrders: {1. 2. 3}.
+		assertReleaseWithBranchStrategy:  projectRelease childReleases first 
+		withNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 2 patch: 0) 
+		withoutCompileAndNoPushActionsStartingAt: 1.
 	
 	self 
 		assertRepositoryReleaseWithBranchStrategy: projectRelease childReleases second repositoryRelease 
@@ -74,28 +56,18 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseForFourRepositoriesWithNoVersio
 		configuration: self defaultReleaseConfiguration.
 	projectRelease := releaseBuiler buildReleaseForProject: project.
 	
-	self assertReleaseActions: projectRelease equalTypes: { 
-		GtRlCompileBaselineReleaseAction -> 8 }.
-	self
-		assertRepositoryReleaseWithBranchStrategy: projectRelease repositoryRelease 
-		andNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0).
 	self 
-		assertRepositoryReleaseActions: projectRelease repositoryRelease 
-		withOrders: {7. 9. 10}.
-	
-	self
-		assertRepositoryReleaseWithBranchStrategy: projectRelease childReleases first repositoryRelease
-		andNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0).
+		assertReleaseWithBranchStrategy: projectRelease 
+		withNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0) 
+		withCompileAndNoPushActionsStartingAt: 7.
 	self 
-		assertRepositoryReleaseActions: projectRelease childReleases first repositoryRelease  
-		withOrders: {1. 2. 3}.
-	
-	self
-		assertRepositoryReleaseWithBranchStrategy: projectRelease childReleases second repositoryRelease
-		andNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0).
+		assertReleaseWithBranchStrategy: projectRelease childReleases first 
+		withNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0) 
+		withoutCompileAndNoPushActionsStartingAt: 1.
 	self 
-		assertRepositoryReleaseActions: projectRelease childReleases second repositoryRelease  
-		withOrders: {4. 5. 6}.
+		assertReleaseWithBranchStrategy: projectRelease childReleases second 
+		withNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0) 
+		withoutCompileAndNoPushActionsStartingAt: 4.
 		
 	self 
 		assertRepositoryReleaseWithBranchStrategy: projectRelease childReleases third repositoryRelease 
@@ -114,14 +86,10 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseWithHeadCommitChildRepository [
 		configuration: self releaseConfigurationWithHeadCommitStrategyForChild.
 	projectRelease := releaseBuiler buildReleaseForProject: project.
 	
-	self assertReleaseActions: projectRelease equalTypes: { 
-		GtRlCompileBaselineReleaseAction -> 2 }.
-	self
-		assertRepositoryReleaseWithBranchStrategy: projectRelease repositoryRelease 
-		andNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0).
 	self 
-		assertRepositoryReleaseActions: projectRelease repositoryRelease 
-		withOrders: {1. 3. 4}.
+		assertReleaseWithBranchStrategy: projectRelease 
+		withNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0) 
+		withCompileAndNoPushActionsStartingAt: 1.
 	self assert: projectRelease childReleases first repositoryRelease isPassiveRelease.
 
 	^ projectRelease repositoryRelease
@@ -141,14 +109,10 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseWithHeadCommitChildRepositoryWi
 		configuration: self releaseConfigurationWithHeadCommitStrategyForChild.
 	projectRelease := releaseBuiler buildReleaseForProject: project.
 	
-	self assertReleaseActions: projectRelease equalTypes: { 
-		GtRlCompileBaselineReleaseAction -> 2 }.
-	self
-		assertRepositoryReleaseWithBranchStrategy: projectRelease repositoryRelease 
-		andNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 2 patch: 0).
 	self 
-		assertRepositoryReleaseActions: projectRelease repositoryRelease 
-		withOrders: {1. 3. 4}.
+		assertReleaseWithBranchStrategy: projectRelease 
+		withNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 2 patch: 0) 
+		withCompileAndNoPushActionsStartingAt: 1.
 	self assert: projectRelease childReleases first repositoryRelease isPassiveRelease.
 
 	^ projectRelease repositoryRelease

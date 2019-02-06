@@ -42,6 +42,8 @@ Releaser is debuggable in the sense that a Workflow will have a list of action o
 Class {
 	#name : #GtRlReleaserExamples,
 	#superclass : #Object,
+	#traits : 'TGtRlReleaseBuildAssertions',
+	#classTraits : 'TGtRlReleaseBuildAssertions classTrait',
 	#instVars : [
 		'repositories'
 	],
@@ -70,38 +72,6 @@ GtRlReleaserExamples >> assertNewReleaseTagOnReleaseBranchFor: icebergRepository
 	self assert: headCommitTags size equals: 1.
 	self assert: headCommitTags first gtIsSemanticVersion.
 	self assert: headCommitTags first name equals: aString.
-]
-
-{ #category : #assertions }
-GtRlReleaserExamples >> assertReleaseActions: aRelease equalTypes: expectedActionTypesWithOrder [
-	| obtainedActions |
-	obtainedActions := aRelease releaseActions actions.
-	self assert: obtainedActions size equals: expectedActionTypesWithOrder size.
-	expectedActionTypesWithOrder withIndexDo: [ :actionData :index |
-		| obtainedAction |
-		obtainedAction := obtainedActions at: index.
-		self assert: obtainedAction class equals: actionData key.
-		self assert: obtainedAction order equals: actionData value ].
-]
-
-{ #category : #assertions }
-GtRlReleaserExamples >> assertRepositoryReleaseWithBranchStrategy: repositoryRelease andExistingVersion: aVersion [
-	self assert: repositoryRelease releaseStrategy shouldCreateNewRelease not.
-	self assert: repositoryRelease isPassiveRelease.
-	self assert: repositoryRelease version equals: aVersion.
-	self assert: repositoryRelease releaseActions isEmpty.
-	
-
-]
-
-{ #category : #assertions }
-GtRlReleaserExamples >> assertRepositoryReleaseWithBranchStrategy: repositoryRelease andNewVersion: aVersion [
-	self assert: repositoryRelease releaseStrategy shouldCreateNewRelease.
-	self assert: repositoryRelease isPassiveRelease not.
-	self assert: repositoryRelease version equals: aVersion.
-	self assert: repositoryRelease releaseActions isEmpty not.
-	
-
 ]
 
 { #category : #private }

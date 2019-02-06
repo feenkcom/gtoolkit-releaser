@@ -90,8 +90,45 @@ Based on the order column we can see that the post actions are executed after th
 Class {
 	#name : #GtRlReleaserWiki,
 	#superclass : #Object,
+	#traits : 'TGtRlReleaseBuildAssertions',
+	#classTraits : 'TGtRlReleaseBuildAssertions classTrait',
 	#category : #'GToolkit-Releaser-Examples'
 }
+
+{ #category : #assertions }
+GtRlReleaserWiki >> assertInitialReleasesInAllReleasesInSystemOneFor: aRootRelease [
+
+	self 
+		assertReleaseWithBranchStrategy: aRootRelease 
+		withNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0)  
+		withActionsStartingAt: 18
+		pushAt: 27.
+	self  "ComponentA"
+		assertReleaseWithBranchStrategy: aRootRelease childReleases first
+		withNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0)  
+		withActionsNoCompileStartingAt: 1
+		pushAt: 22.
+	self "ComponentB"
+		assertReleaseWithBranchStrategy: aRootRelease childReleases second
+		withNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0)  
+		withActionsStartingAt: 4
+		pushAt: 23.
+	self "ComponentC"
+		assertReleaseWithBranchStrategy: aRootRelease childReleases third
+		withNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0)  
+		withActionsNoCompileStartingAt: 8
+		pushAt: 24.
+	self "ComponentD"
+		assertReleaseWithBranchStrategy: aRootRelease childReleases fourth
+		withNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0)  
+		withActionsStartingAt: 14
+		pushAt: 26.
+	self "ComponentDModuleA"
+		assertReleaseWithBranchStrategy: aRootRelease childReleases fourth childReleases first
+		withNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0)  
+		withActionsNoCompileStartingAt: 11
+		pushAt: 25.
+]
 
 { #category : #'examples - configs' }
 GtRlReleaserWiki >> basicReleaseConfiguration [
@@ -122,6 +159,7 @@ GtRlReleaserWiki >> releaseWithNoVersionAndDefaultConfiguration [
 	releaseBuilder := GtRlReleaseBuilder new
 		configuration: self basicReleaseConfiguration. 
 	release := releaseBuilder buildReleaseForProject: project.
+	self assertInitialReleasesInAllReleasesInSystemOneFor: release.
 	^ release
 ]
 
