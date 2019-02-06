@@ -29,7 +29,7 @@ GtRlDependenciesRepositoryReleaseExamples >> releaseWithBranchStrategyForReposit
 	Performing a new release should generate a new version only for the root repository and for the dependency
 	that has the new commit."
 	| project releaseBuiler projectRelease |
-	project := self projectStructureWithFourDependencies.
+	project := self projectStructureWithThreeDependencies.
 	self releaseNewVersionForProject: project.
 	self switchAllToMasterForProject: project.
 	self commiNewMethodNamed: #method1 onMasterToProject: project childProjects first.
@@ -60,9 +60,6 @@ GtRlDependenciesRepositoryReleaseExamples >> releaseWithBranchStrategyForReposit
 	self 
 		assertRepositoryReleaseWithBranchStrategy: projectRelease childReleases third repositoryRelease 
 		andExistingVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0).
-	self 
-		assertRepositoryReleaseWithBranchStrategy: projectRelease childReleases fourth repositoryRelease 
-		andExistingVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0).
 	
 	^ projectRelease repositoryRelease
 ]
@@ -72,19 +69,19 @@ GtRlDependenciesRepositoryReleaseExamples >> releaseWithBranchStrategyForReposit
 	<gtExample>
 	"I create a repository release for a repository multiple dependencies and a branch release strategy."
 	| project releaseBuiler projectRelease |
-	project := self projectStructureWithFourDependencies.
+	project := self projectStructureWithThreeDependencies.
 	releaseBuiler := GtRlReleaseBuilder new
 		configuration: self defaultReleaseConfiguration.
 	projectRelease := releaseBuiler buildReleaseForProject: project.
 	
 	self assertReleaseActions: projectRelease equalTypes: { 
-		GtRlCompileBaselineReleaseAction -> 11 }.
+		GtRlCompileBaselineReleaseAction -> 8 }.
 	self
 		assertRepositoryReleaseWithBranchStrategy: projectRelease repositoryRelease 
 		andNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0).
 	self 
 		assertRepositoryReleaseActions: projectRelease repositoryRelease 
-		withOrders: {10. 12. 13}.
+		withOrders: {7. 9. 10}.
 	
 	self
 		assertRepositoryReleaseWithBranchStrategy: projectRelease childReleases first repositoryRelease
@@ -99,18 +96,81 @@ GtRlDependenciesRepositoryReleaseExamples >> releaseWithBranchStrategyForReposit
 	self 
 		assertRepositoryReleaseActions: projectRelease childReleases second repositoryRelease  
 		withOrders: {4. 5. 6}.
-	
-	self
-		assertRepositoryReleaseWithBranchStrategy: projectRelease childReleases third repositoryRelease
-		andNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0).
-	self 
-		assertRepositoryReleaseActions: projectRelease childReleases third repositoryRelease  
-		withOrders: {7. 8. 9}.
 		
 	self 
-		assertRepositoryReleaseWithBranchStrategy: projectRelease childReleases fourth repositoryRelease 
+		assertRepositoryReleaseWithBranchStrategy: projectRelease childReleases third repositoryRelease 
 		andExistingVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0).
 	
+	^ projectRelease repositoryRelease
+]
+
+{ #category : #'examples - releases' }
+GtRlDependenciesRepositoryReleaseExamples >> releaseWithBranchStrategyRootRepositoryAndHeadCommitChildRepository [
+	<gtExample>
+	"I create a release for a repository with a dependency to a repository that uses a head commit release strategy."
+	| project releaseBuiler projectRelease |
+	project := self projectStructureWithOneChildDependency.
+	releaseBuiler := GtRlReleaseBuilder new
+		configuration: self releaseConfigurationWithHeadCommitStrategyForChild.
+	projectRelease := releaseBuiler buildReleaseForProject: project.
+	
+	self assertReleaseActions: projectRelease equalTypes: { 
+		GtRlCompileBaselineReleaseAction -> 2 }.
+	self
+		assertRepositoryReleaseWithBranchStrategy: projectRelease repositoryRelease 
+		andNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0).
+	self 
+		assertRepositoryReleaseActions: projectRelease repositoryRelease 
+		withOrders: {1. 3. 4}.
+	self assert: projectRelease childReleases first repositoryRelease isPassiveRelease.
+
+	^ projectRelease repositoryRelease
+]
+
+{ #category : #'examples - releases' }
+GtRlDependenciesRepositoryReleaseExamples >> releaseWithBranchStrategyRootRepositoryAndHeadCommitChildRepositoryWithNewCommit [
+	<gtExample>
+	"I create a release for a repository with a dependency to a repository that uses a head commit release strategy and has new commit."
+	| project releaseBuiler projectRelease |
+	project := self projectStructureWithOneChildDependency.
+	self releaseNewVersionForProject: project usingConfig: self releaseConfigurationWithHeadCommitStrategyForChild.
+	(project repository icebergRepository branchNamed: 'master') checkout.
+	self commiNewMethodNamed: #method1 onMasterToProject: project childProjects first.
+	
+	releaseBuiler := GtRlReleaseBuilder new
+		configuration: self releaseConfigurationWithHeadCommitStrategyForChild.
+	projectRelease := releaseBuiler buildReleaseForProject: project.
+	
+	self assertReleaseActions: projectRelease equalTypes: { 
+		GtRlCompileBaselineReleaseAction -> 2 }.
+	self
+		assertRepositoryReleaseWithBranchStrategy: projectRelease repositoryRelease 
+		andNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 2 patch: 0).
+	self 
+		assertRepositoryReleaseActions: projectRelease repositoryRelease 
+		withOrders: {1. 3. 4}.
+	self assert: projectRelease childReleases first repositoryRelease isPassiveRelease.
+
+	^ projectRelease repositoryRelease
+]
+
+{ #category : #'examples - releases' }
+GtRlDependenciesRepositoryReleaseExamples >> releaseWithBranchStrategyRootRepositoryAndHeadCommitChildRepositoryWithNoChange [
+	<gtExample>
+	"I create a release for a repository with a dependency to a repository that uses a head commit release strategy
+	when the root repository has already a release and the child repository has no new changes."
+	| project releaseBuiler projectRelease |
+	project := self projectStructureWithOneChildDependency.
+	self releaseNewVersionForProject: project usingConfig: self releaseConfigurationWithHeadCommitStrategyForChild.
+	(project repository icebergRepository branchNamed: 'master') checkout.
+	
+	releaseBuiler := GtRlReleaseBuilder new
+		configuration: self releaseConfigurationWithHeadCommitStrategyForChild.
+	projectRelease := releaseBuiler buildReleaseForProject: project.
+	
+	self assert: projectRelease repositoryRelease isPassiveRelease.
+	self assert: projectRelease childReleases first repositoryRelease isPassiveRelease.
+
 	^ projectRelease repositoryRelease
 ]
 
@@ -159,6 +219,50 @@ GtRlDependenciesRepositoryReleaseExamples >> releaseWorkflowWithDedicatedBranchF
 	release childRepositoryReleases copyWithoutFirst do: [ :aRepositoryRelease |
 		self assert: aRepositoryRelease semanticVersionTags size equals: 1.
 		self assert: aRepositoryRelease semanticVersionTags first name equals: 'v0.1.0' ].
+	self assertExecutedActions: exportWorkflow releaseActions.
+	self assertBaselineContentForProjectRelease: release projectReleases first.
+	
+	^ exportWorkflow
+]
+
+{ #category : #'examples - workflows' }
+GtRlDependenciesRepositoryReleaseExamples >> releaseWorkflowWithDedicatedBranchRootAndHeadCommitChild [
+	<gtExample>
+	| release exportWorkflow |
+	release := self releaseWithBranchStrategyRootRepositoryAndHeadCommitChildRepository.	
+	exportWorkflow := GtRlReleaserExportWorkflow new
+		rootProjectRelease: release projectReleases first.
+	exportWorkflow executeReleaseActions.
+	
+	self assert: release semanticVersionTags size equals: 1.
+	self assert: release semanticVersionTags first name equals: 'v0.1.0'.
+	self 
+		assertNewReleaseTagOnReleaseBranchFor: release icebergRepository
+		named: 'v0.1.0'.
+	
+	self assert: release childRepositoryReleases first semanticVersionTags size equals: 0.
+	self assertExecutedActions: exportWorkflow releaseActions.
+	self assertBaselineContentForProjectRelease: release projectReleases first.
+	
+	^ exportWorkflow
+]
+
+{ #category : #'examples - workflows' }
+GtRlDependenciesRepositoryReleaseExamples >> releaseWorkflowWithDedicatedBranchRootAndHeadCommitChildWithNewCommit [
+	<gtExample>
+	| release exportWorkflow |
+	release := self releaseWithBranchStrategyRootRepositoryAndHeadCommitChildRepositoryWithNewCommit.	
+	exportWorkflow := GtRlReleaserExportWorkflow new
+		rootProjectRelease: release projectReleases first.
+	exportWorkflow executeReleaseActions.
+	
+	self assert: release semanticVersionTags size equals: 2.
+	self assert: release semanticVersionTags second name equals: 'v0.2.0'.
+	self 
+		assertNewReleaseTagOnReleaseBranchFor: release icebergRepository
+		named: 'v0.2.0'.
+	
+	self assert: release childRepositoryReleases first semanticVersionTags size equals: 0.
 	self assertExecutedActions: exportWorkflow releaseActions.
 	self assertBaselineContentForProjectRelease: release projectReleases first.
 	

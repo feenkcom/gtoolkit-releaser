@@ -286,32 +286,59 @@ GtRlReleaserExamples >> projectBWithNoVersion [
 ]
 
 { #category : #'examples - projects' }
-GtRlReleaserExamples >> projectStructureWithFourDependencies [
+GtRlReleaserExamples >> projectStructureWithOneChildDependency [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
-	| project projectName projectA projectB projectC projectD icebergRepository |
-	projectName := 'ProjectWithFourDependencies'.
+	| rootProject projectName childProject icebergRepository |
+	projectName := 'ProjectWithOneChildDependency'.
+	childProject := self projectBWithNoVersion.
+	icebergRepository := self 
+		createIcebergRepositoryNamed: projectName 
+		withProjectDependencies: {childProject}.
+	
+	rootProject := GtRlModelBuilder new
+		buildProjectFromBaselineClass: (self baselineClassForProjectName: projectName)
+		withRepositoryDescription: (self urlStringForProjectNamed: projectName).
+	
+	self assert: rootProject repository icebergRepository equals: icebergRepository.
+	self assert: rootProject childProjects size equals: 1.
+	self 
+		assert: (rootProject childProjects collect: #name) asArray
+		equals: #('RepositoryWithNoVersionB').
+	
+	"Fix current issuues caused by projects not being loaded in the image"
+	rootProject metacelloToolbox: GtRlMetacelloToolBoxWithSpecs new.
+	rootProject childProjects do: [ :aProject |
+		rootProject metacelloToolbox addSpecForBaselineClass: aProject baselineClass ].
+		
+	^ rootProject
+]
+
+{ #category : #'examples - projects' }
+GtRlReleaserExamples >> projectStructureWithThreeDependencies [
+	<gtExample>
+	<after: #removeRepositoriesAndCode>
+	| project projectName projectA projectB projectC icebergRepository |
+	projectName := 'ProjectWithThreeDependencies'.
 	
 	projectA := self projectAWithNoVersion.
-	projectB := self projectBWithNoVersion.
-	projectC := self projectWithTagAndNoVersion.
-	projectD := self projectWithOneReleasedVersionAndNoChanges.
+	projectB := self projectWithTagAndNoVersion.
+	projectC := self projectWithOneReleasedVersionAndNoChanges.
 	
 	icebergRepository := self 
 		createIcebergRepositoryNamed: projectName 
-		withProjectDependencies: {projectA . projectB . projectC . projectD}.
+		withProjectDependencies: {projectA . projectB . projectC }.
 	
 	project := GtRlModelBuilder new
 		buildProjectFromBaselineClass: (self baselineClassForProjectName: projectName)
 		withRepositoryDescription: (self urlStringForProjectNamed: projectName).
 	
 	self assert: project repository icebergRepository equals: icebergRepository.
-	self assert: project childProjects size equals: 4.
+	self assert: project childProjects size equals: 3.
 	self 
 		assert: (project childProjects collect: #name) asArray
 		equals: #(
 			'RepositoryWithNoVersionA' 
-			'RepositoryWithNoVersionB' 
 			'RepositoryWithTagAndNoVersion' 
 			'ProjectWithReleasedVersionAndNoChanges' ).
 	
@@ -419,11 +446,27 @@ GtRlReleaserExamples >> releaseConfigurationForcingRelease [
 	^ releaseConfiguration
 ]
 
+{ #category : #'examples - configs' }
+GtRlReleaserExamples >> releaseConfigurationWithHeadCommitStrategyForChild [
+	<gtExample>
+	| releaseConfiguration |
+	releaseConfiguration := self defaultReleaseConfiguration.
+	releaseConfiguration setReleaseStrategyOfType: GtRlHeadCommitReleaseStrategy forProjecs: {
+		'github://example/RepositoryWithNoVersionB/src' }.
+		
+	^ releaseConfiguration
+]
+
 { #category : #'creation projects' }
 GtRlReleaserExamples >> releaseNewVersionForProject: project [
+	^ self releaseNewVersionForProject: project usingConfig: self defaultReleaseConfiguration
+]
+
+{ #category : #'creation projects' }
+GtRlReleaserExamples >> releaseNewVersionForProject: project usingConfig: aReleaseConfiguration [
 	| releaseWorkflow |
 	releaseWorkflow := GtRlReleaserExportWorkflow 
-		forProject: project withConfiguration: self defaultReleaseConfiguration.
+		forProject: project withConfiguration: aReleaseConfiguration.
 	releaseWorkflow executeReleaseActions.
 ]
 
