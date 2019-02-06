@@ -137,6 +137,7 @@ GtRlSemanticTagReleaseStrategy >> updatePostBuildActionsUsing: anUpdateWorkflow 
 	| pushAction |
 	self repositoryRelease isPassiveRelease ifTrue: [ ^ self ].
 	
+	self flag: 'Here would be better to also check if the branch has a remote if the origin is not present.'.
 	self repositoryRelease hasRemoteOrigin ifTrue: [
 		pushAction := GtRlPushToOriginReleaseAction new
 			repositoryRelease: self repositoryRelease;

@@ -186,7 +186,9 @@ GtRlReleaserWiki >> systemOneProjectWithNoVersions [
 		aReposiory icebergRepository: (GtRlIceMinimalRepository new
 			name: aReposiory repositoryName;
 			setHead: (GtRlIceMinimalBranch new
-				name: 'master'))].
+				name: 'master');
+			addRemote: (IceMemoryRemote new
+				name: 'origin')) ].
 	
 	"Fix current issuues caused by projects not being loaded in the image"
 	project withDeep: #childProjects do: [ :aProject |
