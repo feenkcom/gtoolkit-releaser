@@ -187,5 +187,12 @@ GtRlReleaserWiki >> systemOneProjectWithNoVersions [
 			name: aReposiory repositoryName;
 			setHead: (GtRlIceMinimalBranch new
 				name: 'master'))].
+	
+	"Fix current issuues caused by projects not being loaded in the image"
+	project withDeep: #childProjects do: [ :aProject |
+		aProject metacelloToolbox: GtRlMetacelloToolBoxWithSpecs new.
+		aProject childProjects do: [ :anotherProject |
+			aProject metacelloToolbox addSpecForBaselineClass: anotherProject baselineClass ] ].
+	
 	^ project
 ]
