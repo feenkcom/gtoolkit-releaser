@@ -4,9 +4,13 @@
 This is the GtReleser wiki, a live, interactive document living and evolving in the image. It contains details about GtReleaser, like its intent, usage, internal structure, as well rationale about various design decisions. 
 
 !!Overview
-GtReleaser allows the creation of release versions for applications that use Metacello baselines to specify their loading configuration (what packages to load, their loading order and their dependencies). GtReleaser supports projects that use deeply nested baselines spread across many git repositories with a mix of baselines with fix dependencies and dependencies to latest versions.
+GtReleaser allows the creation of release versions for applications that use Metacello baselines to specify their loading configuration (what packages to load, their loading order and their dependencies). GtReleaser supports projects that use deeply nested baselines spread across many git repositories with a mix of baselines with fix dependencies and dependencies to latest versions. 
 
-In short, to release a new version a user has to: 
+GtReleaser aims to be easy to debug. Several design decision, like computing all actions before executing a release and using separate models for releases and dependencies go in that direction. GtReleaser also uses extensively inspector views to help expose implementation details.
+
+Currently GtRelease only provides support for generating new releases. However, in the context of Glamorous Toolkit, the goal is to extend it with support for loading baselines, not only generating them. Also several other tools for working with a project (like running all tests in a project, or commiting changes to multiple repositories) could be based on GtReleaser.
+
+In short, to create a new release a user has to: 
  - ensure that all the code of the application that needs to be released is loaded in the current image;
  - create a ${class:GtRlReleaseConfiguration}$ configuration controlling various aspects of the release process;
  - run the release exporter to create new Metacello baselines that use fix versions to load dependencies. 
@@ -96,7 +100,12 @@ ${example:GtRlReleaserWiki>>#releaseWorkflowNoVersionRepoAndDefaultConfiguration
 
 Based on the order column we can see that the post actions are executed after the creation actions. Often when debugging or manually creating a release it can be usefull to create the release, check that everything is as expected, and only afterwards push changes.
 
+!!Testing GtRelease
+On a note about testing, GtRelease uses examples for both testing and documentation. However, two different kind of examples are currently used.
 
+For testing the functionality GtReleaser uses examples that create concrete git repos using libgit2. These example then delete the created repos in the after method. Hence, they cannot be used at the moment for documentation purposes, as it is harder to embedd views of repositories within documents when the repository no longer exists. These examples also aim to test GtRelease in its normal usage.
+
+That is why for documentation, different examples are used that rely on in-memory mocked repositories, instead of real git repositories on disk. Currently GtReleases has its own implementation of these mocks in the package 'GToolkit-Releaser-BaselineModel-MinimalIceberg'. This implements the minimal API from Iceberg needed to make the documentation work. Iceberg also provides a package. `Iceberg-Memory`, that provides similar functionality. We are not using it given that it is not present in the Pharo image by default and introduces a dependency to Ring2. Ideally if that package is present in the image it could be used instead of the custom mocks.
 
 
 
