@@ -7,7 +7,7 @@ Class {
 		'tagDictionary',
 		'remotes'
 	],
-	#category : #'GToolkit-Releaser-Examples'
+	#category : #'GToolkit-Releaser-BaselineModel-MinimalIceberg'
 }
 
 { #category : #adding }

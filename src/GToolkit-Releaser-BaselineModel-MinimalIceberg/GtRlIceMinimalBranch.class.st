@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'name'
 	],
-	#category : #'GToolkit-Releaser-Examples'
+	#category : #'GToolkit-Releaser-BaselineModel-MinimalIceberg'
 }
 
 { #category : #accessing }

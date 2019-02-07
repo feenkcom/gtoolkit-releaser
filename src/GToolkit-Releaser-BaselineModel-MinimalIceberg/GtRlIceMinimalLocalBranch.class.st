@@ -1,5 +1,5 @@
 Class {
 	#name : #GtRlIceMinimalLocalBranch,
 	#superclass : #GtRlIceMinimalBranch,
-	#category : #'GToolkit-Releaser-Examples'
+	#category : #'GToolkit-Releaser-BaselineModel-MinimalIceberg'
 }
