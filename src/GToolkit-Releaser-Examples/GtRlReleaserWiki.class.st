@@ -24,8 +24,7 @@ Another way to look at these baselines is to group them based on the repoitory c
 ${example:GtRlReleaserWiki>>#systemOneProject|previewShow=#gtRepoMapFor:|noCode|previewHeight=300}$ 
 
 !!Default configuration
-
-Let's assume that we just started developing this system and we need to create the first one. As a first example, we can use a standard configuration with default options. We can obtain it by instantiating the class ${class:GtRlReleaseConfiguration}$.
+Let's assume that we just started developing this system and we need to create the first release. As a first example, we use a standard configuration with default options. We can obtain it by instantiating the class ${class:GtRlReleaseConfiguration}$.
 
 ${example:GtRlReleaserWiki>>#basicReleaseConfiguration|previewShow=#gtDefaultOptionsFor:|previewHeight=200|previewExpanded}$
 
@@ -36,35 +35,50 @@ The main available options are:
 	- *Version computation*: The strategy for computing the next version number in case a version already exists;
 	- *Force release*: Whether or not to force a new release if there are no changes in the repository.
 	
-By default a new release is created in the ==#release== branch, starting at the semantic version =='v0.1.0'==  and incrementing the patch number. In case there are no new changes since the previous release a new release is not created. Several of these options can be configure per each indivudual repository. 
+By default a new release is created in the =='release'==  branch, starting at the semantic version =='v0.1.0'==  and incrementing the patch number. In case there are no new changes since the previous release a new release is not created. Several of these options are configure per each individual repository. 
+
+!!Creating the initial release in a nutshell
+To perform a relese we:
+- create a project object modeling the dependencies of a system; we create it starting from a Metacello baseline;
+- create a release exporter object for the project based on a given release configuration;
+- perform the release using the exporter.
+
+The method below shows the code for creating the first release for our example system using the default configuration.
+${example:GtRlReleaserWiki>>#executedReleaseWorkflowNoVersionAndDefaultConfigurationExampleScriptNoTest}$
+
+Running the exporter creates a new branch named 'release' in all project repositories, tags the latest commit in those branches with the tag 'v0.1.0', and updates the project baseliens to load the new tag instead of the latest version. The figure below shows the dependencies between projects in the new release. 
+${example:GtRlReleaserWiki>>#releaseWithNoVersionAndDefaultConfiguration|previewShow=#gtProjectMapFor:|previewHeight=250|noCode}$
 
 !!Creating the initial release step-by-step
+Next we go in more details through the steps performed by GtRelease for creating a release. This can prove useful when debugging problem or looking to understand how GtRelease works.
 
-GtReleaser relies on two distinct models: one for capturing dependencies between baselines and another for generating the new release based on a given configuration. Before a new release is made the user needs to create the first model, capturing dependencies between baselines. This is an instance of ${class:GtRlProject}$ and is created using a ${class:GtRlModelBuilder}$, by giving it a reference to the main baseline and the git url of the project (the url is needed as it is not present in the baseline).
+GtReleaser relies on two distinct models: one for capturing dependencies between baselines and another for generating the new release based on a given configuration. Before a new release is made the user needs to create the first model, capturing dependencies between baselines. This is an instance of ${class:GtRlProject}$ that contains a graph of other ${class:GtRlProject}$ and ${class:GtRlRepository}$objects. Projects are contained with repositories and have dependencies to other projects contained in the same or other repositories.
+
+This model is created using a ${class:GtRlDependenciesModelBuilder}$, by giving it a reference to the main baseline and the git url of the project (the url is needed as it is not present in the baseline). A shorter way to create a project is by sending the message ${method:BaselineOf class>>#gtRlProjectWithRepository:}$ to the baseline class.
 
 ${example:GtRlReleaserWiki>>#systemOneProject|previewHeight=300|previewExpanded}$
 
-On top of this dependency model, a release model adds for each project the version number of the release and a strategy for executing the actual release. This is an instance of ${class:GtRlRepositoryRelease}$ and decorates the previously created project. This object is created using an instance of ${class:GtRlReleaseBuilder}$ that gets as a parameter a configuration.
+On top of this dependency model, a release model decorates projects and repositories with version numbers  and strategies for executing the actual release. The release model is an instance of ${class:GtRlProjectRelease}$  containing a graph of other ${class:GtRlProjectRelease}$ and ${class:GtRlRepositoryRelease}$objects. A ${class:GtRlProjectRelease}$decorates a previously created ${class:GtRlProject}$ object, and a ${class:GtRlRepositoryRelease}$ decorates a ${class:GtRlRepository}$ object. The relese model is created using an instance of ${class:GtRlReleaseBuilder}$ that gets as parameter a release configuration.
 
 ${example:GtRlReleaserWiki>>#releaseWithNoVersionAndDefaultConfigurationNoTest}$
 
-Running this code builds the release object containing a version numbers and the release strategie. In this case, for all projects the version number is 'v0.1.0'  and the release branch is done on the branch 'release'. 
+Running thiscode builds the release. Each ${class:GtRlRepositoryRelease}$ instance contains a version number and the release strategy used for projects in that repository. In this case, for all projects the version number is 'v0.1.0'  and the release is done on the dedicated branch 'release'. 
 
 ${example:GtRlReleaserWiki>>#releaseWithNoVersionAndDefaultConfiguration|previewShow=#gtProjectMapFor:|previewHeight=300|noCode}$
 
-In the view above several projects are colored in gray. That indicates that the baseline of those projects doesn't need to be changed. For example, when creating the release for the project 'GtRlBaselineExampleComponentA', as it has no dependencies, we do not need to update its baseline. For the project 'GtRlBaselineExampleSystemOne' we need to update the baseline to load the new versions for all dependencies. 
+In the view above several projects are colored in gray. That indicates that the baselines of those projects do not need to change. For example, when creating the release for the project with the baseline ${class:BaselineOfGtRlBaselineExampleComponentA}$, as it has no dependencies, we do not need to update its baseline. For the project ${class:BaselineOfGtRlBaselineExampleSystemOne}$ however we need to update the baseline to load the new versions for all dependencies. 
 
-We can also look at these projects by grouping them based on the repository containg them.
+We can also look at these projects by grouping them based on the repository that contains them.
 
 ${example:GtRlReleaserWiki>>#releaseWithNoVersionAndDefaultConfiguration|previewHeight=450|noCode}$
 
-One restriction in GtReleaser is that is uses the same version number for all projects contained in a repository during the release. For example, the repository 'github://example/ComponentB/src' contains two projects, 'GtRlBaselineExampleComponentBMain' and 'GtRlBaselineExampleComponentBUtil'. When refering either one of these two from another baseline the version number associated with the repository is used. This happens as version numbers indicate commits within a repository (for example through tags) and it is only possible to checkout a single commit at a time.
+One restriction in GtReleaser is that is uses the same version number for all projects contained in a repository during the release. For example, the repository =='github://example/ComponentB/src'==  contains two projects, 'GtRlBaselineExampleComponentBMain' and 'GtRlBaselineExampleComponentBUtil'. When refering to either one of these from another baseline the version number associated with the repository is used. This happens as version numbers indicate commits within a repository (for example through tags) and it is only possible to checkout a single commit at a time.
 
-When executing the release certain actions are performed within each repository. This list of actions is stored within the release objects and we can view it by inspecting the release object. We use explicit action objects to allow users to see what will happen when executing the release. For example, below we look at the actions associate with the repository release 'github://example/SystemOne/src'.
+When executing the release certain actions are performed within each repository. This list of actions is stored within the release objects and we can view it by inspecting those release object. We use explicit action objects to allow users to see what will happen when executing the release. For example, below we look at the actions associate with the repository release 'github://example/SystemOne/src'.
 
 ${example:GtRlReleaserWiki>>#repositoryReleaseWithNoVersionAndDefaultConfiguration|previewShow=#gtReleaseActionsFor:|previewHeight=200|noCode}$
 
-Among others we observe that the release updates the baseline and is performed on the 'release' branch by pushing a tag. The 'Order' column shown the relative order of an actions in regard with all other actions performed during the release. Actions can differer between repositories. If we look below at the actions associated with the repository `github://example/ComponentB/src`, we observe that there is no action for compiling the baseline, as the baseline has no dependencies. If no action is needed for a repository, then the entire repository is highlighted in gray (this is not the case for this release).
+Among others we observe that the release updates the baseline and is performed on the 'release' branch by pushing a tag. The 'Order' column shown the relative order of an action in regard with all other actions performed during the release. Actions can differer between repositories. If we look below at the actions associated with the repository =='github://example/ComponentB/src'==, we observe that there is no action for compiling the baseline, as the baseline has no dependencies. If no action is needed for a repository, then the entire repository is highlighted in gray (this is not the case for this release).
 
 ${example:GtRlReleaserWiki>>#repositoryReleaseComponentAWithNoVersionAndDefaultConfiguration|previewShow=#gtReleaseActionsFor:|previewHeight=200|noCode}$
 
@@ -78,7 +92,7 @@ The creation actions are all those actions executed for creating the release:
 ${example:GtRlReleaserWiki>>#releaseWorkflowNoVersionRepoAndDefaultConfiguration|previewShow=#gtViewReleaseCreationActionsFor:|previewHeight=300|noCode}$
 
 The post actions are executed after the release was created and now consist in pushing changes to the remove origin of a repository:
-${example:GtRlReleaserWiki>>#releaseWorkflowNoVersionRepoAndDefaultConfiguration|previewShow=#gtViewPostCreationActionsFor:|previewHeight=300|noCode}$
+${example:GtRlReleaserWiki>>#releaseWorkflowNoVersionRepoAndDefaultConfiguration|previewShow=#gtViewPostCreationActionsFor:|previewHeight=250|noCode}$
 
 Based on the order column we can see that the post actions are executed after the creation actions. Often when debugging or manually creating a release it can be usefull to create the release, check that everything is as expected, and only afterwards push changes.
 
@@ -115,7 +129,7 @@ GtRlReleaserWiki >> assertInitialReleasesInAllReleasesInSystemOneFor: aRootRelea
 		pushAt: 23.
 	self "ComponentC"
 		assertReleaseWithBranchStrategy: aRootRelease childReleases third
-		withNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0)  
+		withNewVersion: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0)
 		withActionsNoCompileStartingAt: 8
 		pushAt: 24.
 	self "ComponentD"
@@ -136,6 +150,31 @@ GtRlReleaserWiki >> basicReleaseConfiguration [
 	| configuration |
 	configuration := GtRlReleaseConfiguration new.
 	^ configuration
+]
+
+{ #category : #'examples - workflows' }
+GtRlReleaserWiki >> executedReleaseWorkflowNoVersionAndDefaultConfigurationExampleScriptNoTest [
+	<gtExample>
+	<noTest>
+	| baseline project releaseExporter |
+	baseline := BaselineOfGtRlBaselineExampleSystemOne.
+	project := baseline 
+		gtRlProjectWithRepository: 'github://example/SystemOne/src'. 
+	releaseExporter := project 
+		exporterWithConfiguration: GtRlReleaseConfiguration new.
+	^ releaseExporter executeReleaseActions
+]
+
+{ #category : #'examples - workflows' }
+GtRlReleaserWiki >> executedReleaseWorkflowNoVersionAndDefaultConfigurationFullScriptNoTest [
+	<gtExample>
+	<noTest>
+	| baseline project releaseExporter |
+	baseline := BaselineOfGtRlBaselineExampleSystemOne.
+	project := baseline gtRlProjectWithRepository: 'github://example/SystemOne/src'. 
+	releaseExporter := project exporterWithConfiguration: self basicReleaseConfiguration.
+	^ releaseExporter executeReleaseActions
+	
 ]
 
 { #category : #'examples - workflows' }
@@ -208,7 +247,7 @@ GtRlReleaserWiki >> repositoryReleaseWithNoVersionAndDefaultConfiguration [
 GtRlReleaserWiki >> systemOneProject [
 	<gtExample>
 	| projectBuilder project |
-	projectBuilder := GtRlModelBuilder new.
+	projectBuilder := GtRlDependenciesModelBuilder new.
 	project := projectBuilder 
 		buildProjectFromBaselineClass: BaselineOfGtRlBaselineExampleSystemOne
 		withRepositoryDescription: 'github://example/SystemOne/src'. 
