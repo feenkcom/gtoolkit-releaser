@@ -266,7 +266,7 @@ GtRlReleaserExamples >> projectStructureWithOneChildDependency [
 		createIcebergRepositoryNamed: projectName 
 		withProjectDependencies: {childProject}.
 	
-	rootProject := GtRlModelBuilder new
+	rootProject := GtRlDependenciesModelBuilder new
 		buildProjectFromBaselineClass: (self baselineClassForProjectName: projectName)
 		withRepositoryDescription: (self urlStringForProjectNamed: projectName).
 	
@@ -299,7 +299,7 @@ GtRlReleaserExamples >> projectStructureWithThreeDependencies [
 		createIcebergRepositoryNamed: projectName 
 		withProjectDependencies: {projectA . projectB . projectC }.
 	
-	project := GtRlModelBuilder new
+	project := GtRlDependenciesModelBuilder new
 		buildProjectFromBaselineClass: (self baselineClassForProjectName: projectName)
 		withRepositoryDescription: (self urlStringForProjectNamed: projectName).
 	

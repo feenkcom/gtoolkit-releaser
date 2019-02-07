@@ -39,7 +39,7 @@ GtRlReleaserExportWorkflow class >> buildGToolkitRelease: version [
 { #category : #'instance creation' }
 GtRlReleaserExportWorkflow class >> forBaseline: aBaselineClass fromRepository: aRepositoryUrl withConfiguration: aReleaseConfiguration [
 	| projectBuilder releaseBuilder project release |
-	projectBuilder := GtRlModelBuilder new.
+	projectBuilder := GtRlDependenciesModelBuilder new.
 	project := projectBuilder 
 		buildProjectFromBaselineClass: aBaselineClass
 		withRepositoryDescription: aRepositoryUrl.

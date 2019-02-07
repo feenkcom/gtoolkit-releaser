@@ -9,7 +9,7 @@ I only work with Metacello baselines that:
 
 "
 Class {
-	#name : #GtRlModelBuilder,
+	#name : #GtRlDependenciesModelBuilder,
 	#superclass : #Object,
 	#instVars : [
 		'projectsByBaselineClass',
@@ -20,14 +20,14 @@ Class {
 }
 
 { #category : #building }
-GtRlModelBuilder >> buildPackageFromMetacelloSpec: aMetacelloPackageSpec [
+GtRlDependenciesModelBuilder >> buildPackageFromMetacelloSpec: aMetacelloPackageSpec [
 	^ GtRlPackage new
 		name: aMetacelloPackageSpec name;
 		dependencies: aMetacelloPackageSpec requires
 ]
 
 { #category : #building }
-GtRlModelBuilder >> buildProjectFromBaselineClass: aBaselineClass withRepositoryDescription: aRepositoryUrl [
+GtRlDependenciesModelBuilder >> buildProjectFromBaselineClass: aBaselineClass withRepositoryDescription: aRepositoryUrl [
 	| newProject mcVersion |
 	self assert: [ aBaselineClass project versions size = 1 ].
 	
@@ -45,7 +45,7 @@ GtRlModelBuilder >> buildProjectFromBaselineClass: aBaselineClass withRepository
 ]
 
 { #category : #building }
-GtRlModelBuilder >> buildProjectFromMetacelloSpec: aMetacelloProjectSpec [
+GtRlDependenciesModelBuilder >> buildProjectFromMetacelloSpec: aMetacelloProjectSpec [
 	| newProject |
 	self assert: [ aMetacelloProjectSpec project versions size = 1 ].
 	self assert: [ aMetacelloProjectSpec repositorySpecs size = 1 ].
@@ -68,7 +68,7 @@ GtRlModelBuilder >> buildProjectFromMetacelloSpec: aMetacelloProjectSpec [
 ]
 
 { #category : #'private - building' }
-GtRlModelBuilder >> ensureRepositoriesFor: aRepositoryUrl [
+GtRlDependenciesModelBuilder >> ensureRepositoriesFor: aRepositoryUrl [
 	^ repositoriesByUrl 
 		at: aRepositoryUrl 
 		ifAbsentPut: [ 
@@ -76,7 +76,7 @@ GtRlModelBuilder >> ensureRepositoriesFor: aRepositoryUrl [
 ]
 
 { #category : #initialize }
-GtRlModelBuilder >> initialize [ 
+GtRlDependenciesModelBuilder >> initialize [ 
 	super initialize.
 	projectsByBaselineClass := IdentityDictionary new.
 	repositoriesByUrl := Dictionary new.
@@ -84,7 +84,7 @@ GtRlModelBuilder >> initialize [
 ]
 
 { #category : #'private - building' }
-GtRlModelBuilder >> instantiateProjectFromMetacelloSpec: aBaselineProjectSpec [
+GtRlDependenciesModelBuilder >> instantiateProjectFromMetacelloSpec: aBaselineProjectSpec [
 	| repositoriesSpec |
 	repositoriesSpec := aBaselineProjectSpec version spec repositories.
 	self assert: [ repositoriesSpec map size = 1 ].
@@ -96,12 +96,12 @@ GtRlModelBuilder >> instantiateProjectFromMetacelloSpec: aBaselineProjectSpec [
 ]
 
 { #category : #accessing }
-GtRlModelBuilder >> projectsByBaselineClass [
+GtRlDependenciesModelBuilder >> projectsByBaselineClass [
 	^ projectsByBaselineClass
 ]
 
 { #category : #dependencies }
-GtRlModelBuilder >> updateDependenciesFor: currentProject fromMCVersion: aMetacelloVersion [
+GtRlDependenciesModelBuilder >> updateDependenciesFor: currentProject fromMCVersion: aMetacelloVersion [
 	self 
 		updateProjectDependenciesFor: currentProject 
 		fromMCVersion: aMetacelloVersion.
@@ -111,7 +111,7 @@ GtRlModelBuilder >> updateDependenciesFor: currentProject fromMCVersion: aMetace
 ]
 
 { #category : #dependencies }
-GtRlModelBuilder >> updatePackageDependenciesFor: currentProject fromMCVersion: aMetacelloVersion [
+GtRlDependenciesModelBuilder >> updatePackageDependenciesFor: currentProject fromMCVersion: aMetacelloVersion [
 	| newPackages |
 	newPackages := aMetacelloVersion packages collect: [ :aMetacelloPackageSpec |
 		self buildPackageFromMetacelloSpec: aMetacelloPackageSpec ].
@@ -119,7 +119,7 @@ GtRlModelBuilder >> updatePackageDependenciesFor: currentProject fromMCVersion: 
 ]
 
 { #category : #dependencies }
-GtRlModelBuilder >> updateProjectDependenciesFor: currentProject fromMCVersion: aMetacelloVersion [
+GtRlDependenciesModelBuilder >> updateProjectDependenciesFor: currentProject fromMCVersion: aMetacelloVersion [
 	| childProjects |
 	childProjects := (aMetacelloVersion projects 
 		select: [ :aMetacelloProjectSpec || shouldReject |

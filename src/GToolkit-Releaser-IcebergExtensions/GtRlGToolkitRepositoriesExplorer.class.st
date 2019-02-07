@@ -7,7 +7,7 @@ Class {
 { #category : #'as yet unclassified' }
 GtRlGToolkitRepositoriesExplorer class >> buildForGToolkitProject [
 	| projectBuilder project |
-	projectBuilder := GtRlModelBuilder new.
+	projectBuilder := GtRlDependenciesModelBuilder new.
 	project := projectBuilder 
 		buildProjectFromBaselineClass: BaselineOfGToolkit
 		withRepositoryDescription: 'github://feenkcom/gtoolkit/src'.
