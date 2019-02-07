@@ -115,7 +115,7 @@ Class {
 	#superclass : #Object,
 	#traits : 'TGtRlReleaseBuildAssertions',
 	#classTraits : 'TGtRlReleaseBuildAssertions classTrait',
-	#category : #'GToolkit-Releaser-Examples'
+	#category : #'GToolkit-Releaser-Wiki'
 }
 
 { #category : #assertions }
