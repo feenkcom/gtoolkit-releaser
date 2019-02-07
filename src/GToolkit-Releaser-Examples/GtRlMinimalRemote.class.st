@@ -3,10 +3,17 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'name',
-		'remoteRepository'
+		'remoteRepository',
+		'localRepository'
 	],
 	#category : #'GToolkit-Releaser-Examples'
 }
+
+{ #category : #accessing }
+GtRlMinimalRemote >> localRepository: aRepository [
+	
+	localRepository := aRepository
+]
 
 { #category : #accessing }
 GtRlMinimalRemote >> name [
