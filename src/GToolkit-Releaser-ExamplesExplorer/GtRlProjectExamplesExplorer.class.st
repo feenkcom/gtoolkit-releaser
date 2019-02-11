@@ -18,24 +18,16 @@ GtRlProjectExamplesExplorer >> containedExamples [
 	^ cachedExamples ifNil: [
 		| currentExamples |
 		currentExamples := OrderedCollection new.
-		self containedRPackagesDo: [ :aRPackage | 
+		self project containedRPackagesDo: [ :aRPackage | 
 			currentExamples addAll: aRPackage gtExamplesContained ].
 		cachedExamples := GtExampleGroup withAll: currentExamples ]
-]
-
-{ #category : #enumerating }
-GtRlProjectExamplesExplorer >> containedRPackagesDo: aBloc [
-	self project packages do: [ :aReleaserPackage |
-		(RPackageOrganizer default 
-			packageNamed: aReleaserPackage name 
-			ifAbsent: [nil]) ifNotNil: [ :aRPackage | aBloc value: aRPackage ] ]
 ]
 
 { #category : #accessing }
 GtRlProjectExamplesExplorer >> containedTestCases [
 	^ cachedTestCases ifNil: [
 		cachedTestCases := OrderedCollection new.
-		self containedRPackagesDo: [ :aRPackage | 
+		self project containedRPackagesDo: [ :aRPackage | 
 			cachedTestCases addAll: ((aRPackage classes select: #isTestCase) flatCollect: [ :testClass | 
 				testClass buildSuiteFromAllSelectors tests ]) ].
 		cachedTestCases ]

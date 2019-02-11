@@ -4,7 +4,7 @@ Class {
 	#category : #'GToolkit-Releaser-ExamplesExplorer'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 GtRlGToolkitExamplesExplorer class >> buildForGToolkitProject [
 	| projectBuilder project |
 	projectBuilder := GtRlDependenciesModelBuilder new.

@@ -108,6 +108,15 @@ GtRlProject >> compileBaselineWithProjectDependencies: projectDependenciesMap [
 	^ toolbox commitBaselineOfMethod.
 ]
 
+{ #category : #traversing }
+GtRlProject >> containedRPackagesDo: aBloc [
+	self packages do: [ :aReleaserPackage |
+		(RPackageOrganizer default 
+			packageNamed: aReleaserPackage name 
+			ifAbsent: [nil]) ifNotNil: [ :aRPackage | 
+				aBloc value: aRPackage ] ]
+]
+
 { #category : #actions }
 GtRlProject >> generateSourceWithProjectDependencies: projectDependenciesMap [
 	| toolbox |
@@ -156,7 +165,7 @@ GtRlProject >> gtProjectMapFor: aView [
 			mondrian nodes 
 				shape: [ :aProject |
 					BlTextElement new text: aProject name asRopedText ];
-				with: self withAllChildrenProjects.
+				with: self withAllChildProjects.
 			mondrian edges
 				shape: [
 					BlLineElement new 
@@ -323,9 +332,9 @@ GtRlProject >> toolboxForBaselineWithProjectDependencies: projectDependenciesMap
 	^ toolbox
 ]
 
-{ #category : #'accessing - dynamic' }
-GtRlProject >> withAllChildrenProjects [
-	^ self withDeepCollect: #childProjects 
+{ #category : #traversing }
+GtRlProject >> withAllChildProjects [
+	^ self withDeepCollect: #childProjects
 ]
 
 { #category : #'accessing - dynamic' }
