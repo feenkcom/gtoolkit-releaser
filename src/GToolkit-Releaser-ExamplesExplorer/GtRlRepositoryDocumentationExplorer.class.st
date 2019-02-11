@@ -17,6 +17,9 @@ GtRlRepositoryDocumentationExplorer class >> forRepository: aRepository [
 GtRlRepositoryDocumentationExplorer >> initializeForRepository: aRepository [
 	repository := aRepository.
 	aRepository projects do: [ :aChildProject |
+		aChildProject baselineClass hasComment ifTrue: [ 
+			self explanationClasses add: aChildProject baselineClass ].
+		
 		aChildProject containedRPackagesDo: [ :aRPackage |
 			| packageClasses |
 			packageClasses := aRPackage classes.
