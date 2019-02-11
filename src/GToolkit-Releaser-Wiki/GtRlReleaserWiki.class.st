@@ -8,7 +8,7 @@ GtReleaser allows the creation of release versions for applications that use Met
 
 GtReleaser aims to be easy to debug. Several design decision, like computing all actions before executing a release and using separate models for releases and dependencies go in that direction. GtReleaser also uses extensively inspector views to help expose implementation details.
 
-Currently GtRelease only provides support for generating new releases. However, in the context of Glamorous Toolkit, the goal is to extend it with support for loading baselines, not only generating them. Also several other tools for working with a project (like running all tests in a project, or commiting changes to multiple repositories) could be based on GtReleaser.
+Currently GtRelease only provides support for generating new releases. However, in the context of Glamorous Toolkit, the goal is to extend it with support for loading baselines, not only generating them. Several other tools for working with a project (like running all tests in a project, or commiting changes to multiple repositories) could be based on GtReleaser.
 
 In short, to create a new release a user has to: 
  - ensure that all the code of the application that needs to be released is loaded in the current image;
@@ -39,34 +39,34 @@ The main available options are:
 	- *Version computation*: The strategy for computing the next version number in case a version already exists;
 	- *Force release*: Whether or not to force a new release if there are no changes in the repository.
 	
-By default a new release is created in the =='release'==  branch, starting at the semantic version =='v0.1.0'==  and incrementing the patch number. In case there are no new changes since the previous release a new release is not created. Several of these options are configure per each individual repository. 
+By default a new release is created on the =='release'==  branch, starting at the semantic version =='v0.1.0'==  and incrementing the patch number. In case there are no new changes since the previous release a new release is not created. Several of these options can be configured per each individual repository. 
 
 !!Creating the initial release in a nutshell
 To perform a relese we:
-- create a project object modeling the dependencies of a system; we create it starting from a Metacello baseline;
-- create a release exporter object for the project based on a given release configuration;
+- create a project object modeling the loading configuration of a system; we create it starting from a Metacello baseline;
+- create a release exporter for the project based on a release configuration;
 - perform the release using the exporter.
 
-The method below shows the code for creating the first release for our example system using the default configuration.
+The method below shows the code for creating the first release for our example system using the default configuration. 
 ${example:GtRlReleaserWiki>>#executedReleaseWorkflowNoVersionAndDefaultConfigurationExampleScriptNoTest}$
 
-Running the exporter creates a new branch named 'release' in all project repositories, tags the latest commit in those branches with the tag 'v0.1.0', and updates the project baseliens to load the new tag instead of the latest version. The figure below shows the dependencies between projects in the new release. 
+Running the exporter creates a new branch named 'release' in all project repositories, tags the latest commit in those branches with the tag =='v0.1.0'==, and updates the project baseliens to load the new tag instead of the latest version. The figure below shows the dependencies between projects in the new release. 
 ${example:GtRlReleaserWiki>>#releaseWithNoVersionAndDefaultConfiguration|previewShow=#gtProjectMapFor:|previewHeight=250|noCode}$
 
 !!Creating the initial release step-by-step
-Next we go in more details through the steps performed by GtRelease for creating a release. This can prove useful when debugging problem or looking to understand how GtRelease works.
+Next we go in more details through the steps performed by GtReleaser when creating a release. This can prove useful when debugging problems or when looking to understand how GtReleaser works.
 
-GtReleaser relies on two distinct models: one for capturing dependencies between baselines and another for generating the new release based on a given configuration. Before a new release is made the user needs to create the first model, capturing dependencies between baselines. This is an instance of ${class:GtRlProject}$ that contains a graph of other ${class:GtRlProject}$ and ${class:GtRlRepository}$objects. Projects are contained with repositories and have dependencies to other projects contained in the same or other repositories.
+GtReleaser relies on two distinct models: one for capturing dependencies between baselines and another for generating the new release based on a given configuration. Before a new release is made the user needs to create the first model, capturing dependencies between baselines. This is an instance of ${class:GtRlProject}$ that contains a graph of other ${class:GtRlProject}$ and ${class:GtRlRepository}$objects. Projects are contained within repositories and have dependencies to other projects contained in the same or other repositories.
 
 This model is created using a ${class:GtRlDependenciesModelBuilder}$, by giving it a reference to the main baseline and the git url of the project (the url is needed as it is not present in the baseline). A shorter way to create a project is by sending the message ${method:BaselineOf class>>#gtRlProjectWithRepository:}$ to the baseline class.
 
 ${example:GtRlReleaserWiki>>#systemOneProject|previewHeight=300|previewExpanded}$
 
-On top of this dependency model, a release model decorates projects and repositories with version numbers  and strategies for executing the actual release. The release model is an instance of ${class:GtRlProjectRelease}$  containing a graph of other ${class:GtRlProjectRelease}$ and ${class:GtRlRepositoryRelease}$objects. A ${class:GtRlProjectRelease}$decorates a previously created ${class:GtRlProject}$ object, and a ${class:GtRlRepositoryRelease}$ decorates a ${class:GtRlRepository}$ object. The relese model is created using an instance of ${class:GtRlReleaseBuilder}$ that gets as parameter a release configuration.
+On top of this dependency model, a release model decorates projects and repositories with version numbers  and strategies for executing the actual release. The release model is an instance of ${class:GtRlProjectRelease}$  containing a graph of other ${class:GtRlProjectRelease}$ and ${class:GtRlRepositoryRelease}$objects. A ${class:GtRlProjectRelease}$decorates a previously created ${class:GtRlProject}$ object, and a ${class:GtRlRepositoryRelease}$ decorates a ${class:GtRlRepository}$ object. The relese model is created using an instance of ${class:GtRlReleaseBuilder}$ that gets as parameter the release configuration.
 
 ${example:GtRlReleaserWiki>>#releaseWithNoVersionAndDefaultConfigurationNoTest}$
 
-Running thiscode builds the release. Each ${class:GtRlRepositoryRelease}$ instance contains a version number and the release strategy used for projects in that repository. In this case, for all projects the version number is 'v0.1.0'  and the release is done on the dedicated branch 'release'. 
+Each ${class:GtRlRepositoryRelease}$ instance contains a version number and the release strategy used for projects in that repository. In this case, for all projects the version number is 'v0.1.0'  and the release is done on the dedicated branch 'release'. 
 
 ${example:GtRlReleaserWiki>>#releaseWithNoVersionAndDefaultConfiguration|previewShow=#gtProjectMapFor:|previewHeight=300|noCode}$
 
@@ -76,13 +76,13 @@ We can also look at these projects by grouping them based on the repository that
 
 ${example:GtRlReleaserWiki>>#releaseWithNoVersionAndDefaultConfiguration|previewHeight=450|noCode}$
 
-One restriction in GtReleaser is that is uses the same version number for all projects contained in a repository during the release. For example, the repository =='github://example/ComponentB/src'==  contains two projects, 'GtRlBaselineExampleComponentBMain' and 'GtRlBaselineExampleComponentBUtil'. When refering to either one of these from another baseline the version number associated with the repository is used. This happens as version numbers indicate commits within a repository (for example through tags) and it is only possible to checkout a single commit at a time.
+One restriction in GtReleaser is that is uses the same version number for all projects contained in a repository. For example, the repository =='github://example/ComponentB/src'==  contains two projects, 'GtRlBaselineExampleComponentBMain' and 'GtRlBaselineExampleComponentBUtil'. When refering to either one of these from another baseline the version number associated with the repository is used. This happens as version numbers identify commits within a repository (for example using tags) and it is only possible to checkout a single commit at a time.
 
-When executing the release certain actions are performed within each repository. This list of actions is stored within the release objects and we can view it by inspecting those release object. We use explicit action objects to allow users to see what will happen when executing the release. For example, below we look at the actions associate with the repository release 'github://example/SystemOne/src'.
+When executing the release certain actions are performed within each repository. This list of actions is stored within the release objects and we can view it by inspecting those release objects. We use explicit action objects to allow users to see what will happen when executing the release. For example, below we look at the actions associate with the repository release =='github://example/SystemOne/src'==.
 
 ${example:GtRlReleaserWiki>>#repositoryReleaseWithNoVersionAndDefaultConfiguration|previewShow=#gtReleaseActionsFor:|previewHeight=200|noCode}$
 
-Among others we observe that the release updates the baseline and is performed on the 'release' branch by pushing a tag. The 'Order' column shown the relative order of an action in regard with all other actions performed during the release. Actions can differer between repositories. If we look below at the actions associated with the repository =='github://example/ComponentB/src'==, we observe that there is no action for compiling the baseline, as the baseline has no dependencies. If no action is needed for a repository, then the entire repository is highlighted in gray (this is not the case for this release).
+Among others we observe that the release updates the baseline and is performed on the 'release' branch by pushing a tag. The 'Order' column shown the relative order of an action in regard with all other actions performed during the release. Actions can differer between repositories. If we look below at the actions associated with the repository =='github://example/ComponentA/src'==, we observe that there is no action for compiling the baseline, as the baseline has no dependencies. If no action is needed for a repository, then the entire repository is highlighted in gray (this is not the case for this release).
 
 ${example:GtRlReleaserWiki>>#repositoryReleaseComponentAWithNoVersionAndDefaultConfiguration|previewShow=#gtReleaseActionsFor:|previewHeight=200|noCode}$
 
@@ -90,7 +90,7 @@ To finally execute the release we instatiate the class ${class:GtRlReleaserExpor
 
 ${example:GtRlReleaserWiki>>#executedReleaseWorkflowNoVersionRepoAndDefaultConfigurationNoTest}$
 
-We use a dedicate export workflow object for performing the release as it allows us to better explore the release actions. For example, after building the exporter we can inspect it to see the list of all actions. For that we have two views, 'Creation actions' and `Post actions`. 
+We use a dedicated export object for performing the release as it allows us to better explore the release actions. For example, after building the exporter we can inspect it to see the list of all actions. For that we have two views, 'Creation actions' and `Post actions`. 
 
 The creation actions are all those actions executed for creating the release:
 ${example:GtRlReleaserWiki>>#releaseWorkflowNoVersionRepoAndDefaultConfiguration|previewShow=#gtViewReleaseCreationActionsFor:|previewHeight=300|noCode}$
@@ -100,12 +100,46 @@ ${example:GtRlReleaserWiki>>#releaseWorkflowNoVersionRepoAndDefaultConfiguration
 
 Based on the order column we can see that the post actions are executed after the creation actions. Often when debugging or manually creating a release it can be usefull to create the release, check that everything is as expected, and only afterwards push changes.
 
-!!Testing GtRelease
-On a note about testing, GtRelease uses examples for both testing and documentation. However, two different kind of examples are currently used.
+Taking a step back, the code below shows the complete detailed steps for creating a release. 
+${example:GtRlReleaserWiki>>#executedReleaseWorkflowNoVersionAndDefaultConfigurationFullScriptNoTest}$
 
-For testing the functionality GtReleaser uses examples that create concrete git repos using libgit2. These example then delete the created repos in the after method. Hence, they cannot be used at the moment for documentation purposes, as it is harder to embedd views of repositories within documents when the repository no longer exists. These examples also aim to test GtRelease in its normal usage.
+The above steps are useful to understand in mode details how the release is performed. However, for simply performing a release without going into too many details, the short version shown the the previous section is a simpler choice.
+${example:GtRlReleaserWiki>>#executedReleaseWorkflowNoVersionAndDefaultConfigurationExampleScriptNoTest}$
 
-That is why for documentation, different examples are used that rely on in-memory mocked repositories, instead of real git repositories on disk. Currently GtReleases has its own implementation of these mocks in the package 'GToolkit-Releaser-BaselineModel-MinimalIceberg'. This implements the minimal API from Iceberg needed to make the documentation work. Iceberg also provides a package. `Iceberg-Memory`, that provides similar functionality. We are not using it given that it is not present in the Pharo image by default and introduces a dependency to Ring2. Ideally if that package is present in the image it could be used instead of the custom mocks.
+!! Other types of releases
+Until now we only looked as perfoming an initial release for a system using the default release configuration. In practice there are many other types of systems and release configurations. The following documents provide more details about othe types of releases for our example system:
+
+- TODO: A second normal and forced release;
+- TODO: Major and minor releases;
+- TODO: A release with fix dependencies and dependencies to latest versions;
+- TODO: Releasing on different branches.
+
+Also in practice systems have many different way of expressing their loading configuration using baselines. The following documents cover release for systems having other dependencies between baselines:
+
+- TODO: Releasing when all baselines are in the same repository.
+${example:GtRlReleaserWiki>>#systemTwoProject|previewShow=#gtProjectMapFor:|noCode|previewHeight=300}$ 
+${example:GtRlReleaserWiki>>#systemTwoProject|previewShow=#gtRepoMapFor:|noCode|previewHeight=300}$ 
+ 
+- TODO: Releasing when multiple baselines point to a common dependency.
+${example:GtRlReleaserWiki>>#systemThreeProject|previewShow=#gtProjectMapFor:|noCode|previewHeight=300}$ 
+
+!!Package structure
+This section describes the most important packages from GtReleaser:
+
+- GToolkit-Releaser-BaselineModel: The model for capturing Monticello baselines together with their dependencies; 
+- GToolkit-Releaser-BaselineModel-MinimalIceberg: An implementation for an in-memory iceberg repository needed in examples for documentation;
+- GToolkit-Releaser-BaselineModel-Examples: Tests and documentation for the modeling dependencies in GtReleaser;
+- GToolkit-Releaser: The model for creating new releases according to a release condiguration;
+- GToolkit-Releaser-IcebergExtensions: A set of extensions to mae working with Iceberg objects easier in the inspector;
+- GToolkit-Releaser-ExamplesExplorer: A tool for exploring and running examples attached to a project;
+- GToolkit-Releaser-Examples: Tests and documentation for performing releases.
+
+!!Testing GtReleaser
+On a note about testing, GtReleaser uses examples for both testing and documentation. However, two different kind of examples are currently used.
+
+For testing the functionality GtReleaser uses examples that create concrete git repos using libgit2. These example then delete the created repos in the after method. Hence, they cannot be used at the moment for documentation purposes, as it is harder to embedd views of repositories within documents when the repository no longer exists. These examples also aim to test GtReleaser in its normal usage.
+
+That is why for documentation, different examples are used that rely on in-memory mocked repositories, instead of real git repositories on disk. Currently GtReleaser has its own implementation of these mocks in the package 'GToolkit-Releaser-BaselineModel-MinimalIceberg'. This implements the minimal API from Iceberg needed to make the documentation work. Iceberg also provides a package. `Iceberg-Memory`, that provides similar functionality. We are not using it given that it is not present in the Pharo image by default and introduces a dependency to Ring2. Ideally if that package is present in the image it could be used instead of the custom mocks.
 
 
 
@@ -178,11 +212,25 @@ GtRlReleaserWiki >> executedReleaseWorkflowNoVersionAndDefaultConfigurationExamp
 GtRlReleaserWiki >> executedReleaseWorkflowNoVersionAndDefaultConfigurationFullScriptNoTest [
 	<gtExample>
 	<noTest>
-	| baseline project releaseExporter |
-	baseline := BaselineOfGtRlBaselineExampleSystemOne.
-	project := baseline gtRlProjectWithRepository: 'github://example/SystemOne/src'. 
-	releaseExporter := project exporterWithConfiguration: self basicReleaseConfiguration.
-	^ releaseExporter executeReleaseActions
+	| projectBuilder project releaseBuilder release releaseExporter |
+	"Create the model for the loading configuration."
+	projectBuilder := GtRlDependenciesModelBuilder new.
+	project := projectBuilder 
+		buildProjectFromBaselineClass: BaselineOfGtRlBaselineExampleSystemOne
+		withRepositoryDescription: 'github://example/SystemOne/src'. 
+	
+	"Create the model for the new release using a release configuration."
+	releaseBuilder := GtRlReleaseBuilder new
+		configuration: GtRlReleaseConfiguration new.
+	release := releaseBuilder buildReleaseForProject: project.
+	
+	"Create a release exporter containing all release actions."
+	releaseExporter := GtRlReleaserExportWorkflow new
+		rootProjectRelease: release. 
+
+	"Execute the release."
+	releaseExporter executeReleaseActions.
+	^ releaseExporter
 	
 ]
 
@@ -201,7 +249,6 @@ GtRlReleaserWiki >> executedReleaseWorkflowNoVersionRepoAndDefaultConfigurationN
 { #category : #'examples - releases' }
 GtRlReleaserWiki >> releaseWithNoVersionAndDefaultConfiguration [
 	<gtExample> 
-	
 	| project release releaseBuilder |
 	project := self systemOneProjectWithNoVersions.
 	releaseBuilder := GtRlReleaseBuilder new
@@ -252,6 +299,23 @@ GtRlReleaserWiki >> repositoryReleaseWithNoVersionAndDefaultConfiguration [
 	^ release repositoryRelease
 ]
 
+{ #category : #util }
+GtRlReleaserWiki >> setIcebergRepositoriesWithNoVersionFor: project [
+	project withAllRepositories do: [ :aReposiory |
+		aReposiory icebergRepository: (GtRlIceMinimalRepository new
+			name: aReposiory repositoryName;
+			setHead: (GtRlIceMinimalBranch new
+				name: 'master');
+			addRemote: (GtRlMinimalRemote new
+				name: 'origin')) ].
+	
+	"Fix current issuues caused by projects not being loaded in the image"
+	project withDeep: #childProjects do: [ :aProject |
+		aProject metacelloToolbox: GtRlMetacelloToolBoxWithSpecs new.
+		aProject childProjects do: [ :anotherProject |
+			aProject metacelloToolbox addSpecForBaselineClass: anotherProject baselineClass ] ].
+]
+
 { #category : #'examples - projects' }
 GtRlReleaserWiki >> systemOneProject [
 	<gtExample>
@@ -268,19 +332,29 @@ GtRlReleaserWiki >> systemOneProjectWithNoVersions [
 	<gtExample>
 	| project |
 	project := self systemOneProject. 
-	project withAllRepositories do: [ :aReposiory |
-		aReposiory icebergRepository: (GtRlIceMinimalRepository new
-			name: aReposiory repositoryName;
-			setHead: (GtRlIceMinimalBranch new
-				name: 'master');
-			addRemote: (GtRlMinimalRemote new
-				name: 'origin')) ].
-	
-	"Fix current issuues caused by projects not being loaded in the image"
-	project withDeep: #childProjects do: [ :aProject |
-		aProject metacelloToolbox: GtRlMetacelloToolBoxWithSpecs new.
-		aProject childProjects do: [ :anotherProject |
-			aProject metacelloToolbox addSpecForBaselineClass: anotherProject baselineClass ] ].
-	
+	"For performing a release we need to attach a valid iceberg repo to the contained projects"
+	self setIcebergRepositoriesWithNoVersionFor: project.
+	^ project
+]
+
+{ #category : #'examples - projects' }
+GtRlReleaserWiki >> systemThreeProject [
+	<gtExample>
+	| projectBuilder project |
+	projectBuilder := GtRlDependenciesModelBuilder new.
+	project := projectBuilder 
+		buildProjectFromBaselineClass: BaselineOfGtRlBaselineExampleSystemThree
+		withRepositoryDescription: 'github://example/SystemThree/src'. 
+	^ project
+]
+
+{ #category : #'examples - projects' }
+GtRlReleaserWiki >> systemTwoProject [
+	<gtExample>
+	| projectBuilder project |
+	projectBuilder := GtRlDependenciesModelBuilder new.
+	project := projectBuilder 
+		buildProjectFromBaselineClass: BaselineOfGtRlBaselineExampleSystemTwo
+		withRepositoryDescription: 'github://example/SystemTwo/src'. 
 	^ project
 ]
