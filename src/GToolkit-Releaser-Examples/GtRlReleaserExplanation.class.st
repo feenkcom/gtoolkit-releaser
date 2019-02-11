@@ -106,7 +106,7 @@ ${example:GtRlReleaserWiki>>#executedReleaseWorkflowNoVersionAndDefaultConfigura
 The above steps are useful to understand in mode details how the release is performed. However, for simply performing a release without going into too many details, the short version shown the the previous section is a simpler choice.
 ${example:GtRlReleaserWiki>>#executedReleaseWorkflowNoVersionAndDefaultConfigurationExampleScriptNoTest}$
 
-!! Other types of releases
+!!Other types of releases
 Until now we only looked as perfoming an initial release for a system using the default release configuration. In practice there are many other types of systems and release configurations. The following documents provide more details about othe types of releases for our example system:
 
 - TODO: A second normal and forced release;
@@ -141,19 +141,21 @@ For testing the functionality GtReleaser uses examples that create concrete git 
 
 That is why for documentation, different examples are used that rely on in-memory mocked repositories, instead of real git repositories on disk. Currently GtReleaser has its own implementation of these mocks in the package 'GToolkit-Releaser-BaselineModel-MinimalIceberg'. This implements the minimal API from Iceberg needed to make the documentation work. Iceberg also provides a package. `Iceberg-Memory`, that provides similar functionality. We are not using it given that it is not present in the Pharo image by default and introduces a dependency to Ring2. Ideally if that package is present in the image it could be used instead of the custom mocks.
 
+!!Current limitations 
+
 
 
 "
 Class {
-	#name : #GtRlReleaserWiki,
+	#name : #GtRlReleaserExplanation,
 	#superclass : #Object,
 	#traits : 'TGtRlReleaseBuildAssertions',
 	#classTraits : 'TGtRlReleaseBuildAssertions classTrait',
-	#category : #'GToolkit-Releaser-Wiki'
+	#category : #'GToolkit-Releaser-Examples'
 }
 
 { #category : #assertions }
-GtRlReleaserWiki >> assertInitialReleasesInAllReleasesInSystemOneFor: aRootRelease [
+GtRlReleaserExplanation >> assertInitialReleasesInAllReleasesInSystemOneFor: aRootRelease [
 
 	self 
 		assertReleaseWithBranchStrategy: aRootRelease 
@@ -188,7 +190,7 @@ GtRlReleaserWiki >> assertInitialReleasesInAllReleasesInSystemOneFor: aRootRelea
 ]
 
 { #category : #'examples - configs' }
-GtRlReleaserWiki >> basicReleaseConfiguration [
+GtRlReleaserExplanation >> basicReleaseConfiguration [
 	<gtExample>
 	| configuration |
 	configuration := GtRlReleaseConfiguration new.
@@ -196,7 +198,7 @@ GtRlReleaserWiki >> basicReleaseConfiguration [
 ]
 
 { #category : #'examples - workflows' }
-GtRlReleaserWiki >> executedReleaseWorkflowNoVersionAndDefaultConfigurationExampleScriptNoTest [
+GtRlReleaserExplanation >> executedReleaseWorkflowNoVersionAndDefaultConfigurationExampleScriptNoTest [
 	<gtExample>
 	<noTest>
 	| baseline project releaseExporter |
@@ -209,7 +211,7 @@ GtRlReleaserWiki >> executedReleaseWorkflowNoVersionAndDefaultConfigurationExamp
 ]
 
 { #category : #'examples - workflows' }
-GtRlReleaserWiki >> executedReleaseWorkflowNoVersionAndDefaultConfigurationFullScriptNoTest [
+GtRlReleaserExplanation >> executedReleaseWorkflowNoVersionAndDefaultConfigurationFullScriptNoTest [
 	<gtExample>
 	<noTest>
 	| projectBuilder project releaseBuilder release releaseExporter |
@@ -235,7 +237,7 @@ GtRlReleaserWiki >> executedReleaseWorkflowNoVersionAndDefaultConfigurationFullS
 ]
 
 { #category : #'examples - workflows' }
-GtRlReleaserWiki >> executedReleaseWorkflowNoVersionRepoAndDefaultConfigurationNoTest [
+GtRlReleaserExplanation >> executedReleaseWorkflowNoVersionRepoAndDefaultConfigurationNoTest [
 	<gtExample> 
 	<noTest>	
 	| release releaseExporter |
@@ -247,7 +249,7 @@ GtRlReleaserWiki >> executedReleaseWorkflowNoVersionRepoAndDefaultConfigurationN
 ]
 
 { #category : #'examples - releases' }
-GtRlReleaserWiki >> releaseWithNoVersionAndDefaultConfiguration [
+GtRlReleaserExplanation >> releaseWithNoVersionAndDefaultConfiguration [
 	<gtExample> 
 	| project release releaseBuilder |
 	project := self systemOneProjectWithNoVersions.
@@ -259,7 +261,7 @@ GtRlReleaserWiki >> releaseWithNoVersionAndDefaultConfiguration [
 ]
 
 { #category : #'examples - releases' }
-GtRlReleaserWiki >> releaseWithNoVersionAndDefaultConfigurationNoTest [
+GtRlReleaserExplanation >> releaseWithNoVersionAndDefaultConfigurationNoTest [
 	<gtExample> 
 	<noTest>	
 	| project release releaseBuilder |
@@ -271,7 +273,7 @@ GtRlReleaserWiki >> releaseWithNoVersionAndDefaultConfigurationNoTest [
 ]
 
 { #category : #'examples - workflows' }
-GtRlReleaserWiki >> releaseWorkflowNoVersionRepoAndDefaultConfiguration [
+GtRlReleaserExplanation >> releaseWorkflowNoVersionRepoAndDefaultConfiguration [
 	<gtExample> 
 	| release releaseExporter |
 	release := self releaseWithNoVersionAndDefaultConfiguration.
@@ -283,7 +285,7 @@ GtRlReleaserWiki >> releaseWorkflowNoVersionRepoAndDefaultConfiguration [
 ]
 
 { #category : #'examples - releases' }
-GtRlReleaserWiki >> repositoryReleaseComponentAWithNoVersionAndDefaultConfiguration [
+GtRlReleaserExplanation >> repositoryReleaseComponentAWithNoVersionAndDefaultConfiguration [
 	<gtExample> 
 	| release | 
 	release := self releaseWithNoVersionAndDefaultConfiguration.
@@ -292,7 +294,7 @@ GtRlReleaserWiki >> repositoryReleaseComponentAWithNoVersionAndDefaultConfigurat
 ]
 
 { #category : #'examples - releases' }
-GtRlReleaserWiki >> repositoryReleaseWithNoVersionAndDefaultConfiguration [
+GtRlReleaserExplanation >> repositoryReleaseWithNoVersionAndDefaultConfiguration [
 	<gtExample> 
 	| release | 
 	release := self releaseWithNoVersionAndDefaultConfiguration.
@@ -300,7 +302,7 @@ GtRlReleaserWiki >> repositoryReleaseWithNoVersionAndDefaultConfiguration [
 ]
 
 { #category : #util }
-GtRlReleaserWiki >> setIcebergRepositoriesWithNoVersionFor: project [
+GtRlReleaserExplanation >> setIcebergRepositoriesWithNoVersionFor: project [
 	project withAllRepositories do: [ :aReposiory |
 		aReposiory icebergRepository: (GtRlIceMinimalRepository new
 			name: aReposiory repositoryName;
@@ -317,7 +319,7 @@ GtRlReleaserWiki >> setIcebergRepositoriesWithNoVersionFor: project [
 ]
 
 { #category : #'examples - projects' }
-GtRlReleaserWiki >> systemOneProject [
+GtRlReleaserExplanation >> systemOneProject [
 	<gtExample>
 	| projectBuilder project |
 	projectBuilder := GtRlDependenciesModelBuilder new.
@@ -328,7 +330,7 @@ GtRlReleaserWiki >> systemOneProject [
 ]
 
 { #category : #'examples - projects' }
-GtRlReleaserWiki >> systemOneProjectWithNoVersions [
+GtRlReleaserExplanation >> systemOneProjectWithNoVersions [
 	<gtExample>
 	| project |
 	project := self systemOneProject. 
@@ -338,7 +340,7 @@ GtRlReleaserWiki >> systemOneProjectWithNoVersions [
 ]
 
 { #category : #'examples - projects' }
-GtRlReleaserWiki >> systemThreeProject [
+GtRlReleaserExplanation >> systemThreeProject [
 	<gtExample>
 	| projectBuilder project |
 	projectBuilder := GtRlDependenciesModelBuilder new.
@@ -349,7 +351,7 @@ GtRlReleaserWiki >> systemThreeProject [
 ]
 
 { #category : #'examples - projects' }
-GtRlReleaserWiki >> systemTwoProject [
+GtRlReleaserExplanation >> systemTwoProject [
 	<gtExample>
 	| projectBuilder project |
 	projectBuilder := GtRlDependenciesModelBuilder new.
