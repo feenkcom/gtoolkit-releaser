@@ -244,7 +244,7 @@ GtRlRepositoryRelease >> gtRepoMapFor: aView [
 				toAll: [:each | |dependedRepos |
 					dependedRepos := each childRepositoryReleases.
 					repos select: [ :project | dependedRepos anySatisfy: [ :dependedProject | dependedProject = project ] ] ].
-			mondrian layout custom: (GtGradHorizontalDominanceCenteredTreeLayout new levelDistance: 50; nodeDistance: 10)]
+			mondrian layout custom: (GtGradWestHierarchicalLayout new)]
 ]
 
 { #category : #testing }
