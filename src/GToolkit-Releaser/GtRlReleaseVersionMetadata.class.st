@@ -1,3 +1,10 @@
+"
+I contain information about a concrete release within a repository. 
+
+Currently I contain the list of direct dependencies for all baselines contained in a repository. I store this list in a JSON file within the repository. It is the responsability of the user to update this meta-data every time the baseline is changed. During the release process this is ensured using the action ${class:GtRlExportReleaseMetadataAction}$.
+
+By default the baseline of a version contains all dependency information needed to load that version. However, that information is stored in the method =='baseline:'== within the baseline class. Accessing it requires loading or parsing the code of the baseline. Having the dependency list stored in an external JSON file make it easier for tools to access dependencie without havign to deal with the actual code. The meta-data file could in the future contain other types of information, not just the list of dependencies.
+"
 Class {
 	#name : #GtRlReleaseVersionMetadata,
 	#superclass : #Object,

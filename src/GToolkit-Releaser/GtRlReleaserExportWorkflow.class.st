@@ -1,3 +1,14 @@
+"
+I execute all release actions for a given release.
+
+I exist to provide an API for inspecting and executing release actions. My main methods for accessing release actions are:
+- ${method:GtRlReleaserExportWorkflow>>#releaseActions}$: Returns the complete list of release actions;
+- ${method:GtRlReleaserExportWorkflow>>#releaseCreationActions}$: Returns only the actions executed to create the release;
+- ${method:GtRlReleaserExportWorkflow>>#releasePostCreationActions}$: Returns the actions that should be executed after the release has been completed.
+
+My main API method for executing release actions is ${method:GtRlReleaserExportWorkflow>>#executeReleaseActions}$.
+I rely on the order attribute of release actions to determing the order in which to execute them. 
+"
 Class {
 	#name : #GtRlReleaserExportWorkflow,
 	#superclass : #Object,

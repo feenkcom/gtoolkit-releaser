@@ -1,3 +1,9 @@
+"
+I merge the reference branch to the release branch.
+
+I only work with strategies of type ${class:GtRlSemanticTagReleaseStrategy}$. 
+See ${method:GtRlSemanticTagReleaseStrategy>>#mergeToReleaseBranch} for more implementation details.
+"
 Class {
 	#name : #GtRlMergeToReleaseBranchAction,
 	#superclass : #GtRlRepositoryReleaseAction,
