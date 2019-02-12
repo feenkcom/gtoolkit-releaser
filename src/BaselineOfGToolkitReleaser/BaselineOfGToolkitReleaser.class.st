@@ -144,10 +144,14 @@ That is why for documentation, different examples are used that rely on in-memor
 !!Current limitations 
 There are currently several limitations regarding the kind of projects and baselines GtReleaser can handle.
 
-Regarding baselines, currently GtReleaser only supports a subset of Monticello baselines that define only packages and dependencies to other baselines in the #common spec. This means that the main limitations are:
+Regarding baselines, currently GtReleaser supports a subset of Monticello baselines that define only packages and dependencies to other baselines in the #common spec. This means that the main limitations are:
 - no support for groups within baselines; to use GtReleaser you need to structure baselines in a way that does not use groups;
 - only the #common spec is supported; there is currenly no support for predefined specs like pharo versions (#pharo6 or #pharo7 for example) or custom attributes;
 - only dependencies to other baselines are supported; no dependencies to Metacello configurations can be used.
+
+The main strategy used in GtReleaser for creating a new release is adding a tag on a dedicated release branch. This requires GtReleaser to merge the current branch into the release branch. The merge is done automatically using Iceberg. Currently there are cases, mostly related to removing packages not loaded into the image, that can cause the merge to fail. In that case you should do the merge manually.
+
+Also to ensure that a proper release is created, most operations from GtReleaser contain assertions that check the state of the repository or of the baseline. The relase will fain if an invalid situation is encountered. 
 
 
 
