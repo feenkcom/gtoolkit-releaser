@@ -142,6 +142,13 @@ For testing the functionality GtReleaser uses examples that create concrete git 
 That is why for documentation, different examples are used that rely on in-memory mocked repositories, instead of real git repositories on disk. Currently GtReleaser has its own implementation of these mocks in the package 'GToolkit-Releaser-BaselineModel-MinimalIceberg'. This implements the minimal API from Iceberg needed to make the documentation work. Iceberg also provides a package. `Iceberg-Memory`, that provides similar functionality. We are not using it given that it is not present in the Pharo image by default and introduces a dependency to Ring2. Ideally if that package is present in the image it could be used instead of the custom mocks.
 
 !!Current limitations 
+There are currently several limitations regarding the kind of projects and baselines GtReleaser can handle.
+
+Regarding baselines, currently GtReleaser only supports a subset of Monticello baselines that define only packages and dependencies to other baselines in the #common spec. This means that the main limitations are:
+- no support for groups within baselines; to use GtReleaser you need to structure baselines in a way that does not use groups;
+- only the #common spec is supported; there is currenly no support for predefined specs like pharo versions (#pharo6 or #pharo7 for example) or custom attributes;
+- only dependencies to other baselines are supported; no dependencies to Metacello configurations can be used.
+
 
 
 
