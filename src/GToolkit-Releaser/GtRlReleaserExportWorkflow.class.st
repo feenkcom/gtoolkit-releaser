@@ -113,7 +113,10 @@ GtRlReleaserExportWorkflow class >> switchAllRepositoriesBackToMasterBranch [
 
 { #category : #actions }
 GtRlReleaserExportWorkflow >> executeReleaseActions [
-	^ self releaseActions execute
+	self releaseCreationActions execute.
+	self releasePostCreationActions execute.
+	^ self
+	
 ]
 
 { #category : #ui }

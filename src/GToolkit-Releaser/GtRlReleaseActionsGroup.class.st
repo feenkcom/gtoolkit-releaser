@@ -44,6 +44,11 @@ GtRlReleaseActionsGroup >> count [
 	^ self actions size
 ]
 
+{ #category : #'as yet unclassified' }
+GtRlReleaseActionsGroup >> detect: aBlockClosure [ 
+	^ self actions detect: aBlockClosure
+]
+
 { #category : #testing }
 GtRlReleaseActionsGroup >> do: aBlock [
 	^ actions do: aBlock

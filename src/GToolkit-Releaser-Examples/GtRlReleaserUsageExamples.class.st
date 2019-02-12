@@ -207,7 +207,9 @@ GtRlReleaserUsageExamples >> executedReleaseWorkflowNoVersionAndDefaultConfigura
 		gtRlProjectWithRepository: 'github://example/SystemOne/src'. 
 	releaseExporter := project 
 		exporterWithConfiguration: GtRlReleaseConfiguration new.
-	^ releaseExporter executeReleaseActions
+	releaseExporter releaseCreationActions execute.     "Execute the release"
+	releaseExporter releasePostCreationActions execute. "Push changes."
+	^ releaseExporter
 ]
 
 { #category : #'examples - workflows' }
@@ -231,7 +233,10 @@ GtRlReleaserUsageExamples >> executedReleaseWorkflowNoVersionAndDefaultConfigura
 		rootProjectRelease: release. 
 
 	"Execute the release."
-	releaseExporter executeReleaseActions.
+	releaseExporter releaseCreationActions execute.
+	
+	"Push local changes."
+	releaseExporter releasePostCreationActions execute.
 	^ releaseExporter
 	
 ]
@@ -244,7 +249,8 @@ GtRlReleaserUsageExamples >> executedReleaseWorkflowNoVersionRepoAndDefaultConfi
 	release := self releaseWithNoVersionAndDefaultConfigurationNoTest.
 	releaseExporter := GtRlReleaserExportWorkflow new
 		rootProjectRelease: release. 
-	releaseExporter executeReleaseActions.
+	releaseExporter releaseCreationActions execute.  
+	releaseExporter releasePostCreationActions execute.
 	^ releaseExporter
 ]
 
@@ -318,6 +324,32 @@ GtRlReleaserUsageExamples >> setIcebergRepositoriesWithNoVersionFor: project [
 			aProject metacelloToolbox addSpecForBaselineClass: anotherProject baselineClass ] ].
 ]
 
+{ #category : #'examples - actions' }
+GtRlReleaserUsageExamples >> systemOneCompileBaselineReleaseAction [
+	<gtExample>
+	| projectRelease compileBaselineAction |
+	projectRelease := self releaseWithNoVersionAndDefaultConfiguration.
+	compileBaselineAction := projectRelease releaseActions detect: [ :anAction | 
+		anAction class = GtRlCompileBaselineReleaseAction ].
+	
+	self assert: compileBaselineAction isExecuted not.
+	self assert: compileBaselineAction projectRelease equals: projectRelease.
+	^ compileBaselineAction
+]
+
+{ #category : #'examples - actions' }
+GtRlReleaserUsageExamples >> systemOneExportMetadataReleaseAction [
+	<gtExample>
+	| repositoryRelease exportMetadataAction |
+	repositoryRelease := self repositoryReleaseWithNoVersionAndDefaultConfiguration.
+	exportMetadataAction := repositoryRelease releaseActions detect: [ :anAction | 
+		anAction class = GtRlExportReleaseMetadataAction ].
+	
+	self assert: exportMetadataAction isExecuted not.
+	self assert: exportMetadataAction repositoryRelease equals: repositoryRelease.
+	^ exportMetadataAction
+]
+
 { #category : #'examples - projects' }
 GtRlReleaserUsageExamples >> systemOneProject [
 	<gtExample>
@@ -337,6 +369,19 @@ GtRlReleaserUsageExamples >> systemOneProjectWithNoVersions [
 	"For performing a release we need to attach a valid iceberg repo to the contained projects"
 	self setIcebergRepositoriesWithNoVersionFor: project.
 	^ project
+]
+
+{ #category : #'examples - actions' }
+GtRlReleaserUsageExamples >> systemOnePushReleaseAction [
+	<gtExample>
+	| repositoryRelease pushAction |
+	repositoryRelease := self repositoryReleaseWithNoVersionAndDefaultConfiguration.
+	pushAction := repositoryRelease releaseActions detect: [ :anAction | 
+		anAction class = GtRlPushToOriginReleaseAction ].
+	
+	self assert: pushAction isExecuted not.
+	self assert: pushAction repositoryRelease equals: repositoryRelease.
+	^ pushAction
 ]
 
 { #category : #'examples - projects' }
