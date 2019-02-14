@@ -18,6 +18,24 @@ GtRlCompileBaselineReleaseAction class >> forProjectRelease: aProjectRelease [
 		projectRelease: aProjectRelease
 ]
 
+{ #category : #'private - ui' }
+GtRlCompileBaselineReleaseAction >> baselineCodeForCommit: aCommit [
+	| baselineName baselinePackageName icebergBaselinePackage mcPackage baselineDefinition |
+	baselineName := self projectRelease project baselineClass name.
+	baselinePackageName := self projectRelease project baselineClass package name.
+	icebergBaselinePackage := aCommit packages 
+		detect: [ :aPackage | aPackage name = baselinePackageName ] 
+		ifNone: [ ^ nil ].
+	mcPackage := aCommit snapshotFor: icebergBaselinePackage.
+	baselineDefinition := mcPackage definitions 
+		detect: [ :e | 
+			e isMethodDefinition and: [ 
+				e selector = 'baseline:' and: [ 
+					e className = baselineName ] ] ]
+		ifNone: [ ^ nil ].
+	^ baselineDefinition source
+]
+
 { #category : #printing }
 GtRlCompileBaselineReleaseAction >> description [
 	^ 'Compile baseline ', self projectRelease project baselineClass name
@@ -34,6 +52,39 @@ GtRlCompileBaselineReleaseAction >> gtGeneratedSourceFor: aView [
 	^ self projectRelease 
 		ifNil: [ aView ]
 		ifNotNil: [ self projectRelease gtGeneratedSourceFor: aView ]
+]
+
+{ #category : #ui }
+GtRlCompileBaselineReleaseAction >> gtViewBaselineSourceDiffFor: aView [
+	<gtView>
+	self projectRelease ifNil: [ ^ aView ].
+	^ aView textEditor
+		title: 'Diff current baseline' translated;
+		priority: 20;
+		text: [ :anEditor | 
+			Gt2EpiceaDiffStencil new
+				from: (self projectRelease project baselineClass >> #baseline:);
+				to: (self projectRelease generateBaselineSource);
+				create ]
+]
+
+{ #category : #ui }
+GtRlCompileBaselineReleaseAction >> gtViewPreviousVersionDiffFor: aView [
+	<gtView>
+	self projectRelease ifNil: [ ^ aView ].
+	self projectRelease repositoryRelease semanticVersionTags ifEmpty: [ ^ self ].
+	
+	^ aView textEditor
+		title: 'Diff previous version' translated;
+		priority: 20;
+		text: [ :anEditor | 
+			| latestTag  originalCode |
+			latestTag := self projectRelease repositoryRelease latestSemanticVersionTag.
+			originalCode := self baselineCodeForCommit: latestTag commit.
+			Gt2EpiceaDiffStencil new
+				from: (originalCode ifNil: [ '' ]);
+				to: (self projectRelease generateBaselineSource);
+				create ]
 ]
 
 { #category : #accessing }
