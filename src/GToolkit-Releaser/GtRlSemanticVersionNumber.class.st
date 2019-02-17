@@ -1,8 +1,13 @@
 "
 I use as a version number a symbolic version having the format 'vx.y.z', where x,y,z are the major, minor and patch componets of the version numbers. 
 
-For example, `v0.1.0` and 'v2.42.89' are version numbers that I can represent. 
+For example, `v0.1.0` and 'v2.42.89' are version numbers that I can represent.
+${example:GtRlSemanticVersionNumberExamples>>#semanticVersionNumber}$
+ 
 I do not provide any default and I should be explicitly initialize before being used.
+${example:GtRlSemanticVersionNumberExamples>>#uninitializedSemanticVersionNumber}$
+
+More examples are provided by the class ${class:GtRlSemanticVersionNumberExamples}$
 "
 Class {
 	#name : #GtRlSemanticVersionNumber,
@@ -23,14 +28,20 @@ GtRlSemanticVersionNumber class >> major: majorNumber minor: minorNumber patch: 
 		patch: patchNumber
 ]
 
-{ #category : #comparison }
-GtRlSemanticVersionNumber >> <= aFkRlSemanticVersion [ 
-	self major > aFkRlSemanticVersion major ifTrue: [ ^ false ].
-		self major = aFkRlSemanticVersion major ifTrue: [ 
-			self minor > aFkRlSemanticVersion minor ifTrue: [ ^ false ].
-			self minor = aFkRlSemanticVersion minor ifTrue: [ 
-				self patch > aFkRlSemanticVersion patch ifTrue: [ ^ false ]]].
-	^ true.
+{ #category : #comparing }
+GtRlSemanticVersionNumber >> < aSemanticVersionNumber [
+	self major < aSemanticVersionNumber major ifTrue: [ ^ true ].
+		self major = aSemanticVersionNumber major ifTrue: [ 
+			self minor < aSemanticVersionNumber minor ifTrue: [ ^ true ].
+			self minor = aSemanticVersionNumber minor ifTrue: [ 
+				self patch < aSemanticVersionNumber patch ifTrue: [ ^ true ]]].
+	^ false.
+]
+
+{ #category : #comparing }
+GtRlSemanticVersionNumber >> <= aSemanticVersionNumber [
+	"Answer whether the receiver is less than or equal to the given version number."
+	^ (self > aSemanticVersionNumber) not
 ]
 
 { #category : #comparing }
@@ -40,6 +51,20 @@ GtRlSemanticVersionNumber >> = anObject [
 	^ self major = anObject major and: [ 
 		 self minor = anObject minor and: [ 
 			self patch = anObject patch ] ]
+]
+
+{ #category : #comparing }
+GtRlSemanticVersionNumber >> > aSemanticVersionNumber [ 
+	"Answer whether the receiver is greater than the argument."
+
+	^aSemanticVersionNumber < self
+]
+
+{ #category : #comparing }
+GtRlSemanticVersionNumber >> >= aSemanticVersionNumber [ 
+	"Answer whether the receiver is greater than or equal to the argument."
+
+	^ aSemanticVersionNumber <= self
 ]
 
 { #category : #comparing }

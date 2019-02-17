@@ -44,7 +44,7 @@ GtRlReleaseActionsGroup >> count [
 	^ self actions size
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #enumerating }
 GtRlReleaseActionsGroup >> detect: aBlockClosure [ 
 	^ self actions detect: aBlockClosure
 ]

@@ -4,7 +4,7 @@ Class {
 	#category : #'GToolkit-Releaser-Examples'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'examples ' }
 GtRlSemanticVersionComputationExamples >> nextMajorVersionComputation [
 	<gtExample>
 	| versionComputation |
@@ -20,7 +20,7 @@ GtRlSemanticVersionComputationExamples >> nextMajorVersionComputation [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'examples ' }
 GtRlSemanticVersionComputationExamples >> nextMajorVersionComputationResettingPatchAndMinorNumbers [
 	<gtExample>
 	| versionComputation |
@@ -33,7 +33,7 @@ GtRlSemanticVersionComputationExamples >> nextMajorVersionComputationResettingPa
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'examples ' }
 GtRlSemanticVersionComputationExamples >> nextMinorVersionComputation [
 	<gtExample>
 	| versionComputation |
@@ -49,7 +49,7 @@ GtRlSemanticVersionComputationExamples >> nextMinorVersionComputation [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'examples ' }
 GtRlSemanticVersionComputationExamples >> nextMinorVersionComputationResettingPatchNumber [
 	<gtExample>
 	| versionComputation |
@@ -62,7 +62,7 @@ GtRlSemanticVersionComputationExamples >> nextMinorVersionComputationResettingPa
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'examples ' }
 GtRlSemanticVersionComputationExamples >> nextPatchVersionComputation [
 	<gtExample>
 	| versionComputation |

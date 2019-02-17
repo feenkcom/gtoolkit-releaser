@@ -1,5 +1,9 @@
 "
 I use the tag name of an already existent tag from the repository as a version number. I should be used only if the tag with the given name already exists in the repository.
+
+${example:GtRlTagVersionNumberExamples>>#tagVersionNumber}$
+
+More examples are provided by the class ${class:GtRlTagVersionNumberExamples}$
 "
 Class {
 	#name : #GtRlTagVersionNumber,

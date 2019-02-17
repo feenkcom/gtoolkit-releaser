@@ -1,5 +1,9 @@
 "
-I use the full id of a commit as a version number. I should only be used if a commit already exists.
+I use the full id of a commit as a version number. I should only be used if a commit id is set.
+
+${example:GtRlCommitIdVersionNumberExamples>>#commitIdVersionNumber}$
+
+More examples are provided by the class ${class:GtRlCommitIdVersionNumberExamples}$
 "
 Class {
 	#name : #GtRlCommitIdVersionNumber,
@@ -33,7 +37,10 @@ GtRlCommitIdVersionNumber >> commitId: aCommitId [
 
 { #category : #accessing }
 GtRlCommitIdVersionNumber >> description [ 
-	^ self versionString first: 7
+	^ self versionString 
+		ifNil: [ nil ] 
+		ifNotNil: [ :aVersionString | aVersionString first: 7 ]
+	
 ]
 
 { #category : #accessing }

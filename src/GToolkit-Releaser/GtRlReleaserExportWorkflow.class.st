@@ -22,12 +22,12 @@ Class {
 { #category : #releasing }
 GtRlReleaserExportWorkflow class >> buildGToolkitRelease [
 	| releaseConfiguration workflow | 
-		releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
-		releaseConfiguration emit.
-		workflow := GtRlReleaserExportWorkflow 
-			forBaseline: BaselineOfGToolkit 
-			fromRepository: 'github://feenkcom/gtoolkit/src'
-			withConfiguration: releaseConfiguration.
+	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
+	releaseConfiguration emit.
+	workflow := GtRlReleaserExportWorkflow 
+		forBaseline: BaselineOfGToolkit 
+		fromRepository: 'github://feenkcom/gtoolkit/src'
+		withConfiguration: releaseConfiguration.
 	^ workflow
 ]
 
