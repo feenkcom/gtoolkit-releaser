@@ -86,7 +86,7 @@ Among others we observe that the release updates the baseline and is performed o
 
 ${example:GtRlReleaserUsageExamples>>#repositoryReleaseComponentAWithNoVersionAndDefaultConfiguration|previewShow=#gtReleaseActionsFor:|previewHeight=200|noCode}$
 
-To finally execute the release we instatiate the class ${class:GtRlReleaserExportWorkflow}$ and call the method ${method:GtRlReleaserExportWorkflow>>#executeReleaseActions}$. This performs all actions associated with the release including updating baselines and pushing changes, if needed.
+To finally perform the release we instatiate the class ${class:GtRlReleaserExportWorkflow}$ and execute all release actions. ${method:GtRlReleaserExportWorkflow>>#releaseCreationActions}$returns the actions that create the actual release (for example update baselines and create tags), and ${method:GtRlReleaserExportWorkflow>>#releasePostCreationActions}$ the actions that should be executed after the release is created; they consists in actions for pushing changes to the remote branches. Alternatively  ${method:GtRlReleaserExportWorkflow>>#executeReleaseActions}$ executes both these types of actions.
 
 ${example:GtRlReleaserUsageExamples>>#executedReleaseWorkflowNoVersionRepoAndDefaultConfigurationNoTest}$
 
@@ -105,6 +105,17 @@ ${example:GtRlReleaserUsageExamples>>#executedReleaseWorkflowNoVersionAndDefault
 
 The above steps are useful to understand in mode details how the release is performed. However, for simply performing a release without going into too many details, the short version shown the the previous section is a simpler choice.
 ${example:GtRlReleaserUsageExamples>>#executedReleaseWorkflowNoVersionAndDefaultConfigurationExampleScriptNoTest}$
+
+!!Exploring release actions
+To get a better overview of what is going to happen during a release we can inspect the release actions. Each action has a 'Description' view containing a short overview of what that action does. For example, below we are inspecting the action doing a push for the repository =='github://example/SystemOne/src'==. 
+
+${example:GtRlReleaserUsageExamples>>#systemOnePushReleaseAction|previewHeight=250|noCode}$
+
+Actions also have views that give more details about how they affect the release. For example, the action for compiling the baseline ${class:BaselineOfGtRlBaselineExampleSystemOne}$ from the repository =='github://example/SystemOne/src'==  has a view that shows the new generated code for that baseline.
+${example:GtRlReleaserUsageExamples>>#systemOneCompileBaselineReleaseAction|previewShow=#gtGeneratedSourceFor:|previewHeight=300|noCode}$
+
+Similarly if we want to see what metadata is going to be exported for the repository =='github://example/SystemOne/src'== we can inspect the corresponding action which has a view showing the new content of the metadata file.
+${example:GtRlReleaserUsageExamples>>#systemOneExportMetadataReleaseAction|previewShow=#gtBaselineVersionMetadataFor:|previewHeight=250|noCode}$
 
 !!Other types of releases
 Until now we only looked as perfoming an initial release for a system using the default release configuration. In practice there are many other types of systems and release configurations. The following documents provide more details about othe types of releases for our example system:
@@ -142,6 +153,17 @@ For testing the functionality GtReleaser uses examples that create concrete git 
 That is why for documentation, different examples are used that rely on in-memory mocked repositories, instead of real git repositories on disk. Currently GtReleaser has its own implementation of these mocks in the package 'GToolkit-Releaser-BaselineModel-MinimalIceberg'. This implements the minimal API from Iceberg needed to make the documentation work. Iceberg also provides a package. `Iceberg-Memory`, that provides similar functionality. We are not using it given that it is not present in the Pharo image by default and introduces a dependency to Ring2. Ideally if that package is present in the image it could be used instead of the custom mocks.
 
 !!Current limitations 
+There are currently several limitations regarding the kind of projects and baselines GtReleaser can handle.
+
+Regarding baselines, currently GtReleaser supports a subset of Monticello baselines that define only packages and dependencies to other baselines in the #common spec. This means that the main limitations are:
+- no support for groups within baselines; to use GtReleaser you need to structure baselines in a way that does not use groups;
+- only the #common spec is supported; there is currenly no support for predefined specs like pharo versions (#pharo6 or #pharo7 for example) or custom attributes;
+- only dependencies to other baselines are supported; no dependencies to Metacello configurations can be used.
+
+The main strategy used in GtReleaser for creating a new release is adding a tag on a dedicated release branch. This requires GtReleaser to merge the current branch into the release branch. The merge is done automatically using Iceberg. Currently there are cases, mostly related to removing packages not loaded into the image, that can cause the merge to fail. In that case you should do the merge manually.
+
+Also to ensure that a proper release is created, most operations from GtReleaser contain assertions that check the state of the repository or of the baseline. The relase will fain if an invalid situation is encountered. 
+
 
 
 

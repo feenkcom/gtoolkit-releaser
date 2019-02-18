@@ -1,5 +1,10 @@
 "
 I am null version number that can be used instead of ==nil==.
+
+${example:GtRlNullVersionNumberExamples>>#nullVersionNumber}$
+
+A null version number is equal to any other null version number.
+${example:GtRlNullVersionNumberExamples>>#nullVersionNumberEqualityExample}$
 "
 Class {
 	#name : #GtRlNullVersionNumber,

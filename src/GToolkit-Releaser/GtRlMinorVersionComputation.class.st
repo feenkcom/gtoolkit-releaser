@@ -1,5 +1,10 @@
 "
-I increment the minor number of a semantic version.
+I increment the minor number of a semantic version. I reset the minor part of version number to zero.
+
+${example:GtRlSemanticVersionComputationExamples>>#nextMinorVersionComputation}$
+
+If the symbolic version number on which I am applied has a patch number I reset it to zero in the created version number.
+${example:GtRlSemanticVersionComputationExamples>>#nextMinorVersionComputationResettingPatchNumber}$
 "
 Class {
 	#name : #GtRlMinorVersionComputation,
@@ -12,5 +17,5 @@ GtRlMinorVersionComputation >> nextSemanticVersionFrom: aSemanticVersion [
 	^ GtRlSemanticVersionNumber 
 		major: aSemanticVersion major
 		minor: aSemanticVersion minor + 1 
-		patch: aSemanticVersion patch
+		patch: 0 "Reset to zero"
 ]
