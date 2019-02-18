@@ -253,8 +253,11 @@ GtRlRepositoryRelease >> gtRepositoryMapFor: aView [
 	^ aView explicit
 		title: 'Release Graph';
 		stencil: [
-			| gtconnector  |
+			| gtconnector options |
 			gtconnector := GtConnector new.
+			options := GtConnectorOptions new.
+			options drawLines: false.
+			gtconnector options: options.
 			gtconnector stencil: [ :aRepositoryRelease | |container children label textColor |
 					textColor := aRepositoryRelease isPassiveRelease 
 						ifTrue: [ Color gray ] ifFalse: [ Color black ].
