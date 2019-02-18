@@ -247,6 +247,79 @@ GtRlRepositoryRelease >> gtRepoMapFor: aView [
 			mondrian layout custom: (GtGradWestHierarchicalLayout new)]
 ]
 
+{ #category : #ui }
+GtRlRepositoryRelease >> gtRepositoryMapFor: aView [
+	<gtView> 
+	^ aView explicit
+		title: 'Release Graph';
+		stencil: [
+			| gtconnector  |
+			gtconnector := GtConnector new.
+			gtconnector stencil: [ :aRepositoryRelease | |container children label textColor |
+					textColor := aRepositoryRelease isPassiveRelease 
+						ifTrue: [ Color gray ] ifFalse: [ Color black ].
+					container := VocalBlElement new
+						layout: BlLinearLayout vertical;
+						border: (BlBorder paint: Color gray width: 1);
+						zIndex: 1;
+						constraintsDo: [ :c |
+							c padding: (BlInsets all: 5).
+							c horizontal fitContent.
+							c vertical fitContent ].
+					container
+						connector 
+							beLayoutSource; 
+							beLayoutTarget;
+							beVisualTarget;
+							model: aRepositoryRelease.
+					label := BlTextElement new
+						text: (aRepositoryRelease description asRopedText foreground: textColor);
+						constraintsDo: [ :c | 
+							c padding: (BlInsets all: 5).
+							c linear horizontal alignCenter ].
+					children := BlElement new.
+					children	layout: BlLinearLayout vertical.
+					children						
+						zIndex: 1;
+						constraintsDo: [ :c |
+							c padding: (BlInsets all: 2).
+							c horizontal fitContent.
+							c vertical fitContent.
+							c linear horizontal alignCenter ].
+					container
+						addChild: label.
+					aRepositoryRelease projectReleases do: [ :aProjectRelease |
+						|text vocalProject|
+						textColor := (aProjectRelease hasReleaseActions not or: [ aProjectRelease isLeaf ])
+								ifTrue: [ Color gray ] ifFalse: [ Color black ].
+						text := aProjectRelease project name asRopedText foreground: textColor.
+						
+						vocalProject := VocalBlElement new.
+						vocalProject layout: BlLinearLayout vertical.
+						vocalProject constraintsDo: [ :c | 
+									c padding: (BlInsets all: 2).
+									c horizontal fitContent.
+									c vertical fitContent.
+									c linear horizontal alignCenter].
+						vocalProject addChild: ((BlTextElement text: text)" constraintsDo: [ :c | 
+									c padding: (BlInsets all: 2).
+									c horizontal fitContent.
+									c vertical fitContent]").
+						vocalProject connector beVisualSource.
+						aProjectRelease childReleases do: [ :each | 
+							each repositoryRelease ~= aRepositoryRelease ifTrue: [
+								vocalProject connector addToModelObjectList: each repositoryRelease]].
+						vocalProject when: BlDoubleClickEvent do: [ :event | 
+							aProjectRelease childReleases do: [ :each | 
+								each repositoryRelease ~= aRepositoryRelease ifTrue: [
+									gtconnector addEntity: each repositoryRelease]]].
+						children addChild: vocalProject].
+				   container addChild: children.
+					container].
+			gtconnector addEntity: self.
+			gtconnector asPannableElement ]
+]
+
 { #category : #testing }
 GtRlRepositoryRelease >> hasRemoteOrigin [
 	^ self icebergRepository remotes 
