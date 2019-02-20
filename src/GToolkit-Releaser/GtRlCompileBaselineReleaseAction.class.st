@@ -62,7 +62,7 @@ GtRlCompileBaselineReleaseAction >> gtViewBaselineSourceDiffFor: aView [
 		title: 'Diff current baseline' translated;
 		priority: 20;
 		text: [ :anEditor | 
-			Gt2EpiceaDiffStencil new
+			GtEpiceaDiffStencil new
 				from: (self projectRelease project baselineClass >> #baseline:);
 				to: (self projectRelease generateBaselineSource);
 				create ]
@@ -81,7 +81,7 @@ GtRlCompileBaselineReleaseAction >> gtViewPreviousVersionDiffFor: aView [
 			| latestTag  originalCode |
 			latestTag := self projectRelease repositoryRelease latestSemanticVersionTag.
 			originalCode := self baselineCodeForCommit: latestTag commit.
-			Gt2EpiceaDiffStencil new
+			GtEpiceaDiffStencil new
 				from: (originalCode ifNil: [ '' ]);
 				to: (self projectRelease generateBaselineSource);
 				create ]
