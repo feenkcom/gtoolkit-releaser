@@ -19,6 +19,12 @@ Class {
 	#category : #'GToolkit-Releaser-BaselineModel-Builder'
 }
 
+{ #category : #assertions }
+GtRlDependenciesModelBuilder >> assertBaselineMethodIn: aBaselineClass [
+	self assert: [ aBaselineClass includesSelector: #baseline: ].
+	self assert: [ (aBaselineClass >> #baseline:) hasPragmaNamed: #baseline ]
+]
+
 { #category : #building }
 GtRlDependenciesModelBuilder >> buildPackageFromMetacelloSpec: aMetacelloPackageSpec [
 	^ GtRlPackage new
@@ -49,6 +55,7 @@ GtRlDependenciesModelBuilder >> buildProjectFromMetacelloSpec: aMetacelloProject
 	| newProject |
 	self assert: [ aMetacelloProjectSpec project versions size = 1 ].
 	self assert: [ aMetacelloProjectSpec repositorySpecs size = 1 ].
+	self assertBaselineMethodIn: aMetacelloProjectSpec projectClass.
 	
 	"If the project was already created return the existing project.
 	This does not initialize any dependencies as it assumes they are already initialized."
@@ -122,12 +129,12 @@ GtRlDependenciesModelBuilder >> updatePackageDependenciesFor: currentProject fro
 GtRlDependenciesModelBuilder >> updateProjectDependenciesFor: currentProject fromMCVersion: aMetacelloVersion [
 	| childProjects |
 	childProjects := (aMetacelloVersion projects 
-		select: [ :aMetacelloProjectSpec || shouldReject |
-			shouldReject := aMetacelloProjectSpec version notNil and: [ 
+		select: [ :aMetacelloProjectSpec || shouldKeep |
+			shouldKeep := aMetacelloProjectSpec version notNil and: [ 
 				aMetacelloProjectSpec version name = 'baseline' ].
-			shouldReject ifFalse: [ 
+			shouldKeep ifFalse: [ 
 				StringSignal emit: ('Ignoring dependency ', aMetacelloProjectSpec className, ' of ', currentProject name) ].
-			shouldReject ])
+			shouldKeep ])
 		collect: [ :aMCProjectSpec | 
 			self buildProjectFromMetacelloSpec: aMCProjectSpec ].
 	currentProject addChildProjects: childProjects.
