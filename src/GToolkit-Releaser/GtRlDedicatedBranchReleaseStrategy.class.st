@@ -78,13 +78,18 @@ GtRlDedicatedBranchReleaseStrategy >> isReferenceBranchMergedIn: anIceCommit [
 GtRlDedicatedBranchReleaseStrategy >> mergeToReleaseBranch [
 	| icebergRepository |
 	icebergRepository := self repositoryRelease icebergRepository.
-"	self 
+	self 
 		assert: [ icebergRepository isModified not ]
-		description: 'There should be no changes in the repository when switching to the release branch.'."
+		description: 'There should be no changes in the repository when switching to the release branch.'.
 	self 
 		assert: [ icebergRepository branchName = self referenceBranchName ]
 		description: 'The Iceberg repository needs to be on the reference branch.'.
-	self repositoryRelease mergeToBranch: self releaseBranchName
+	self repositoryRelease mergeToBranch: self releaseBranchName.
+	
+	"This reduces the number of releases that can be performed by releaser automatically especially when classes are moved across packages."
+	self 
+		assert: [ icebergRepository isModified not ]
+		description: 'There should be no changes in the repository after merging to the release branch.'.
 ]
 
 { #category : #'accessing - dynamic' }
