@@ -28,6 +28,12 @@ GtRlExamplesExplorer >> containedTestCasesCount [
 	^ self containedTestCases size
 ]
 
+{ #category : #accessing }
+GtRlExamplesExplorer >> gtClassesFor: aView [ 
+	<gtView>
+	^ self containedExamples gtClassesFor: aView
+]
+
 { #category : #ui }
 GtRlExamplesExplorer >> gtViewExamplesFor: aView [
 	<gtView>
