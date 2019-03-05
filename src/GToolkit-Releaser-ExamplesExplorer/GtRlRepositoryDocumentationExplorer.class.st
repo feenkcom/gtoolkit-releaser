@@ -24,13 +24,13 @@ GtRlRepositoryDocumentationExplorer >> initializeForRepository: aRepository [
 			| packageClasses |
 			packageClasses := aRPackage classes.
 			self tutorialClasses addAll: (packageClasses select: [ :aClass | 
-				(aClass name endsWith: 'Tutorial') and: [ aClass gtExamples isNotEmpty ] ]).
+				(aClass name endsWith: 'Tutorial') and: [aClass hasComment ] ]).
 			self howToGuideClasses addAll: (packageClasses select: [ :aClass | 
-				(aClass name endsWith: 'HowToGuide') and: [ aClass gtExamples isNotEmpty ]  ]).
+				(aClass name endsWith: 'HowToGuide') and: [aClass hasComment ] ]).
 			self explanationClasses addAll: (packageClasses select: [ :aClass | 
-				(aClass name endsWith: 'Explanation') and: [ aClass gtExamples isNotEmpty ] ]).
+				(aClass name endsWith: 'Explanation') and: [aClass hasComment ] ]).
 			self exampleClasses addAll: (packageClasses select: [ :aClass | 
-				(aClass name endsWith: 'Examples') and: [ aClass gtExamples isNotEmpty ] ]) ] ]
+				(aClass name endsWith: 'Examples') and: [aClass hasComment ] ]) ] ]
 	
 ]
 
