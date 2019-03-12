@@ -59,6 +59,11 @@ GtRlReleaseActionsGroup >> execute [
 	self actions do: #execute
 ]
 
+{ #category : #actions }
+GtRlReleaseActionsGroup >> executeUnexecutedActions [
+	(self actions reject: #isExecuted) do: #execute
+]
+
 { #category : #ui }
 GtRlReleaseActionsGroup >> format: aString for: anAction [
 	^ anAction isExecuted
@@ -82,7 +87,9 @@ GtRlReleaseActionsGroup >> gtReleaseActionsFor: aView [
 		column: 'Action' item: [ :anAction | 
 			self format: anAction name for: anAction ];
 		column: 'Details' item: [ :anAction | 
-			self format: anAction descriptionDetails for: anAction ]
+			self format: anAction descriptionDetails for: anAction ];
+		actionButtonLabel: 'Execute' action: [ 
+			self executeUnexecutedActions ]
 ]
 
 { #category : #initialization }
