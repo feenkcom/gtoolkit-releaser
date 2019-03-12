@@ -167,18 +167,13 @@ GtRlProject >> gtProjectMapFor: aView [
 					BlTextElement new text: aProject name asRopedText ];
 				with: self withAllChildProjects.
 			mondrian edges
-				shape: [
-					BlLineElement new 
-						zIndex: -1;
-						border: (BlBorder paint: (Color gray alpha: 0.5) width: 2);
-						toHead: (BlArrowheadSimpleArrow new
-							border: (BlBorder builder paint: (Color gray alpha: 0.5); width: 2; build)) ];
+				shape: [ BlLineElement new 
+					border: (BlBorder paint: (Color gray alpha: 0.5) width: 2);
+					toHead:  BlArrowheadSimpleArrow withBorder];
 				fromRightCenter;
 				toLeftCenter;
 				connectToAll: #childProjects.
-			mondrian layout horizontalDominanceTree 
-				nodeDistance: 10; 
-				levelDistance: 10 ]
+			mondrian layout custom: (GtGradWestHierarchicalLayout new) ]
 ]
 
 { #category : #ui }

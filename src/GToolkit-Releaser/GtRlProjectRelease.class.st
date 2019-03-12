@@ -96,9 +96,7 @@ GtRlProjectRelease >> gtProjectMapFor: aView [
 				fromRightCenter;
 				toLeftCenter;
 				connectToAll: #childReleases.
-			mondrian layout horizontalDominanceTree 
-				nodeDistance: 10; 
-				levelDistance: 10 ]
+			mondrian layout custom: GtGradWestHierarchicalLayout new ]
 ]
 
 { #category : #ui }
