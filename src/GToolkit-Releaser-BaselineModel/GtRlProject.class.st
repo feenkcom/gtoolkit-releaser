@@ -167,9 +167,12 @@ GtRlProject >> gtProjectMapFor: aView [
 					BlTextElement new text: aProject name asRopedText ];
 				with: self withAllChildProjects.
 			mondrian edges
-				shape: [ BlLineElement new 
-					border: (BlBorder paint: (Color gray alpha: 0.5) width: 2);
-					toHead:  BlArrowheadSimpleArrow withBorder];
+				shape: [ 
+					BlLineElement new 
+						zIndex: -1;
+						border: (BlBorder paint: (Color gray alpha: 0.5) width: 2);
+						toHead: (BlArrowheadSimpleArrow new
+							border: (BlBorder builder paint: (Color gray alpha: 0.5); width: 2; build)) ];
 				fromRightCenter;
 				toLeftCenter;
 				connectToAll: #childProjects.
