@@ -45,6 +45,14 @@ IceRepository >> gtTagsFor: aView [
 ]
 
 { #category : #'*GToolkit-Releaser-IcebergExtensions' }
+IceRepository >> gtViewDiffToReferenceCommitFor: aView [
+	<gtView>
+	^ self workingCopy 
+		ifNil: [ aView ]
+		ifNotNil: [ self workingCopy gtViewDiffToReferenceCommitFor: aView ]
+]
+
+{ #category : #'*GToolkit-Releaser-IcebergExtensions' }
 IceRepository >> gtViewIncomingCommitsFor: aView [
 	<gtView>
 	| incomingCommits |

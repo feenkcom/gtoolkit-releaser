@@ -10,3 +10,11 @@ IceWorkingCopy >> gtPackagesFor: aView [
 		column: 'Name' item: #gtPackageDescription;
 		column: 'Status' item: #gtPackageStatus
 ]
+
+{ #category : #'*GToolkit-Releaser-IcebergExtensions' }
+IceWorkingCopy >> gtViewDiffToReferenceCommitFor: aView [
+	<gtView>
+	^ (self diffToReferenceCommit 
+		gtViewInspectorDiffFor: aView)
+			priority: 19
+]
