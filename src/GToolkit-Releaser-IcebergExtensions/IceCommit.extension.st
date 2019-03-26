@@ -72,5 +72,6 @@ IceCommit >> gtDetailsFor: aView [
 			'Tags'    -> self tagNames asCommaString.
 			'Comment' -> self commit comment } ];
 		column: 'Property' item: #key;
-		column: 'Value' item: #value
+		column: 'Value' item: #value;
+		send: #value
 ]
