@@ -21,7 +21,7 @@ Class {
 
 { #category : #converting }
 GtRlPackage >> asRPackage [
-	^ self name asPackage
+	[^ self name asPackage] on: NotFound do:[ ^ nil ]
 ]
 
 { #category : #accessing }
