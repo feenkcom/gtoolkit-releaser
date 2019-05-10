@@ -47,6 +47,18 @@ GtRlReleaserExportWorkflow class >> buildGToolkitRelease: version [
 	^ workflow
 ]
 
+{ #category : #releasing }
+GtRlReleaserExportWorkflow class >> buildSociatorRelease [
+	| releaseConfiguration workflow | 
+	releaseConfiguration := GtRlReleaserExportWorkflow sociatorReleaseConfiguration.
+	releaseConfiguration emit.
+	workflow := GtRlReleaserExportWorkflow 
+		forBaseline: BaselineOfSociator
+		fromRepository: 'github://feenkcom/sociator/src'
+		withConfiguration: releaseConfiguration.
+	^ workflow
+]
+
 { #category : #'instance creation' }
 GtRlReleaserExportWorkflow class >> forBaseline: aBaselineClass fromRepository: aRepositoryUrl withConfiguration: aReleaseConfiguration [
 	| projectBuilder releaseBuilder project release |
@@ -97,6 +109,27 @@ GtRlReleaserExportWorkflow class >> performGToolkitRelease [
 	| workflow |
 	workflow := self buildGToolkitRelease.
 	^ workflow executeReleaseActions.
+]
+
+{ #category : #releasing }
+GtRlReleaserExportWorkflow class >> sociatorReleaseConfiguration [
+	^ GtRlReleaseConfiguration new
+	defaultVersionNumber: (GtRlSemanticVersionNumber major:0 minor: 4 patch: 0);
+	defaultReleaseBranchName: 'release';
+	defaultVersionComputation: GtRlPatchVersionComputation new;	
+	setReleaseStrategyOfType: GtRlLeafProjectReleaseStrategy forProjecs: {
+		'github://feenkcom/gtoolkit-releaser/src' };
+	setReleaseStrategyOfType: GtRlHeadCommitReleaseStrategy forProjecs: {
+		'github://kursjan/petitparser2'.
+		'github://j-brant/SmaCC/src'.
+		'github://pharo-project/pharo-beacon/repository'.
+		'github://svenvc/NeoJSON/repository'};
+	setReleaseStrategyOfType: GtRlBaselineTagReleaseStrategy forProjecs: {
+		'github://noha/mustache/repository'.
+		'github://sbragagnolo/taskit'.
+		'github://feenkcom/Containers-PropertyEnvironment'.
+		
+		'github://feenkcom/Chrysal/src' }
 ]
 
 { #category : #releasing }
