@@ -75,7 +75,7 @@ GtRlReleaserExportWorkflow class >> forProject: aProject withConfiguration: aRel
 { #category : #releasing }
 GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 	^ GtRlReleaseConfiguration new
-	defaultVersionNumber: (GtRlSemanticVersionNumber major:0 minor: 4 patch: 0);
+	defaultVersionNumber: (GtRlSemanticVersionNumber major:0 minor: 6 patch: 0);
 	defaultReleaseBranchName: 'release';
 	defaultVersionComputation: GtRlPatchVersionComputation new;	
 	setReleaseStrategyOfType: GtRlLeafProjectReleaseStrategy forProjecs: {
