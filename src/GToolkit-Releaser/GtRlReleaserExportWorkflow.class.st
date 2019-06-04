@@ -84,7 +84,8 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://kursjan/petitparser2'.
 		'github://j-brant/SmaCC/src'.
 		'github://pharo-project/pharo-beacon/repository'.
-		'github://svenvc/NeoJSON/repository'};
+		'github://svenvc/NeoJSON/repository'.
+		'github://pharo-contributions/CollectionExtensions/src'};
 	setReleaseStrategyOfType: GtRlBaselineTagReleaseStrategy forProjecs: {
 		'github://noha/mustache/repository'.
 		'github://sbragagnolo/taskit'.
