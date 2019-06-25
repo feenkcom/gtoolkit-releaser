@@ -11,9 +11,9 @@ IceMerge >> executeWithAcceptingLeftOnConflict [
 	If the image and merge commit are the same, and the headCommit is their ancestor, we should do nothing.
 	Otherwise, we should merge the two commits we have, discerning well which is the left and which is the right commit." 
 	self calculateChanges.
-	self conflictsDo: [ :operation |
-		operation selectLeft.
-	].
+	self hasConflicts ifTrue: [ 
+		self conflictsDo: [ :operation |
+			operation selectLeft ] ].
 	commitToAdvance := self updateHead.
 	
 	self updateWorkingCopy.
