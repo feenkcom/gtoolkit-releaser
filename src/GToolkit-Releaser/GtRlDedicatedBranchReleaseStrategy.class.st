@@ -48,9 +48,10 @@ GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChangesBetween: aSourceCo
 
 	self assert: sourceDiff isEmpty.
 	releaserChanges := OrderedCollection new.
-	targetDiff tree allChildrenDo: [ :e |
-		(e isEmptyNode not and: [ e value hasChanges ]) ifTrue: [ 
-			releaserChanges add: e ] ].
+	targetDiff tree isEmptyNode ifFalse: [ 
+		targetDiff tree allChildrenDo: [ :e |
+			(e isEmptyNode not and: [ e value hasChanges ]) ifTrue: [ 
+				releaserChanges add: e ] ] ].
 	
 	self assert: (releaserChanges allSatisfy: [ :aNode |
 		aNode key = GtRlReleaseVersionMetadata fileName or: [ 
