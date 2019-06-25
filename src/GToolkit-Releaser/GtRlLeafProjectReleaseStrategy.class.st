@@ -26,7 +26,13 @@ GtRlLeafProjectReleaseStrategy >> assertCompatibleWithRepository: aRepository [
 
 { #category : #assertions }
 GtRlLeafProjectReleaseStrategy >> assertOnlyAllowedChanges [
-	self flag: 'to implement'
+	| releaseCommit sourceDiff |
+	
+	releaseCommit := self releaseBranch commit.
+	self assert: releaseCommit ancestors size = 1.
+	
+	sourceDiff := releaseCommit diffTo: releaseCommit parent.
+	self assert: sourceDiff isEmpty.
 ]
 
 { #category : #printing }

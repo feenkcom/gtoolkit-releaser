@@ -20,6 +20,16 @@ Class {
 }
 
 { #category : #assertions }
+GtRlDedicatedBranchReleaseStrategy >> assertBaselineMethodNodeFor: aNode [
+	self assert: aNode value definition isMethodDefinition.
+	self assert: aNode value isModification.
+	self assert: aNode parent value hasChanges not.
+	self assert: aNode parent value definition isClassDefinition.
+	self assert: aNode parent value definition isMeta not.
+	self assert: (aNode parent value definition name matchesRegex: 'BaselineOf.+').
+]
+
+{ #category : #assertions }
 GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChanges [
 	| referenceCommit releaseCommit |
 	
@@ -27,6 +37,32 @@ GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChanges [
 	releaseCommit := self releaseBranch commit.
 
 	self assertOnlyAllowedChangesBetween: referenceCommit and: releaseCommit.
+]
+
+{ #category : #assertions }
+GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChangesBetween: aSourceCommit and: aTargetCommit [
+	| commonAncestor sourceDiff targetDiff releaserChanges metadataChanges |
+	commonAncestor := (aSourceCommit commonAncestorWith: aTargetCommit).
+	sourceDiff := aSourceCommit diffTo: commonAncestor.
+	targetDiff := aTargetCommit diffTo: commonAncestor.
+
+	self assert: sourceDiff isEmpty.
+	releaserChanges := OrderedCollection new.
+	targetDiff tree allChildrenDo: [ :e |
+		(e isEmptyNode not and: [ e value hasChanges ]) ifTrue: [ 
+			releaserChanges add: e ] ].
+	
+	self assert: (releaserChanges allSatisfy: [ :aNode |
+		aNode key = GtRlReleaseVersionMetadata fileName or: [ 
+			aNode key = 'baseline:' ] ]).
+	releaserChanges 
+		select: [ :aNode | aNode key = 'baseline:' ] 
+		thenDo: [ :aNode | self assertBaselineMethodNodeFor: aNode ].
+	metadataChanges := releaserChanges 
+		select: [ :aNode | aNode key = GtRlReleaseVersionMetadata fileName ].
+	self assert: metadataChanges size <= 1.
+	metadataChanges do: [ :aNode |
+		self assert: aNode value definition isFileDefinition ]
 ]
 
 { #category : #printing }
