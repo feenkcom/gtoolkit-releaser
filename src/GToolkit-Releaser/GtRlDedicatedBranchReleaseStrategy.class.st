@@ -19,6 +19,16 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
+{ #category : #assertions }
+GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChanges [
+	| referenceCommit releaseCommit |
+	
+	referenceCommit := self referenceBranch commit.
+	releaseCommit := self releaseBranch commit.
+
+	self assertOnlyAllowedChangesBetween: referenceCommit and: releaseCommit.
+]
+
 { #category : #printing }
 GtRlDedicatedBranchReleaseStrategy >> description [
 	^ 'Branch ', (self releaseBranchName 

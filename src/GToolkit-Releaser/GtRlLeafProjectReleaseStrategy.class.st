@@ -24,6 +24,11 @@ GtRlLeafProjectReleaseStrategy >> assertCompatibleWithRepository: aRepository [
 	
 ]
 
+{ #category : #assertions }
+GtRlLeafProjectReleaseStrategy >> assertOnlyAllowedChanges [
+	self flag: 'to implement'
+]
+
 { #category : #printing }
 GtRlLeafProjectReleaseStrategy >> description [
 	^ 'LeafRelease'
