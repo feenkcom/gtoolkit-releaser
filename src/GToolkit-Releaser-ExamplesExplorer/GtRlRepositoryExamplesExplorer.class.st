@@ -33,6 +33,12 @@ GtRlRepositoryExamplesExplorer >> containedTestCases [
 		cachedTestCases ]
 ]
 
+{ #category : #accessing }
+GtRlRepositoryExamplesExplorer >> gtPackagesFor: aView [ 
+	<gtView>
+	^ self containedExamples gtPackagesFor: aView
+]
+
 { #category : #ui }
 GtRlRepositoryExamplesExplorer >> gtViewProjectsFor: aView [
 	<gtView>
