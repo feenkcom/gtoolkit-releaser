@@ -94,6 +94,13 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 ]
 
 { #category : #releasing }
+GtRlReleaserExportWorkflow class >> performDryRunGToolkitRelease [
+	| workflow |
+	workflow := self buildGToolkitRelease.
+	^ workflow releaseCreationActions execute.
+]
+
+{ #category : #releasing }
 GtRlReleaserExportWorkflow class >> performGToolkitRelease [
 	| workflow |
 	workflow := self buildGToolkitRelease.
