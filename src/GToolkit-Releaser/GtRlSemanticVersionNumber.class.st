@@ -15,7 +15,8 @@ Class {
 	#instVars : [
 		'major',
 		'minor',
-		'patch'
+		'patch',
+		'iceTag'
 	],
 	#category : #'GToolkit-Releaser'
 }
@@ -101,6 +102,16 @@ GtRlSemanticVersionNumber >> minor [
 { #category : #accessing }
 GtRlSemanticVersionNumber >> patch [
 	^ patch 
+]
+
+{ #category : #accessing }
+GtRlSemanticVersionNumber >> tag [
+	^ iceTag
+]
+
+{ #category : #accessing }
+GtRlSemanticVersionNumber >> tag: anIceTag [
+	iceTag := anIceTag 
 ]
 
 { #category : #accessing }

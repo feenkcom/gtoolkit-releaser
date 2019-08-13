@@ -2,12 +2,13 @@ Extension { #name : #IceTag }
 
 { #category : #'*GToolkit-Releaser-IcebergExtensions' }
 IceTag >> gtAsSemanticVersionNumber [
-	|tokens| 
+	|tokens semanticVersionNumber| 
 	tokens := self name allButFirst findTokens: '.'. 
-	^ GtRlSemanticVersionNumber 
+	semanticVersionNumber := GtRlSemanticVersionNumber 
 		major: tokens first asInteger
 		minor: tokens second asInteger
-		patch: tokens third asInteger
+		patch: tokens third asInteger.
+	semanticVersionNumber tag: self.
 ]
 
 { #category : #'*GToolkit-Releaser-IcebergExtensions' }
