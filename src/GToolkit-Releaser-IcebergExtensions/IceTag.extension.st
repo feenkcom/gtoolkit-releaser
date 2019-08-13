@@ -9,6 +9,7 @@ IceTag >> gtAsSemanticVersionNumber [
 		minor: tokens second asInteger
 		patch: tokens third asInteger.
 	semanticVersionNumber tag: self.
+	^ semanticVersionNumber 
 ]
 
 { #category : #'*GToolkit-Releaser-IcebergExtensions' }
