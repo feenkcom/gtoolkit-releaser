@@ -4,6 +4,14 @@ I model a strategy for executing a repository release.
 My main responsabilities consist in updating a repository release by computing and setting its version number and creating the necessary release actions. I add release actions to both the repository release and its project releases. The API method that does the update of a repository release is ${method:GtRlReleaseStrategy>>#updateFor:}$.
 
 I should be initialized based on a ${class:GtRlReleaseConfiguration}$ instance used to configure various aspects of the release process.
+
+Some of my subclasses include:
+
+${class:GtRlSemanticTagReleaseStrategy}$ a release strategy that uses a new tag named based on semantic versioning as the version number.
+
+${class:GtRlHeadCommitReleaseStrategy}$ a release strategy that uses the id of the head commit as the version number.
+
+${class:GtRlDedicatedBranchReleaseStrategy}$ a release strategy that uses a dedicated release branch for creating the release.
 "
 Class {
 	#name : #GtRlReleaseStrategy,
