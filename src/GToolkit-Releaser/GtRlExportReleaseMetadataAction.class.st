@@ -28,6 +28,36 @@ GtRlExportReleaseMetadataAction >> gtBaselineVersionMetadataFor: aView [
 		text: [ STON toJsonStringPretty: self repositoryRelease versionsMetadata ]
 ]
 
+{ #category : #ui }
+GtRlExportReleaseMetadataAction >> gtViewPreviousVersionDiffFor: aView [
+	<gtView>
+	self repositoryRelease ifNil: [ ^ aView ].
+	self repositoryRelease semanticVersionTags ifEmpty: [ ^ self ].
+	
+	^ aView textEditor
+		title: 'Diff previous version' translated;
+		priority: 20;
+		text: [ :anEditor | 
+			| latestTag  metadataCode |
+			latestTag := self repositoryRelease latestSemanticVersionTag.
+			metadataCode := self metadataForCommit: latestTag commit.
+			GtEpiceaDiffStencil new
+				from: (metadataCode ifNil: [ '' ]);
+				to: (STON toJsonStringPretty: self repositoryRelease versionsMetadata);
+				create ]
+]
+
+{ #category : #baselines }
+GtRlExportReleaseMetadataAction >> metadataForCommit: aCommit [
+	| metadataFile |
+	metadataFile := aCommit fileSystem children 
+		detect: [ :e | 
+			e isFile and: [ 
+				e basename = '.baseline-metadata.ston' ] ]
+		ifNone: [ ^ nil ].
+	^ metadataFile contents
+]
+
 { #category : #printing }
 GtRlExportReleaseMetadataAction >> name [
 	^ 'Export release metadata'
