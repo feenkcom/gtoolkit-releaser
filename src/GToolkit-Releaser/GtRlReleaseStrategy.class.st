@@ -7,7 +7,7 @@ I should be initialized based on a ${class:GtRlReleaseConfiguration}$ instance u
 
 Some of my subclasses include:
 
-${class:GtRlSemanticTagReleaseStrategy}$ a release strategy that uses a new tag named based on semantic versioning as the version number.
+${class:GtRlBaselineTagReleaseStrategy}$ a release strategy that uses the current loaded tag for a repository as the version number. 
 
 ${class:GtRlHeadCommitReleaseStrategy}$ a release strategy that uses the id of the head commit as the version number.
 
