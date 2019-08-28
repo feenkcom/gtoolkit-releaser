@@ -24,36 +24,34 @@ GtRlExportReleaseMetadataAction >> gtBaselineVersionMetadataFor: aView [
 	<gtView>
 	^ aView textEditor
 		title: 'Version data' translated;
-		priority: 45;
+		priority: 20;
 		text: [ STON toJsonStringPretty: self repositoryRelease versionsMetadata ]
 ]
 
 { #category : #ui }
-GtRlExportReleaseMetadataAction >> gtViewPreviousVersionDiffFor: aView [
+GtRlExportReleaseMetadataAction >> gtViewPreviousMetadataDiffFor: aView [
 	<gtView>
 	self repositoryRelease ifNil: [ ^ aView ].
 	self repositoryRelease semanticVersionTags ifEmpty: [ ^ self ].
 	
-	^ aView textEditor
-		title: 'Diff previous version' translated;
-		priority: 20;
-		text: [ :anEditor | 
+	^ aView explicit
+		title: 'Diff previous metadata' translated;
+		priority: 45;
+		stencil: [ :anEditor | 
 			| latestTag  metadataCode |
 			latestTag := self repositoryRelease latestSemanticVersionTag.
 			metadataCode := self metadataForCommit: latestTag commit.
-			GtEpiceaDiffStencil new
-				from: (metadataCode ifNil: [ '' ]);
-				to: (STON toJsonStringPretty: self repositoryRelease versionsMetadata);
-				create ]
+			GtDiffElement on: (TextDiffBuilder 
+				from: (metadataCode ifNil: [ '' ])
+				to: (STON toJsonStringPretty: self repositoryRelease versionsMetadata)) ]
 ]
 
 { #category : #baselines }
 GtRlExportReleaseMetadataAction >> metadataForCommit: aCommit [
 	| metadataFile |
 	metadataFile := aCommit fileSystem children 
-		detect: [ :e | 
-			e isFile and: [ 
-				e basename = '.baseline-metadata.ston' ] ]
+		detect: [ :e | e isFile and: [ 
+			e basename = '.baseline-metadata.ston' ] ]
 		ifNone: [ ^ nil ].
 	^ metadataFile contents
 ]

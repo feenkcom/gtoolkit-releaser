@@ -58,14 +58,13 @@ GtRlCompileBaselineReleaseAction >> gtGeneratedSourceFor: aView [
 GtRlCompileBaselineReleaseAction >> gtViewBaselineSourceDiffFor: aView [
 	<gtView>
 	self projectRelease ifNil: [ ^ aView ].
-	^ aView textEditor
+	^ aView explicit
 		title: 'Diff current baseline' translated;
 		priority: 20;
-		text: [ :anEditor | 
-			GtEpiceaDiffStencil new
-				from: (self projectRelease project baselineClass >> #baseline:);
-				to: (self projectRelease generateBaselineSource);
-				create ]
+		stencil: [ :anEditor | 
+			GtDiffElement on: (TextDiffBuilder 
+				from: (self projectRelease project baselineClass >> #baseline:)
+				to: (self projectRelease generateBaselineSource)) ]
 ]
 
 { #category : #ui }
@@ -74,17 +73,16 @@ GtRlCompileBaselineReleaseAction >> gtViewPreviousVersionDiffFor: aView [
 	self projectRelease ifNil: [ ^ aView ].
 	self projectRelease repositoryRelease semanticVersionTags ifEmpty: [ ^ self ].
 	
-	^ aView textEditor
+	^ aView explicit
 		title: 'Diff previous version' translated;
 		priority: 20;
-		text: [ :anEditor | 
+		stencil: [ :anEditor | 
 			| latestTag  originalCode |
 			latestTag := self projectRelease repositoryRelease latestSemanticVersionTag.
 			originalCode := self baselineCodeForCommit: latestTag commit.
-			GtEpiceaDiffStencil new
-				from: (originalCode ifNil: [ '' ]);
-				to: (self projectRelease generateBaselineSource);
-				create ]
+			GtDiffElement on: (TextDiffBuilder 
+				from: (originalCode ifNil: [ '' ])
+				to: (self projectRelease generateBaselineSource)) ]
 ]
 
 { #category : #accessing }
