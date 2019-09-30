@@ -261,7 +261,7 @@ GtRlRepositoryRelease >> gtRepositoryMapFor: aView [
 			gtconnector stencil: [ :aRepositoryRelease | |container children label textColor |
 					textColor := aRepositoryRelease isPassiveRelease 
 						ifTrue: [ Color gray ] ifFalse: [ Color black ].
-					container := VocalBlElement new
+					container := BlVocalElement new
 						layout: BlLinearLayout vertical;
 						border: (BlBorder paint: Color gray width: 1);
 						zIndex: 1;
@@ -297,7 +297,7 @@ GtRlRepositoryRelease >> gtRepositoryMapFor: aView [
 								ifTrue: [ Color gray ] ifFalse: [ Color black ].
 						text := aProjectRelease project name asRopedText foreground: textColor.
 						
-						vocalProject := VocalBlElement new.
+						vocalProject := BlVocalElement new.
 						vocalProject layout: BlLinearLayout vertical.
 						vocalProject constraintsDo: [ :c | 
 									c padding: (BlInsets all: 2).
