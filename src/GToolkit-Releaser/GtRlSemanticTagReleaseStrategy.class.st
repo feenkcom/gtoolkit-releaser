@@ -59,6 +59,7 @@ GtRlSemanticTagReleaseStrategy >> configureNewVersionRelease [
 	self repositoryRelease 
 		resetReleaseActions;
 		markAsActive;
+		newCommits: newCommits;
 		version: nextVersionNumber.
 		
 	

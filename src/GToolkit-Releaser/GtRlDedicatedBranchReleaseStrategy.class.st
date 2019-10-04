@@ -75,9 +75,10 @@ GtRlDedicatedBranchReleaseStrategy >> description [
 
 { #category : #testing }
 GtRlDedicatedBranchReleaseStrategy >> findNewCommits [
-	|repoRelease releaseCommit lastMergedCommit result walk|
+	|repoRelease releaseCommit lastMergedCommit result walk repo|
 	repoRelease := self  repositoryRelease.
-	releaseCommit := (repoRelease icebergRepository branchNamed: 'release') commit.
+	repo := repoRelease icebergRepository .
+	releaseCommit := (repo branchNamed: 'release'	ifAbsent: [	repo createBranch: 'release' ]) commit.
 	"on the release branch we may have a string of release commits"
 	"we need to find the one right after the merge"
 	[releaseCommit ancestors size == 1 and: [(releaseCommit tags) detect:[:t | 'v0.*' match: (t name)] 
@@ -92,7 +93,7 @@ GtRlDedicatedBranchReleaseStrategy >> findNewCommits [
 	result := OrderedCollection new.
 	walk := IceLibgitCommitWalk new.
 	walk repository: repoRelease icebergRepository.
-	walk fromBranch: (repoRelease icebergRepository branchNamed: 'master'); uptoCommit: lastMergedCommit.
+	walk fromBranch: (repo branchNamed: 'master'	ifAbsent: [	repo createBranch: 'master' ]); uptoCommit: lastMergedCommit.
 	walk commitsDo: [ :c | result add:c ].
 	^ result
 
