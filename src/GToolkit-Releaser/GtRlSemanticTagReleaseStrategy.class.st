@@ -75,11 +75,6 @@ GtRlSemanticTagReleaseStrategy >> enforcedVersion: aVersion [
 	enforcedVersion := aVersion
 ]
 
-{ #category : #'private - actions' }
-GtRlSemanticTagReleaseStrategy >> findNewCommits [
-	self subclassResponsibility 
-]
-
 { #category : #initialization }
 GtRlSemanticTagReleaseStrategy >> initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration [
 	super initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration.

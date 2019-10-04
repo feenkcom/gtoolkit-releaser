@@ -183,7 +183,11 @@ GtRlReleaserExportWorkflow >> printNewCommitsToFile [
 	writeStream := (FileSystem disk workingDirectory / 'newcommits.txt') writeStream.
 	repoRelease := self rootProjectRelease repositoryRelease.
 	newCommits := OrderedCollection new.
-	(GtRlReleaseUpdateWorkflow new repositoriesInReleaseOrderFor: repoRelease) do: [ :repo | repo newCommits ifNotNil: [newCommits 		add: repo newCommits ] ].
+	(GtRlReleaseUpdateWorkflow new repositoriesInReleaseOrderFor: repoRelease) do: [ :repo |
+		|newRepoCommits|
+		
+		newRepoCommits := repo releaseStrategy findNewCommits.
+		newRepoCommits ifNotNil: [newCommits add: newRepoCommits ] ].
 	newCommits do: [ :aGtRlNewCommits | aGtRlNewCommits newCommits do: [:c |
 			|url|
 			url := aGtRlNewCommits repository remotes anyOne url.

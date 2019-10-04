@@ -40,14 +40,6 @@ GtRlLeafProjectReleaseStrategy >> description [
 	^ 'LeafRelease'
 ]
 
-{ #category : #'actions - building' }
-GtRlLeafProjectReleaseStrategy >> findNewCommits [
-	^ GtRlNewCommits new.
-
-	
-	
-]
-
 { #category : #initialization }
 GtRlLeafProjectReleaseStrategy >> initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration [
 	super initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration.

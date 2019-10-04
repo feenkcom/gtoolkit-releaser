@@ -32,6 +32,11 @@ GtRlReleaseStrategy >> description [
 	self subclassResponsibility
 ]
 
+{ #category : #'actions - building' }
+GtRlReleaseStrategy >> findNewCommits [
+	^ nil.
+]
+
 { #category : #ui }
 GtRlReleaseStrategy >> gtCommitsAncestryFor: aView [
 	^ aView
