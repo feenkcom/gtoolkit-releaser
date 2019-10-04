@@ -22,7 +22,8 @@ Class {
 		'isPassiveRelease',
 		'releaseStrategy',
 		'repository',
-		'projectReleases'
+		'projectReleases',
+		'newCommits'
 	],
 	#category : #'GToolkit-Releaser'
 }
@@ -419,6 +420,16 @@ GtRlRepositoryRelease >> mergeToBranch: aBranchName [
 		repository: icebergRepository; 
 		mergeCommit: (icebergRepository branchNamed: initialBranchName) commit; 
 		executeWithAcceptingLeftOnConflict.
+]
+
+{ #category : #accessing }
+GtRlRepositoryRelease >> newCommits [
+	^ newCommits
+]
+
+{ #category : #accessing }
+GtRlRepositoryRelease >> newCommits: aListOfCommits [
+	newCommits := aListOfCommits
 ]
 
 { #category : #printing }

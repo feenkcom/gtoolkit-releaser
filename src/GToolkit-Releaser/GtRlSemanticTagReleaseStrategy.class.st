@@ -46,7 +46,10 @@ GtRlSemanticTagReleaseStrategy >> commitAndTagRelease [
 
 { #category : #'private - actions' }
 GtRlSemanticTagReleaseStrategy >> configureNewVersionRelease [
-	| nextVersionNumber |
+	| nextVersionNumber newCommits |
+	
+	newCommits := self findNewCommits.
+	
 	nextVersionNumber := self nextVersionComputation nextVersionNumberForRepository: self repositoryRelease repository.
 	
 	(enforcedVersion isNotNil and:[ nextVersionNumber <= enforcedVersion ]) ifTrue: [ 
@@ -69,6 +72,11 @@ GtRlSemanticTagReleaseStrategy >> enforcedVersion [
 { #category : #accessing }
 GtRlSemanticTagReleaseStrategy >> enforcedVersion: aVersion [
 	enforcedVersion := aVersion
+]
+
+{ #category : #'private - actions' }
+GtRlSemanticTagReleaseStrategy >> findNewCommits [
+	self subclassResponsibility 
 ]
 
 { #category : #initialization }

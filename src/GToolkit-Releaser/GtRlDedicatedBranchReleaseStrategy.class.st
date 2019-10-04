@@ -73,6 +73,33 @@ GtRlDedicatedBranchReleaseStrategy >> description [
 		ifNotNil: [ :branchName | '#', branchName  ])
 ]
 
+{ #category : #testing }
+GtRlDedicatedBranchReleaseStrategy >> findNewCommits [
+	|repoRelease releaseCommit lastMergedCommit result walk|
+	repoRelease := self  repositoryRelease.
+	releaseCommit := (repoRelease icebergRepository branchNamed: 'release') commit.
+	"on the release branch we may have a string of release commits"
+	"we need to find the one right after the merge"
+	[releaseCommit ancestors size == 1 and: [(releaseCommit tags) detect:[:t | 'v0.*' match: (t name)] 
+		ifFound: [true] ifNone: [false] ]] 
+			whileTrue: [ releaseCommit := releaseCommit parent ].
+
+	
+	lastMergedCommit := releaseCommit ancestors detect: 
+		[ :commit | (commit tags) detect:[:t | 'v0.*' match: (t name)] 
+			ifFound: [false] ifNone: [true] ].
+	
+	result := OrderedCollection new.
+	walk := IceLibgitCommitWalk new.
+	walk repository: repoRelease icebergRepository.
+	walk fromBranch: (repoRelease icebergRepository branchNamed: 'master'); uptoCommit: lastMergedCommit.
+	walk commitsDo: [ :c | result add:c ].
+	^ result
+
+	
+	
+]
+
 { #category : #ui }
 GtRlDedicatedBranchReleaseStrategy >> gtCommitsAncestryFor: aView [
 	<gtView>
