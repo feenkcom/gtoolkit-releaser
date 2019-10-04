@@ -90,11 +90,13 @@ GtRlDedicatedBranchReleaseStrategy >> findNewCommits [
 		[ :commit | (commit tags) detect:[:t | 'v0.*' match: (t name)] 
 			ifFound: [false] ifNone: [true] ].
 	
-	result := OrderedCollection new.
+	result := GtRlNewCommits new.
+	result repository: repo.
 	walk := IceLibgitCommitWalk new.
 	walk repository: repoRelease icebergRepository.
 	walk fromBranch: (repo branchNamed: 'master'	ifAbsent: [	repo createBranch: 'master' ]); uptoCommit: lastMergedCommit.
-	walk commitsDo: [ :c | result add:c ].
+	walk commitsDo: [ :c | result addCommit:c ].
+	
 	^ result
 
 	

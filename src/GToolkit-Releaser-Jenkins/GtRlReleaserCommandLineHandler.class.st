@@ -25,7 +25,7 @@ GtRlReleaserCommandLineHandler >> activate [
 			ifTrue: [ GtRlReleaserExportWorkflow performGToolkitRelease ]
 			ifFalse:[ | semanticVersion w | semanticVersion := (self argumentAt:1) asGtRlSemanticVersionNumber.
 				w := GtRlReleaserExportWorkflow buildGToolkitRelease: semanticVersion.
-				w executeReleaseActions. ].
+				w executeReleaseActions. w printNewCommitsToFile.].
 	].
 	Smalltalk snapshot: true andQuit: true.
 ]

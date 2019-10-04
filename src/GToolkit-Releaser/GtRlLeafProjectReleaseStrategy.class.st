@@ -42,7 +42,7 @@ GtRlLeafProjectReleaseStrategy >> description [
 
 { #category : #'actions - building' }
 GtRlLeafProjectReleaseStrategy >> findNewCommits [
-	^ OrderedCollection new
+	^ GtRlNewCommits new.
 
 	
 	

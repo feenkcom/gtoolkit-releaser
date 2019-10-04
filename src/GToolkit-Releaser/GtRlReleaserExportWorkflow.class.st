@@ -104,7 +104,9 @@ GtRlReleaserExportWorkflow class >> performDryRunGToolkitRelease [
 GtRlReleaserExportWorkflow class >> performGToolkitRelease [
 	| workflow |
 	workflow := self buildGToolkitRelease.
-	^ workflow executeReleaseActions.
+	workflow executeReleaseActions.
+	workflow printNewCommitsToFile.
+	^ workflow
 ]
 
 { #category : #releasing }
@@ -173,6 +175,25 @@ GtRlReleaserExportWorkflow >> gtViewReleaseCreationActionsFor: aView [
 	^ (self releaseCreationActions gtReleaseActionsFor: aView)
 		title: 'Creation actions' translated;
 		priority: 50
+]
+
+{ #category : #accessing }
+GtRlReleaserExportWorkflow >> printNewCommitsToFile [
+	|repoRelease newCommits writeStream|
+	writeStream := (FileSystem disk workingDirectory / 'newcommits.txt') writeStream.
+	repoRelease := self rootProjectRelease repositoryRelease.
+	newCommits := OrderedCollection new.
+	(GtRlReleaseUpdateWorkflow new repositoriesInReleaseOrderFor: repoRelease) do: [ :repo | repo newCommits ifNotNil: [newCommits 		add: repo newCommits ] ].
+	newCommits do: [ :aGtRlNewCommits | aGtRlNewCommits newCommits do: [:c |
+			|url|
+			url := aGtRlNewCommits repository remotes anyOne url.
+			url := url replaceSuffix: '.git' with: '/commit/'. 
+			writeStream nextPutAll: url.
+			writeStream nextPutAll: c id asString.
+			writeStream nextPutAll: (String cr).] ].
+	writeStream flush.
+	writeStream close.
+	^ FileSystem disk workingDirectory / 'newcommits.txt'
 ]
 
 { #category : #accessing }
