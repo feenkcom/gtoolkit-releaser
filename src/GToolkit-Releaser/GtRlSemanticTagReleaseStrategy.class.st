@@ -46,9 +46,9 @@ GtRlSemanticTagReleaseStrategy >> commitAndTagRelease [
 
 { #category : #'private - actions' }
 GtRlSemanticTagReleaseStrategy >> configureNewVersionRelease [
-	| nextVersionNumber newCommits |
+	| nextVersionNumber "newCommits" |
 	
-	newCommits := self findNewCommits.
+	"newCommits := self findNewCommits."
 	
 	nextVersionNumber := self nextVersionComputation nextVersionNumberForRepository: self repositoryRelease repository.
 	
@@ -59,7 +59,7 @@ GtRlSemanticTagReleaseStrategy >> configureNewVersionRelease [
 	self repositoryRelease 
 		resetReleaseActions;
 		markAsActive;
-		newCommits: newCommits;
+		"newCommits: newCommits;"
 		version: nextVersionNumber.
 		
 	

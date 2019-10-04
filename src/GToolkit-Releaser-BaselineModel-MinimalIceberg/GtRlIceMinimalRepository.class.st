@@ -42,6 +42,13 @@ GtRlIceMinimalRepository >> branchName [
 ]
 
 { #category : #accessing }
+GtRlIceMinimalRepository >> branchNamed: aName ifAbsent: bloc [
+	
+	head validateIsBranch.
+	^ head
+]
+
+{ #category : #accessing }
 GtRlIceMinimalRepository >> gtSemanticVersionsTags [
 	^ self tags select: #gtIsSemanticVersion
 ]
