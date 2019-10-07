@@ -192,6 +192,8 @@ GtRlReleaserExportWorkflow >> printNewCommitsToFile [
 			|url|
 			url := aGtRlNewCommits repository remotes anyOne url.
 			url := url replaceSuffix: '.git' with: '/commit/'. 
+			url := url copyReplaceAll: 'git@' with: 'https://'.
+			url := url copyReplaceAll: 'com:feenkcom' with: 'com/feenkcom'.
 			writeStream nextPutAll: url.
 			writeStream nextPutAll: c id asString.
 			writeStream nextPutAll: (String cr).] ].
