@@ -75,12 +75,10 @@ GtRlDedicatedBranchReleaseStrategy >> description [
 
 { #category : #testing }
 GtRlDedicatedBranchReleaseStrategy >> findNewCommits [
-	|repoRelease releaseCommit lastMergedCommit result walk repo oldBranchName|
+	|repoRelease releaseCommit lastMergedCommit result walk repo|
 	repoRelease := self  repositoryRelease.
 	repo := repoRelease icebergRepository.
-	oldBranchName := repo branchName.
-	releaseCommit := (repo branchNamed: 'release'	ifAbsent: [	repo createBranch: 'release' ]) commit.
-	repo checkoutBranch: oldBranchName.
+	releaseCommit := ((repo remoteNamed: 'origin' ) remoteBranchNamed: 'release') commit.
 	"on the release branch we may have a string of release commits"
 	"we need to find the one right after the merge"
 	[releaseCommit ancestors size == 1 and: [(releaseCommit tags) detect:[:t | 'v0.*' match: (t name)] 

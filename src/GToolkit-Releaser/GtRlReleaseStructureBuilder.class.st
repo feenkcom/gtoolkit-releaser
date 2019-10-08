@@ -49,7 +49,7 @@ GtRlReleaseStructureBuilder >> configuration: aReleaseConfiguration [
 ]
 
 { #category : #'private - building' }
-GtRlReleaseStructureBuilder >> createChildrenForProjectRelease: projectRelease. [
+GtRlReleaseStructureBuilder >> createChildrenForProjectRelease: projectRelease [.
 	projectRelease project childProjects do: [ :aChildProject |
 		| childProjectRelease |
 		childProjectRelease := self projectReleasesMap
