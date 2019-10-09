@@ -196,7 +196,7 @@ GtRlReleaserExportWorkflow >> printNewCommitsToFile [
 			url := url copyReplaceAll: 'com:feenkcom' with: 'com/feenkcom'.
 			writeStream nextPutAll: url.
 			writeStream nextPutAll: c id asString.
-			writeStream nextPutAll: (String cr).] ].
+			writeStream nextPutAll: (String lf).] ].
 	writeStream flush.
 	writeStream close.
 	^ FileSystem disk workingDirectory / 'newcommits.txt'
