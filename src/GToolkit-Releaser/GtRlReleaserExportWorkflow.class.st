@@ -104,7 +104,6 @@ GtRlReleaserExportWorkflow class >> performDryRunGToolkitRelease [
 GtRlReleaserExportWorkflow class >> performGToolkitRelease [
 	| workflow |
 	workflow := self buildGToolkitRelease.
-	workflow printNewCommitsToFile.
 	workflow executeReleaseActions.
 	^ workflow
 ]
