@@ -40,6 +40,31 @@ GtRlLeafProjectReleaseStrategy >> description [
 	^ 'LeafRelease'
 ]
 
+{ #category : #testing }
+GtRlLeafProjectReleaseStrategy >> findNewCommits [
+	|repoRelease releaseCommit result walk repo|
+	repoRelease := self  repositoryRelease.
+	repo := repoRelease icebergRepository.
+	releaseCommit := (repo branchNamed: 'master'	ifAbsent: [	repo createBranch: 'master' ]) commit.
+	"on the release branch we may have a string of release commits"
+	"we need to find the one right after the merge"
+	[releaseCommit ancestors size == 1 and: [(releaseCommit tags) detect:[:t | 'v0.*' match: (t name)] 
+		ifFound: [true] ifNone: [false] ]] 
+			whileTrue: [ releaseCommit := releaseCommit parent ].
+	
+	result := GtRlNewCommits new.
+	result repository: repo.
+	walk := IceLibgitCommitWalk new.
+	walk repository: repoRelease icebergRepository.
+	walk fromBranch: (repo branchNamed: 'master'	ifAbsent: [	repo createBranch: 'master' ]); uptoCommit: releaseCommit.
+	walk commitsDo: [ :c | result addCommit:c ].
+	
+	^ result
+
+	
+	
+]
+
 { #category : #initialization }
 GtRlLeafProjectReleaseStrategy >> initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration [
 	super initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration.
