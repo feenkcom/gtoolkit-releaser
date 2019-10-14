@@ -194,10 +194,12 @@ GtRlReleaserExportWorkflow >> printNewCommitsToFile [
 			url := url copyReplaceAll: 'git@' with: 'https://'.
 			url := url copyReplaceAll: 'com:feenkcom' with: 'com/feenkcom'.
 			writeStream nextPutAll: url.
-			writeStream nextPutAll: c id asString.
+			writeStream nextPutAll: ((c id asString) first:6).
 			writeStream nextPutAll: ' by '.
 			writeStream nextPutAll: c author.
-			writeStream nextPutAll: (String lf).] ].
+			writeStream nextPutAll: (String lf).
+			writeStream nextPutAll: (c comment).
+			writeStream nextPutAll: (String lf).writeStream nextPutAll: (String lf).] ].
 	writeStream flush.
 	writeStream close.
 	^ FileSystem disk workingDirectory / 'newcommits.txt'
