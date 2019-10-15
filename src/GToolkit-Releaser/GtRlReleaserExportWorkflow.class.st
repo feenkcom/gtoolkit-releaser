@@ -178,8 +178,10 @@ GtRlReleaserExportWorkflow >> gtViewReleaseCreationActionsFor: aView [
 
 { #category : #accessing }
 GtRlReleaserExportWorkflow >> printNewCommitsToFile [
-	|repoRelease newCommits writeStream|
-	writeStream := (FileSystem disk workingDirectory / 'newcommits.txt') writeStream.
+	|repoRelease newCommits writeStream i commitCounter|
+	commitCounter := 0.
+	i := 0.
+	writeStream := (FileSystem disk workingDirectory / ('newcommits',i asString, '.txt')) writeStream.
 	repoRelease := self rootProjectRelease repositoryRelease.
 	newCommits := OrderedCollection new.
 	(GtRlReleaseUpdateWorkflow new repositoriesInReleaseOrderFor: repoRelease) do: [ :repo |
@@ -199,10 +201,22 @@ GtRlReleaserExportWorkflow >> printNewCommitsToFile [
 			writeStream nextPutAll: c author.
 			writeStream nextPutAll: (String lf).
 			writeStream nextPutAll: (c comment).
-			writeStream nextPutAll: (String lf).writeStream nextPutAll: (String lf).] ].
+			writeStream nextPutAll: (String lf).
+			writeStream nextPutAll: (String lf).
+			writeStream flush.
+			commitCounter := commitCounter + 1.
+			
+			(commitCounter > 2) ifTrue: [ 
+					commitCounter := 0.
+					i := i + 1.
+					writeStream close.
+					
+					writeStream := (FileSystem disk workingDirectory / ('newcommits',i asString, '.txt')) writeStream.
+				 ]
+			] ].
 	writeStream flush.
 	writeStream close.
-	^ FileSystem disk workingDirectory / 'newcommits.txt'
+	^ FileSystem disk workingDirectory / 'newcommits0.txt'
 ]
 
 { #category : #accessing }
