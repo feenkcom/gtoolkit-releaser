@@ -206,7 +206,7 @@ GtRlReleaserExportWorkflow >> printNewCommitsToFile [
 			writeStream flush.
 			commitCounter := commitCounter + 1.
 			
-			(commitCounter > 2) ifTrue: [ 
+			(commitCounter > 10) ifTrue: [ 
 					commitCounter := 0.
 					i := i + 1.
 					writeStream close.
