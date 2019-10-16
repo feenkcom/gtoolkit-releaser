@@ -85,7 +85,11 @@ GtRlRepositoryRelease >> commitMessageForRelease [
 				nextPutAll: 'Metacello new
     baseline: ''', localRootProjects first name, ''';
     repository: ''', self urlWithReleaseVersion asString,  ''';
-    load' ] ]
+    load';
+				lf;
+				nextPutAll: 'All commits (inlcuding upstream repositories) since last build:';
+				lf;
+				nextPutAll: self printNewCommitsToString  ] ]
 ]
 
 { #category : #ui }
@@ -443,6 +447,31 @@ GtRlRepositoryRelease >> parentRepositoryReleases [
 		aProjectRelease parentReleases collect: #repositoryRelease ]) removeDuplicates 
 			remove: self ifAbsent: [ ];
 			yourself
+]
+
+{ #category : #actions }
+GtRlRepositoryRelease >> printNewCommitsToString [
+	^ String streamContents: [ :writeStream |
+		newCommits := OrderedCollection new.
+		(GtRlReleaseUpdateWorkflow new repositoriesInReleaseOrderFor: self) do: [ :repo |
+			|newRepoCommits|
+			newRepoCommits := repo releaseStrategy findNewCommits.
+			newRepoCommits ifNotNil: [newCommits add: newRepoCommits ] ].
+			newCommits do: [ :aGtRlNewCommits | aGtRlNewCommits newCommits do: [:c |
+				|url|
+				url := aGtRlNewCommits repository remotes anyOne url.
+				url := url replaceSuffix: '.git' with: '/commit/'. 
+				url := url copyReplaceAll: 'git@' with: 'https://'.
+				url := url copyReplaceAll: 'com:feenkcom' with: 'com/feenkcom'.
+				writeStream nextPutAll: url.
+				writeStream nextPutAll: ((c id asString) first:6).
+				writeStream nextPutAll: ' by '.
+				writeStream nextPutAll: c author.
+				writeStream nextPutAll: (String lf).
+				writeStream nextPutAll: (c comment).
+				writeStream nextPutAll: (String lf).
+				writeStream nextPutAll: (String lf).
+				]]]
 ]
 
 { #category : #printing }
