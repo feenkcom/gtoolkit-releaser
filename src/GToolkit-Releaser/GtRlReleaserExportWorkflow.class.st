@@ -83,6 +83,7 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 	setReleaseStrategyOfType: GtRlHeadCommitReleaseStrategy forProjecs: {
 		'github://kursjan/petitparser2'.
 		'github://j-brant/SmaCC/src'.
+		'github://pharo-contributions/OrderPreservingDictionary/src'.
 		'github://feenkcom/pharo-beacon/repository'.
 		'github://svenvc/NeoJSON/repository'.
 		'github://pharo-contributions/CollectionExtensions/src'};
