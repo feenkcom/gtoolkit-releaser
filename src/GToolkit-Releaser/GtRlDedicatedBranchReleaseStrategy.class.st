@@ -83,7 +83,7 @@ GtRlDedicatedBranchReleaseStrategy >> findNewCommits [
 	
 	repo remoteNamed: 'origin' ifAbsent:[^ result].
 	
-	releaseCommit := ((repo remoteNamed: 'origin' ) remoteBranchNamed: 'release') commit.
+	releaseCommit := ((repo remoteNamed: 'origin' ) remoteBranchNamed: 'release' ifPresent: [ :branch |  branch commit] ifAbsent: [ ^ result ]).
 	"on the release branch we may have a string of release commits"
 	"we need to find the one right after the merge"
 	[releaseCommit ancestors size == 1 and: [(releaseCommit tags) detect:[:t | 'v0.*' match: (t name)] 
