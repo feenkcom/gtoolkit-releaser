@@ -92,7 +92,9 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://sbragagnolo/taskit'.
 		'github://svenvc/NeoJSON/repository'.
 		'github://feenkcom/Containers-PropertyEnvironment'.
-		'github://feenkcom/Chrysal/src' }
+		'github://feenkcom/Chrysal/src'.
+		'github://feenkcom/XMLParser/src'.
+		'github://feenkcom/XPath/src' }
 ]
 
 { #category : #releasing }
