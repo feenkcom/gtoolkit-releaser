@@ -46,7 +46,7 @@ GtRlBaselineTagReleaseStrategy >> loadedTagVersionNumber [
 GtRlBaselineTagReleaseStrategy >> updateFor: anUpdateWorkflow [
 	self 
 		assert: [ self repositoryRelease withAllChildRepositoryReleases allSatisfy: [ :aRelease |
-				aRelease releaseStrategy class = self class ] ] 
+				aRelease releaseStrategy isPassiveReleaseStrategy ] ] 
 		description: 'If a fixed tag is used as a release version all children repositories should use the same loaded tag strategy.'.
 		
 	(GtRlRepositoryPassiveReleaseVersionSignal repositoryRelease: self repositoryRelease version: self loadedTagVersionNumber) emit.

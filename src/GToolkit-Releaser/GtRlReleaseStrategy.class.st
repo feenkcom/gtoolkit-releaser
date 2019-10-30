@@ -55,6 +55,11 @@ GtRlReleaseStrategy >> isNullReleaseStrategy [
 	^ false
 ]
 
+{ #category : #testing }
+GtRlReleaseStrategy >> isPassiveReleaseStrategy [
+	^ true
+]
+
 { #category : #accessing }
 GtRlReleaseStrategy >> repositoryRelease [
 	^ repositoryRelease

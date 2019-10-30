@@ -84,6 +84,11 @@ GtRlSemanticTagReleaseStrategy >> initializeFor: aRepositoryRelease fromConfigur
 		shouldForceNewRelease: aReleaseConfiguration shouldForceNewRelease
 ]
 
+{ #category : #testing }
+GtRlSemanticTagReleaseStrategy >> isPassiveReleaseStrategy [
+	^ false
+]
+
 { #category : #accessing }
 GtRlSemanticTagReleaseStrategy >> nextVersionComputation [
 	^ nextVersionComputation
