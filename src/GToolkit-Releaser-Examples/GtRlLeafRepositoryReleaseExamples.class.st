@@ -21,6 +21,14 @@ GtRlLeafRepositoryReleaseExamples >> assertDefaultInitForRepositoryRelease: repo
 	self assert: repositoryRelease releaseActions isEmpty description: 'There should be no actions as the release is not updated'.
 ]
 
+{ #category : #assertions }
+GtRlLeafRepositoryReleaseExamples >> assertTagStrategyRepositoryReleaseFor: repositoryRelease [
+	self assert: repositoryRelease version equals: (GtRlTagVersionNumber new
+		tagName: repositoryRelease icebergRepository headCommit tags first name).
+	self assert: repositoryRelease isPassiveRelease.
+	self assert: repositoryRelease releaseActions count equals: 0.
+]
+
 { #category : #'examples - releases' }
 GtRlLeafRepositoryReleaseExamples >> basicReleaseStructureWithExistingTag [
 	<gtExample>
@@ -159,6 +167,17 @@ GtRlLeafRepositoryReleaseExamples >> loadedTagReleaseStrategy [
 	^ releaseStrategy
 ]
 
+{ #category : #'examples - configs' }
+GtRlLeafRepositoryReleaseExamples >> releaseConfigurationWithLoadedTagStrategyForChild [
+	<gtExample>
+	| releaseConfiguration |
+	releaseConfiguration := self defaultReleaseConfiguration.
+	releaseConfiguration setReleaseStrategyOfType: GtRlLoadedTagReleaseStrategy forProjecs: {
+		'github://example/RepositoryWithTagAndNoVersion/src' }.
+		
+	^ releaseConfiguration
+]
+
 { #category : #'examples - releases' }
 GtRlLeafRepositoryReleaseExamples >> releaseWithBranchStrategyForcingReleaseOnOneVersionRepo [
 	<gtExample>
@@ -272,10 +291,23 @@ GtRlLeafRepositoryReleaseExamples >> releaseWithLoadedTagStrategyOnSingleRepo [
 	updateWorkflow := GtRlReleaseUpdateWorkflow new.
 	updateWorkflow updateRepository: repositoryRelease.
 	
-	self assert: repositoryRelease version equals: (GtRlTagVersionNumber new
-		tagName: repositoryRelease icebergRepository headCommit tags first name).
-	self assert: repositoryRelease isPassiveRelease.
-	self assert: repositoryRelease releaseActions count equals: 0.
+	self assertTagStrategyRepositoryReleaseFor: repositoryRelease.
+	
+	^ repositoryRelease
+]
+
+{ #category : #'examples - releases' }
+GtRlLeafRepositoryReleaseExamples >> releaseWithLoadedTagStrategyOnSingleRepoUsingConfig [
+	<gtExample>
+	"I create a repository release for a repository having a tag on the head commit by using a release configuration."
+	| project releaseBuiler projectRelease repositoryRelease |
+	project := self projectWithTagAndNoVersion.
+	releaseBuiler := GtRlReleaseBuilder new
+		configuration: self releaseConfigurationWithLoadedTagStrategyForChild.
+	projectRelease := releaseBuiler buildReleaseForProject: project. 
+	repositoryRelease := projectRelease repositoryRelease.
+	
+	self assertTagStrategyRepositoryReleaseFor: repositoryRelease.
 	
 	^ repositoryRelease
 ]
@@ -362,6 +394,22 @@ GtRlLeafRepositoryReleaseExamples >> releaseWorkflowWithLoadedTagForSingleRepo [
 	"I execute a release workflow for a release that uses the loaded tag as the release version."
 	| release exportWorkflow |
 	release := self releaseWithLoadedTagStrategyOnSingleRepo.	
+	exportWorkflow := GtRlReleaserExportWorkflow new
+		rootProjectRelease: release projectReleases first.
+	exportWorkflow executeReleaseActions.
+	
+	self assert: release semanticVersionTags size equals: 0.
+	self assert: exportWorkflow releaseActions count equals: 0.
+
+	^ exportWorkflow
+]
+
+{ #category : #'examples - workflows' }
+GtRlLeafRepositoryReleaseExamples >> releaseWorkflowWithLoadedTagForSingleRepoUsingConfig [
+	<gtExample>
+	"I execute a release workflow for a release that uses the loaded tag as the release version."
+	| release exportWorkflow |
+	release := self releaseWithLoadedTagStrategyOnSingleRepoUsingConfig.	
 	exportWorkflow := GtRlReleaserExportWorkflow new
 		rootProjectRelease: release projectReleases first.
 	exportWorkflow executeReleaseActions.
