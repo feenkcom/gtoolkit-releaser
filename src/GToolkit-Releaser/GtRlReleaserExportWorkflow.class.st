@@ -85,12 +85,12 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://j-brant/SmaCC/src'.
 		'github://pharo-contributions/OrderPreservingDictionary/src'.
 		'github://feenkcom/pharo-beacon/repository'.
-		'github://svenvc/NeoJSON/repository'.
 		'github://pharo-contributions/BitmapCharacterSet/src'.
 		'github://pharo-contributions/CollectionExtensions/src'};
 	setReleaseStrategyOfType: GtRlBaselineTagReleaseStrategy forProjecs: {
 		'github://noha/mustache/repository'.
 		'github://sbragagnolo/taskit'.
+		'github://svenvc/NeoJSON/repository'.
 		'github://feenkcom/Containers-PropertyEnvironment'.
 		'github://feenkcom/Chrysal/src' }
 ]
