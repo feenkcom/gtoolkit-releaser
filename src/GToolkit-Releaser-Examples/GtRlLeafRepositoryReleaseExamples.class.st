@@ -5,12 +5,40 @@ Class {
 }
 
 { #category : #assertions }
+GtRlLeafRepositoryReleaseExamples >> assertDefaultInitForProhectRelease: projectRelease inRepository: repositoryRelease [
+	self assert: projectRelease childReleases isEmpty.
+	self assert: projectRelease parentReleases isEmpty.
+	self assert: projectRelease repositoryRelease equals: repositoryRelease.
+	self assert: repositoryRelease projectReleases asArray equals: { projectRelease }.
+]
+
+{ #category : #assertions }
 GtRlLeafRepositoryReleaseExamples >> assertDefaultInitForRepositoryRelease: repositoryRelease [
 	"I assert that a newly created repository release is properly initialized."
 	self assert: repositoryRelease version equals: GtRlNullVersionNumber new.
 	self assert: repositoryRelease releaseStrategy isNullReleaseStrategy. 
 	self assert: repositoryRelease isPassiveRelease description: 'Before the release is updated it should be passive'.
 	self assert: repositoryRelease releaseActions isEmpty description: 'There should be no actions as the release is not updated'.
+]
+
+{ #category : #'examples - releases' }
+GtRlLeafRepositoryReleaseExamples >> basicReleaseStructureWithExistingTag [
+	<gtExample>
+	"I create a repository release for a project by manually creating and linking the necessary release objects."
+	| project projectRelease repositoryRelease |
+	
+	project := self projectWithTagAndNoVersion. 
+	projectRelease := GtRlProjectRelease new 
+		project: project.
+	repositoryRelease := GtRlRepositoryRelease new
+		repository: project repository.
+	repositoryRelease addProjectRelease: projectRelease.
+	
+	self assertDefaultInitForRepositoryRelease: repositoryRelease.
+	self assertDefaultInitForProhectRelease: projectRelease inRepository: repositoryRelease.
+	self assert: repositoryRelease semanticVersionTags isEmpty description: 'A newly created repository should have no release tags'.
+
+	^ repositoryRelease
 ]
 
 { #category : #'examples - releases' }
@@ -27,10 +55,7 @@ GtRlLeafRepositoryReleaseExamples >> basicReleaseStructureWithNoVersions [
 	repositoryRelease addProjectRelease: projectRelease.
 	
 	self assertDefaultInitForRepositoryRelease: repositoryRelease.
-	self assert: projectRelease childReleases isEmpty.
-	self assert: projectRelease parentReleases isEmpty.
-	self assert: projectRelease repositoryRelease equals: repositoryRelease.
-	self assert: repositoryRelease projectReleases asArray equals: { projectRelease }.
+	self assertDefaultInitForProhectRelease: projectRelease inRepository: repositoryRelease.
 	self assert: repositoryRelease semanticVersionTags isEmpty description: 'A newly created repository should have no release tags'.
 
 	^ repositoryRelease
@@ -62,6 +87,23 @@ GtRlLeafRepositoryReleaseExamples >> basicReleaseWithLatestCommitStrategyOnNoVer
 	
 	repositoryRelease := self basicReleaseStructureWithNoVersions.
 	releaseStrategy := self headCommitReleaseStrategy.
+	repositoryRelease releaseStrategy: releaseStrategy.	
+	releaseStrategy repositoryRelease: repositoryRelease.
+
+	self assert: releaseStrategy repositoryRelease equals: repositoryRelease.
+	self assert: repositoryRelease releaseStrategy equals: releaseStrategy. 
+
+	^ repositoryRelease
+]
+
+{ #category : #'examples - releases' }
+GtRlLeafRepositoryReleaseExamples >> basicReleaseWithLoadedTagStrategyOnSingleRepo [
+	<gtExample>
+	"I create a repository release that has a loaded tag release strategy."
+	| releaseStrategy repositoryRelease |
+	
+	repositoryRelease := self basicReleaseStructureWithExistingTag.
+	releaseStrategy := self loadedTagReleaseStrategy.
 	repositoryRelease releaseStrategy: releaseStrategy.	
 	releaseStrategy repositoryRelease: repositoryRelease.
 
@@ -103,6 +145,18 @@ GtRlLeafRepositoryReleaseExamples >> headCommitReleaseStrategy [
 	^ releaseStrategy
 	
 	
+]
+
+{ #category : #'examples - strategies' }
+GtRlLeafRepositoryReleaseExamples >> loadedTagReleaseStrategy [
+	<gtExample>
+	"I create a release strategy that uses the current tag from the head commit."
+	| releaseStrategy |
+	
+	releaseStrategy := GtRlLoadedTagReleaseStrategy new.
+	self assert: releaseStrategy description equals: 'LoadedTag'.
+	
+	^ releaseStrategy
 ]
 
 { #category : #'examples - releases' }
@@ -209,6 +263,23 @@ GtRlLeafRepositoryReleaseExamples >> releaseWithLatestCommitStrategyOnNoVersionR
 	^ release
 ]
 
+{ #category : #'examples - releases' }
+GtRlLeafRepositoryReleaseExamples >> releaseWithLoadedTagStrategyOnSingleRepo [
+	<gtExample>
+	"I create a repository release for a repository having a tag on the head commit."
+	| repositoryRelease updateWorkflow |
+	repositoryRelease := self basicReleaseWithLoadedTagStrategyOnSingleRepo.	
+	updateWorkflow := GtRlReleaseUpdateWorkflow new.
+	updateWorkflow updateRepository: repositoryRelease.
+	
+	self assert: repositoryRelease version equals: (GtRlTagVersionNumber new
+		tagName: repositoryRelease icebergRepository headCommit tags first name).
+	self assert: repositoryRelease isPassiveRelease.
+	self assert: repositoryRelease releaseActions count equals: 0.
+	
+	^ repositoryRelease
+]
+
 { #category : #'examples - workflows' }
 GtRlLeafRepositoryReleaseExamples >> releaseWorkflowWithDedicatedBranchForInitialVersion [
 	<gtExample>
@@ -275,6 +346,22 @@ GtRlLeafRepositoryReleaseExamples >> releaseWorkflowWithLatestCommitForInitialVe
 	"I execute a release workflow for a release that uses the commit as the release version."
 	| release exportWorkflow |
 	release := self releaseWithLatestCommitStrategyOnNoVersionRepo.	
+	exportWorkflow := GtRlReleaserExportWorkflow new
+		rootProjectRelease: release projectReleases first.
+	exportWorkflow executeReleaseActions.
+	
+	self assert: release semanticVersionTags size equals: 0.
+	self assert: exportWorkflow releaseActions count equals: 0.
+
+	^ exportWorkflow
+]
+
+{ #category : #'examples - workflows' }
+GtRlLeafRepositoryReleaseExamples >> releaseWorkflowWithLoadedTagForSingleRepo [
+	<gtExample>
+	"I execute a release workflow for a release that uses the loaded tag as the release version."
+	| release exportWorkflow |
+	release := self releaseWithLoadedTagStrategyOnSingleRepo.	
 	exportWorkflow := GtRlReleaserExportWorkflow new
 		rootProjectRelease: release projectReleases first.
 	exportWorkflow executeReleaseActions.

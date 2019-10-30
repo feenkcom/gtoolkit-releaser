@@ -22,7 +22,8 @@ GtRlLoadedTagReleaseStrategy >> assertCompatibleWithRepository: aRepository [
 
 { #category : #'accessing - dynamic' }
 GtRlLoadedTagReleaseStrategy >> currentTagVersionNumber [
-	^ self repositoryRelease icebergRepository headCommit tags first name
+	^ GtRlTagVersionNumber new 
+		tagName: self repositoryRelease icebergRepository headCommit tags first name
 ]
 
 { #category : #printing }
