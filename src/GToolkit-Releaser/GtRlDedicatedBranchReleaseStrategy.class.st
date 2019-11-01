@@ -46,7 +46,7 @@ GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChangesBetween: aSourceCo
 	sourceDiff := aSourceCommit diffTo: commonAncestor.
 	targetDiff := aTargetCommit diffTo: commonAncestor.
 
-	self assert: sourceDiff isEmpty.
+	self assert: sourceDiff isEmpty description:'sourceDiff isEmpty'.
 	releaserChanges := OrderedCollection new.
 	targetDiff tree isEmptyNode ifFalse: [ 
 		targetDiff tree allChildrenDo: [ :e |
@@ -55,15 +55,15 @@ GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChangesBetween: aSourceCo
 	
 	self assert: (releaserChanges allSatisfy: [ :aNode |
 		aNode key = GtRlReleaseVersionMetadata fileName or: [ 
-			aNode key = 'baseline:' ] ]).
+			aNode key = 'baseline:' ] ]) description: 'releaserChanges allSatisfy'.
 	releaserChanges 
 		select: [ :aNode | aNode key = 'baseline:' ] 
 		thenDo: [ :aNode | self assertBaselineMethodNodeFor: aNode ].
 	metadataChanges := releaserChanges 
 		select: [ :aNode | aNode key = GtRlReleaseVersionMetadata fileName ].
-	self assert: metadataChanges size <= 1.
+	self assert: metadataChanges size <= 1 description: 'metadataChanges size <= 1'.
 	metadataChanges do: [ :aNode |
-		self assert: aNode value definition isFileDefinition ]
+		self assert: (aNode value definition isFileDefinition) description: '(aNode value definition isFileDefinition)' ]
 ]
 
 { #category : #printing }
