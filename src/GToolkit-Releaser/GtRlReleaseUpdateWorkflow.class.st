@@ -40,6 +40,7 @@ GtRlReleaseUpdateWorkflow >> updateRepository: aRootRepositoryRelease [
 	| repositories |
 	repositories := self repositoriesInReleaseOrderFor: aRootRepositoryRelease.
 	repositories do: [ :aRepositoryRelease | 
+		aRepositoryRelease releaseStrategy repositoryRelease: aRepositoryRelease.
 		aRepositoryRelease releaseStrategy
 			updateFor: self;
 			updateReleaseActionsUsing: self ].
