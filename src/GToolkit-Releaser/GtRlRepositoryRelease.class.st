@@ -455,13 +455,15 @@ GtRlRepositoryRelease >> parentRepositoryReleases [
 
 { #category : #actions }
 GtRlRepositoryRelease >> printNewCommitsToString [
+	|flattenedCommits|
 	^ String streamContents: [ :writeStream |
 		newCommits := OrderedCollection new.
+		flattenedCommits := OrderedCollection new.
 		(GtRlReleaseUpdateWorkflow new repositoriesInReleaseOrderFor: self) do: [ :repo |
 			|newRepoCommits|
 			newRepoCommits := repo releaseStrategy findNewCommits.
-			newRepoCommits ifNotNil: [newCommits add: newRepoCommits ] ].
-			newCommits ifNotEmpty: [  
+			newRepoCommits ifNotNil: [newCommits add: newRepoCommits. flattenedCommits addAll: newRepoCommits newCommits ] ].
+			flattenedCommits ifNotEmpty: [  
 				newCommits do: [ :aGtRlNewCommits | aGtRlNewCommits newCommits do: [:c |
 					|url|
 					url := aGtRlNewCommits repository remotes anyOne url.

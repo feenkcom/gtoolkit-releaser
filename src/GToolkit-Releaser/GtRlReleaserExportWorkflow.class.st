@@ -182,22 +182,24 @@ GtRlReleaserExportWorkflow >> gtViewReleaseCreationActionsFor: aView [
 
 { #category : #accessing }
 GtRlReleaserExportWorkflow >> printNewCommitsToFile [
-	|repoRelease newCommits writeStream i commitCounter fileCommitCounter|
+	|repoRelease newCommits flattenedCommits writeStream i commitCounter fileCommitCounter|
 	commitCounter := 0.
 	fileCommitCounter := 0.
 	i := 0.
 	
 	repoRelease := self rootProjectRelease repositoryRelease.
 	newCommits := OrderedCollection new.
+	flattenedCommits := OrderedCollection new.
 	(GtRlReleaseUpdateWorkflow new repositoriesInReleaseOrderFor: repoRelease) do: [ :repo |
 		|newRepoCommits|
 		newRepoCommits := repo releaseStrategy findNewCommits.
-		newRepoCommits ifNotNil: [newCommits add: newRepoCommits ] ].
+		newRepoCommits ifNotNil: [flattenedCommits addAll: newRepoCommits newCommits. newCommits add: newRepoCommits] ].
 	
-	newCommits ifNotEmpty: [
-		|newCommitsSize|
-		newCommitsSize := newCommits size.
+	flattenedCommits ifNotEmpty: [
+		|flattenedCommitsSize|
+		flattenedCommitsSize := flattenedCommits size.
 		writeStream := (FileSystem disk workingDirectory / ('newcommits',i asString, '.txt')) writeStream.
+		
 		newCommits do: [ :aGtRlNewCommits | aGtRlNewCommits newCommits do: [:c |
 			|url|
 			url := aGtRlNewCommits repository remotes anyOne url.
@@ -216,7 +218,7 @@ GtRlReleaserExportWorkflow >> printNewCommitsToFile [
 			fileCommitCounter := fileCommitCounter + 1.
 			commitCounter := commitCounter + 1.
 			
-			(fileCommitCounter > 10 and: [commitCounter < newCommitsSize]) ifTrue: [ 
+			(fileCommitCounter > 10 and: [commitCounter < flattenedCommitsSize]) ifTrue: [ 
 					fileCommitCounter := 0.
 					i := i + 1.
 					writeStream close.
@@ -226,7 +228,6 @@ GtRlReleaserExportWorkflow >> printNewCommitsToFile [
 		writeStream flush.
 		writeStream close.
 	].
-	^ FileSystem disk workingDirectory / 'newcommits0.txt'
 ]
 
 { #category : #accessing }
