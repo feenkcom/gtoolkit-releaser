@@ -457,21 +457,24 @@ GtRlRepositoryRelease >> printNewCommitsToString [
 			|newRepoCommits|
 			newRepoCommits := repo releaseStrategy findNewCommits.
 			newRepoCommits ifNotNil: [newCommits add: newRepoCommits ] ].
-			newCommits do: [ :aGtRlNewCommits | aGtRlNewCommits newCommits do: [:c |
-				|url|
-				url := aGtRlNewCommits repository remotes anyOne url.
-				url := url replaceSuffix: '.git' with: '/commit/'. 
-				url := url copyReplaceAll: 'git@' with: 'https://'.
-				url := url copyReplaceAll: 'com:feenkcom' with: 'com/feenkcom'.
-				writeStream nextPutAll: url.
-				writeStream nextPutAll: ((c id asString) first:6).
-				writeStream nextPutAll: ' by '.
-				writeStream nextPutAll: c author.
-				writeStream nextPutAll: (String lf).
-				writeStream nextPutAll: (c comment).
-				writeStream nextPutAll: (String lf).
-				writeStream nextPutAll: (String lf).
-				]]]
+			newCommits ifNotEmpty: [  
+				newCommits do: [ :aGtRlNewCommits | aGtRlNewCommits newCommits do: [:c |
+					|url|
+					url := aGtRlNewCommits repository remotes anyOne url.
+					url := url replaceSuffix: '.git' with: '/commit/'. 
+					url := url copyReplaceAll: 'git@' with: 'https://'.
+					url := url copyReplaceAll: 'com:feenkcom' with: 'com/feenkcom'.
+					writeStream nextPutAll: url.
+					writeStream nextPutAll: ((c id asString) first:6).
+					writeStream nextPutAll: ' by '.
+					writeStream nextPutAll: c author.
+					writeStream nextPutAll: (String lf).
+					writeStream nextPutAll: (c comment).
+					writeStream nextPutAll: (String lf).
+					writeStream nextPutAll: (String lf).
+					]].
+			]
+		]
 ]
 
 { #category : #printing }

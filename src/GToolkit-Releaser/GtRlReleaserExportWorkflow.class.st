@@ -182,18 +182,23 @@ GtRlReleaserExportWorkflow >> gtViewReleaseCreationActionsFor: aView [
 
 { #category : #accessing }
 GtRlReleaserExportWorkflow >> printNewCommitsToFile [
-	|repoRelease newCommits writeStream i commitCounter|
+	|repoRelease newCommits writeStream i commitCounter fileCommitCounter|
 	commitCounter := 0.
+	fileCommitCounter := 0.
 	i := 0.
-	writeStream := (FileSystem disk workingDirectory / ('newcommits',i asString, '.txt')) writeStream.
+	
 	repoRelease := self rootProjectRelease repositoryRelease.
 	newCommits := OrderedCollection new.
 	(GtRlReleaseUpdateWorkflow new repositoriesInReleaseOrderFor: repoRelease) do: [ :repo |
 		|newRepoCommits|
-		
 		newRepoCommits := repo releaseStrategy findNewCommits.
 		newRepoCommits ifNotNil: [newCommits add: newRepoCommits ] ].
-	newCommits do: [ :aGtRlNewCommits | aGtRlNewCommits newCommits do: [:c |
+	
+	newCommits ifNotEmpty: [
+		|newCommitsSize|
+		newCommitsSize := newCommits size.
+		writeStream := (FileSystem disk workingDirectory / ('newcommits',i asString, '.txt')) writeStream.
+		newCommits do: [ :aGtRlNewCommits | aGtRlNewCommits newCommits do: [:c |
 			|url|
 			url := aGtRlNewCommits repository remotes anyOne url.
 			url := url replaceSuffix: '.git' with: '/commit/'. 
@@ -208,18 +213,19 @@ GtRlReleaserExportWorkflow >> printNewCommitsToFile [
 			writeStream nextPutAll: (String lf).
 			writeStream nextPutAll: (String lf).
 			writeStream flush.
+			fileCommitCounter := fileCommitCounter + 1.
 			commitCounter := commitCounter + 1.
 			
-			(commitCounter > 10) ifTrue: [ 
-					commitCounter := 0.
+			(fileCommitCounter > 10 and: [commitCounter < newCommitsSize]) ifTrue: [ 
+					fileCommitCounter := 0.
 					i := i + 1.
 					writeStream close.
-					
-					writeStream := (FileSystem disk workingDirectory / ('newcommits',i asString, '.txt')) writeStream.
+					writeStream := (FileSystem disk workingDirectory / ('newcommits', i asString, '.txt')) writeStream.
 				 ]
-			] ].
-	writeStream flush.
-	writeStream close.
+			]].
+		writeStream flush.
+		writeStream close.
+	].
 	^ FileSystem disk workingDirectory / 'newcommits0.txt'
 ]
 
