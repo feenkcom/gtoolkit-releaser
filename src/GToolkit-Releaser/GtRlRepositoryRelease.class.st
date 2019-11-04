@@ -75,6 +75,7 @@ GtRlRepositoryRelease >> commitMessageForRelease [
 	
 	localRootProjects := self localRootProjects.
 	^ String streamContents: [ :stream |
+		|commits|
 		stream 
 			nextPutAll: 'Release version ';
 			nextPutAll: self versionString.
@@ -85,11 +86,14 @@ GtRlRepositoryRelease >> commitMessageForRelease [
 				nextPutAll: 'Metacello new
     baseline: ''', localRootProjects first name, ''';
     repository: ''', self urlWithReleaseVersion asString,  ''';
-    load';
-				lf;
-				nextPutAll: 'All commits (inlcuding upstream repositories) since last build:';
-				lf;
-				nextPutAll: self printNewCommitsToString  ] ]
+    load'.
+			commits := self printNewCommitsToString.
+			(commits isNotEmpty) ifTrue: [
+				stream
+					lf;
+					nextPutAll: 'All commits (inlcuding upstream repositories) since last build:';
+					lf;
+					nextPutAll: commits  ] ] ]
 ]
 
 { #category : #ui }
