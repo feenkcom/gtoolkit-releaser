@@ -23,7 +23,8 @@ Class {
 		'releaseStrategy',
 		'repository',
 		'projectReleases',
-		'newCommits'
+		'newCommits',
+		'newCommitsString'
 	],
 	#category : #'GToolkit-Releaser'
 }
@@ -456,13 +457,16 @@ GtRlRepositoryRelease >> parentRepositoryReleases [
 { #category : #actions }
 GtRlRepositoryRelease >> printNewCommitsToString [
 	|flattenedCommits|
-	^ String streamContents: [ :writeStream |
+	newCommitsString ifNil: [ 
+	newCommitsString :=
+	String streamContents: [ :writeStream |
 		newCommits := OrderedCollection new.
 		flattenedCommits := OrderedCollection new.
 		(GtRlReleaseUpdateWorkflow new repositoriesInReleaseOrderFor: self) do: [ :repo |
 			|newRepoCommits|
 			newRepoCommits := repo releaseStrategy findNewCommits.
-			newRepoCommits ifNotNil: [newCommits add: newRepoCommits. flattenedCommits addAll: newRepoCommits newCommits ] ].
+			newRepoCommits ifNotNil: [newCommits add: newRepoCommits. 
+						flattenedCommits addAll: newRepoCommits newCommits ] ].
 			flattenedCommits ifNotEmpty: [  
 				newCommits do: [ :aGtRlNewCommits | aGtRlNewCommits newCommits do: [:c |
 					|url|
@@ -480,7 +484,8 @@ GtRlRepositoryRelease >> printNewCommitsToString [
 					writeStream nextPutAll: (String lf).
 					]].
 			]
-		]
+		]].
+		^ newCommitsString
 ]
 
 { #category : #printing }
