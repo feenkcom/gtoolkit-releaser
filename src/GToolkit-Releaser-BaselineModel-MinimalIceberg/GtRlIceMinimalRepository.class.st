@@ -90,6 +90,12 @@ GtRlIceMinimalRepository >> remoteAt: aString put: aRemote [
 ]
 
 { #category : #'API-remotes' }
+GtRlIceMinimalRepository >> remoteNamed: aString [ 
+	
+	^ remotes at: aString 
+]
+
+{ #category : #'API-remotes' }
 GtRlIceMinimalRepository >> remoteNamed: aString ifAbsent: aBlockClosure [ 
 	
 	^ remotes at: aString ifAbsent: aBlockClosure

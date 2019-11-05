@@ -26,6 +26,11 @@ GtRlMinimalRemote >> name: aString [
 ]
 
 { #category : #accessing }
+GtRlMinimalRemote >> remoteBranchNamed: aBranchName ifPresent: ifPresentBlock ifAbsent: ifAbsentBlock [ 
+	ifAbsentBlock value
+]
+
+{ #category : #accessing }
 GtRlMinimalRemote >> remoteRepository [
 	^ remoteRepository
 ]

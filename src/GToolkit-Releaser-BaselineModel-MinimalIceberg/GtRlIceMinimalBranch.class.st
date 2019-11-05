@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #accessing }
+GtRlIceMinimalBranch >> commit [
+	^ self
+]
+
+{ #category : #accessing }
 GtRlIceMinimalBranch >> name [
 	^ name
 ]
