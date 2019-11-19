@@ -473,7 +473,7 @@ GtRlRepositoryRelease >> printNewCommitsToString [
 					url := aGtRlNewCommits repository remotes anyOne url.
 					url := url replaceSuffix: '.git' with: '/commit/'. 
 					url := url copyReplaceAll: 'git@' with: 'https://'.
-					url := url copyReplaceAll: 'com:feenkcom' with: 'com/feenkcom'.
+					url := url copyReplaceAll: 'com:' with: 'com/'.
 					writeStream nextPutAll: url.
 					writeStream nextPutAll: ((c id asString) first:6).
 					writeStream nextPutAll: ' by '.
