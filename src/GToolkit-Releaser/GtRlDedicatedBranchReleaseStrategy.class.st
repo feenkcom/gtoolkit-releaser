@@ -163,6 +163,14 @@ GtRlDedicatedBranchReleaseStrategy >> mergeToReleaseBranch [
 		"Attemp here to make the repository clean. Sometimes repository are marked as dirty even if
 		they have no changes."
 		icebergRepository workingCopy forceCalculateDirtyPackages ].
+	
+	"Hacky tachy way of ensuring the repo is clean."
+	icebergRepository isModified ifTrue: [ 
+		
+		"Attemp here to make the repository clean. Sometimes repository are marked as dirty even if
+		they have no changes."
+		icebergRepository workingCopy forceCalculateDirtyPackages ].
+	
 	self 
 		assert: [ icebergRepository isModified not ]
 		description: 'There should be no changes in the repository when switching to the release branch.'.
