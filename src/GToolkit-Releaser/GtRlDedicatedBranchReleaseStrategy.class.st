@@ -66,29 +66,6 @@ GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChangesBetween: aSourceCo
 		self assert: (aNode value definition isFileDefinition) description: '(aNode value definition isFileDefinition)' ]
 ]
 
-{ #category : #private }
-GtRlDedicatedBranchReleaseStrategy >> attemtToFixDirtyPackages [
-	"Aim to only recalculate the dirty flag for packages that are marked as dirty.
-	We skip packages that are not marked as dirty."
-	
-	| icebergRepository diff dirtyPackages |
-	icebergRepository := self repositoryRelease icebergRepository.
-	icebergRepository isModified ifFalse: [ 
-		"If the repository is not marked as modified no action is needed here"
-		^ self ]. 
-	
-	"We compite the diff but only recalculate the status for dirty packages"
-	diff := IceDiff new
-		sourceVersion: icebergRepository workingCopy;
-		targetVersion: icebergRepository workingCopy referenceCommit;
-		buildFull.
-
-	dirtyPackages:= icebergRepository loadedPackages 
-		select: [ :each | each isDirty ].
-	dirtyPackages do: [ :each |
-		each beDirty: (diff includesPackageNamed: each name) ].
-]
-
 { #category : #printing }
 GtRlDedicatedBranchReleaseStrategy >> description [
 	^ 'Branch ', (self releaseBranchName 
@@ -183,11 +160,16 @@ GtRlDedicatedBranchReleaseStrategy >> mergeToReleaseBranch [
 	| icebergRepository |
 	icebergRepository := self repositoryRelease icebergRepository.
 	icebergRepository isModified ifTrue: [ 
-		"Attemp here to make the repository clean. Sometimes repository are marked 
-		as dirty even if they have no changes. Do not use #forceCalculateDirtyPackages 
-		as it also recalculates the dirty flag for packages not currently dirty. This 
-		increases the chance for a 'TonelParseError: Can't parse type' error."
-		self attemtToFixDirtyPackages ].
+		"Attemp here to make the repository clean. Sometimes repository are marked as dirty even if
+		they have no changes."
+		icebergRepository workingCopy forceCalculateDirtyPackages ].
+	
+	"Hacky tachy way of ensuring the repo is clean."
+	icebergRepository isModified ifTrue: [ 
+		
+		"Attemp here to make the repository clean. Sometimes repository are marked as dirty even if
+		they have no changes."
+		icebergRepository workingCopy forceCalculateDirtyPackages ].
 	
 	self 
 		assert: [ icebergRepository isModified not ]
