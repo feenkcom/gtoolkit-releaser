@@ -87,7 +87,7 @@ GtRlDedicatedBranchReleaseStrategy >> findNewCommits [
 	"on the release branch we may have a string of release commits"
 	"we need to find the one right after the merge"
 	[(releaseCommit ancestors size == 1 and: [(releaseCommit tags) detect:[:t | 'v0.*' match: (t name)] 
-		ifFound: [true] ifNone: [false] ]) and: [masterCommit ~~ releaseCommit parent]] 
+		ifFound: [true] ifNone: [false] ]) and: [(masterCommit = releaseCommit parent) not]] 
 			whileTrue: [ releaseCommit := releaseCommit parent ].
 
 	
