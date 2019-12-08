@@ -86,6 +86,8 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://pharo-contributions/OrderPreservingDictionary/src'.
 		'github://feenkcom/pharo-beacon/repository'.
 		'github://pharo-contributions/BitmapCharacterSet/src'.
+		'github://pharo-contributions/XML-XPath/src',
+		'github://pharo-contributions/XML-XMLWriter/src',
 		'github://pharo-contributions/CollectionExtensions/src'};
 	setReleaseStrategyOfType: GtRlBaselineTagReleaseStrategy forProjecs: {
 		'github://noha/mustache/repository'.
