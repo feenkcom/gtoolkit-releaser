@@ -83,11 +83,7 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 	setReleaseStrategyOfType: GtRlHeadCommitReleaseStrategy forProjecs: {
 		'github://kursjan/petitparser2'.
 		'github://j-brant/SmaCC/src'.
-		'github://pharo-contributions/OrderPreservingDictionary/src'.
 		'github://feenkcom/pharo-beacon/repository'.
-		'github://pharo-contributions/BitmapCharacterSet/src'.
-		'github://pharo-contributions/XML-XPath/src',
-		'github://pharo-contributions/XML-XMLWriter/src',
 		'github://pharo-contributions/CollectionExtensions/src'};
 	setReleaseStrategyOfType: GtRlBaselineTagReleaseStrategy forProjecs: {
 		'github://noha/mustache/repository'.
@@ -95,8 +91,10 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://svenvc/NeoJSON/repository'.
 		'github://feenkcom/Containers-PropertyEnvironment'.
 		'github://feenkcom/Chrysal/src'.
-		'github://feenkcom/XMLParser/src'.
-		'github://feenkcom/XPath/src' }
+		'github://pharo-contributions/OrderPreservingDictionary/src'.
+		'github://pharo-contributions/BitmapCharacterSet/src'.
+		'github://pharo-contributions/XML-XPath/src',
+		'github://pharo-contributions/XML-XMLWriter/src' }
 ]
 
 { #category : #releasing }
