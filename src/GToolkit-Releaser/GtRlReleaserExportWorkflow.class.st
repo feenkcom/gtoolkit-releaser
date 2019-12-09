@@ -93,6 +93,7 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://feenkcom/Chrysal/src'.
 		'github://pharo-contributions/OrderPreservingDictionary/src'.
 		'github://pharo-contributions/BitmapCharacterSet/src'.
+		'github://feenkcom/XMLParser/src',
 		'github://feenkcom/XPath/src'}
 ]
 
