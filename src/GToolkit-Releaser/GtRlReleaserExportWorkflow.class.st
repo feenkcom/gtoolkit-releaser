@@ -84,6 +84,8 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://kursjan/petitparser2'.
 		'github://j-brant/SmaCC/src'.
 		'github://feenkcom/pharo-beacon/repository'.
+		'github://pharo-contributions/OrderPreservingDictionary/src'.
+		'github://pharo-contributions/BitmapCharacterSet/src'.
 		'github://pharo-contributions/CollectionExtensions/src'};
 	setReleaseStrategyOfType: GtRlBaselineTagReleaseStrategy forProjecs: {
 		'github://noha/mustache/repository'.
@@ -91,9 +93,7 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://svenvc/NeoJSON/repository'.
 		'github://feenkcom/Containers-PropertyEnvironment'.
 		'github://feenkcom/Chrysal/src'.
-		'github://pharo-contributions/OrderPreservingDictionary/src'.
-		'github://pharo-contributions/BitmapCharacterSet/src'.
-		'github://feenkcom/XMLParser/src',
+		'github://feenkcom/XMLParser/src'.
 		'github://feenkcom/XPath/src'}
 ]
 
