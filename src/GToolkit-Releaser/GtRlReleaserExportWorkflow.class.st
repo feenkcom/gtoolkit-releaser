@@ -94,6 +94,7 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://feenkcom/Containers-PropertyEnvironment'.
 		'github://feenkcom/Chrysal/src'.
 		'github://feenkcom/XMLParser/src'.
+		'github://feenkcom/XMLWriter/src'.
 		'github://feenkcom/XPath/src'}
 ]
 
