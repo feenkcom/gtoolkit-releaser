@@ -20,6 +20,29 @@ Class {
 }
 
 { #category : #releasing }
+GtRlReleaserExportWorkflow class >> attemtToFixDirtyPackagesFor: repo [
+	"Aim to only recalculate the dirty flag for packages that are marked as dirty.
+	We skip packages that are not marked as dirty."
+
+	| icebergRepository diff dirtyPackages |
+	icebergRepository := repo.
+	icebergRepository isModified ifFalse: [ 
+		"If the repository is not marked as modified no action is needed here"
+		^ self ]. 
+
+	"We compite the diff but only recalculate the status for dirty packages"
+	diff := IceDiff new
+		sourceVersion: icebergRepository workingCopy;
+		targetVersion: icebergRepository workingCopy referenceCommit;
+		buildFull.
+
+	dirtyPackages:= icebergRepository loadedPackages 
+		select: [ :each | each isDirty ].
+	dirtyPackages do: [ :each |
+		each beDirty: (diff includesPackageNamed: each name) ].
+]
+
+{ #category : #releasing }
 GtRlReleaserExportWorkflow class >> buildGToolkitRelease [
 	| releaseConfiguration workflow | 
 	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
@@ -122,7 +145,7 @@ GtRlReleaserExportWorkflow class >> switchAllRepositoriesBackToMasterBranch [
 
 	((IceRepository registry select: [ :repo | (LGitRepository on: repo location) 
 		repositoryReference isNotNil ]) 
-			select: [ :repo | repo head name = 'master' ]) do: [ :repo | repo branch hasUpstream ifTrue: [repo pull ]].
+			select: [ :repo | repo head name = 'master' ]) do: [ :repo | repo branch hasUpstream ifTrue: [self attemtToFixDirtyPackagesFor: repo. repo pull ]].
 ]
 
 { #category : #actions }
