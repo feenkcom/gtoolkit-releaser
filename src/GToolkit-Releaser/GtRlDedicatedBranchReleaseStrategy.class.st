@@ -81,25 +81,40 @@ GtRlDedicatedBranchReleaseStrategy >> findNewCommits [
 	result := GtRlNewCommits new.
 	result repository: repo.
 	
-	repo remoteNamed: 'origin' ifAbsent:[^ result].
-	masterCommit := (repo branchNamed: 'master'	ifAbsent: [	repo createBranch: 'master' ]) commit.
-	releaseCommit := ((repo remoteNamed: 'origin' ) remoteBranchNamed: 'release' ifPresent: [ :branch |  branch commit] ifAbsent: [ ^ result ]).
+	repo remoteNamed: 'origin' ifAbsent:[ ^ result ].
+	masterCommit := (repo 
+		branchNamed: 'master'	
+		ifAbsent: [ repo createBranch: 'master' ]) commit.
+	releaseCommit := ((repo remoteNamed: 'origin') 
+		remoteBranchNamed: 'release' 
+		ifPresent: [ :branch |  branch commit] 
+		ifAbsent: [ ^ result ]).
+	
 	"on the release branch we may have a string of release commits"
 	"we need to find the one right after the merge"
-	[(releaseCommit ancestors size == 1 and: [(releaseCommit tags) detect:[:t | 'v0.*' match: (t name)] 
-		ifFound: [true] ifNone: [false] ]) and: [(masterCommit = releaseCommit parent) not]] 
-			whileTrue: [ releaseCommit := releaseCommit parent ].
+	[
+		(releaseCommit ancestors size == 1) and: [
+			(releaseCommit tags anySatisfy: [ :anIceTag | 'v0.*' match: anIceTag name]) and: [
+				(masterCommit = releaseCommit parent) not] ]
+	] whileTrue: [ releaseCommit := releaseCommit parent ].
 
-	
-	lastMergedCommit := releaseCommit ancestors detect: 
-		[ :commit | (commit tags) detect:[:t | 'v0.*' match: (t name)] 
-			ifFound: [false] ifNone: [true] ].
-	
+	lastMergedCommit := releaseCommit ancestors 
+		detect: [ :commit | commit tags 
+			detect: [ :anIceTag | 'v0.*' match: anIceTag name ] 
+			ifFound: [false] 
+			ifNone: [true] ]
+		ifNone: [ 
+			"This could happen in case the ancestor from the main branch also contains a release tag.
+			In that case both ancestors will have a release tag. 
+			If that happens do not try to compute the changed commits "
+			^ result ].
 
 	walk := IceLibgitCommitWalk new.
 	walk repository: repoRelease icebergRepository.
-	walk fromBranch: (repo branchNamed: 'master'	ifAbsent: [	repo createBranch: 'master' ]); uptoCommit: lastMergedCommit.
-	walk commitsDo: [ :c | result addCommit:c ].
+	walk 
+		fromBranch: (repo branchNamed: 'master'	ifAbsent: [	repo createBranch: 'master' ]); 
+		uptoCommit: lastMergedCommit.
+	walk commitsDo: [ :c | result addCommit: c ].
 	
 	^ result
 
