@@ -53,6 +53,9 @@ GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChangesBetween: aSourceCo
 			(e isEmptyNode not and: [ e value hasChanges ]) ifTrue: [ 
 				releaserChanges add: e ] ] ].
 	
+	
+	releaserChanges do: [ :aChange | NonInteractiveTranscript stdout show: aChange ].
+	
 	self assert: (releaserChanges allSatisfy: [ :aNode |
 		aNode key = GtRlReleaseVersionMetadata fileName or: [ 
 			aNode key = 'baseline:' ] ]) description: 'releaserChanges allSatisfy'.
