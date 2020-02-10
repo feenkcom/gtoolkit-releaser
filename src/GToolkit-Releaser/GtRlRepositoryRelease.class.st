@@ -24,7 +24,8 @@ Class {
 		'repository',
 		'projectReleases',
 		'newCommits',
-		'newCommitsString'
+		'newCommitsString',
+		'isRoot'
 	],
 	#category : #'GToolkit-Releaser'
 }
@@ -88,13 +89,14 @@ GtRlRepositoryRelease >> commitMessageForRelease [
     baseline: ''', localRootProjects first name, ''';
     repository: ''', self urlWithReleaseVersion asString,  ''';
     load'.
-			commits := self printNewCommitsToString.
-			(commits isNotEmpty) ifTrue: [
-				stream
-					lf;
-					nextPutAll: 'All commits (inlcuding upstream repositories) since last build:';
-					lf;
-					nextPutAll: commits  ] ] ]
+			self isRootRepositoryRelease ifTrue: [  
+				commits := self printNewCommitsToString.
+				(commits isNotEmpty) ifTrue: [
+					stream
+						lf;
+						nextPutAll: 'All commits (inlcuding upstream repositories) since last build:';
+						lf;
+						nextPutAll: commits  ] ] ] ]
 ]
 
 { #category : #ui }
@@ -348,6 +350,7 @@ GtRlRepositoryRelease >> icebergRepository [
 { #category : #initialize }
 GtRlRepositoryRelease >> initialize [
 	super initialize.
+	isRoot := false.
 	self version: GtRlNullVersionNumber new.
 	self releaseStrategy: GtRlNullReleaseStrategy new.
 ]
@@ -355,6 +358,12 @@ GtRlRepositoryRelease >> initialize [
 { #category : #testing }
 GtRlRepositoryRelease >> isPassiveRelease [
 	^ isPassiveRelease ifNil: [ true ]
+]
+
+{ #category : #accessing }
+GtRlRepositoryRelease >> isRootRepositoryRelease [
+	^ isRoot
+	
 ]
 
 { #category : #'accessing - dynamic' }
@@ -548,6 +557,12 @@ GtRlRepositoryRelease >> resetReleaseActions [
 { #category : #'accessing - dynamic' }
 GtRlRepositoryRelease >> semanticVersionTags [
 	^ self icebergRepository gtSemanticVersionsTags
+]
+
+{ #category : #accessing }
+GtRlRepositoryRelease >> setRootRepositoryRelease: aBoolean [
+	isRoot := aBoolean 
+	
 ]
 
 { #category : #'accessing - dynamic' }
