@@ -41,8 +41,6 @@ GtRlReleaseUpdateWorkflow >> updateRepository: aRootRepositoryRelease [
 	repositories := self repositoriesInReleaseOrderFor: aRootRepositoryRelease.
 	repositories do: [ :aRepositoryRelease | 
 		aRepositoryRelease releaseStrategy repositoryRelease: aRepositoryRelease.
-		"call printNewCommitsToString to cache the commits list"
-		aRepositoryRelease printNewCommitsToString.
 		aRepositoryRelease releaseStrategy
 			updateFor: self;
 			updateReleaseActionsUsing: self ].
