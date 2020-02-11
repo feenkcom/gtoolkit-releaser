@@ -1,5 +1,5 @@
 Class {
-	#name : #GTImageVersion,
+	#name : #GtImage,
 	#superclass : #Object,
 	#instVars : [
 		'version',
@@ -12,28 +12,28 @@ Class {
 }
 
 { #category : #accessing }
-GTImageVersion class >> instance [ 
+GtImage class >> instance [ 
 	singleton ifNil: [ singleton := self new ].
 	^ singleton
 ]
 
 { #category : #accessing }
-GTImageVersion class >> timestamp: aTimestamp [
+GtImage class >> timestamp: aTimestamp [
 	self instance timestamp: aTimestamp
 ]
 
 { #category : #accessing }
-GTImageVersion class >> version [
+GtImage class >> version [
 	^ self instance
 ]
 
 { #category : #accessing }
-GTImageVersion class >> version: aVersion [
+GtImage class >> version: aVersion [
 	self instance version: aVersion
 ]
 
 { #category : #accessing }
-GTImageVersion >> gtPreviewFor: aView [
+GtImage >> gtPreviewFor: aView [
 	<gtView>
 	^ aView explicit
 		title: 'Preview';
@@ -72,21 +72,21 @@ GTImageVersion >> gtPreviewFor: aView [
 ]
 
 { #category : #accessing }
-GTImageVersion >> timestamp [
+GtImage >> timestamp [
 	^ timestamp
 ]
 
 { #category : #accessing }
-GTImageVersion >> timestamp: anObject [
+GtImage >> timestamp: anObject [
 	timestamp := anObject
 ]
 
 { #category : #accessing }
-GTImageVersion >> version [
+GtImage >> version [
 	^ version
 ]
 
 { #category : #accessing }
-GTImageVersion >> version: anObject [
+GtImage >> version: anObject [
 	version := anObject
 ]
