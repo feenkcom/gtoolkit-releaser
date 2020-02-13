@@ -20,6 +20,28 @@ JenkinsClient >> allJobsResponse [
 ]
 
 { #category : #accessing }
+JenkinsClient >> allOrganizationJobs [
+	| codeGenerator model |
+	codeGenerator := JSONCodeGenerator new.
+	jobs := znclient get: ('' join: { url . '/api/json?tree=jobs[name,jobs[name]]&pretty=true'}).
+	model := codeGenerator modelFrom: (NeoJSONReader fromString: jobs).
+	model url: url.
+	model znclient: znclient.
+	^ model.
+]
+
+{ #category : #accessing }
+JenkinsClient >> allOrganizationJobsModel [
+	| codeGenerator model |
+	codeGenerator := JSONCodeGenerator new.
+	jobs := znclient get: ('' join: { url . '/api/json?tree=jobs[name,jobs[name,jobs[name,builds[id,result,timestamp,url]]]]&pretty=true'}).
+	model := codeGenerator modelFrom: (NeoJSONReader fromString: jobs) znclient: znclient.
+	model url: url.
+	model znclient: znclient.
+	^ model.
+]
+
+{ #category : #accessing }
 JenkinsClient >> gtJobsFor: aView [
 	<gtView>
 	^ aView columnedList
@@ -34,6 +56,14 @@ JenkinsClient >> gtJobsFor: aView [
 			aColumn 
 				item: [ :job | job url ]; 
 				matchParent ]
+]
+
+{ #category : #accessing }
+JenkinsClient >> jobs [
+	jobs ifNil: [ 
+		jobs := znclient get: ('' join: { url . '/api/json?tree=jobs[name]&pretty=true'}).
+	].
+	^ jobs
 ]
 
 { #category : #accessing }

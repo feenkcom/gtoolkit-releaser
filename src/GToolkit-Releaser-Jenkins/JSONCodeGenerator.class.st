@@ -44,6 +44,24 @@ JSONCodeGenerator >> modelFrom: aDictionary [
 	aDictionary at: #'_class' ifPresent: [:fullClassName | 
 	theClass := (self ensureClass: fullClassName).
 	theObject := theClass new.
+	"(theObject znclient: self znclient)."
+	aDictionary keysAndValuesDo: [ :key :value | key ~= '_class' ifTrue: [
+		|varname|
+		varname := ('_',key) asSymbol.
+		self ensureInstVarNamed: varname inClass: theClass.
+		self setAttribute: varname toValue: value inObject: theObject]].
+	^ theObject].
+	^ nil
+	
+]
+
+{ #category : #accessing }
+JSONCodeGenerator >> modelFrom: aDictionary znclient: znclient [
+	| theClass theObject|
+	aDictionary at: #'_class' ifPresent: [:fullClassName | 
+	theClass := (self ensureClass: fullClassName).
+	theObject := theClass new.
+	(theObject znclient: znclient).
 	aDictionary keysAndValuesDo: [ :key :value | key ~= '_class' ifTrue: [
 		|varname|
 		varname := ('_',key) asSymbol.
