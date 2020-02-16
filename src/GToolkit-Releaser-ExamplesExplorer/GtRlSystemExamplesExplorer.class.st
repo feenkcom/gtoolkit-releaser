@@ -15,6 +15,11 @@ GtRlSystemExamplesExplorer class >> forProject: aProject [
 ]
 
 { #category : #ui }
+GtRlSystemExamplesExplorer >> gtDisplayOn: stream [
+	stream nextPutAll: 'Examples Explorer'
+]
+
+{ #category : #ui }
 GtRlSystemExamplesExplorer >> gtViewRepositoriesListFor: aView [
 	<gtView>
 	^ aView columnedList
