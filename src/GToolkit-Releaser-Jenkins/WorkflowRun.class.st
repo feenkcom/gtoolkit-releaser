@@ -22,6 +22,24 @@ WorkflowRun >> consoleText [
 ]
 
 { #category : #accessing }
+WorkflowRun >> getTheConsoleText [
+	consoleText := self znclient get: ('' join: { self url . '/consoleText'}).
+	^ consoleText
+]
+
+{ #category : #accessing }
+WorkflowRun >> gtFailureReasonFor: aView [
+	<gtView>
+	_result = 'FAILURE' ifTrue:[
+	^ aView textEditor
+		title: 'Why did it fail';
+		text: self reasonForFailure.
+		].
+	^ aView empty
+		
+]
+
+{ #category : #accessing }
 WorkflowRun >> gtTextFor: aView [
 	<gtView>
 	^ aView textEditor
