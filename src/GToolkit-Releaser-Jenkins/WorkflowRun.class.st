@@ -53,6 +53,16 @@ WorkflowRun >> name [
 ]
 
 { #category : #accessing }
+WorkflowRun >> reasonForFailure [
+	|text startIndex lineNumber|
+	text := self consoleText.
+	startIndex := text findString: 'Pharo VM version:'.
+	lineNumber := text lineNumberCorrespondingToIndex: startIndex .
+	^ String lf join:(text lines copyFrom: lineNumber - 20 to: (text lines size)).
+
+]
+
+{ #category : #accessing }
 WorkflowRun >> result [
 	^ _result
 ]

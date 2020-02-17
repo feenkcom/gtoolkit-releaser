@@ -78,6 +78,18 @@ JenkinsClient >> model [
 ]
 
 { #category : #accessing }
+JenkinsClient >> reasonForFailure [
+	|org gtjob run text startIndex lineNumber|
+	org := self allOrganizationJobsModel.
+	gtjob:=(org jobs first jobs detect: [:j | j name = 'gtoolkit'])jobs first.
+	run := (gtjob builds select: [:r | r result = 'FAILURE']) first.
+	^ run reasonForFailure "text := run consoleText.
+	startIndex := text findString: 'Pharo VM version:'.
+	lineNumber := text lineNumberCorrespondingToIndex: startIndex .
+	^ String lf join:(text lines copyFrom: lineNumber - 20 to: (text lines size))."
+]
+
+{ #category : #accessing }
 JenkinsClient >> username: anUsername token: aToken url: anUrl [
 	znclient := ZnClient new
    username: anUsername password: aToken.
