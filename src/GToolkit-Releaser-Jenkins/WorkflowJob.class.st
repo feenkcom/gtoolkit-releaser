@@ -38,6 +38,25 @@ WorkflowJob >> name [
 ]
 
 { #category : #accessing }
+WorkflowJob >> parent [
+	^ _parent
+]
+
+{ #category : #accessing }
+WorkflowJob >> url [
+	^ self parent url,'/job/', self name
+]
+
+{ #category : #accessing }
+WorkflowJob >> wfapi [
+	|json codeGenerator|
+	json := self znclient get: ('' join: {self url. '/wfapi'}).
+	codeGenerator := JSONCodeGenerator new.
+	codeGenerator znclient: self znclient.
+	^ codeGenerator modelFrom:(NeoJSONReader fromString: json) className: #WfJob
+]
+
+{ #category : #accessing }
 WorkflowJob >> znclient [ 
 	^ _parent znclient 
 ]

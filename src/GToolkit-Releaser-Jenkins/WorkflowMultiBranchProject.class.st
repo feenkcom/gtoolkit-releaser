@@ -33,6 +33,16 @@ WorkflowMultiBranchProject >> name [
 ]
 
 { #category : #accessing }
+WorkflowMultiBranchProject >> parent [
+	^ _parent
+]
+
+{ #category : #accessing }
+WorkflowMultiBranchProject >> url [
+	^ self parent url,'/job/', self name
+]
+
+{ #category : #accessing }
 WorkflowMultiBranchProject >> znclient [ 
 	^ _parent znclient 
 ]

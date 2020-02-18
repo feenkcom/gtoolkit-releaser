@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'packageOrganizer',
-		'_parent'
+		'_parent',
+		'znclient'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generator'
 }
@@ -34,6 +35,17 @@ JSONCodeGenerator >> ensurePackage: aFullPackageName [
 ]
 
 { #category : #accessing }
+JSONCodeGenerator >> ensureWfClass: aFullClassName [
+	|fullPackageName classSymbol |
+	fullPackageName := 'GToolkit-Releaser-Jenkins-Generated-Wfapi'.
+	self ensurePackage: fullPackageName.
+	classSymbol := aFullClassName.
+	^ classSymbol asClassInEnvironment: Smalltalk globals 
+		ifAbsent: [ (JenkinsWFAPI subclass: classSymbol)
+								  category: fullPackageName ].
+]
+
+{ #category : #accessing }
 JSONCodeGenerator >> initialize [ 
 	packageOrganizer := RPackageOrganizer new.
 ]
@@ -53,6 +65,22 @@ JSONCodeGenerator >> modelFrom: aDictionary [
 	^ theObject].
 	^ nil
 	
+]
+
+{ #category : #accessing }
+JSONCodeGenerator >> modelFrom: aDictionary className: aClassName [
+	| theClass theObject|
+	theClass := (self ensureWfClass: aClassName).
+	theObject := theClass new.
+	theObject znclient: self znclient.
+	aDictionary keysAndValuesDo: [ :key :value | key ~= '_self' ifTrue: [
+		|varname|
+		varname := (key) asSymbol.
+		key ~= '_links' ifTrue: [
+			self ensureInstVarNamed: varname inClass: theClass.].
+		self setAttribute: varname toValue: value inObject: theObject]].
+	^ theObject.
+
 ]
 
 { #category : #accessing }
@@ -105,4 +133,14 @@ JSONCodeGenerator >> updateObject: theObject with: aDictionary [
 			('importing ' , key)].
 	^ theObject.
 
+]
+
+{ #category : #accessing }
+JSONCodeGenerator >> znclient [
+	^ znclient
+]
+
+{ #category : #accessing }
+JSONCodeGenerator >> znclient: aZnclient [
+	^ znclient := aZnclient
 ]

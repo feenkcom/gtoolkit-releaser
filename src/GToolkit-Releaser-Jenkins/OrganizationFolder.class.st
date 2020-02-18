@@ -44,8 +44,13 @@ OrganizationFolder >> name [
 ]
 
 { #category : #accessing }
+OrganizationFolder >> parent [
+	^ _parent
+]
+
+{ #category : #accessing }
 OrganizationFolder >> url [
-	^ url
+	^ self parent url,'/job/', self name
 ]
 
 { #category : #accessing }
