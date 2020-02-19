@@ -72,13 +72,34 @@ JSONCodeGenerator >> modelFrom: aDictionary className: aClassName [
 	| theClass theObject|
 	theClass := (self ensureWfClass: aClassName).
 	theObject := theClass new.
-	theObject znclient: self znclient.
 	aDictionary keysAndValuesDo: [ :key :value | key ~= '_self' ifTrue: [
 		|varname|
 		varname := (key) asSymbol.
 		key ~= '_links' ifTrue: [
 			self ensureInstVarNamed: varname inClass: theClass.].
-		self setAttribute: varname toValue: value inObject: theObject]].
+"		varname = 'execNode' ifTrue:[
+		NonInteractiveTranscript stdout crShow: aDictionary.
+		]."
+		self setWfAttribute: varname toValue: value inObject: theObject]].
+	^ theObject.
+
+]
+
+{ #category : #accessing }
+JSONCodeGenerator >> modelFrom: aDictionary className: aClassName znclient: aZnclient [
+	| theClass theObject|
+	theClass := (self ensureWfClass: aClassName).
+	theObject := theClass new.
+	theObject znclient: aZnclient.
+	aDictionary keysAndValuesDo: [ :key :value | key ~= '_self' ifTrue: [
+		|varname|
+		varname := (key) asSymbol.
+		key ~= '_links' ifTrue: [
+			self ensureInstVarNamed: varname inClass: theClass.].
+"		varname = 'execNode' ifTrue:[
+		NonInteractiveTranscript stdout crShow: aDictionary.
+		]."
+		self setWfAttribute: varname toValue: value inObject: theObject]].
 	^ theObject.
 
 ]
@@ -114,6 +135,27 @@ JSONCodeGenerator >> setAttribute: key toValue: value inObject: theObject [
 						self ensureInstVarNamed: '_parent' inClass: childObject class.
 						childObject instVarNamed: '_parent' put: theObject.
 						childObject url: (key allButLast) allButFirst].
+					childObject]].
+			theObject instVarNamed: key asSymbol put: array ]
+]
+
+{ #category : #accessing }
+JSONCodeGenerator >> setWfAttribute: key toValue: value inObject: theObject [
+	value isArray 
+		ifFalse: [ theObject instVarNamed: key asSymbol put: value. ];
+		ifTrue: [
+			| array newClassName |
+			newClassName := (theObject className, key allButLast capitalized).
+			array := value collect: [ :eachValue | 
+				| childObject | 
+				eachValue isDictionary ifTrue: [
+					
+					
+					childObject := self modelFrom: eachValue className: newClassName.
+					childObject isNotNil ifTrue: [ 
+						childObject znclient: theObject znclient.
+						self ensureInstVarNamed: '_parent' inClass: childObject class.
+						childObject instVarNamed: '_parent' put: theObject].
 					childObject]].
 			theObject instVarNamed: key asSymbol put: array ]
 ]

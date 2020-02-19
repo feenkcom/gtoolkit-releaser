@@ -3,7 +3,8 @@ Class {
 	#superclass : #JenkinsWFAPI,
 	#instVars : [
 		'name',
-		'runCount'
+		'runCount',
+		'runs'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }

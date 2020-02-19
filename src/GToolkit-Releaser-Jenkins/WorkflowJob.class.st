@@ -53,7 +53,7 @@ WorkflowJob >> wfapi [
 	json := self znclient get: ('' join: {self url. '/wfapi'}).
 	codeGenerator := JSONCodeGenerator new.
 	codeGenerator znclient: self znclient.
-	^ codeGenerator modelFrom:(NeoJSONReader fromString: json) className: #WfJob
+	^ codeGenerator modelFrom:(NeoJSONReader fromString: json) className: #WfJob znclient:self znclient.
 ]
 
 { #category : #accessing }
