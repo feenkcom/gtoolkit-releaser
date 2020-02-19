@@ -11,11 +11,13 @@ Class {
 JenkinsWFAPI >> getLinks [
 	self links keysAndValuesDo: [:key :value |
 		
-			|json codeGenerator theObject varname|
+			|json codeGenerator theObject varname getResult|
 			codeGenerator := JSONCodeGenerator new.
-			json := (NeoJSONReader fromString: (self znclient get: (value at:'href')) ).
+			getResult := self znclient get: (value at:'href').
 			varname := key.
 			key = 'self' ifTrue: [varname:='_self'].
+			[json := NeoJSONReader fromString: getResult.
+			
 			json isArray ifTrue: [
 				|collection newClassName|
 				collection := OrderedCollection new.
@@ -37,7 +39,10 @@ JenkinsWFAPI >> getLinks [
 				
 				codeGenerator ensureInstVarNamed: varname inClass: self class.
 				codeGenerator setWfAttribute: varname toValue: theObject inObject: self.
-			].
+			]] on: NeoJSONParseError do: [
+				codeGenerator ensureInstVarNamed: varname inClass: self class.
+				codeGenerator setWfAttribute: varname toValue: getResult inObject: self.
+			]
 		
 	]
 ]
