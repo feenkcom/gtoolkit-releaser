@@ -77,9 +77,6 @@ JSONCodeGenerator >> modelFrom: aDictionary className: aClassName [
 		varname := (key) asSymbol.
 		key ~= '_links' ifTrue: [
 			self ensureInstVarNamed: varname inClass: theClass.].
-"		varname = 'execNode' ifTrue:[
-		NonInteractiveTranscript stdout crShow: aDictionary.
-		]."
 		self setWfAttribute: varname toValue: value inObject: theObject]].
 	^ theObject.
 
@@ -96,9 +93,6 @@ JSONCodeGenerator >> modelFrom: aDictionary className: aClassName znclient: aZnc
 		varname := (key) asSymbol.
 		key ~= '_links' ifTrue: [
 			self ensureInstVarNamed: varname inClass: theClass.].
-"		varname = 'execNode' ifTrue:[
-		NonInteractiveTranscript stdout crShow: aDictionary.
-		]."
 		self setWfAttribute: varname toValue: value inObject: theObject]].
 	^ theObject.
 
@@ -149,13 +143,11 @@ JSONCodeGenerator >> setWfAttribute: key toValue: value inObject: theObject [
 			array := value collect: [ :eachValue | 
 				| childObject | 
 				eachValue isDictionary ifTrue: [
-					
-					
-					childObject := self modelFrom: eachValue className: newClassName.
-					childObject isNotNil ifTrue: [ 
-						childObject znclient: theObject znclient.
+					childObject := self modelFrom: eachValue className: newClassName znclient: theObject znclient.
+					childObject isNotNil ifTrue: [
 						self ensureInstVarNamed: '_parent' inClass: childObject class.
-						childObject instVarNamed: '_parent' put: theObject].
+						childObject instVarNamed: '_parent' put: theObject.
+						].
 					childObject]].
 			theObject instVarNamed: key asSymbol put: array ]
 ]

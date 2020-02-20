@@ -10,7 +10,36 @@ Class {
 		'status',
 		'queueDurationMillis',
 		'endTimeMillis',
-		'durationMillis'
+		'durationMillis',
+		'_self',
+		'changesets'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }
+
+{ #category : #accessing }
+WfJobRun >> gtStagesFor: aView [
+	<gtView>
+	^ aView columnedList
+		title: 'Stages' translated;
+		priority: 10;
+		items: [ stages ];
+		column: 'Name' translated do: [ :aColumn | 
+			aColumn 
+				item: [ :job | job name ]; 
+				matchParent ];
+		column: 'Status' translated do: [ :aColumn | 
+			aColumn 
+				item: [ :job | job status ]; 
+				matchParent ]
+]
+
+{ #category : #accessing }
+WfJobRun >> name [
+	^ name
+]
+
+{ #category : #accessing }
+WfJobRun >> status [
+	^ status
+]

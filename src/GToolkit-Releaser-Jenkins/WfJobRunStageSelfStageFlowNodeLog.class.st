@@ -7,7 +7,22 @@ Class {
 		'length',
 		'consoleUrl',
 		'nodeId',
-		'text'
+		'text',
+		'startTimeMillis',
+		'name',
+		'id',
+		'pauseDurationMillis',
+		'parentNodes',
+		'status',
+		'parameterDescription',
+		'execNode',
+		'durationMillis',
+		'error'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }
+
+{ #category : #accessing }
+WfJobRunStageSelfStageFlowNodeLog >> text [
+	^ text
+]

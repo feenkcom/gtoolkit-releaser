@@ -14,7 +14,8 @@ Class {
 		'_parent',
 		'console',
 		'_self',
-		'log'
+		'log',
+		'error'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }
@@ -22,4 +23,28 @@ Class {
 { #category : #accessing }
 WfJobRunStageSelfStageFlowNode >> getDescription [
 	^ self getLinks
+]
+
+{ #category : #accessing }
+WfJobRunStageSelfStageFlowNode >> gtLog: aView [
+	<gtView>
+		^ aView textEditor
+		title: 'Console Log';
+		text: [self log text]
+]
+
+{ #category : #accessing }
+WfJobRunStageSelfStageFlowNode >> log [
+	self getLinks.
+	^ log
+]
+
+{ #category : #accessing }
+WfJobRunStageSelfStageFlowNode >> name [
+ ^ name
+]
+
+{ #category : #accessing }
+WfJobRunStageSelfStageFlowNode >> parameterDescription [
+	^ parameterDescription
 ]

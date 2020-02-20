@@ -4,7 +4,25 @@ Class {
 	#instVars : [
 		'name',
 		'runCount',
-		'runs'
+		'runs',
+		'_self'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }
+
+{ #category : #accessing }
+WfJob >> gtRunsFor: aView [
+	<gtView>
+	^ aView columnedList
+		title: 'Runs' translated;
+		priority: 10;
+		items: [ runs ];
+		column: 'Name' translated do: [ :aColumn | 
+			aColumn 
+				item: [ :job | job name ]; 
+				matchParent ];
+		column: 'Status' translated do: [ :aColumn | 
+			aColumn 
+				item: [ :job | job status ]; 
+				matchParent ]
+]

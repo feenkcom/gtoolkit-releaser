@@ -9,6 +9,8 @@ Class {
 
 { #category : #accessing }
 JenkinsWFAPI >> getLinks [
+	|links|
+	self links ifNotNil: [
 	self links keysAndValuesDo: [:key :value |
 		
 			|json codeGenerator theObject varname getResult|
@@ -27,8 +29,8 @@ JenkinsWFAPI >> getLinks [
 				json do: [:eachJson| 
 					theObject := codeGenerator 
 						modelFrom:eachJson className:newClassName znclient: self znclient.
-					
 					collection add:theObject.
+					
 				]
 				
 			]
@@ -44,7 +46,7 @@ JenkinsWFAPI >> getLinks [
 				codeGenerator setWfAttribute: varname toValue: getResult inObject: self.
 			]
 		
-	]
+	]]
 ]
 
 { #category : #accessing }

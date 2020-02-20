@@ -16,6 +16,14 @@ WorkflowJob >> builds [
 ]
 
 { #category : #accessing }
+WorkflowJob >> getWfapi [
+	|w|
+	w:= self wfapi.
+	w getLinks.
+	^ w
+]
+
+{ #category : #accessing }
 WorkflowJob >> gtBuildsFor: aView [
 	<gtView>
 	^ aView columnedList

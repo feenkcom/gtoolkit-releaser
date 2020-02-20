@@ -23,11 +23,20 @@ WfJobRunStage >> getDescribe [
 ]
 
 { #category : #accessing }
-WfJobRunStage >> gtLog: aView [
+WfJobRunStage >> gtNodes: aView [
 	<gtView>
-		^ aView textEditor
-		title: 'Console Log';
-		text: [self log]
+	^ aView columnedList
+		title: 'Nodes' translated;
+		priority: 10;
+		items: [ self nodes ];
+		column: 'Name' translated do: [ :aColumn | 
+			aColumn 
+				item: [ :job | job name ]; 
+				matchParent ];
+		column: 'Parameter' translated do: [ :aColumn | 
+			aColumn 
+				item: [ :job | job parameterDescription ]; 
+				matchParent ]
 ]
 
 { #category : #accessing }
@@ -36,4 +45,20 @@ WfJobRunStage >> log [
 	logURL := _links at:#self at:#href.
 	^ logURL
 	"^ znclient get:logURL"
+]
+
+{ #category : #accessing }
+WfJobRunStage >> name [
+	^ name
+]
+
+{ #category : #accessing }
+WfJobRunStage >> nodes [
+	self getLinks.
+	^ _self stageFlowNodes
+]
+
+{ #category : #accessing }
+WfJobRunStage >> status [
+	^ status
 ]

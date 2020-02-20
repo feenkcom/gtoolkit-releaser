@@ -1,21 +1,16 @@
 Class {
-	#name : #WfJobRunStageSelf,
+	#name : #WfJobRunSelfStage,
 	#superclass : #JenkinsWFAPI,
 	#instVars : [
 		'durationMillis',
 		'pauseDurationMillis',
 		'status',
-		'stageFlowNodes',
 		'startTimeMillis',
 		'execNode',
 		'name',
 		'id',
+		'_parent',
 		'error'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }
-
-{ #category : #accessing }
-WfJobRunStageSelf >> stageFlowNodes [
-	^ stageFlowNodes
-]
