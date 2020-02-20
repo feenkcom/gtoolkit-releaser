@@ -95,3 +95,8 @@ JenkinsClient >> username: anUsername token: aToken url: anUrl [
    username: anUsername password: aToken.
 	url := anUrl.
 ]
+
+{ #category : #accessing }
+JenkinsClient >> znclient [
+	^ znclient
+]

@@ -147,8 +147,10 @@ JSONCodeGenerator >> setWfAttribute: key toValue: value inObject: theObject [
 					childObject isNotNil ifTrue: [
 						self ensureInstVarNamed: '_parent' inClass: childObject class.
 						childObject instVarNamed: '_parent' put: theObject.
-						].
-					childObject]].
+						]].
+				eachValue isNumber ifTrue: [childObject:=eachValue].
+				eachValue isString ifTrue: [childObject:=eachValue].
+				childObject].
 			theObject instVarNamed: key asSymbol put: array ]
 ]
 

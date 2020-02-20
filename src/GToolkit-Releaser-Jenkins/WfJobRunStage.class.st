@@ -19,7 +19,7 @@ Class {
 { #category : #accessing }
 WfJobRunStage >> getDescribe [
 	|describeURL json|
-	^ self getLinks
+	^ self getRawLinks
 ]
 
 { #category : #accessing }

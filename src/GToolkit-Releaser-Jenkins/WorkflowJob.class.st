@@ -52,6 +52,11 @@ WorkflowJob >> parent [
 ]
 
 { #category : #accessing }
+WorkflowJob >> showRawLinks [
+	^ self wfapi getRawLinks
+]
+
+{ #category : #accessing }
 WorkflowJob >> url [
 	^ self parent url,'/job/', self name
 ]
@@ -59,10 +64,17 @@ WorkflowJob >> url [
 { #category : #accessing }
 WorkflowJob >> wfapi [
 	|json codeGenerator|
-	json := self znclient get: ('' join: {self url. '/wfapi'}).
+	json := self wfapiJSON.
 	codeGenerator := JSONCodeGenerator new.
 	codeGenerator znclient: self znclient.
-	^ codeGenerator modelFrom:(NeoJSONReader fromString: json) className: #WfJob znclient:self znclient.
+	^ codeGenerator modelFrom:json className: #WfJob znclient:self znclient.
+]
+
+{ #category : #accessing }
+WorkflowJob >> wfapiJSON [
+	^ NeoJSONReader fromString: (self znclient get: ('' join: {self url. '/wfapi'})).
+	
+	
 ]
 
 { #category : #accessing }
