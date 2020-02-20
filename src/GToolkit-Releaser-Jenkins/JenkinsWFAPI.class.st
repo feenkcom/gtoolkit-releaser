@@ -50,6 +50,22 @@ JenkinsWFAPI >> getLinks [
 ]
 
 { #category : #accessing }
+JenkinsWFAPI >> getRawLinks [
+	|links|
+	links := OrderedCollection new.
+	self links ifNotNil: [
+	self links keysAndValuesDo: [:key :value |
+		
+			|json theObject varname getResult|
+			
+			getResult := self znclient get: (value at:'href').
+			links add: (NeoJSONReader fromString: getResult).
+			]
+	].
+	^ links
+]
+
+{ #category : #accessing }
 JenkinsWFAPI >> links [
 	^ _links
 ]
