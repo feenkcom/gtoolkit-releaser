@@ -26,7 +26,8 @@ WorkflowJob >> getWfapi [
 { #category : #accessing }
 WorkflowJob >> gtBuildsFor: aView [
 	<gtView>
-	^ aView columnedList
+	^ self getWfapi gtRunsFor: aView.
+	"^ aView columnedList
 		title: 'Builds' translated;
 		priority: 10;
 		items: [ self builds ];
@@ -37,7 +38,7 @@ WorkflowJob >> gtBuildsFor: aView [
 		column: 'Status' translated do: [ :aColumn | 
 			aColumn 
 				item: [ :job | job result ]; 
-				matchParent ]
+				matchParent ]"
 ]
 
 { #category : #accessing }

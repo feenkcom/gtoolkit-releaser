@@ -29,11 +29,7 @@ WfJobRunStage >> gtNodes: aView [
 		title: 'Nodes' translated;
 		priority: 10;
 		items: [ self nodes ];
-		column: 'Name' translated do: [ :aColumn | 
-			aColumn 
-				item: [ :job | job name ]; 
-				matchParent ];
-		column: 'Parameter' translated do: [ :aColumn | 
+		column: 'Script' translated do: [ :aColumn | 
 			aColumn 
 				item: [ :job | job parameterDescription ]; 
 				matchParent ]
