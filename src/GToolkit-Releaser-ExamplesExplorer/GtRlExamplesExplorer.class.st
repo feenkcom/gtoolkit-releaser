@@ -39,7 +39,32 @@ GtRlExamplesExplorer >> gtGraphFor: aView [
 	<gtView>
 	^ aView mondrian 
 		title: 'Graph';
-		painting: [:m |
+		painting: [:m | | local all grouped |
+local := self containedExamples examples collect: #example.
+all := local withDeepCollect: #directDependencies as: Set.
+grouped := all groupedBy: [:each | each method methodClass ].
+m nodes 
+	stencil: [:assoc | 
+		| pane default |
+		pane := BlElement new
+			constraintsDo: [:c | 
+				c horizontal fitContent.
+				c vertical fitContent ];
+			layout: BlLinearLayout vertical alignCenter;
+			background: Color white;
+			look: BrShadowLook;
+			margin: (BlInsets all: 10);
+			padding: (BlInsets top: 0 left: 10 bottom: 10 right: 10).
+		default := BlElement new
+			constraintsDo: [:c | 
+				c horizontal fitContent.
+				c vertical fitContent ].
+		default graph beChildrenContainer: #default.
+		pane addChild: (BrLabel new text: assoc key name; look: (BrGlamorousLabelLook new foreground: Color gray); margin: (BlInsets bottom: 10)).
+		pane addChild: default.
+		pane ];
+	with: grouped associations;
+	forEach: [:assoc | 
 m nodes 
 	stencil: [ :each |
 		| element container |
@@ -56,10 +81,11 @@ m nodes
 		stencil: [ 
 			BlElement new
 				look: (BrTooltipLook2 new  content: ((GtMethodCoder forExample: each) expanded: true) asElement)]).
-		((self containedExamples examples collect: #example) includes: each) ifTrue: [element background: (BrGlamorousColors primaryBorderColor)].
+		(local includes: each) ifTrue: [element background: (BrGlamorousColors primaryBorderColor)].
 		container addChild: element.
 		container ];
-	with: ((self containedExamples examples collect: #example) withDeepCollect: #directDependencies) asSet.
+	with: assoc value. 
+	m layout horizontalDominanceTree nodeDistance: 2; treesDistance: 4; levelDistance: 10.].
 m edges 
 	fromNearestTightCircle;
 	toNearestTightCircle;
@@ -67,8 +93,9 @@ m edges
 						border: (BlBorder paint: (Color gray alpha: 0.2) width: 2);
 						toHead: (BlArrowheadSimpleArrow new
 							border: (BlBorder builder paint: (Color gray alpha: 0.2); width: 2; build))];
-	connectToAll: #directDependencies.
-m layout horizontalDominanceTree nodeDistance: 10 ]
+	connect: all toAll: #directDependencies.
+m layout rectanglePack.
+m ]
 ]
 
 { #category : #ui }
