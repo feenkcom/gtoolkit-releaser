@@ -11,7 +11,8 @@ Class {
 		'id',
 		'_parent',
 		'error',
-		'_self'
+		'_self',
+		'parentIds'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }
@@ -32,7 +33,16 @@ WfJobRunStage >> gtNodes: aView [
 		column: 'Script' translated do: [ :aColumn | 
 			aColumn 
 				item: [ :job | job parameterDescription ]; 
+				matchParent ];
+		column: 'ID' translated do: [ :aColumn | 
+			aColumn 
+				item: [ :job | job id ]; 
 				matchParent ]
+]
+
+{ #category : #accessing }
+WfJobRunStage >> id [
+	^ id
 ]
 
 { #category : #accessing }

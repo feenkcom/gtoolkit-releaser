@@ -18,9 +18,7 @@ WorkflowJob >> builds [
 { #category : #accessing }
 WorkflowJob >> getWfapi [
 	|w|
-	w:= self wfapi.
-	w getLinks.
-	^ w
+	^ self wfapi
 ]
 
 { #category : #accessing }
@@ -63,11 +61,12 @@ WorkflowJob >> url [
 
 { #category : #accessing }
 WorkflowJob >> wfapi [
-	|json codeGenerator|
+	|json codeGenerator wfjob|
 	json := self wfapiJSON.
 	codeGenerator := JSONCodeGenerator new.
 	codeGenerator znclient: self znclient.
-	^ codeGenerator modelFrom:json className: #WfJob znclient:self znclient.
+	wfjob := codeGenerator modelFrom:json className: #WfJob znclient:self znclient.
+	^ wfjob
 ]
 
 { #category : #accessing }

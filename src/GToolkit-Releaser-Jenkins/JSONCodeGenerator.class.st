@@ -4,10 +4,16 @@ Class {
 	#instVars : [
 		'packageOrganizer',
 		'_parent',
-		'znclient'
+		'znclient',
+		'currentWfJobRun'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generator'
 }
+
+{ #category : #accessing }
+JSONCodeGenerator >> currentWfJobRun [
+	^ currentWfJobRun
+]
 
 { #category : #accessing }
 JSONCodeGenerator >> ensureClass: aFullClassName [
@@ -134,20 +140,30 @@ JSONCodeGenerator >> setAttribute: key toValue: value inObject: theObject [
 ]
 
 { #category : #accessing }
+JSONCodeGenerator >> setCurrentWfJobRun: anObject [
+	currentWfJobRun := anObject
+]
+
+{ #category : #accessing }
 JSONCodeGenerator >> setWfAttribute: key toValue: value inObject: theObject [
 	value isArray 
 		ifFalse: [ theObject instVarNamed: key asSymbol put: value. ];
 		ifTrue: [
 			| array newClassName |
 			newClassName := (theObject className, key allButLast capitalized).
+			theObject class = WfJobRun ifTrue:[
+				self setCurrentWfJobRun: theObject.
+			].
+			
 			array := value collect: [ :eachValue | 
 				| childObject | 
 				eachValue isDictionary ifTrue: [
 					childObject := self modelFrom: eachValue className: newClassName znclient: theObject znclient.
-					childObject isNotNil ifTrue: [
-						self ensureInstVarNamed: '_parent' inClass: childObject class.
-						childObject instVarNamed: '_parent' put: theObject.
-						]].
+					self currentWfJobRun isNotNil ifTrue:[
+						childObject setWfJobRun: self currentWfJobRun.
+					]].
+			   "key = 'parentIds' ifTrue: [self halt]."
+				 "childObject:=eachValue."
 				eachValue isNumber ifTrue: [childObject:=eachValue].
 				eachValue isString ifTrue: [childObject:=eachValue].
 				childObject].

@@ -13,6 +13,7 @@ Class {
 { #category : #accessing }
 WfJob >> gtRunsFor: aView [
 	<gtView>
+	self getLinks.
 	^ aView columnedList
 		title: 'Runs' translated;
 		priority: 10;

@@ -2,7 +2,9 @@ Class {
 	#name : #JenkinsWFAPI,
 	#superclass : #JenkinsURL,
 	#instVars : [
-		'_links'
+		'_links',
+		'wfJobRun',
+		'json'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generator'
 }
@@ -13,12 +15,13 @@ JenkinsWFAPI >> getLinks [
 	self links ifNotNil: [
 	self links keysAndValuesDo: [:key :value |
 		
-			|json codeGenerator theObject varname getResult|
+			| codeGenerator theObject varname getResult|
 			codeGenerator := JSONCodeGenerator new.
 			getResult := self znclient get: (value at:'href').
 			varname := key.
 			key = 'self' ifTrue: [varname:='_self'].
 			[json := NeoJSONReader fromString: getResult.
+			
 			
 			json isArray ifTrue: [
 				|collection newClassName|
@@ -68,4 +71,9 @@ JenkinsWFAPI >> getRawLinks [
 { #category : #accessing }
 JenkinsWFAPI >> links [
 	^ _links
+]
+
+{ #category : #accessing }
+JenkinsWFAPI >> setWfJobRun: anObject [
+	wfJobRun := anObject
 ]

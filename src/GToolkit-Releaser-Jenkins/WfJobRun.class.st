@@ -31,6 +31,10 @@ WfJobRun >> gtStagesFor: aView [
 		column: 'Status' translated do: [ :aColumn | 
 			aColumn 
 				item: [ :job | job status ]; 
+				matchParent ];
+		column: 'ID' translated do: [ :aColumn | 
+			aColumn 
+				item: [ :job | job id ]; 
 				matchParent ]
 ]
 
