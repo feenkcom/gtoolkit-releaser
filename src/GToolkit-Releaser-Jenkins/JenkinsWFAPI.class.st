@@ -21,8 +21,6 @@ JenkinsWFAPI >> getLinks [
 			varname := key.
 			key = 'self' ifTrue: [varname:='_self'].
 			[json := NeoJSONReader fromString: getResult.
-			
-			
 			json isArray ifTrue: [
 				|collection newClassName|
 				collection := OrderedCollection new.
@@ -32,22 +30,22 @@ JenkinsWFAPI >> getLinks [
 				json do: [:eachJson| 
 					theObject := codeGenerator 
 						modelFrom:eachJson className:newClassName znclient: self znclient.
-					collection add:theObject.
-					
-				]
-				
-			]
+					collection add:theObject.]]
 			ifFalse: [
+				key = 'self' ifTrue: [varname:='_self'.
+				codeGenerator modelFrom: json theObject: self znclient: self znclient.
+				
+				] ifFalse:[
 				theObject := codeGenerator 
 						modelFrom:json className:(self className,key capitalized)
 						znclient: self znclient.
 				
 				codeGenerator ensureInstVarNamed: varname inClass: self class.
-				codeGenerator setWfAttribute: varname toValue: theObject inObject: self.
-			]] on: NeoJSONParseError do: [
+				codeGenerator setWfAttribute: varname toValue: theObject inObject: self.]]
+			] 
+			on: NeoJSONParseError do: [
 				codeGenerator ensureInstVarNamed: varname inClass: self class.
-				codeGenerator setWfAttribute: varname toValue: getResult inObject: self.
-			]
+				codeGenerator setWfAttribute: varname toValue: getResult inObject: self.]
 		
 	]]
 ]
@@ -71,6 +69,11 @@ JenkinsWFAPI >> getRawLinks [
 { #category : #accessing }
 JenkinsWFAPI >> links [
 	^ _links
+]
+
+{ #category : #accessing }
+JenkinsWFAPI >> setJSON: jsonDictionary [
+	json := jsonDictionary
 ]
 
 { #category : #accessing }

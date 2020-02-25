@@ -93,6 +93,14 @@ JSONCodeGenerator >> modelFrom: aDictionary className: aClassName znclient: aZnc
 	| theClass theObject|
 	theClass := (self ensureWfClass: aClassName).
 	theObject := theClass new.
+	^ self modelFrom: aDictionary theObject: theObject znclient: aZnclient
+
+]
+
+{ #category : #accessing }
+JSONCodeGenerator >> modelFrom: aDictionary theObject: theObject znclient: aZnclient [
+	| theClass |
+	theClass := theObject class.
 	theObject znclient: aZnclient.
 	aDictionary keysAndValuesDo: [ :key :value | key ~= '_self' ifTrue: [
 		|varname|
@@ -167,6 +175,9 @@ JSONCodeGenerator >> setWfAttribute: key toValue: value inObject: theObject [
 				eachValue isNumber ifTrue: [childObject:=eachValue].
 				eachValue isString ifTrue: [childObject:=eachValue].
 				childObject].
+			key = 'parentIds' ifTrue:[
+				NonInteractiveTranscript stdout crShow: value asString.
+			].
 			theObject instVarNamed: key asSymbol put: array ]
 ]
 

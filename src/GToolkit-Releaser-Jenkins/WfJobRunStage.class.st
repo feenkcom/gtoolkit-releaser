@@ -12,7 +12,8 @@ Class {
 		'_parent',
 		'error',
 		'_self',
-		'parentIds'
+		'parentIds',
+		'stageFlowNodes'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }
@@ -61,7 +62,7 @@ WfJobRunStage >> name [
 { #category : #accessing }
 WfJobRunStage >> nodes [
 	self getLinks.
-	^ _self stageFlowNodes
+	^ stageFlowNodes
 ]
 
 { #category : #accessing }
