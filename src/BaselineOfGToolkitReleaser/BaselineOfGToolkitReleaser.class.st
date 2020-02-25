@@ -1,14 +1,14 @@
 "
-!GtReleaser
+!Releaser
 
-This is the GtReleser wiki, a live, interactive document living and evolving in the image. It contains details about GtReleaser, like its intent, usage, internal structure, as well rationale about various design decisions. 
+This is the Releser wiki, a live, interactive document living and evolving in the image. It contains details about Releaser, like its intent, usage, internal structure, as well rationale about various design decisions. 
 
 !!Overview
-GtReleaser allows the creation of release versions for applications that use Metacello baselines to specify their loading configuration (what packages to load, their loading order and their dependencies). GtReleaser supports projects that use deeply nested baselines spread across many git repositories with a mix of baselines with fix dependencies and dependencies to latest versions. 
+Releaser allows the creation of release versions for applications that use Metacello baselines to specify their loading configuration (what packages to load, their loading order and their dependencies). Releaser supports projects that use deeply nested baselines spread across many git repositories with a mix of baselines with fix dependencies and dependencies to latest versions. 
 
-GtReleaser aims to be easy to debug. Several design decision, like computing all actions before executing a release and using separate models for releases and dependencies go in that direction. GtReleaser also uses extensively inspector views to help expose implementation details.
+Releaser aims to be easy to debug. Several design decision, like computing all actions before executing a release and using separate models for releases and dependencies go in that direction. Releaser also uses extensively inspector views to help expose implementation details.
 
-Currently GtRelease only provides support for generating new releases. However, in the context of Glamorous Toolkit, the goal is to extend it with support for loading baselines, not only generating them. Several other tools for working with a project (like running all tests in a project, or commiting changes to multiple repositories) could be based on GtReleaser.
+Currently GtRelease only provides support for generating new releases. However, in the context of Glamorous Toolkit, the goal is to extend it with support for loading baselines, not only generating them. Several other tools for working with a project (like running all tests in a project, or commiting changes to multiple repositories) could be based on Releaser.
 
 In short, to create a new release a user has to: 
  - ensure that all the code of the application that needs to be released is loaded in the current image;
@@ -16,7 +16,7 @@ In short, to create a new release a user has to:
  - run the release exporter to create new Metacello baselines that use fix versions to load dependencies. 
 
 Releases can be done manually from the image using the inspector as a user interface, or by relying on a command line handler.
-The next sections introduce the main concepts of GtReleaser through examples. They show how to create new releases programatically on an example system using the inspector.
+The next sections introduce the main concepts of Releaser through examples. They show how to create new releases programatically on an example system using the inspector.
 
 !!!Example system 
 To exemplify releaser in more details we use an example system that simulates a real system having multiple baselines spread across multiple repositories. The main baseline of this system is given by the class ${class:BaselineOfGtRlBaselineExampleSystemOne}$. In total this project uses seven baselines with two levels of dependencies. The picture below shows the dependencies between these baselines.
@@ -54,9 +54,9 @@ Running the exporter creates a new branch named 'release' in all project reposit
 ${example:GtRlReleaserUsageExamples>>#releaseWithNoVersionAndDefaultConfiguration|previewShow=#gtProjectMapFor:|previewHeight=250|noCode}$
 
 !!Creating the initial release step-by-step
-Next we go in more details through the steps performed by GtReleaser when creating a release. This can prove useful when debugging problems or when looking to understand how GtReleaser works.
+Next we go in more details through the steps performed by Releaser when creating a release. This can prove useful when debugging problems or when looking to understand how Releaser works.
 
-GtReleaser relies on two distinct models: one for capturing dependencies between baselines and another for generating the new release based on a given configuration. Before a new release is made the user needs to create the first model, capturing dependencies between baselines. This is an instance of ${class:GtRlProject}$ that contains a graph of other ${class:GtRlProject}$ and ${class:GtRlRepository}$objects. Projects are contained within repositories and have dependencies to other projects contained in the same or other repositories.
+Releaser relies on two distinct models: one for capturing dependencies between baselines and another for generating the new release based on a given configuration. Before a new release is made the user needs to create the first model, capturing dependencies between baselines. This is an instance of ${class:GtRlProject}$ that contains a graph of other ${class:GtRlProject}$ and ${class:GtRlRepository}$objects. Projects are contained within repositories and have dependencies to other projects contained in the same or other repositories.
 
 This model is created using a ${class:GtRlDependenciesModelBuilder}$, by giving it a reference to the main baseline and the git url of the project (the url is needed as it is not present in the baseline). A shorter way to create a project is by sending the message ${method:BaselineOf class>>#gtRlProjectWithRepository:}$ to the baseline class.
 
@@ -76,7 +76,7 @@ We can also look at these projects by grouping them based on the repository that
 
 ${example:GtRlReleaserUsageExamples>>#releaseWithNoVersionAndDefaultConfiguration|previewHeight=450|noCode}$
 
-One restriction in GtReleaser is that is uses the same version number for all projects contained in a repository. For example, the repository =='github://example/ComponentB/src'==  contains two projects, 'GtRlBaselineExampleComponentBMain' and 'GtRlBaselineExampleComponentBUtil'. When refering to either one of these from another baseline the version number associated with the repository is used. This happens as version numbers identify commits within a repository (for example using tags) and it is only possible to checkout a single commit at a time.
+One restriction in Releaser is that is uses the same version number for all projects contained in a repository. For example, the repository =='github://example/ComponentB/src'==  contains two projects, 'GtRlBaselineExampleComponentBMain' and 'GtRlBaselineExampleComponentBUtil'. When refering to either one of these from another baseline the version number associated with the repository is used. This happens as version numbers identify commits within a repository (for example using tags) and it is only possible to checkout a single commit at a time.
 
 When executing the release certain actions are performed within each repository. This list of actions is stored within the release objects and we can view it by inspecting those release objects. We use explicit action objects to allow users to see what will happen when executing the release. For example, below we look at the actions associate with the repository release =='github://example/SystemOne/src'==.
 
@@ -135,34 +135,34 @@ ${example:GtRlReleaserUsageExamples>>#systemTwoProject|previewShow=#gtRepoMapFor
 ${example:GtRlReleaserUsageExamples>>#systemThreeProject|previewShow=#gtProjectMapFor:|noCode|previewHeight=300}$ 
 
 !!Package structure
-This section describes the most important packages from GtReleaser:
+This section describes the most important packages from Releaser:
 
 - GToolkit-Releaser-BaselineModel: The model for capturing Monticello baselines together with their dependencies; 
 - GToolkit-Releaser-BaselineModel-MinimalIceberg: An implementation for an in-memory iceberg repository needed in examples for documentation;
-- GToolkit-Releaser-BaselineModel-Examples: Tests and documentation for the modeling dependencies in GtReleaser;
+- GToolkit-Releaser-BaselineModel-Examples: Tests and documentation for the modeling dependencies in Releaser;
 - GToolkit-Releaser: The model for creating new releases according to a release condiguration;
 - GToolkit-Releaser-IcebergExtensions: A set of extensions to mae working with Iceberg objects easier in the inspector;
 - GToolkit-Releaser-ExamplesExplorer: A tool for exploring and running examples attached to a project;
 - GToolkit-Releaser-Examples: Tests and documentation for performing releases.
 
-!!Testing GtReleaser
-On a note about testing, GtReleaser uses examples for both testing and documentation. However, two different kind of examples are currently used.
+!!Testing Releaser
+On a note about testing, Releaser uses examples for both testing and documentation. However, two different kind of examples are currently used.
 
-For testing the functionality GtReleaser uses examples that create concrete git repos using libgit2. These example then delete the created repos in the after method. Hence, they cannot be used at the moment for documentation purposes, as it is harder to embedd views of repositories within documents when the repository no longer exists. These examples also aim to test GtReleaser in its normal usage.
+For testing the functionality Releaser uses examples that create concrete git repos using libgit2. These example then delete the created repos in the after method. Hence, they cannot be used at the moment for documentation purposes, as it is harder to embedd views of repositories within documents when the repository no longer exists. These examples also aim to test Releaser in its normal usage.
 
-That is why for documentation, different examples are used that rely on in-memory mocked repositories, instead of real git repositories on disk. Currently GtReleaser has its own implementation of these mocks in the package 'GToolkit-Releaser-BaselineModel-MinimalIceberg'. This implements the minimal API from Iceberg needed to make the documentation work. Iceberg also provides a package. `Iceberg-Memory`, that provides similar functionality. We are not using it given that it is not present in the Pharo image by default and introduces a dependency to Ring2. Ideally if that package is present in the image it could be used instead of the custom mocks.
+That is why for documentation, different examples are used that rely on in-memory mocked repositories, instead of real git repositories on disk. Currently Releaser has its own implementation of these mocks in the package 'GToolkit-Releaser-BaselineModel-MinimalIceberg'. This implements the minimal API from Iceberg needed to make the documentation work. Iceberg also provides a package. `Iceberg-Memory`, that provides similar functionality. We are not using it given that it is not present in the Pharo image by default and introduces a dependency to Ring2. Ideally if that package is present in the image it could be used instead of the custom mocks.
 
 !!Current limitations 
-There are currently several limitations regarding the kind of projects and baselines GtReleaser can handle.
+There are currently several limitations regarding the kind of projects and baselines Releaser can handle.
 
-Regarding baselines, currently GtReleaser supports a subset of Monticello baselines that define only packages and dependencies to other baselines in the #common spec. This means that the main limitations are:
-- no support for groups within baselines; to use GtReleaser you need to structure baselines in a way that does not use groups;
+Regarding baselines, currently Releaser supports a subset of Monticello baselines that define only packages and dependencies to other baselines in the #common spec. This means that the main limitations are:
+- no support for groups within baselines; to use Releaser you need to structure baselines in a way that does not use groups;
 - only the #common spec is supported; there is currenly no support for predefined specs like pharo versions (#pharo6 or #pharo7 for example) or custom attributes;
 - only dependencies to other baselines are supported; no dependencies to Metacello configurations can be used.
 
-The main strategy used in GtReleaser for creating a new release is adding a tag on a dedicated release branch. This requires GtReleaser to merge the current branch into the release branch. The merge is done automatically using Iceberg. Currently there are cases, mostly related to removing packages not loaded into the image, that can cause the merge to fail. In that case you should do the merge manually.
+The main strategy used in Releaser for creating a new release is adding a tag on a dedicated release branch. This requires Releaser to merge the current branch into the release branch. The merge is done automatically using Iceberg. Currently there are cases, mostly related to removing packages not loaded into the image, that can cause the merge to fail. In that case you should do the merge manually.
 
-Also to ensure that a proper release is created, most operations from GtReleaser contain assertions that check the state of the repository or of the baseline. The relase will fain if an invalid situation is encountered. 
+Also to ensure that a proper release is created, most operations from Releaser contain assertions that check the state of the repository or of the baseline. The relase will fain if an invalid situation is encountered. 
 
 
 
