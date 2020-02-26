@@ -17,6 +17,7 @@ JenkinsWFAPI >> getLinks [
 		
 			| codeGenerator theObject varname getResult|
 			codeGenerator := JSONCodeGenerator new.
+			codeGenerator setCurrentWfJobRun: wfJobRun.
 			getResult := self znclient get: (value at:'href').
 			varname := key.
 			key = 'self' ifTrue: [varname:='_self'].
