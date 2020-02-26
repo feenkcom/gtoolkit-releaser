@@ -67,23 +67,24 @@ m nodes
 	forEach: [:assoc | 
 m nodes 
 	stencil: [ :each |
-		| element container |
-		container := BrVerticalPane new vFitContent; hFitContent.
+		| element |
 		element := BlElement new
 			geometry: BlEllipse new;
+			constraintsDo: [:c | c horizontal fitContent. c vertical fitContent];
 			border: (BlBorder paint: Color black width: 2);
 			size: 20@20;
 			when: BlClickEvent do: [:e | e target phlow spawnObject: each];
-			look: (BrWithTooltipLook2 new
-		preferredExtent: 200@200;
-		showDelay: 100 milliSeconds;
-		hideDelay: 100 milliSeconds;
-		stencil: [ 
-			BlElement new
-				look: (BrTooltipLook2 new  content: ((GtMethodCoder forExample: each) expanded: true) asElement)]).
+			look: (BrGlamorousWithTooltipLook2 new 
+				contentStencil: [ 
+				| container |
+				container := BrVerticalPane new fitContent addChild: ((GtMethodCoder forExample: each) expanded: true) asElement.
+				container when: GtPhlowObjectToSpawn do: [:e | 
+					element fireEvent: (GtPhlowObjectToSpawn new object: e object; sourceElement: e target)]];
+				preferredExtent: 200@200;
+				showDelay: 100 milliSeconds;
+				hideDelay: 100 milliSeconds ).
 		(local includes: each) ifTrue: [element background: (BrGlamorousColors primaryBorderColor)].
-		container addChild: element.
-		container ];
+		element ];
 	with: assoc value. 
 	m layout horizontalDominanceTree nodeDistance: 2; treesDistance: 4; levelDistance: 10.].
 m edges 
