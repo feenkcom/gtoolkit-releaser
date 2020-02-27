@@ -1,5 +1,5 @@
 Class {
-	#name : #WfJobRunStageSelfStageFlowNodeSelfLog,
+	#name : #WfJobRunNodeLog,
 	#superclass : #JenkinsWFAPI,
 	#instVars : [
 		'hasMore',

@@ -4,21 +4,29 @@ Class {
 	#instVars : [
 		'startTimeMillis',
 		'name',
-		'id',
 		'pauseDurationMillis',
 		'parentNodes',
 		'status',
 		'parameterDescription',
 		'execNode',
 		'durationMillis',
-		'parentIds'
+		'parentNode',
+		'console',
+		'log',
+		'_self',
+		'error'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }
 
 { #category : #accessing }
-WfJobRunStageStageFlowNode >> id [
-	^ id
+WfJobRunStageStageFlowNode >> gtDisplayOn: stream [
+	^ stream nextPutAll: self name
+]
+
+{ #category : #accessing }
+WfJobRunStageStageFlowNode >> name [
+	^ name
 ]
 
 { #category : #accessing }

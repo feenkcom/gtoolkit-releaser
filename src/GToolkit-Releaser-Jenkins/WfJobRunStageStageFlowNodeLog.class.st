@@ -1,5 +1,5 @@
 Class {
-	#name : #WfJobRunStageSelfStageFlowNodeLog,
+	#name : #WfJobRunStageStageFlowNodeLog,
 	#superclass : #JenkinsWFAPI,
 	#instVars : [
 		'hasMore',
@@ -10,19 +10,12 @@ Class {
 		'text',
 		'startTimeMillis',
 		'name',
-		'id',
 		'pauseDurationMillis',
 		'parentNodes',
 		'status',
 		'parameterDescription',
 		'execNode',
-		'durationMillis',
-		'error'
+		'durationMillis'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }
-
-{ #category : #accessing }
-WfJobRunStageSelfStageFlowNodeLog >> text [
-	^ text
-]

@@ -4,15 +4,21 @@ Class {
 	#instVars : [
 		'startTimeMillis',
 		'name',
-		'id',
 		'pauseDurationMillis',
 		'parentNodes',
 		'status',
 		'parameterDescription',
 		'execNode',
 		'durationMillis',
-		'parentIds',
-		'_parent'
+		'_parent',
+		'console',
+		'_self',
+		'log'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }
+
+{ #category : #accessing }
+WfJobRunNodeStageFlowNode >> name [
+	^ name
+]

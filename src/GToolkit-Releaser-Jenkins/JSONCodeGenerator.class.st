@@ -31,7 +31,7 @@ JSONCodeGenerator >> ensureClass: aFullClassName [
 
 { #category : #accessing }
 JSONCodeGenerator >> ensureInstVarNamed: aSymbol inClass: aClass [
-	aClass instVarNames detect: [:name | name = aSymbol] ifNone: [ aClass addInstVarNamed: aSymbol ].
+	((aClass instVarNames ), (aClass superclass instVarNames)) detect: [:name | name = aSymbol] ifNone: [ aClass addInstVarNamed: aSymbol ].
 
 ]
 

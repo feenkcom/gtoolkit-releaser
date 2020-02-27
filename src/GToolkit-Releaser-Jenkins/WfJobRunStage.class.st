@@ -8,20 +8,20 @@ Class {
 		'startTimeMillis',
 		'execNode',
 		'name',
-		'id',
 		'_parent',
 		'error',
 		'_self',
-		'parentIds',
-		'stageFlowNodes'
+		'stageFlowNodes',
+		'parameterDescription',
+		'parentNodes'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }
 
 { #category : #accessing }
 WfJobRunStage >> getDescribe [
-	|describeURL json|
-	^ self getRawLinks
+	|describeURL|
+	^ self parentNodes
 ]
 
 { #category : #accessing }

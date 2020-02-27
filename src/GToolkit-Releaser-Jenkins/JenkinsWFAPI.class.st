@@ -4,7 +4,10 @@ Class {
 	#instVars : [
 		'_links',
 		'wfJobRun',
-		'json'
+		'json',
+		'id',
+		'parentIds',
+		'parentWfNodes'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generator'
 }
@@ -52,6 +55,33 @@ JenkinsWFAPI >> getLinks [
 ]
 
 { #category : #accessing }
+JenkinsWFAPI >> getParentNodes [
+	|parentJson theObject codeGenerator fromCache resultList|
+	theObject := nil.
+	self getLinks.
+	resultList := OrderedCollection new.
+	self parentIds isNotNil ifTrue: [
+		wfJobRun ifNotNil: [
+			codeGenerator := JSONCodeGenerator new.
+			codeGenerator setCurrentWfJobRun: self wfJobRun.
+			self parentIds do: [:pid |
+			  fromCache := (wfJobRun nodeWithId:pid).
+			  fromCache ifNotNil: [resultList add: fromCache ].
+			  fromCache ifNil: [
+			  	  parentJson := self parentJSON:pid.
+					theObject := codeGenerator 
+						modelFrom:parentJson className:'WfJobRunNode'
+						znclient: self znclient.
+					theObject setWfJobRun: self wfJobRun.
+					resultList add: theObject ]].
+					codeGenerator ensureInstVarNamed: 'parentNodes' inClass: self class.
+					codeGenerator setWfAttribute: 'parentNodes' toValue: resultList inObject: self]].
+		
+	^ resultList
+	
+]
+
+{ #category : #accessing }
 JenkinsWFAPI >> getRawLinks [
 	|links|
 	links := OrderedCollection new.
@@ -68,8 +98,57 @@ JenkinsWFAPI >> getRawLinks [
 ]
 
 { #category : #accessing }
+JenkinsWFAPI >> gtParentNodes: aView [
+	|nodes |
+	<gtView>
+	self wfJobRun isNotNil ifTrue: [
+	nodes := self parentNodes .
+	nodes isNotNil ifTrue: [
+		^ aView columnedList
+			title: 'ParentNode' translated;
+			priority: 10;
+			items: [ nodes];
+			column: 'ID' translated do: [ :aColumn | 
+				aColumn 
+					item: [ :item| item id ];
+					matchParent ]
+					]].
+	^ aView empty
+]
+
+{ #category : #accessing }
+JenkinsWFAPI >> id [
+	^ id
+]
+
+{ #category : #accessing }
 JenkinsWFAPI >> links [
 	^ _links
+]
+
+{ #category : #accessing }
+JenkinsWFAPI >> parentIds [
+	^ parentIds
+]
+
+{ #category : #accessing }
+JenkinsWFAPI >> parentJSON: parentId [
+	^ NeoJSONReader fromString: (znclient get: (self parentURL: parentId))
+]
+
+{ #category : #accessing }
+JenkinsWFAPI >> parentNodes [
+	parentWfNodes ifNil: [parentWfNodes := self getParentNodes].
+	^ parentWfNodes
+]
+
+{ #category : #accessing }
+JenkinsWFAPI >> parentURL: parentId [
+	|p selfLink re|
+	p := parentId.
+	re := ('node/',(id asString)) asRegex.
+	selfLink:=self links at:#self at:#href.
+	^ re copy: selfLink replacingMatchesWith: ('node/',p)
 ]
 
 { #category : #accessing }
@@ -79,5 +158,11 @@ JenkinsWFAPI >> setJSON: jsonDictionary [
 
 { #category : #accessing }
 JenkinsWFAPI >> setWfJobRun: anObject [
-	wfJobRun := anObject
+	wfJobRun := anObject.
+	wfJobRun registerNode: self.
+]
+
+{ #category : #accessing }
+JenkinsWFAPI >> wfJobRun [
+	^ wfJobRun
 ]
