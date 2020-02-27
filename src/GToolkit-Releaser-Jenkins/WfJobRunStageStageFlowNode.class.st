@@ -21,12 +21,13 @@ Class {
 
 { #category : #accessing }
 WfJobRunStageStageFlowNode >> gtDisplayOn: stream [
-	^ stream nextPutAll: self name
+	^ stream nextPutAll:self parameterDescription
 ]
 
 { #category : #accessing }
 WfJobRunStageStageFlowNode >> gtTextFor: aView [
 	<gtView>
+	log isNil ifTrue: [self getLinks].
 	^ aView textEditor
 		title: 'Console Log';
 		text: [log text]

@@ -32,20 +32,21 @@ WfJobRunStage >> getDescribe [
 ]
 
 { #category : #accessing }
+WfJobRunStage >> gtDisplayOn: stream [
+	stream nextPutAll: self name.
+]
+
+{ #category : #accessing }
 WfJobRunStage >> gtNodes: aView [
 	<gtView>
 	self nodes isEmpty ifTrue:[ ^ aView empty].
 	^ aView columnedList
 		title: 'Nodes' translated;
-		priority: 20;
+		priority: 9;
 		items: [ self nodes ];
 		column: 'Script' translated do: [ :aColumn | 
 			aColumn 
 				item: [ :job | job parameterDescription ]; 
-				matchParent ];
-		column: 'ID' translated do: [ :aColumn | 
-			aColumn 
-				item: [ :job | job id ]; 
 				matchParent ]
 ]
 

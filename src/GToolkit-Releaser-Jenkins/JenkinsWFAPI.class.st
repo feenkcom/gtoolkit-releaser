@@ -98,7 +98,7 @@ JenkinsWFAPI >> getRawLinks [
 { #category : #accessing }
 JenkinsWFAPI >> gtParentNodes: aView [
 	|nodes |
-	<gtView>
+	
 	self wfJobRun isNotNil ifTrue: [
 	nodes := self parentNodes .
 	nodes isNotNil ifTrue: [
