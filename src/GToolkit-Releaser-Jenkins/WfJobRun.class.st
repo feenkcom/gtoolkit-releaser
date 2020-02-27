@@ -106,12 +106,13 @@ WfJobRun >> gtStagesMapFor: aView [
 	  	  allNodes := stages.
 			mondrian nodes 
 				shape: [ :aStage | 
-				|container children label  |
+				|container label  |
 					
 					container := BlElement new
 						layout: BlLinearLayout vertical;
 						border: (BlBorder paint: Color gray width: 1);
 						zIndex: 1;
+						when: BlClickEvent do:[:e | e target phlow spawnObject: aStage];
 						constraintsDo: [ :c |
 							c padding: (BlInsets all: 5).
 							c horizontal fitContent.
