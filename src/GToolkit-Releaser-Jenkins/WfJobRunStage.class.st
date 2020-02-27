@@ -34,9 +34,10 @@ WfJobRunStage >> getDescribe [
 { #category : #accessing }
 WfJobRunStage >> gtNodes: aView [
 	<gtView>
+	self nodes isEmpty ifTrue:[ ^ aView empty].
 	^ aView columnedList
 		title: 'Nodes' translated;
-		priority: 10;
+		priority: 20;
 		items: [ self nodes ];
 		column: 'Script' translated do: [ :aColumn | 
 			aColumn 

@@ -19,3 +19,9 @@ Class {
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }
+
+{ #category : #accessing }
+WfJobRunStageStageFlowNodeLog >> text [ 
+	^ text
+	
+]

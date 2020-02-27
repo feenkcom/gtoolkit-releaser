@@ -103,7 +103,7 @@ JenkinsWFAPI >> gtParentNodes: aView [
 	nodes := self parentNodes .
 	nodes isNotNil ifTrue: [
 		^ aView columnedList
-			title: 'ParentNode' translated;
+			title: 'ParentNodes' translated;
 			priority: 10;
 			items: [ nodes];
 			column: 'ID' translated do: [ :aColumn | 

@@ -25,6 +25,14 @@ WfJobRunStageStageFlowNode >> gtDisplayOn: stream [
 ]
 
 { #category : #accessing }
+WfJobRunStageStageFlowNode >> gtTextFor: aView [
+	<gtView>
+	^ aView textEditor
+		title: 'Console Log';
+		text: [log text]
+]
+
+{ #category : #accessing }
 WfJobRunStageStageFlowNode >> name [
 	^ name
 ]
