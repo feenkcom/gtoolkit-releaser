@@ -76,7 +76,7 @@ JenkinsWFAPI >> getParentNodes [
 					resultList add: theObject ]].
 					codeGenerator ensureInstVarNamed: 'parentNodes' inClass: self class.
 					codeGenerator setWfAttribute: 'parentNodes' toValue: resultList inObject: self]].
-		
+	parentWfNodes := resultList.
 	^ resultList
 	
 ]

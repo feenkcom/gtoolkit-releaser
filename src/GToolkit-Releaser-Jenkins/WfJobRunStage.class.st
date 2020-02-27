@@ -21,7 +21,7 @@ Class {
 { #category : #accessing }
 WfJobRunStage >> getDescribe [
 	|describeURL|
-	^ self parentNodes
+	^ self getParentNodes
 ]
 
 { #category : #accessing }
@@ -63,6 +63,16 @@ WfJobRunStage >> name [
 WfJobRunStage >> nodes [
 	self getLinks.
 	^ stageFlowNodes
+]
+
+{ #category : #accessing }
+WfJobRunStage >> parentStages [
+	|parentStages|
+	parentStages := self parentNodes deepCollectAsSet: [:each | 
+		(each class = WfJobRunStage) ifTrue: [each] ifFalse:[ each parentNodes]].
+	parentStages := parentStages select:[:each | each class = WfJobRunStage ].
+	^parentStages.
+	
 ]
 
 { #category : #accessing }
