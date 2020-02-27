@@ -20,7 +20,9 @@ Class {
 		'nodeId',
 		'text',
 		'error',
-		'log'
+		'log',
+		'runCount',
+		'runs'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }

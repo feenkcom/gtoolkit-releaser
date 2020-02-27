@@ -13,7 +13,14 @@ Class {
 		'_self',
 		'stageFlowNodes',
 		'parameterDescription',
-		'parentNodes'
+		'parentNodes',
+		'hasMore',
+		'nodeStatus',
+		'length',
+		'consoleUrl',
+		'nodeId',
+		'text',
+		'log'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }
@@ -67,8 +74,11 @@ WfJobRunStage >> nodes [
 
 { #category : #accessing }
 WfJobRunStage >> parentStages [
-	|parentStages|
-	parentStages := self parentNodes deepCollectAsSet: [:each | 
+	|parentStages pns toDeepCollect|
+	pns := self parentNodes.
+	toDeepCollect := OrderedCollection new.
+	pns collect: [:each | toDeepCollect add: each ].
+	parentStages := toDeepCollect deepCollectAsSet: [:each | 
 		(each class = WfJobRunStage) ifTrue: [each] ifFalse:[ each parentNodes]].
 	parentStages := parentStages select:[:each | each class = WfJobRunStage ].
 	^parentStages.

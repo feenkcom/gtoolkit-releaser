@@ -170,6 +170,9 @@ JSONCodeGenerator >> setWfAttribute: key toValue: value inObject: theObject [
 					self currentWfJobRun isNotNil ifTrue:[
 						childObject setWfJobRun: self currentWfJobRun.
 					]].
+				childObject class = WfJobRunStage ifTrue:[
+					theObject registerNode: childObject.
+				].
 			   "key = 'parentIds' ifTrue: [self halt]."
 				 "childObject:=eachValue."
 				eachValue isNumber ifTrue: [childObject:=eachValue].

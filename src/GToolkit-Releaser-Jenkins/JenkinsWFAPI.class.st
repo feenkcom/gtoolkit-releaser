@@ -14,7 +14,6 @@ Class {
 
 { #category : #accessing }
 JenkinsWFAPI >> getLinks [
-	|links|
 	self links ifNotNil: [
 	self links keysAndValuesDo: [:key :value |
 		
@@ -74,9 +73,8 @@ JenkinsWFAPI >> getParentNodes [
 						znclient: self znclient.
 					theObject setWfJobRun: self wfJobRun.
 					resultList add: theObject ]].
-					codeGenerator ensureInstVarNamed: 'parentNodes' inClass: self class.
-					codeGenerator setWfAttribute: 'parentNodes' toValue: resultList inObject: self]].
-	parentWfNodes := resultList.
+			 parentWfNodes := resultList]].
+	
 	^ resultList
 	
 ]
@@ -138,7 +136,7 @@ JenkinsWFAPI >> parentJSON: parentId [
 
 { #category : #accessing }
 JenkinsWFAPI >> parentNodes [
-	parentWfNodes ifNil: [parentWfNodes := self getParentNodes].
+	parentWfNodes ifNil: [self getParentNodes].
 	^ parentWfNodes
 ]
 

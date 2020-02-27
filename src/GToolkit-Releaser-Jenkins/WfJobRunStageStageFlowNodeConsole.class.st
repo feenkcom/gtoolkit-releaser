@@ -14,7 +14,8 @@ Class {
 		'consoleUrl',
 		'nodeId',
 		'text',
-		'parameterDescription'
+		'parameterDescription',
+		'stageFlowNodes'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }

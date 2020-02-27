@@ -1,15 +1,15 @@
 Class {
-	#name : #WfJobRunNodeStageFlowNodeConsole,
+	#name : #WfJobRunNodeRunStageStageFlowNode,
 	#superclass : #JenkinsWFAPI,
 	#instVars : [
 		'startTimeMillis',
 		'name',
 		'pauseDurationMillis',
+		'parentNodes',
 		'status',
-		'parameterDescription',
 		'execNode',
 		'durationMillis',
-		'parentNodes'
+		'parameterDescription'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }

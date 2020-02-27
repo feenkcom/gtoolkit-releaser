@@ -67,9 +67,9 @@ WfJobRun >> gtAllNodesMapFor: aView [
 				fromLeftCenter;
 				toRightCenter;
 				connectFrom: #yourself 
-				toAll: [:each | | parentNodes |
-					parentNodes := each parentNodes.
-					allNodes select: [ :node | parentNodes anySatisfy: [ :parentNode | parentNode id = node id ] ] ].
+				toAll: [:each | | pns |
+					pns := each parentNodes.
+					allNodes select: [ :node | pns isNotNil and: [pns anySatisfy: [ :parentNode | parentNode id = node id ] ] ] ].
 			mondrian layout custom: (GtGradEastHierarchicalLayout new).
 			]
 ]

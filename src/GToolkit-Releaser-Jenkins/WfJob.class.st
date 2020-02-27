@@ -5,7 +5,12 @@ Class {
 		'name',
 		'runCount',
 		'runs',
-		'_self'
+		'_self',
+		'durationMillis',
+		'pauseDurationMillis',
+		'status',
+		'startTimeMillis',
+		'execNode'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }
