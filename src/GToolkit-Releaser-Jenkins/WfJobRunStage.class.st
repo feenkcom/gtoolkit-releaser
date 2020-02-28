@@ -95,6 +95,15 @@ WfJobRunStage >> log [
 ]
 
 { #category : #accessing }
+WfJobRunStage >> maxConsoleSize [
+	|bardata|
+	bardata := self nodes.
+	
+	^bardata collect: [:d | d log]
+	
+]
+
+{ #category : #accessing }
 WfJobRunStage >> name [
 	^ name
 ]

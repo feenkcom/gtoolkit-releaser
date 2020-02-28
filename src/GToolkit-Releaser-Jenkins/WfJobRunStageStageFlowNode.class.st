@@ -35,13 +35,13 @@ WfJobRunStageStageFlowNode >> gtTextFor: aView [
 
 { #category : #accessing }
 WfJobRunStageStageFlowNode >> log [
-	^ log
+	^ console
 ]
 
 { #category : #accessing }
 WfJobRunStageStageFlowNode >> logSize [
-	log isNotNil ifTrue:[ ^ log text size].
-	^ 1
+	self log isNotNil ifTrue:[ ^ self log text size].
+	^ 33
 ]
 
 { #category : #accessing }
