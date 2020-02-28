@@ -34,6 +34,17 @@ WfJobRunStageStageFlowNode >> gtTextFor: aView [
 ]
 
 { #category : #accessing }
+WfJobRunStageStageFlowNode >> log [
+	^ log
+]
+
+{ #category : #accessing }
+WfJobRunStageStageFlowNode >> logSize [
+	log isNotNil ifTrue:[ ^ log text size].
+	^ 1
+]
+
+{ #category : #accessing }
 WfJobRunStageStageFlowNode >> name [
 	^ name
 ]

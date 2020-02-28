@@ -51,6 +51,37 @@ WfJobRunStage >> gtNodes: aView [
 ]
 
 { #category : #accessing }
+WfJobRunStage >> gtStepsBarChartFor: aView [
+	<gtView>
+	^ aView pannable title:'Steps';
+			stencil: [
+				| aPlotter barChart websiteVisits barData|
+				aPlotter := GtPlotter new.
+		websiteVisits := GtPlotterHorizontalBarChartBuilderExamples new websiteVisits.
+	barData := self nodes.
+	barChart := aPlotter horizontalBarChart.
+	barChart barStencil: [
+		BlElement new
+			geometry: BlStadium new;
+			margin: (BlInsets top: 4 bottom: 4);
+			background: (Color gray alpha: 0.5)].
+	barChart barWidthScale: (GtPlotterLinearScale new
+		domainFrom: 0 to: ( barData max: #logSize);
+		rangeFrom: 10 to: 200).
+	barChart barHeightScale: (GtPlotterLinearScale new
+		domainFrom: 0 to: 10;
+		rangeFrom: 10 to: 50).
+	barChart ticks: 2.
+	barChart barLabelFormat: [ :eachDataItem | eachDataItem name ].
+	barChart barWidthData: [ :eachDataItem | eachDataItem logSize ].
+	barChart barHeightData: [ :eachDataItem | 4 ].
+	barChart with: barData.
+
+	aPlotter root
+			].
+]
+
+{ #category : #accessing }
 WfJobRunStage >> id [
 	^ id
 ]
