@@ -3,10 +3,12 @@ Extension { #name : #RPackage }
 { #category : #'*GToolkit-Releaser' }
 RPackage >> gtDependencyTreeFor: aView [
 	<gtView>
-	^ aView columnedTree
-		title: 'Dependency Tree';
+	^ aView columnedList
+		title: 'Dependencies';
 		priority: 2;
-		items: [(self usedPackages asOrderedCollection) copyWithout: self];
-		children: [:each | (each usedPackages asOrderedCollection) copyWithout: each];
-		column: 'Name' do: [:column | column item: [:pack | pack name]; matchParent]
+		items: [((self gtDependencies groupedBy: [:each | each toPackage]) associations sorted: [:a :b | a key name < b key name])];
+		"children: [:each | (each gtPackagesUsed asOrderedCollection) copyWithout: each];
+		"column: 'Package' format: [:assoc | assoc key name];
+		column: 'Dependencies' format: [:assoc | assoc value size] width: 100;
+		send: #value
 ]
