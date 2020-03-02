@@ -116,15 +116,16 @@ WfJobRun >> gtStagesMapFor: aView [
 						when: BlClickEvent do:[:e | e target phlow spawnObject: aStage];
 						constraintsDo: [ :c |
 							c padding: (BlInsets all: 5).
-							c horizontal fitContent.
-							c vertical fitContent ].
+							c horizontal exact: 300.
+							c vertical exact: 300 ].
 					label := BlTextElement new
 						text: (aStage name asRopedText);
 						constraintsDo: [ :c | 
 							c padding: (BlInsets all: 5).
 							c linear horizontal alignCenter ].
 					container
-						addChild: label.
+						addChild: label;
+						addChild: aStage stepsBarChart asElement.
 				];
 				
 			with: allNodes.

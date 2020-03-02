@@ -60,23 +60,10 @@ WfJobRunStage >> gtNodes: aView [
 { #category : #accessing }
 WfJobRunStage >> gtStepsBarChartFor: aView [
 	<gtView>
+	self nodes isEmpty ifTrue:[ ^ aView empty].
 	^ aView pannable
 		title: 'Steps';
-		stencil: [ | aPlotter barChart theData nodes aMaxPages aBarWidthScale|
-				theData := GtPlotterDataGroup new values: self nodes.
-				theData := theData labelled: [ :each | each name ].
-	
-
-	aMaxPages := theData inject: 0 intoValues: [ :anAmount :eachValue | anAmount max: (eachValue logSize) ].
-	aBarWidthScale := GtPlotterLinearScale new domainFrom: 0 to: aMaxPages.
-
-	barChart := GtPlotterHorizontalBarChart new.
-	barChart barLabelWidth: 185.
-	barChart barWidthScale: aBarWidthScale.
-	barChart barWidthData: [ :eachValue | eachValue logSize].
-	barChart amountOfTicks: 4.
-	barChart with: theData.
-	barChart]
+		stencil: [ self stepsBarChart]
 ]
 
 { #category : #accessing }
@@ -128,4 +115,22 @@ WfJobRunStage >> parentStages [
 { #category : #accessing }
 WfJobRunStage >> status [
 	^ status
+]
+
+{ #category : #accessing }
+WfJobRunStage >> stepsBarChart [
+	|aPlotter barChart theData nodes aMaxPages aBarWidthScale|
+	theData := GtPlotterDataGroup new values: self nodes.
+	theData := theData labelled: [ :each | each name ].
+
+	aMaxPages := theData inject: 0 intoValues: [ :anAmount :eachValue | anAmount max: (eachValue logSize) ].
+	aBarWidthScale := GtPlotterLinearScale new domainFrom: 0 to: aMaxPages.
+
+	barChart := GtPlotterHorizontalBarChart new.
+	barChart barLabelWidth: 1.
+	barChart barWidthScale: aBarWidthScale.
+	barChart barWidthData: [ :eachValue | eachValue logSize].
+	barChart amountOfTicks: 4.
+	barChart with: theData.
+	^barChart
 ]
