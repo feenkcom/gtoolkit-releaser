@@ -74,25 +74,12 @@ JSONCodeGenerator >> modelFrom: aDictionary [
 ]
 
 { #category : #accessing }
-JSONCodeGenerator >> modelFrom: aDictionary className: aClassName [
-	| theClass theObject|
-	theClass := (self ensureWfClass: aClassName).
-	theObject := theClass new.
-	aDictionary keysAndValuesDo: [ :key :value | key ~= '_self' ifTrue: [
-		|varname|
-		varname := (key) asSymbol.
-		key ~= '_links' ifTrue: [
-			self ensureInstVarNamed: varname inClass: theClass.].
-		self setWfAttribute: varname toValue: value inObject: theObject]].
-	^ theObject.
-
-]
-
-{ #category : #accessing }
 JSONCodeGenerator >> modelFrom: aDictionary className: aClassName znclient: aZnclient [
 	| theClass theObject|
 	theClass := (self ensureWfClass: aClassName).
 	theObject := theClass new.
+	theObject class = WfJobRun ifTrue:[
+		self setCurrentWfJobRun: theObject].
 	^ self modelFrom: aDictionary theObject: theObject znclient: aZnclient
 
 ]
@@ -159,10 +146,6 @@ JSONCodeGenerator >> setWfAttribute: key toValue: value inObject: theObject [
 		ifTrue: [
 			| array newClassName |
 			newClassName := (theObject className, key allButLast capitalized).
-			theObject class = WfJobRun ifTrue:[
-				self setCurrentWfJobRun: theObject.
-			].
-			
 			array := value collect: [ :eachValue | 
 				| childObject | 
 				eachValue isDictionary ifTrue: [
@@ -170,11 +153,6 @@ JSONCodeGenerator >> setWfAttribute: key toValue: value inObject: theObject [
 					self currentWfJobRun isNotNil ifTrue:[
 						childObject setWfJobRun: self currentWfJobRun.
 					]].
-				childObject class = WfJobRunStage ifTrue:[
-					theObject registerNode: childObject.
-				].
-			   "key = 'parentIds' ifTrue: [self halt]."
-				 "childObject:=eachValue."
 				eachValue isNumber ifTrue: [childObject:=eachValue].
 				eachValue isString ifTrue: [childObject:=eachValue].
 				childObject].

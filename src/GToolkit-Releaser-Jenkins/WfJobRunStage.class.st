@@ -123,13 +123,13 @@ WfJobRunStage >> stepsBarChart [
 	theData := GtPlotterDataGroup new values: self nodes.
 	theData := theData labelled: [ :each | each name ].
 
-	aMaxPages := theData inject: 0 intoValues: [ :anAmount :eachValue | anAmount max: (eachValue logSize) ].
+	aMaxPages := theData inject: 0 intoValues: [ :anAmount :eachValue | anAmount max: (eachValue logSize max:1) ].
 	aBarWidthScale := GtPlotterLinearScale new domainFrom: 0 to: aMaxPages.
 
 	barChart := GtPlotterHorizontalBarChart new.
 	barChart barLabelWidth: 1.
 	barChart barWidthScale: aBarWidthScale.
-	barChart barWidthData: [ :eachValue | eachValue logSize].
+	barChart barWidthData: [ :eachValue | eachValue logSize max:1].
 	barChart amountOfTicks: 4.
 	barChart with: theData.
 	^barChart

@@ -7,7 +7,15 @@ Class {
 		'length',
 		'consoleUrl',
 		'nodeId',
-		'text'
+		'text',
+		'durationMillis',
+		'pauseDurationMillis',
+		'status',
+		'startTimeMillis',
+		'execNode',
+		'name',
+		'stageFlowNodes',
+		'parameterDescription'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }

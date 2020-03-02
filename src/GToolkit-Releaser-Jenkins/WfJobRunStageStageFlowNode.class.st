@@ -14,7 +14,14 @@ Class {
 		'console',
 		'log',
 		'_self',
-		'error'
+		'error',
+		'stageFlowNodes',
+		'hasMore',
+		'nodeStatus',
+		'length',
+		'consoleUrl',
+		'nodeId',
+		'text'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }
