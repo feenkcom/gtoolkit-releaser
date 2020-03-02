@@ -26,6 +26,13 @@ Class {
 }
 
 { #category : #accessing }
+WfJobRunStage >> borderColor [
+	self status = 'SUCCESS' ifTrue: [^ Color green].
+	self status = 'FAILED' ifTrue: [^ Color red].
+	^ Color gray.
+]
+
+{ #category : #accessing }
 WfJobRunStage >> getDescribe [
 	|describeURL|
 	^ self getParentNodes
@@ -110,7 +117,7 @@ WfJobRunStage >> parentStages [
 	|parentStages pns toDeepCollect|
 	pns := self parentNodes.
 	toDeepCollect := OrderedCollection new.
-	pns collect: [:each | toDeepCollect add: each ].
+	pns isNotNil ifTrue: [pns collect: [:each | toDeepCollect add: each ]].
 	parentStages := toDeepCollect deepCollectAsSet: [:each | 
 		(each class = WfJobRunStage) ifTrue: [each] ifFalse:[ each parentNodes]].
 	parentStages := parentStages select:[:each | each class = WfJobRunStage ].

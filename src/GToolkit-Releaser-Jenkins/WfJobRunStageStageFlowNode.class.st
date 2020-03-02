@@ -40,6 +40,7 @@ WfJobRunStageStageFlowNode >> log [
 
 { #category : #accessing }
 WfJobRunStageStageFlowNode >> logSize [
+	self log isNil ifTrue:[self getLinks].
 	self log isNotNil ifTrue:[ ^ self log text lineCount].
 	^ 1
 ]

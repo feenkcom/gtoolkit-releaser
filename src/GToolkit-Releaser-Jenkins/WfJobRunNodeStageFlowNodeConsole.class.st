@@ -9,7 +9,8 @@ Class {
 		'parameterDescription',
 		'execNode',
 		'durationMillis',
-		'parentNodes'
+		'parentNodes',
+		'stageFlowNodes'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-Wfapi'
 }

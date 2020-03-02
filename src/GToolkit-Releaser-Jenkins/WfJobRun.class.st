@@ -36,11 +36,12 @@ WfJobRun >> gtAllNodesMapFor: aView [
 	  	  allNodes := self allNodes.
 			mondrian nodes 
 				shape: [ :aStage | 
-				|container children label  |
+				|container children label borderColor|
 					
+					borderColor := aStage borderColor.
 					container := BlElement new
 						layout: BlLinearLayout vertical;
-						border: (BlBorder paint: Color gray width: 1);
+						border: (BlBorder paint: borderColor width: 1);
 						zIndex: 1;
 						constraintsDo: [ :c |
 							c padding: (BlInsets all: 5).
@@ -106,11 +107,11 @@ WfJobRun >> gtStagesMapFor: aView [
 	  	  allNodes := stages.
 			mondrian nodes 
 				shape: [ :aStage | 
-				|container label  |
-					
+				|container label statusColor|
+					statusColor := aStage borderColor.
 					container := BlElement new
 						layout: BlLinearLayout vertical;
-						border: (BlBorder paint: Color gray width: 1);
+						border: (BlBorder paint: statusColor width:2);
 						zIndex: 1;
 						when: BlClickEvent do:[:e | e target phlow spawnObject: aStage];
 						constraintsDo: [ :c |
@@ -118,7 +119,7 @@ WfJobRun >> gtStagesMapFor: aView [
 							c horizontal fitContent.
 							c vertical fitContent ].
 					label := BlTextElement new
-						text: (aStage name asRopedText );
+						text: (aStage name asRopedText);
 						constraintsDo: [ :c | 
 							c padding: (BlInsets all: 5).
 							c linear horizontal alignCenter ].
@@ -131,7 +132,7 @@ WfJobRun >> gtStagesMapFor: aView [
 				shape: [
 					BlParabollaArcElement new 
 						zIndex: 0;
-						curvatureFraction: 0.1;
+						curvatureFraction: 0;
 						border: (BlBorder paint: (Color gray alpha: 0.2) width: 2);
 						fromHead: (BlArrowheadSimpleArrow new
 							border: (BlBorder builder paint: (Color gray alpha: 0.2); width: 2; build)) ];
