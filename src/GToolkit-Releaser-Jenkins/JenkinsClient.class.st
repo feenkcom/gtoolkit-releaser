@@ -11,6 +11,16 @@ Class {
 	#category : #'GToolkit-Releaser-Jenkins-Model'
 }
 
+{ #category : #constants }
+JenkinsClient class >> green [
+	^ Color r: 100 g: 163 b: 56 range: 255
+]
+
+{ #category : #constants }
+JenkinsClient class >> red [
+	^ Color r: 224 g: 59 b: 36 range: 255
+]
+
 { #category : #accessing }
 JenkinsClient >> allJobsResponse [
 	jobs ifNil: [ 
@@ -39,6 +49,30 @@ JenkinsClient >> allOrganizationJobsModel [
 	model url: url.
 	model znclient: znclient.
 	^ model.
+]
+
+{ #category : #accessing }
+JenkinsClient >> blueOcean [
+	|json codeGenerator model|
+	self setupJwtToken.
+	json := znclient get: ('' join:{url . '/blue/rest/organizations/jenkins/pipelines/feenkcom'}).
+	codeGenerator := JSONCodeGenerator new.
+	model := codeGenerator modelFrom: (NeoJSONReader fromString: json).
+	model url: url.
+	model znclient: znclient.
+	^ model.
+]
+
+{ #category : #accessing }
+JenkinsClient >> getJwtToken [
+	| jwt |
+	znclient get: ('' join: { url .'/jwt-auth/token'}).
+	jwt := znclient response headers at:'X-Blueocean-Jwt'.
+	znclient request headers removeKey: 'Authorization' ifAbsent: [].
+	znclient request setAuthorization: 'Bearer ', jwt.
+	"^ znclient request"
+	^ znclient get: ('' join:{url . '/blue/rest/organizations/jenkins/pipelines/'})
+	
 ]
 
 { #category : #accessing }
@@ -87,6 +121,18 @@ JenkinsClient >> reasonForFailure [
 	startIndex := text findString: 'Pharo VM version:'.
 	lineNumber := text lineNumberCorrespondingToIndex: startIndex .
 	^ String lf join:(text lines copyFrom: lineNumber - 20 to: (text lines size))."
+]
+
+{ #category : #accessing }
+JenkinsClient >> setupJwtToken [
+	| jwt |
+	znclient get: ('' join: { url .'/jwt-auth/token'}).
+	jwt := znclient response headers at:'X-Blueocean-Jwt'.
+	znclient request headers removeKey: 'Authorization' ifAbsent: [].
+	znclient request setAuthorization: 'Bearer ', jwt.
+	"^ znclient request"
+	
+	
 ]
 
 { #category : #accessing }

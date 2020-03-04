@@ -5,10 +5,26 @@ Class {
 		'packageOrganizer',
 		'_parent',
 		'znclient',
-		'currentWfJobRun'
+		'currentWfJobRun',
+		'baseURL'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generator'
 }
+
+{ #category : #accessing }
+JSONCodeGenerator >> baseURL [
+	^ baseURL
+]
+
+{ #category : #accessing }
+JSONCodeGenerator >> baseURL: aString [
+	baseURL := aString
+]
+
+{ #category : #accessing }
+JSONCodeGenerator >> baseUrl [
+	^ baseURL
+]
 
 { #category : #accessing }
 JSONCodeGenerator >> currentWfJobRun [
@@ -62,12 +78,16 @@ JSONCodeGenerator >> modelFrom: aDictionary [
 	aDictionary at: #'_class' ifPresent: [:fullClassName | 
 	theClass := (self ensureClass: fullClassName).
 	theObject := theClass new.
-	"(theObject znclient: self znclient)."
+	theObject znclient: znclient.
+	
+	
+	theObject json: aDictionary.
 	aDictionary keysAndValuesDo: [ :key :value | key ~= '_class' ifTrue: [
 		|varname|
 		varname := ('_',key) asSymbol.
 		self ensureInstVarNamed: varname inClass: theClass.
 		self setAttribute: varname toValue: value inObject: theObject]].
+	theObject url: self baseURL.
 	^ theObject].
 	^ nil
 	
@@ -128,8 +148,7 @@ JSONCodeGenerator >> setAttribute: key toValue: value inObject: theObject [
 					childObject := self modelFrom: eachValue.
 					childObject isNotNil ifTrue: [ 
 						self ensureInstVarNamed: '_parent' inClass: childObject class.
-						childObject instVarNamed: '_parent' put: theObject.
-						childObject url: (key allButLast) allButFirst].
+						childObject instVarNamed: '_parent' put: theObject].
 					childObject]].
 			theObject instVarNamed: key asSymbol put: array ]
 ]
