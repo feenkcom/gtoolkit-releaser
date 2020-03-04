@@ -24,7 +24,7 @@ Class {
 { #category : #accessing }
 PipelineNodeImpl >> borderColor [
 	_result = 'SUCCESS' ifTrue: [^ BrGlamorousColors successBackgroundColor].
-	_result = 'FAILED' ifTrue: [^ BrGlamorousColors errorBackgroundColor].
+	_result = 'FAILURE' ifTrue: [^ BrGlamorousColors errorBackgroundColor].
 	_result = 'UNSTABLE' ifTrue: [^ JenkinsClient yellow].
 	^ BrGlamorousColors lightBorderColor.
 ]
