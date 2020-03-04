@@ -21,6 +21,11 @@ JenkinsClient class >> red [
 	^ Color r: 224 g: 59 b: 36 range: 255
 ]
 
+{ #category : #constants }
+JenkinsClient class >> yellow [
+	^ Color r: 255 g: 204 b: 0 range: 255
+]
+
 { #category : #accessing }
 JenkinsClient >> allJobsResponse [
 	jobs ifNil: [ 

@@ -23,9 +23,10 @@ Class {
 
 { #category : #accessing }
 PipelineNodeImpl >> borderColor [
-	_result = 'SUCCESS' ifTrue: [^ JenkinsClient green].
-	_result = 'FAILED' ifTrue: [^ JenkinsClient red].
-	^ Color gray.
+	_result = 'SUCCESS' ifTrue: [^ BrGlamorousColors successBackgroundColor].
+	_result = 'FAILED' ifTrue: [^ BrGlamorousColors errorBackgroundColor].
+	_result = 'UNSTABLE' ifTrue: [^ JenkinsClient yellow].
+	^ BrGlamorousColors lightBorderColor.
 ]
 
 { #category : #accessing }
@@ -82,6 +83,11 @@ PipelineNodeImpl >> rawSteps [
 |data|
 	data := znclient get: ('' join:{url. __links at:'steps' at: 'href'}).
 	^ (NeoJSONReader fromString: data)
+]
+
+{ #category : #accessing }
+PipelineNodeImpl >> result [
+	^ _result
 ]
 
 { #category : #accessing }

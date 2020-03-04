@@ -43,7 +43,7 @@ PipelineRunImpl >> gtNodesFor: aView [
 
 	aList := aView columnedList
 		title: 'Nodes' translated;
-		priority: 50;
+		priority: 60;
 		items: [ self nodes].
 
 	aList column
@@ -64,50 +64,88 @@ PipelineRunImpl >> gtStagesMapFor: aView [
 	<gtView> 
 	^ aView mondrian 
 	  title: 'Stages Map' translated;
-	  priority: 10; 
+	  priority: 55; 
 	  painting: [ :mondrian | 
 	  	  |allNodes|
 	  	  allNodes := self nodes.
 			mondrian nodes 
 				shape: [ :aStage | 
-				|container label statusColor|
+				|container editor statusColor statusElement|
 					statusColor := aStage borderColor.
 					container := BlElement new
-						layout: BlLinearLayout vertical;
-						border: (BlBorder paint: statusColor width:2);
+						layout: BlLinearLayout horizontal;
+						look:BrShadowLook;
+						margin:(BlInsets all:10);
+						
+						background: Color white;
 						zIndex: 1;
 						when: BlClickEvent do:[:e | e target phlow spawnObject: aStage];
 						constraintsDo: [ :c |
-							c padding: (BlInsets all: 5).
-							c horizontal fitContent.
-							c vertical fitContent ].
-					label := BlTextElement new
-						text: (aStage name asRopedText);
+							"c padding: (BlInsets all: 5)."
+							c horizontal exact:240.
+							c vertical fitContent].
+					editor := BrLabel new 
+						text: (aStage name asRopedText "copyReplaceAll: String space with: String cr");
+						look: BrGlamorousLabelLook;
 						constraintsDo: [ :c | 
-							c padding: (BlInsets all: 5).
-							c linear horizontal alignCenter ].
+							c margin: (BlInsets all: 5).
+							
+							c vertical fitContent.
+							c horizontal matchParent.
+							 ].
 					container
-						addChild: label
+						addChild: (BrVerticalPane new vMatchParent; hExact:15; background: statusColor );
+						addChild: (editor).
 						"addChild: aStage stepsBarChart asElement."
 				];
 				
 			with: allNodes.
 			mondrian edges
 				shape: [
-					BlParabollaArcElement new 
+					BlSigmoidElement new 
 						zIndex: 0;
-						curvatureFraction: 0;
-						border: (BlBorder paint: (Color gray alpha: 0.2) width: 2);
-						fromHead: (BlArrowheadSimpleArrow new
-							border: (BlBorder builder paint: (Color gray alpha: 0.2); width: 2; build)) ];
-				fromRightCenter;
-				toLeftCenter;
+						beVertical;
+						bendingPoint:0.3;
+						sharpness: 0.1;
+						border: (BlBorder paint: (Color gray alpha: 0.2) width: 2)
+						"toHead: (BlArrowheadSimpleArrow new
+							border: (BlBorder builder paint: (Color gray alpha: 0.2); width: 10; build)) "];
+				fromCenterBottom;
+				toCenterTop;
 				connectFrom: #yourself 
 				toAll: [:each | | pN |
 					pN := each nextStagesIds.
 					allNodes select: [ :node | pN anySatisfy: [ :stageID | stageID = node id ] ] ].
-			mondrian layout custom: (GtGradWestHierarchicalLayout new).
+			mondrian layout custom: ((GtGradNorthHierarchicalLayout new interRanksSpacing: 30)).
 			]
+]
+
+{ #category : #accessing }
+PipelineRunImpl >> gtTestsFor: aView [
+	<gtView>
+	| aList |
+
+	aList := aView columnedList
+		title: _runSummary translated;
+		priority: 50;
+		items: [ self tests].
+
+	aList column
+		title: 'Index' translated;
+		width: 30;
+		item: [ :eachItem :eachIndex | eachIndex asRopedText foreground: Color gray].
+	
+	aList column
+		title: 'Status' translated;
+		width: 70;
+		item: [ :eachItem :eachIndex | eachItem ];
+		itemFormat: [ :eachItem | eachItem status ].
+	
+	aList column
+		title: 'Name' translated;
+		item: [ :eachItem :eachIndex | eachItem ];
+		itemFormat: [ :eachItem | eachItem gtDisplayText ].
+	^ aList
 ]
 
 { #category : #accessing }
@@ -122,6 +160,13 @@ PipelineRunImpl >> nodes [
 		model znclient: znclient.
 		model json: raw.
 		model]
+]
+
+{ #category : #accessing }
+PipelineRunImpl >> rawBlueTestsSummary [
+		|data|
+	data := znclient get: ('' join:{url. __links at:'blueTestSummary' at: 'href'}).
+	^ data
 ]
 
 { #category : #accessing }
@@ -141,9 +186,35 @@ PipelineRunImpl >> rawSteps [
 ]
 
 { #category : #accessing }
+PipelineRunImpl >> rawTests [
+		|data|
+	data := znclient get: ('' join:{url. __links at:'tests' at: 'href'}).
+	^ (NeoJSONReader fromString: data)
+]
+
+{ #category : #accessing }
+PipelineRunImpl >> result [
+	^ _result
+]
+
+{ #category : #accessing }
 PipelineRunImpl >> steps [
 	|raws codeGenerator| 
 	raws := self rawSteps.
+	codeGenerator := JSONCodeGenerator new.
+	^ raws collect:[:raw |
+		|model|
+		model := codeGenerator modelFrom: raw.
+		model url: url.
+		model znclient: znclient.
+		model json: raw.
+		model]
+]
+
+{ #category : #accessing }
+PipelineRunImpl >> tests [
+	|raws codeGenerator| 
+	raws := self rawTests.
 	codeGenerator := JSONCodeGenerator new.
 	^ raws collect:[:raw |
 		|model|

@@ -42,8 +42,14 @@ BranchImpl >> gtRunsFor: aView [
 	
 	aList column
 		title: 'Item' translated;
+		width: 30;
 		item: [ :eachItem :eachIndex | eachItem ];
 		itemFormat: [ :eachItem | eachItem gtDisplayText ].
+	aList column
+		title: 'Result' translated;
+		width: 70;
+		item: [ :eachItem :eachIndex | eachItem ];
+		itemFormat: [ :eachItem | eachItem result ].
 	
 	^ aList
 ]
