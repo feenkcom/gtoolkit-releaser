@@ -43,3 +43,16 @@ BlueJUnitTestResult >> status [
 BlueJUnitTestResult >> testMethod [
 	^ _errorStackTrace lines last
 ]
+
+{ #category : #accessing }
+BlueJUnitTestResult >> testNameParsed [
+	|method fullClass p|
+	method := #word asPParser plus flatten.
+	fullClass := #word asPParser plus flatten separatedBy: '.' asPParser.
+	p := ((
+		(method, ' - ' asPParser, fullClass)
+		/ 
+		'/' asPParser negate star flatten) 
+		separatedBy: '/' asPParser trim).
+	^ p parse: self name
+]

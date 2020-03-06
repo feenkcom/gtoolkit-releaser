@@ -16,7 +16,8 @@ Class {
 		'_input',
 		'_result',
 		'_state',
-		'_displayName'
+		'_displayName',
+		'parentRun'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-IoJenkinsBlueoceanRestImplPipeline'
 }
@@ -27,6 +28,14 @@ PipelineNodeImpl >> borderColor [
 	_result = 'FAILURE' ifTrue: [^ BrGlamorousColors errorBackgroundColor].
 	_result = 'UNSTABLE' ifTrue: [^ JenkinsClient yellow].
 	^ BrGlamorousColors lightBorderColor.
+]
+
+{ #category : #accessing }
+PipelineNodeImpl >> failedTests [
+	|allFailed|
+	allFailed := parentRun tests select: [:each | each status = 'FAILED'].
+	allFailed := allFailed select: [:t | t testNameParsed size = 7 and: [(t testNameParsed at: 5) trimmed asSymbol = self name asSymbol]].
+	^ allFailed
 ]
 
 { #category : #accessing }
@@ -76,6 +85,11 @@ PipelineNodeImpl >> name [
 { #category : #accessing }
 PipelineNodeImpl >> nextStagesIds [
 	^ _edges collect: [:e | e id]
+]
+
+{ #category : #accessing }
+PipelineNodeImpl >> parentRun: aRun [
+	parentRun := aRun
 ]
 
 { #category : #accessing }

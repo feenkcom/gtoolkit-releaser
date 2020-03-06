@@ -70,33 +70,77 @@ PipelineRunImpl >> gtStagesMapFor: aView [
 	  	  allNodes := self nodes.
 			mondrian nodes 
 				shape: [ :aStage | 
-				|container editor statusColor statusElement|
+				|container editor statusColor statusElement aDropdown|
 					statusColor := aStage borderColor.
 					container := BlElement new
 						layout: BlLinearLayout horizontal;
 						look:BrShadowLook;
+						clipChildren: false;
 						margin:(BlInsets all:10);
-						
 						background: Color white;
 						zIndex: 1;
 						when: BlClickEvent do:[:e | e target phlow spawnObject: aStage];
 						constraintsDo: [ :c |
-							"c padding: (BlInsets all: 5)."
 							c horizontal exact:240.
 							c vertical fitContent].
 					editor := BrLabel new 
-						text: (aStage name asRopedText "copyReplaceAll: String space with: String cr");
+						text: aStage name asRopedText;
 						look: BrGlamorousLabelLook;
 						constraintsDo: [ :c | 
 							c margin: (BlInsets all: 5).
-							
 							c vertical fitContent.
 							c horizontal matchParent.
 							 ].
+					aDropdown := BrBadge new
+							label: (aStage failedTests size);
+							exact: 20 @ 20;
+							visibility:
+					(aStage failedTests size isZero
+						ifTrue: [ BlVisibility gone ]
+						ifFalse: [ BlVisibility visible ]);
+					constraintsDo: [ :c | 
+						c horizontal fitContent.
+						c vertical fitContent.
+						c ignoreByLayout.
+						c ignored horizontal alignRight.
+						c ignored vertical alignTop.
+						c
+							margin:
+								(BlInsets
+									top: -10
+									right: -10
+									bottom: 0
+									left: 0) ];
+					look:
+						BrGlamorousBadgeWithLabelLook
+							+
+								(BrGlamorousWithDropdownLook
+									handle: [ BrBadge new
+										label: (aStage failedTests size);
+										exact: 20 @ 20;
+										look: BrGlamorousBadgeWithLabelLook;
+										yourself ]
+									content: [ | aPhlowView aPopupElement |
+										aPhlowView := aStage failedTests 
+										gtItemsFor: GtPhlowEmptyView new.
+									aPopupElement := BlElement new
+										border: (BlBorder paint: Color orange width: 2);
+										background: Color white;
+										layout: BlLinearLayout vertical;
+										constraintsDo: [ :c | 
+											c horizontal fitContent.
+											c vertical fitContent ].
+									aPhlowView
+										asElementDo: [ :anElement | 
+											anElement layout: BlLinearLayout vertical.
+											aPopupElement addChild: anElement ].
+									aPopupElement ]);
+						yourself.
+									
 					container
 						addChild: (BrVerticalPane new vMatchParent; hExact:15; background: statusColor );
+						addChild: aDropdown;
 						addChild: (editor).
-						"addChild: aStage stepsBarChart asElement."
 				];
 				
 			with: allNodes.
@@ -107,9 +151,7 @@ PipelineRunImpl >> gtStagesMapFor: aView [
 						beVertical;
 						bendingPoint:0.3;
 						sharpness: 0.1;
-						border: (BlBorder paint: (Color gray alpha: 0.2) width: 2)
-						"toHead: (BlArrowheadSimpleArrow new
-							border: (BlBorder builder paint: (Color gray alpha: 0.2); width: 10; build)) "];
+						border: (BlBorder paint: (Color gray alpha: 0.2) width: 2)];
 				fromCenterBottom;
 				toCenterTop;
 				connectFrom: #yourself 
@@ -159,6 +201,7 @@ PipelineRunImpl >> nodes [
 		model url: url.
 		model znclient: znclient.
 		model json: raw.
+		model parentRun:self.
 		model]
 ]
 
