@@ -39,11 +39,22 @@ BlueJUnitTestResult >> status [
 
 { #category : #accessing }
 BlueJUnitTestResult >> testMethod [
-	|testMethod classAndSelector theExampleClass|
-	testMethod := _errorStackTrace lines last copyReplaceAll: '>>' with: '>>#'.
-	classAndSelector := testMethod findTokens: '>>'.
-	theExampleClass := classAndSelector first asClass.
-	^ theExampleClass methods detect: [:m | m name = testMethod]
+	|classAndSelector theExampleClass methodAndClass method class|
+	methodAndClass := self testNameParsed last findTokens: '–'.
+	method := methodAndClass first trimmed.
+	class := (methodAndClass second findTokens: '.') last trimmed.
+	theExampleClass := class asClass.
+	^ theExampleClass methods detect: [:m | m name = (class, '>>#', method)]
+]
+
+{ #category : #accessing }
+BlueJUnitTestResult >> testMethodName [
+	|methodAndClass method class|
+	methodAndClass := self testNameParsed last findTokens: '–'.
+	method := methodAndClass first trimmed.
+	class := (methodAndClass second findTokens: '.') last trimmed.
+	^ class, '>>#', method
+
 ]
 
 { #category : #accessing }

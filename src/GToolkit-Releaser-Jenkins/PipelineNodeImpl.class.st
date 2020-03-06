@@ -62,7 +62,7 @@ PipelineNodeImpl >> gtFailedTestsFor: aView [
 	aList column
 		title: 'Item' translated;
 		item: [ :eachItem :eachIndex | eachItem ];
-		itemFormat: [ :eachItem | eachItem testMethod ].
+		itemFormat: [ :eachItem | eachItem testMethodName].
 	
 	^ aList
 ]

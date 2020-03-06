@@ -122,8 +122,7 @@ PipelineRunImpl >> gtStagesMapFor: aView [
 										look: BrGlamorousBadgeWithLabelLook;
 										yourself ]
 									content: [ | aPhlowView aPopupElement |
-										aPhlowView := aStage failedTests 
-										gtItemsFor: GtPhlowEmptyView new.
+										aPhlowView := aStage gtFailedTestsFor: GtPhlowEmptyView new.
 										aPopupElement := BlElement new
 											border: (BlBorder paint: Color orange width: 2);
 											background: Color white;
