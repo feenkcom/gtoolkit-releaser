@@ -44,6 +44,30 @@ PipelineNodeImpl >> gtDisplayOn: stream [
 ]
 
 { #category : #accessing }
+PipelineNodeImpl >> gtFailedTestsFor: aView [
+	<gtView>
+	| aList ft|
+	ft := self failedTests.
+	ft isEmpty ifTrue:[ ^ aView empty].
+	aList := aView columnedList
+		title: 'FailedTests' translated;
+		priority: 60;
+		items: [ self failedTests].
+
+	aList column
+		title: 'Index' translated;
+		width: 30;
+		item: [ :eachItem :eachIndex | eachIndex asRopedText foreground: Color gray].
+	
+	aList column
+		title: 'Item' translated;
+		item: [ :eachItem :eachIndex | eachItem ];
+		itemFormat: [ :eachItem | eachItem testMethod ].
+	
+	^ aList
+]
+
+{ #category : #accessing }
 PipelineNodeImpl >> gtStepsFor: aView [
 	<gtView>
 	| aList |

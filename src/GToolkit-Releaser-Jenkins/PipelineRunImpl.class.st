@@ -26,7 +26,8 @@ Class {
 		'_state',
 		'_causes',
 		'_id',
-		'_replayable'
+		'_replayable',
+		'tests'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-IoJenkinsBlueoceanRestImplPipeline'
 }
@@ -70,7 +71,7 @@ PipelineRunImpl >> gtStagesMapFor: aView [
 	  	  allNodes := self nodes.
 			mondrian nodes 
 				shape: [ :aStage | 
-				|container editor statusColor statusElement aDropdown|
+				|container editor statusColor aDropdown|
 					statusColor := aStage borderColor.
 					container := BlElement new
 						layout: BlLinearLayout horizontal;
@@ -123,18 +124,21 @@ PipelineRunImpl >> gtStagesMapFor: aView [
 									content: [ | aPhlowView aPopupElement |
 										aPhlowView := aStage failedTests 
 										gtItemsFor: GtPhlowEmptyView new.
-									aPopupElement := BlElement new
-										border: (BlBorder paint: Color orange width: 2);
-										background: Color white;
-										layout: BlLinearLayout vertical;
-										constraintsDo: [ :c | 
-											c horizontal fitContent.
-											c vertical fitContent ].
-									aPhlowView
-										asElementDo: [ :anElement | 
-											anElement layout: BlLinearLayout vertical.
-											aPopupElement addChild: anElement ].
-									aPopupElement ]);
+										aPopupElement := BlElement new
+											border: (BlBorder paint: Color orange width: 2);
+											background: Color white;
+											layout: BlLinearLayout vertical;
+											constraintsDo: [ :c | 
+												c horizontal fitContent.
+												c vertical fitContent ].
+										aPhlowView
+											asElementDo: [ :anElement | 
+												anElement layout: BlLinearLayout vertical.
+												aPopupElement addChild: anElement.
+												anElement 
+													when: GtPhlowObjectToSpawn do: [:e | 
+													container fireEvent: (GtPhlowObjectToSpawn new object: e object; sourceElement: e target)] ].
+										aPopupElement ]);
 						yourself.
 									
 					container
@@ -160,6 +164,7 @@ PipelineRunImpl >> gtStagesMapFor: aView [
 					allNodes select: [ :node | pN anySatisfy: [ :stageID | stageID = node id ] ] ].
 			mondrian layout custom: ((GtGradNorthHierarchicalLayout new interRanksSpacing: 30)).
 			]
+
 ]
 
 { #category : #accessing }
@@ -257,13 +262,15 @@ PipelineRunImpl >> steps [
 { #category : #accessing }
 PipelineRunImpl >> tests [
 	|raws codeGenerator| 
+	tests ifNotNil: [^ tests].
 	raws := self rawTests.
 	codeGenerator := JSONCodeGenerator new.
-	^ raws collect:[:raw |
+	tests :=  raws collect:[:raw |
 		|model|
 		model := codeGenerator modelFrom: raw.
 		model url: url.
 		model znclient: znclient.
 		model json: raw.
-		model]
+		model].
+	^ tests
 ]

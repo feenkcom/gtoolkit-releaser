@@ -24,9 +24,7 @@ BlueJUnitTestResult >> gtDisplayOn: stream [
 { #category : #accessing }
 BlueJUnitTestResult >> gtTestFor: aView [
 	<gtView>
-	^ aView textEditor
-		title: 'Test';
-		text: [self testMethod]
+	^ self testMethod gtSourceFor: aView
 ]
 
 { #category : #accessing }
@@ -41,7 +39,11 @@ BlueJUnitTestResult >> status [
 
 { #category : #accessing }
 BlueJUnitTestResult >> testMethod [
-	^ _errorStackTrace lines last
+	|testMethod classAndSelector theExampleClass|
+	testMethod := _errorStackTrace lines last copyReplaceAll: '>>' with: '>>#'.
+	classAndSelector := testMethod findTokens: '>>'.
+	theExampleClass := classAndSelector first asClass.
+	^ theExampleClass methods detect: [:m | m name = testMethod]
 ]
 
 { #category : #accessing }
