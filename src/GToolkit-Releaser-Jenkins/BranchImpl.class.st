@@ -34,7 +34,7 @@ BranchImpl >> gtRunsFor: aView [
 		items: [ self runs];
 		column: 'Status' translated do: [ :column | 
 			column
-				itemStencil: [ :each | BlElement new geometry: BlCircle new; background: each resultColor; size: 10@10; margin: (BlInsets top: 5 left: 5 bottom: 5 right: 5) ];
+				itemStencil: [ :each | BlElement new geometry: BlCircle new; background: each resultBackgroundColor; size: 10@10; margin: (BlInsets top: 5 left: 5 bottom: 5 right: 5) ];
 				noResize ];
 		column: 'Item' translated format: [ :each | each gtDisplayText ] width: 50;
 		column: 'Result' translated format: [ :each | each result ];

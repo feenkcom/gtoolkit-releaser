@@ -38,6 +38,11 @@ BlueJUnitTestResult >> status [
 ]
 
 { #category : #accessing }
+BlueJUnitTestResult >> statusBackgroundColor [
+	^ JenkinsClient backgroundColorForTestStatus: self status
+]
+
+{ #category : #accessing }
 BlueJUnitTestResult >> testMethod [
 	|classAndSelector theExampleClass methodAndClass method class|
 	methodAndClass := self testNameParsed last findTokens: '–'.

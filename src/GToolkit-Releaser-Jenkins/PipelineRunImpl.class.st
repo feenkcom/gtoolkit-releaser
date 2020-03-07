@@ -82,7 +82,7 @@ PipelineRunImpl >> gtStagesMapFor: aView [
 			mondrian nodes 
 				shape: [ :aStage | 
 				|container editor statusColor aDropdown|
-					statusColor := aStage borderColor.
+					statusColor := aStage resultBackgroundColor.
 					container := BlElement new
 						layout: BlLinearLayout horizontal;
 						look:BrShadowLook;
@@ -173,29 +173,16 @@ PipelineRunImpl >> gtStagesMapFor: aView [
 { #category : #accessing }
 PipelineRunImpl >> gtTestsFor: aView [
 	<gtView>
-	| aList |
-
-	aList := aView columnedList
+	^ aView columnedList
 		title: _runSummary translated;
 		priority: 50;
-		items: [ self tests].
-
-	aList column
-		title: 'Index' translated;
-		width: 30;
-		item: [ :eachItem :eachIndex | eachIndex asRopedText foreground: Color gray].
-	
-	aList column
-		title: 'Status' translated;
-		width: 70;
-		item: [ :eachItem :eachIndex | eachItem ];
-		itemFormat: [ :eachItem | eachItem status ].
-	
-	aList column
-		title: 'Name' translated;
-		item: [ :eachItem :eachIndex | eachItem ];
-		itemFormat: [ :eachItem | eachItem gtDisplayText ].
-	^ aList
+		items: [ self tests];
+		column: 'Index' translated do: [ :column | 
+			column
+				itemStencil: [ :each | BlElement new geometry: BlCircle new; background: each statusBackgroundColor; size: 10@10; margin: (BlInsets top: 5 left: 5 bottom: 5 right: 5) ];
+				noResize ];
+		column: 'Status' translated format: [ :eachItem | eachItem status ] width: 70;
+		column: 'Name' translated format: [ :eachItem | eachItem gtDisplayText ]
 ]
 
 { #category : #accessing }
@@ -249,11 +236,8 @@ PipelineRunImpl >> result [
 ]
 
 { #category : #accessing }
-PipelineRunImpl >> resultColor [
-	_result = 'SUCCESS' ifTrue: [^ BrGlamorousColors successBackgroundColor].
-	_result = 'FAILURE' ifTrue: [^ BrGlamorousColors errorBackgroundColor].
-	_result = 'UNSTABLE' ifTrue: [^ JenkinsClient yellow].
-	^ BrGlamorousColors lightBorderColor.
+PipelineRunImpl >> resultBackgroundColor [
+	^ JenkinsClient backgroundColorForStatus: self result
 ]
 
 { #category : #accessing }

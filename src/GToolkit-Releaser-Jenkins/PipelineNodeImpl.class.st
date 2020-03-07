@@ -23,14 +23,6 @@ Class {
 }
 
 { #category : #accessing }
-PipelineNodeImpl >> borderColor [
-	_result = 'SUCCESS' ifTrue: [^ BrGlamorousColors successBackgroundColor].
-	_result = 'FAILURE' ifTrue: [^ BrGlamorousColors errorBackgroundColor].
-	_result = 'UNSTABLE' ifTrue: [^ JenkinsClient yellow].
-	^ BrGlamorousColors lightBorderColor.
-]
-
-{ #category : #accessing }
 PipelineNodeImpl >> failedTests [
 	|allFailed|
 	allFailed := parentRun tests select: [:each | each status = 'FAILED'].
@@ -126,6 +118,11 @@ PipelineNodeImpl >> rawSteps [
 { #category : #accessing }
 PipelineNodeImpl >> result [
 	^ _result
+]
+
+{ #category : #accessing }
+PipelineNodeImpl >> resultBackgroundColor [
+	^ JenkinsClient backgroundColorForStatus: self result
 ]
 
 { #category : #accessing }
