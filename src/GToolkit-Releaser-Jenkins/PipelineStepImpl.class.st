@@ -53,6 +53,7 @@ PipelineStepImpl >> gtLogFor: aView [
 	text := (_actions detect: [:a | a urlName = 'log']) rawLog.
 	text ifNil: [^aView empty].
 	^ aView textEditor
+		look: BrGlamorousCodeEditorLook;
 		title: 'Console Log';
 		text: [text]
 ]

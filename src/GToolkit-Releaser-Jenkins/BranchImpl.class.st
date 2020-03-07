@@ -36,8 +36,8 @@ BranchImpl >> gtRunsFor: aView [
 			column
 				itemStencil: [ :each | BlElement new geometry: BlCircle new; background: each resultBackgroundColor; size: 10@10; margin: (BlInsets top: 5 left: 5 bottom: 5 right: 5) ];
 				noResize ];
+		column: 'Result' translated format: [ :each | each result ] width: 70;
 		column: 'Item' translated format: [ :each | each gtDisplayText ] width: 50;
-		column: 'Result' translated format: [ :each | each result ];
 		column: 'Duration' translated format: [ :each | (each duration roundTo: 1 second) humanReadablePrintString ];
 		column: 'Start time' translated format: [ :each | String streamContents: [:s | each startTime printSeparateDateAndTimeOn: s]]
 ]

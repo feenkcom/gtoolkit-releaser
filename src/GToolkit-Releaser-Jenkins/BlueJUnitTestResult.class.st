@@ -43,23 +43,26 @@ BlueJUnitTestResult >> statusBackgroundColor [
 ]
 
 { #category : #accessing }
-BlueJUnitTestResult >> testMethod [
-	|classAndSelector theExampleClass methodAndClass method class|
+BlueJUnitTestResult >> testClassName [
+	| methodAndClass |
 	methodAndClass := self testNameParsed last findTokens: '–'.
-	method := methodAndClass first trimmed.
-	class := (methodAndClass second findTokens: '.') last trimmed.
-	theExampleClass := class asClass.
-	^ theExampleClass methods detect: [:m | m name = (class, '>>#', method)]
+	^ (methodAndClass second findTokens: '.') last trimmed
+]
+
+{ #category : #accessing }
+BlueJUnitTestResult >> testMethod [
+	| methodAndClass selector className |
+	methodAndClass := self testNameParsed last findTokens: '–'.
+	selector := methodAndClass first trimmed.
+	className := (methodAndClass second findTokens: '.') last trimmed.
+	^ className  asClass >> selector asSymbol
 ]
 
 { #category : #accessing }
 BlueJUnitTestResult >> testMethodName [
-	|methodAndClass method class|
+	|methodAndClass |
 	methodAndClass := self testNameParsed last findTokens: '–'.
-	method := methodAndClass first trimmed.
-	class := (methodAndClass second findTokens: '.') last trimmed.
-	^ class, '>>#', method
-
+	^ methodAndClass first trimmed.
 ]
 
 { #category : #accessing }

@@ -38,54 +38,34 @@ PipelineNodeImpl >> gtDisplayOn: stream [
 { #category : #accessing }
 PipelineNodeImpl >> gtFailedTestsFor: aView [
 	<gtView>
-	| aList ft|
+	| ft|
 	ft := self failedTests.
 	ft isEmpty ifTrue:[ ^ aView empty].
-	aList := aView columnedList
+	^ aView columnedList
 		title: 'FailedTests' translated;
 		priority: 60;
-		items: [ self failedTests].
-
-	aList column
-		title: 'Index' translated;
-		width: 30;
-		item: [ :eachItem :eachIndex | eachIndex asRopedText foreground: Color gray].
-	
-	aList column
-		title: 'Item' translated;
-		item: [ :eachItem :eachIndex | eachItem ];
-		itemFormat: [ :eachItem | eachItem testMethodName].
-	
-	^ aList
+		items: [ self failedTests];
+		column: 'Index' translated item: [ :eachItem :eachIndex | eachIndex asRopedText foreground: Color gray] width: 20;
+		column: 'Status' translated do: [ :column | 
+			column
+				itemStencil: [ :each | BlElement new geometry: BlCircle new; background: each statusBackgroundColor; size: 10@10; margin: (BlInsets top: 5 left: 5 bottom: 5 right: 5) ];
+				noResize ];
+		column: 'Class' translated format: [ :eachItem | eachItem testClassName] width: 200;
+		column: 'Method' translated format: [ :eachItem | eachItem testMethodName]
 ]
 
 { #category : #accessing }
 PipelineNodeImpl >> gtStepsFor: aView [
 	<gtView>
-	| aList |
-
-	aList := aView columnedList
+	^ aView columnedList
 		title: 'Steps' translated;
 		priority: 50;
-		items: [ self steps].
-
-	aList column
-		title: 'Index' translated;
-		width: 30;
-		item: [ :eachItem :eachIndex | eachIndex asRopedText foreground: Color gray].
-	
-	aList column
-		title: 'Item' translated;
-		item: [ :eachItem :eachIndex | eachItem ];
-		itemFormat: [ :eachItem | eachItem gtDisplayText ].
-		
-	aList column
-		title: 'Result' translated;
-		width: 70;
-		item: [ :eachItem :eachIndex | eachItem result];
-		itemFormat: [ :eachItem | eachItem gtDisplayText ].
-	
-	^ aList
+		items: [ self steps];
+		column: 'Status' translated do: [ :column | 
+			column
+				itemStencil: [ :each | BlElement new geometry: BlCircle new; background: each resultBackgroundColor; size: 10@10; margin: (BlInsets top: 5 left: 5 bottom: 5 right: 5) ];
+				noResize ];
+		column: 'Item' translated format: [ :eachItem | eachItem gtDisplayText ]
 ]
 
 { #category : #accessing }

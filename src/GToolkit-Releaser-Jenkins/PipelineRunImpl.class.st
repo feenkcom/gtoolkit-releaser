@@ -116,36 +116,31 @@ PipelineRunImpl >> gtStagesMapFor: aView [
 						c ignored horizontal alignRight.
 						c ignored vertical alignTop.
 						c margin: (BlInsets top: -10 right: -10) ];
-					look:
-						BrGlamorousBadgeWithLabelLook
-							+
-								(BrGlamorousWithDropdownLook
-									handle: [ BrBadge new
+					look: BrGlamorousBadgeWithLabelLook +
+						(BrGlamorousWithDropdownLook
+							handle: [ BrBadge new
 										label: (aStage failedTests size);
 										exact: 20 @ 20;
 										look: BrGlamorousBadgeWithLabelLook;
 										yourself ]
-									content: [ | aPhlowView aPopupElement |
-										aPhlowView := aStage gtFailedTestsFor: GtPhlowEmptyView new.
-										aPopupElement := BlElement new
+							content: [ | aPhlowView aPopupElement |
+								aPhlowView := aStage gtFailedTestsFor: GtPhlowEmptyView new.
+								aPopupElement := BlElement new
 											border: (BlBorder paint: Color orange width: 2);
 											background: Color white;
 											layout: BlLinearLayout vertical;
 											constraintsDo: [ :c | 
 												c horizontal fitContent.
 												c vertical fitContent ].
-										aPhlowView
-											asElementDo: [ :anElement | 
+								aPhlowView asElementDo: [ :anElement | 
 												anElement layout: BlLinearLayout vertical.
 												aPopupElement addChild: anElement.
 												anElement 
 													when: GtPhlowObjectToSpawn do: [:e | 
 													container fireEvent: (GtPhlowObjectToSpawn new object: e object; sourceElement: e target)] ].
-										aPopupElement ]);
-						yourself.
-									
+										aPopupElement ]).
 					container
-						addChild: (BrVerticalPane new vMatchParent; hExact:15; background: statusColor );
+						addChild: (BrVerticalPane new vMatchParent; hExact: 15; background: statusColor );
 						addChild: aDropdown;
 						addChild: (editor).
 				];
@@ -177,7 +172,7 @@ PipelineRunImpl >> gtTestsFor: aView [
 		title: _runSummary translated;
 		priority: 50;
 		items: [ self tests];
-		column: 'Index' translated do: [ :column | 
+		column: 'Status' translated do: [ :column | 
 			column
 				itemStencil: [ :each | BlElement new geometry: BlCircle new; background: each statusBackgroundColor; size: 10@10; margin: (BlInsets top: 5 left: 5 bottom: 5 right: 5) ];
 				noResize ];
