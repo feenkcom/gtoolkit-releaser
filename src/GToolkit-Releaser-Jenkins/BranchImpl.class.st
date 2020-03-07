@@ -43,6 +43,11 @@ BranchImpl >> gtRunsFor: aView [
 ]
 
 { #category : #accessing }
+BranchImpl >> lastFinishedRun [
+	^ self runs detect: [:each | each isFinished ]
+]
+
+{ #category : #accessing }
 BranchImpl >> rawRuns [
 		|data|
 	data := znclient get: ('' join:{url. __links at:'runs' at: 'href'}).

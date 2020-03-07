@@ -181,6 +181,11 @@ PipelineRunImpl >> gtTestsFor: aView [
 ]
 
 { #category : #accessing }
+PipelineRunImpl >> isFinished [
+	^ _endTime notNil
+]
+
+{ #category : #accessing }
 PipelineRunImpl >> nodes [
 	|raws codeGenerator| 
 	raws := self rawNodes.

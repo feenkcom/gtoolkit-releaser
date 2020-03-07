@@ -46,24 +46,17 @@ MultiBranchPipelineImpl >> branches [
 { #category : #accessing }
 MultiBranchPipelineImpl >> gtBranchesFor: aView [
 	<gtView>
-	| aList |
-
-	aList := aView columnedList
+	^ aView columnedList
 		title: 'Branches' translated;
 		priority: 50;
-		items: [ self branches].
-
-	aList column
-		title: 'Index' translated;
-		width: 30;
-		item: [ :eachItem :eachIndex | eachIndex asRopedText foreground: Color gray].
-	
-	aList column
-		title: 'Item' translated;
-		item: [ :eachItem :eachIndex | eachItem ];
-		itemFormat: [ :eachItem | eachItem gtDisplayText ].
-	
-	^ aList
+		items: [ self branches];
+		column: 'Status' translated do: [ :column | 
+			column
+				itemStencil: [ :each | BlElement new geometry: BlCircle new; background: each lastFinishedRun resultBackgroundColor; size: 10@10; margin: (BlInsets top: 5 left: 5 bottom: 5 right: 5) ];
+				noResize ];
+		column: 'Branch' translated format: [ :each | each gtDisplayText ] width: 200;
+		column: 'Last duration' translated format: [ :each | (each lastFinishedRun duration roundTo: 1 second) humanReadablePrintString ] width: 200;
+		column: 'Last run start time' translated format: [ :each | String streamContents: [:s | each lastFinishedRun startTime printSeparateDateAndTimeOn: s]]
 ]
 
 { #category : #accessing }
