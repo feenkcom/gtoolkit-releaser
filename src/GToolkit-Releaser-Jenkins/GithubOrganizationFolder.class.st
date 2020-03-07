@@ -25,26 +25,19 @@ Class {
 }
 
 { #category : #accessing }
+GithubOrganizationFolder >> gtDisplayOn: stream [
+	stream nextPutAll: _fullDisplayName
+]
+
+{ #category : #accessing }
 GithubOrganizationFolder >> gtItemsFor: aView [
 	<gtView>
-	| aList |
-
-	aList := aView columnedList
+	^ aView columnedList
 		title: 'Pipelines' translated;
-		priority: 50;
-		items: [ self pipelines].
-
-	aList column
-		title: 'Index' translated;
-		width: 30;
-		item: [ :eachItem :eachIndex | eachIndex asRopedText foreground: Color gray].
-	
-	aList column
-		title: 'Item' translated;
-		item: [ :eachItem :eachIndex | eachItem ];
-		itemFormat: [ :eachItem | eachItem gtDisplayText ].
-	
-	^ aList
+		priority: 10;
+		items: [ self pipelines];
+		column: 'Index' translated item: [ :each :eachIndex | eachIndex asRopedText foreground: Color gray] width: 30;
+		column: 'Item' translated format: [ :each | each gtDisplayText ]
 ]
 
 { #category : #accessing }

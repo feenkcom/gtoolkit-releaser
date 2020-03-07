@@ -33,6 +33,16 @@ Class {
 }
 
 { #category : #accessing }
+PipelineRunImpl >> duration [
+	^ _durationInMillis asNumber milliSeconds
+]
+
+{ #category : #accessing }
+PipelineRunImpl >> endTime [
+	^ DateAndTime fromString: _endTime
+]
+
+{ #category : #accessing }
 PipelineRunImpl >> gtDisplayOn: stream [
 	stream nextPutAll: _id
 ]
@@ -82,7 +92,7 @@ PipelineRunImpl >> gtStagesMapFor: aView [
 						zIndex: 1;
 						when: BlClickEvent do:[:e | e target phlow spawnObject: aStage];
 						constraintsDo: [ :c |
-							c horizontal exact:240.
+							c horizontal exact:200.
 							c vertical fitContent].
 					editor := BrLabel new 
 						text: aStage name asRopedText;
@@ -105,13 +115,7 @@ PipelineRunImpl >> gtStagesMapFor: aView [
 						c ignoreByLayout.
 						c ignored horizontal alignRight.
 						c ignored vertical alignTop.
-						c
-							margin:
-								(BlInsets
-									top: -10
-									right: -10
-									bottom: 0
-									left: 0) ];
+						c margin: (BlInsets top: -10 right: -10) ];
 					look:
 						BrGlamorousBadgeWithLabelLook
 							+
@@ -242,6 +246,19 @@ PipelineRunImpl >> rawTests [
 { #category : #accessing }
 PipelineRunImpl >> result [
 	^ _result
+]
+
+{ #category : #accessing }
+PipelineRunImpl >> resultColor [
+	_result = 'SUCCESS' ifTrue: [^ BrGlamorousColors successBackgroundColor].
+	_result = 'FAILURE' ifTrue: [^ BrGlamorousColors errorBackgroundColor].
+	_result = 'UNSTABLE' ifTrue: [^ JenkinsClient yellow].
+	^ BrGlamorousColors lightBorderColor.
+]
+
+{ #category : #accessing }
+PipelineRunImpl >> startTime [
+	^ DateAndTime fromString: _startTime
 ]
 
 { #category : #accessing }
