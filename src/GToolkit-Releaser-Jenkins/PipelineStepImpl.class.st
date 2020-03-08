@@ -62,3 +62,8 @@ PipelineStepImpl >> gtLogFor: aView [
 PipelineStepImpl >> result [
 	^ _result
 ]
+
+{ #category : #accessing }
+PipelineStepImpl >> resultBackgroundColor [
+	^ JenkinsClient backgroundColorForStatus: self result
+]

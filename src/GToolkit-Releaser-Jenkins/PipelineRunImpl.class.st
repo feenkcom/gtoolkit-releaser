@@ -33,6 +33,16 @@ Class {
 }
 
 { #category : #accessing }
+PipelineRunImpl >> duration [
+	^ _durationInMillis asNumber milliSeconds
+]
+
+{ #category : #accessing }
+PipelineRunImpl >> endTime [
+	^ DateAndTime fromString: _endTime
+]
+
+{ #category : #accessing }
 PipelineRunImpl >> gtDisplayOn: stream [
 	stream nextPutAll: _id
 ]
@@ -72,7 +82,7 @@ PipelineRunImpl >> gtStagesMapFor: aView [
 			mondrian nodes 
 				shape: [ :aStage | 
 				|container editor statusColor aDropdown|
-					statusColor := aStage borderColor.
+					statusColor := aStage resultBackgroundColor.
 					container := BlElement new
 						layout: BlLinearLayout horizontal;
 						look:BrShadowLook;
@@ -82,7 +92,7 @@ PipelineRunImpl >> gtStagesMapFor: aView [
 						zIndex: 1;
 						when: BlClickEvent do:[:e | e target phlow spawnObject: aStage];
 						constraintsDo: [ :c |
-							c horizontal exact:240.
+							c horizontal exact:200.
 							c vertical fitContent].
 					editor := BrLabel new 
 						text: aStage name asRopedText;
@@ -105,43 +115,32 @@ PipelineRunImpl >> gtStagesMapFor: aView [
 						c ignoreByLayout.
 						c ignored horizontal alignRight.
 						c ignored vertical alignTop.
-						c
-							margin:
-								(BlInsets
-									top: -10
-									right: -10
-									bottom: 0
-									left: 0) ];
-					look:
-						BrGlamorousBadgeWithLabelLook
-							+
-								(BrGlamorousWithDropdownLook
-									handle: [ BrBadge new
+						c margin: (BlInsets top: -10 right: -10) ];
+					look: BrGlamorousBadgeWithLabelLook +
+						(BrGlamorousWithDropdownLook
+							handle: [ BrBadge new
 										label: (aStage failedTests size);
 										exact: 20 @ 20;
 										look: BrGlamorousBadgeWithLabelLook;
 										yourself ]
-									content: [ | aPhlowView aPopupElement |
-										aPhlowView := aStage gtFailedTestsFor: GtPhlowEmptyView new.
-										aPopupElement := BlElement new
+							content: [ | aPhlowView aPopupElement |
+								aPhlowView := aStage gtFailedTestsFor: GtPhlowEmptyView new.
+								aPopupElement := BlElement new
 											border: (BlBorder paint: Color orange width: 2);
 											background: Color white;
 											layout: BlLinearLayout vertical;
 											constraintsDo: [ :c | 
 												c horizontal fitContent.
 												c vertical fitContent ].
-										aPhlowView
-											asElementDo: [ :anElement | 
+								aPhlowView asElementDo: [ :anElement | 
 												anElement layout: BlLinearLayout vertical.
 												aPopupElement addChild: anElement.
 												anElement 
 													when: GtPhlowObjectToSpawn do: [:e | 
 													container fireEvent: (GtPhlowObjectToSpawn new object: e object; sourceElement: e target)] ].
-										aPopupElement ]);
-						yourself.
-									
+										aPopupElement ]).
 					container
-						addChild: (BrVerticalPane new vMatchParent; hExact:15; background: statusColor );
+						addChild: (BrVerticalPane new vMatchParent; hExact: 15; background: statusColor );
 						addChild: aDropdown;
 						addChild: (editor).
 				];
@@ -169,29 +168,23 @@ PipelineRunImpl >> gtStagesMapFor: aView [
 { #category : #accessing }
 PipelineRunImpl >> gtTestsFor: aView [
 	<gtView>
-	| aList |
-
-	aList := aView columnedList
+	^ aView columnedList
 		title: _runSummary translated;
 		priority: 50;
-		items: [ self tests].
+		items: [ self tests];
+		column: 'Status' translated do: [ :column | 
+			column
+				itemStencil: [ :each | BlElement new geometry: BlCircle new; background: each statusBackgroundColor; size: 10@10; margin: (BlInsets top: 5 left: 5 bottom: 5 right: 5) ];
+				noResize ];
+		column: 'Status' translated format: [ :eachTest | eachTest status ] width: 70;
+		column: 'Class' translated format: [ :eachTest | eachTest testClassName ] width: 250;
+		column: 'Method' translated format: [ :eachTest | eachTest testMethodName ];
+		column: 'Stage' translated format: [:eachTest | eachTest fullStageName ]
+]
 
-	aList column
-		title: 'Index' translated;
-		width: 30;
-		item: [ :eachItem :eachIndex | eachIndex asRopedText foreground: Color gray].
-	
-	aList column
-		title: 'Status' translated;
-		width: 70;
-		item: [ :eachItem :eachIndex | eachItem ];
-		itemFormat: [ :eachItem | eachItem status ].
-	
-	aList column
-		title: 'Name' translated;
-		item: [ :eachItem :eachIndex | eachItem ];
-		itemFormat: [ :eachItem | eachItem gtDisplayText ].
-	^ aList
+{ #category : #accessing }
+PipelineRunImpl >> isFinished [
+	^ _endTime notNil
 ]
 
 { #category : #accessing }
@@ -242,6 +235,16 @@ PipelineRunImpl >> rawTests [
 { #category : #accessing }
 PipelineRunImpl >> result [
 	^ _result
+]
+
+{ #category : #accessing }
+PipelineRunImpl >> resultBackgroundColor [
+	^ JenkinsClient backgroundColorForStatus: self result
+]
+
+{ #category : #accessing }
+PipelineRunImpl >> startTime [
+	^ DateAndTime fromString: _startTime
 ]
 
 { #category : #accessing }

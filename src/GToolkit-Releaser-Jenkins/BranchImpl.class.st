@@ -22,36 +22,30 @@ Class {
 
 { #category : #accessing }
 BranchImpl >> gtDisplayOn: stream [
-	stream nextPutAll: _name
+	stream nextPutAll: _fullName
 ]
 
 { #category : #accessing }
 BranchImpl >> gtRunsFor: aView [
 	<gtView>
-	| aList |
-
-	aList := aView columnedList
+	^ aView columnedList
 		title: 'Runs' translated;
 		priority: 50;
-		items: [ self runs].
+		items: [ self runs];
+		column: 'Status' translated do: [ :column | 
+			column
+				itemStencil: [ :each | BlElement new geometry: BlCircle new; background: each resultBackgroundColor; size: 10@10; margin: (BlInsets top: 5 left: 5 bottom: 5 right: 5) ];
+				noResize ];
+		column: 'Result' translated format: [ :each | each result ] width: 70;
+		column: 'Item' translated format: [ :each | each gtDisplayText ] width: 50;
+		"column: 'Tests' translated format: [:each | (each tests select: [:test | test isFailed]) size asString] width: 200;"
+		column: 'Duration' translated format: [ :each | (each duration roundTo: 1 second) humanReadablePrintString ] width: 200;
+		column: 'Start time' translated format: [ :each | String streamContents: [:s | each startTime printSeparateDateAndTimeOn: s]]
+]
 
-	aList column
-		title: 'Index' translated;
-		width: 30;
-		item: [ :eachItem :eachIndex | eachIndex asRopedText foreground: Color gray].
-	
-	aList column
-		title: 'Item' translated;
-		width: 30;
-		item: [ :eachItem :eachIndex | eachItem ];
-		itemFormat: [ :eachItem | eachItem gtDisplayText ].
-	aList column
-		title: 'Result' translated;
-		width: 70;
-		item: [ :eachItem :eachIndex | eachItem ];
-		itemFormat: [ :eachItem | eachItem result ].
-	
-	^ aList
+{ #category : #accessing }
+BranchImpl >> lastFinishedRun [
+	^ self runs detect: [:each | each isFinished ]
 ]
 
 { #category : #accessing }

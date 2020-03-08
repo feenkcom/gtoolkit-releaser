@@ -12,6 +12,36 @@ Class {
 }
 
 { #category : #constants }
+JenkinsClient class >> backgroundColorForStatus: aString [
+	aString = 'SUCCESS' ifTrue: [^ BrGlamorousColors successBackgroundColor].
+	aString = 'FAILURE' ifTrue: [^ BrGlamorousColors errorBackgroundColor].
+	aString = 'UNSTABLE' ifTrue: [^ BrGlamorousColors failureBackgroundColor ].
+	^ BrGlamorousColors lightBorderColor.
+]
+
+{ #category : #constants }
+JenkinsClient class >> backgroundColorForTestStatus: aString [
+	aString = 'PASSED' ifTrue: [^ BrGlamorousColors successBackgroundColor].
+	aString = 'FAILED' ifTrue: [^ BrGlamorousColors failureBackgroundColor].
+	^ BrGlamorousColors lightBorderColor.
+]
+
+{ #category : #constants }
+JenkinsClient class >> borderColorForStatus: aString [
+	aString = 'SUCCESS' ifTrue: [^ BrGlamorousColors successBorderColor].
+	aString = 'FAILURE' ifTrue: [^ BrGlamorousColors errorBorderColor].
+	aString = 'UNSTABLE' ifTrue: [^ BrGlamorousColors failureBorderColor ].
+	^ BrGlamorousColors lightBorderColor.
+]
+
+{ #category : #constants }
+JenkinsClient class >> borderColorForTestStatus: aString [
+	aString = 'PASSED' ifTrue: [^ BrGlamorousColors successBorderColor].
+	aString = 'FAILED' ifTrue: [^ BrGlamorousColors errorBorderColor].
+	^ BrGlamorousColors lightBorderColor.
+]
+
+{ #category : #constants }
 JenkinsClient class >> green [
 	^ Color r: 100 g: 163 b: 56 range: 255
 ]
