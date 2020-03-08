@@ -161,7 +161,7 @@ JenkinsClient >> reasonForFailure [
 { #category : #accessing }
 JenkinsClient >> setupJwtToken [
 	| jwt |
-	znclient get: ('' join: { url .'/jwt-auth/token'}).
+	znclient get: ('' join: { url .'/jwt-auth/token?maxExpiryTimeInMins=120'}).
 	jwt := znclient response headers at:'X-Blueocean-Jwt'.
 	znclient request headers removeKey: 'Authorization' ifAbsent: [].
 	znclient request setAuthorization: 'Bearer ', jwt.
