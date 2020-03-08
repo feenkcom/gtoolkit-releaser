@@ -38,6 +38,7 @@ BranchImpl >> gtRunsFor: aView [
 				noResize ];
 		column: 'Result' translated format: [ :each | each result ] width: 70;
 		column: 'Item' translated format: [ :each | each gtDisplayText ] width: 50;
+		"column: 'Tests' translated format: [:each | (each tests select: [:test | test isFailed]) size asString] width: 200;"
 		column: 'Duration' translated format: [ :each | (each duration roundTo: 1 second) humanReadablePrintString ] width: 200;
 		column: 'Start time' translated format: [ :each | String streamContents: [:s | each startTime printSeparateDateAndTimeOn: s]]
 ]

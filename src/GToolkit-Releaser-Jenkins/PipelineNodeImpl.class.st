@@ -25,8 +25,8 @@ Class {
 { #category : #accessing }
 PipelineNodeImpl >> failedTests [
 	|allFailed|
-	allFailed := parentRun tests select: [:each | each status = 'FAILED'].
-	allFailed := allFailed select: [:t | t testNameParsed size = 7 and: [(t testNameParsed at: 5) trimmed asSymbol = self name asSymbol]].
+	allFailed := parentRun tests select: [:each | each isFailed].
+	allFailed := allFailed select: [:t | t testNameParsed size = 4 and: [(t testNameParsed at: 3) trimmed asSymbol = self name asSymbol]].
 	^ allFailed
 ]
 
@@ -50,7 +50,7 @@ PipelineNodeImpl >> gtFailedTestsFor: aView [
 			column
 				itemStencil: [ :each | BlElement new geometry: BlCircle new; background: each statusBackgroundColor; size: 10@10; margin: (BlInsets top: 5 left: 5 bottom: 5 right: 5) ];
 				noResize ];
-		column: 'Class' translated format: [ :eachItem | eachItem testClassName] width: 200;
+		column: 'Class' translated format: [ :eachItem | eachItem testClassName] width: 250;
 		column: 'Method' translated format: [ :eachItem | eachItem testMethodName]
 ]
 

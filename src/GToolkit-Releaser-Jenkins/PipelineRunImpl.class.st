@@ -176,8 +176,10 @@ PipelineRunImpl >> gtTestsFor: aView [
 			column
 				itemStencil: [ :each | BlElement new geometry: BlCircle new; background: each statusBackgroundColor; size: 10@10; margin: (BlInsets top: 5 left: 5 bottom: 5 right: 5) ];
 				noResize ];
-		column: 'Status' translated format: [ :eachItem | eachItem status ] width: 70;
-		column: 'Name' translated format: [ :eachItem | eachItem gtDisplayText ]
+		column: 'Status' translated format: [ :eachTest | eachTest status ] width: 70;
+		column: 'Class' translated format: [ :eachTest | eachTest testClassName ] width: 250;
+		column: 'Method' translated format: [ :eachTest | eachTest testMethodName ];
+		column: 'Stage' translated format: [:eachTest | eachTest fullStageName ]
 ]
 
 { #category : #accessing }
