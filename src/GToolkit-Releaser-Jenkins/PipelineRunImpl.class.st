@@ -168,6 +168,7 @@ PipelineRunImpl >> gtStagesMapFor: aView [
 { #category : #accessing }
 PipelineRunImpl >> gtTestsFor: aView [
 	<gtView>
+	(_state = 'RUNNING') ifTrue: [^ aView empty].
 	^ aView columnedList
 		title: _runSummary translated;
 		priority: 50;
@@ -264,6 +265,7 @@ PipelineRunImpl >> steps [
 { #category : #accessing }
 PipelineRunImpl >> tests [
 	|raws codeGenerator| 
+	(_state = 'RUNNING') ifTrue: [^ OrderedCollection new].
 	tests ifNotNil: [^ tests].
 	raws := self rawTests.
 	codeGenerator := JSONCodeGenerator new.
