@@ -168,6 +168,7 @@ PipelineRunImpl >> gtStagesMapFor: aView [
 { #category : #accessing }
 PipelineRunImpl >> gtTestsFor: aView [
 	<gtView>
+	(_state = 'RUNNING') ifTrue: [^ aView empty].
 	^ aView columnedList
 		title: _runSummary translated;
 		priority: 50;
