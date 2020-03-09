@@ -50,10 +50,11 @@ GtJenkinsClientSnippet >> asElement [
 			playInspectButton phlow spawnObject: client blueOcean ].
 	toolbar addItem: playInspectButton.
 	
-	snippetContainer := BlElement new.
-	snippetContainer
+	snippetContainer := BrVerticalPane new
+		vFitContent;
+		hMatchParent;
 		clipChildren: false;
-		look: (GtSnippetContainerLook new snippet: self) + BrLayoutLook linearVertical vFitContent hMatchParent + BrShadowLook new;
+		look: (GtSnippetContainerLook new snippet: self) + BrShadowLook new;
 		border: BlBorder empty;
 		padding: BlInsets empty;
 		background: (BlBackground paint: Color white).
