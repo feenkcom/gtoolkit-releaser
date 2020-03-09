@@ -13,7 +13,7 @@ Class {
 GtJenkinsClientSnippet class >> typeName [
 	<return: #String>
 
-	^ 'Jenkins'
+	^ 'jenkins'
 ]
 
 { #category : #converting }
