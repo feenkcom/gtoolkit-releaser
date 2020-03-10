@@ -97,6 +97,21 @@ GtJenkinsClientSnippet >> inputElementNamed: aString in: formElement [
 ]
 
 { #category : #accessing }
+GtJenkinsClientSnippet >> string [
+	<return: #String>
+	^ String streamContents: [ :aStream | 
+		aStream nextPutAll: 'Jenkins:'.
+		self url ifNotNil: [ aStream space; print: self url ].
+		self user ifNotNil: [ aStream space; print: self user ]. ]
+]
+
+{ #category : #accessing }
+GtJenkinsClientSnippet >> text [
+	<return: #BlRope>
+	^ self string asRopedText
+]
+
+{ #category : #accessing }
 GtJenkinsClientSnippet >> token [
 	^ token
 ]
