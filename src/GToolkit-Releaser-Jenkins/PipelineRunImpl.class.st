@@ -27,7 +27,8 @@ Class {
 		'_causes',
 		'_id',
 		'_replayable',
-		'tests'
+		'tests',
+		'parentBranchName'
 	],
 	#category : #'GToolkit-Releaser-Jenkins-Generated-IoJenkinsBlueoceanRestImplPipeline'
 }
@@ -201,6 +202,24 @@ PipelineRunImpl >> nodes [
 		model json: raw.
 		model parentRun:self.
 		model]
+]
+
+{ #category : #accessing }
+PipelineRunImpl >> parentBranchName: aName [
+	parentBranchName := aName
+]
+
+{ #category : #accessing }
+PipelineRunImpl >> rawAllTests [
+	|data|
+	data := znclient get: self rawAllTestsURL.
+	"^ (NeoJSONReader fromString: data)"
+	^ data
+]
+
+{ #category : #accessing }
+PipelineRunImpl >> rawAllTestsURL [
+	^ url, '/job/', (parentBranchName copyReplaceAll: '/' with: '/job/'), '/' , (rawData at: 'id'), '/testReport/api/json'
 ]
 
 { #category : #accessing }

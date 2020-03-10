@@ -67,5 +67,6 @@ BranchImpl >> runs [
 		model url: url.
 		model znclient: znclient.
 		model json: raw.
+		model parentBranchName: _fullName.
 		model]
 ]
