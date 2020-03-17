@@ -18,7 +18,7 @@ GtJenkinsClientSnippet class >> typeName [
 
 { #category : #converting }
 GtJenkinsClientSnippet >> asElement [
-	| snippetContainer formElement urlInputElement tokenInputElement toolbar playInspectButton userInputElement |
+	| snippetContainer formElement urlInputElement tokenInputElement toolbar playInspectButton userInputElement anExpanderElement |
 	formElement := BlElement new.
 	formElement constraintsDo: [ :c |  
 		c vertical fitContent.
@@ -52,15 +52,26 @@ GtJenkinsClientSnippet >> asElement [
 	
 	snippetContainer := BrVerticalPane new
 		vFitContent;
-		hMatchParent;
-		clipChildren: false;
-		look: (GtSnippetContainerLook new snippet: self) + BrShadowLook new;
-		border: BlBorder empty;
-		padding: BlInsets empty;
-		background: (BlBackground paint: Color white).
+		hMatchParent.
 	snippetContainer addChild: formElement.
 	snippetContainer addChild: toolbar.
-	^ snippetContainer
+	
+	anExpanderElement := BrExpander new
+		vFitContent;
+		hMatchParent;
+		expand;
+		look: GtCoderExpanderLook new recreateHeader;
+		header: [ BrLabel new
+			look: (BrGlamorousLabelLook new foreground: BrGlamorousColors disabledButtonTextColor);
+			text: ('Jenkins: ', userInputElement editor text asString, '@',urlInputElement editor text asString) ];
+		content: [ snippetContainer ].
+	
+	
+	^ BrFrame new
+		vFitContent;
+		hMatchParent;
+		look: (GtSnippetContainerLook new snippet: self);
+		addChild: anExpanderElement
 ]
 
 { #category : #converting }
