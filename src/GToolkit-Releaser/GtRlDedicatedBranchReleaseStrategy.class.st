@@ -197,10 +197,8 @@ GtRlDedicatedBranchReleaseStrategy >> mergeToReleaseBranch [
 		description: 'The Iceberg repository needs to be on the reference branch.'.
 	self repositoryRelease mergeToBranch: self releaseBranchName.
 	
-	"This reduces the number of releases that can be performed by releaser automatically especially when classes are moved across packages."
-	self 
-		assert: [ icebergRepository isModified not ]
-		description: 'There should be no changes in the repository after merging to the release branch.'.
+	"Baselines and the metadata file can appear as changed as we do not update the code in the image."
+	self assertOnlyAllowedChanges
 ]
 
 { #category : #'accessing - dynamic' }
