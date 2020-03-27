@@ -414,30 +414,27 @@ GtRlRepositoryRelease >> mergeToBranch: aBranchName [
 	icebergRepository := self icebergRepository.
 	initialBranchName := icebergRepository branchName.
 	
-	"Checkout the release branch. We look for the branch in the remote origin before
+	"Switch the release branch. We look for the branch in the remote origin before
 	creating the branch locally if there is no release branch locally."
 	(icebergRepository hasLocalBranchNamed: aBranchName)
 		ifTrue:  [ 
-			"In case the release branch is already present locally do a checkout."
-			icebergRepository checkoutBranch: aBranchName. ]
+			"In case the release branch is already present locally do a switch."
+			(icebergRepository branchNamed: aBranchName) switch. ]
 		ifFalse: [ 
 			"Look for the release branch in the remote origin."
-			icebergRepository remoteBranchNamed: 'origin/', aBranchName
+			icebergRepository 
+				remoteBranchNamed: 'origin/', aBranchName
 				ifPresent: [ :removeReleseBranch | 
-					"If we find a release branch remotely do a checkout"
-					removeReleseBranch checkout ]
+					"If we find a release branch remotely do a switch"
+					removeReleseBranch switch ]
 				ifAbsent: [
-					icebergRepository createBranch: aBranchName.
-					icebergRepository checkoutBranch: aBranchName ] ].
-	
-	"[icebergRepository switchToBranchNamed: aBranchName] 
-		on: Warning do: [ :ex | ex resume ]."
+					(icebergRepository createBranch: aBranchName) switch ] ].
 	
 	"Do the merge from the current branch"
 	IceMerge new 
 		repository: icebergRepository; 
 		mergeCommit: (icebergRepository branchNamed: initialBranchName) commit; 
-		executeWithAcceptingLeftOnConflict.
+		executeWithAcceptingLeftOnConflictAndWithoutImageUpdate.
 ]
 
 { #category : #accessing }
