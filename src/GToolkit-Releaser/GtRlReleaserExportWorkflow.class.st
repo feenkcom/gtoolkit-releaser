@@ -114,6 +114,7 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://noha/mustache/repository'.
 		'github://sbragagnolo/taskit'.
 		'github://svenvc/NeoJSON/repository'.
+		'github://msgpack/msgpack-smalltalk/repository'.
 		'github://feenkcom/Containers-PropertyEnvironment'.
 		'github://feenkcom/Chrysal/src'.
 		'github://feenkcom/XMLParser/src'.
