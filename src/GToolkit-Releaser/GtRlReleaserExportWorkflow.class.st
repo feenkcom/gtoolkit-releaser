@@ -148,7 +148,7 @@ GtRlReleaserExportWorkflow class >> switchAllRepositoriesBackToMasterBranch [
 
 	((IceRepository registry select: [ :repo | (LGitRepository on: repo location) 
 		repositoryReference isNotNil ]) 
-			select: [ :repo | repo head name = 'master' ]) do: [ :repo | repo branch hasUpstream ifTrue: [self attemtToFixDirtyPackagesFor: repo. repo pull ]].
+			select: [ :repo | repo head name = 'master' ]) do: [ :repo | repo branch hasUpstream ifTrue: [self attemtToFixDirtyPackagesFor: repo. repo isModified ifFalse:[repo pull] ]].
 ]
 
 { #category : #actions }
