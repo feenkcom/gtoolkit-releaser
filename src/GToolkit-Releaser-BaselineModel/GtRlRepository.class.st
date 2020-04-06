@@ -187,7 +187,7 @@ GtRlRepository >> icebergRepository [
 	"I act like a cache for the iceberg repository associated with this repository."
 	^ icebergRepository ifNil: [
 		icebergRepository := IceRepository registry detect: [ :anIceRepo | 
-			anIceRepo name = self repositoryName ] ]
+			anIceRepo name asLowercase = self repositoryName asLowercase ] ]
 ]
 
 { #category : #'accessing - dynamic' }
