@@ -133,12 +133,15 @@ GtRlDedicatedBranchReleaseStrategy >> gtCommitsAncestryFor: aView [
 		title: 'Commits ancestry' translated;
 		priority: 100;
 		painting: [ :view | 
-			| commitColor commitsReleaseBranch commitsReferenceBranch |
-			commitsReleaseBranch := Set new.
+			| commitColor commitsReleaseBranch commitsReferenceBranch commits|
+			commitsReleaseBranch := OrderedCollection new.
 			self releaseBranch ifNotNil: 
 				[commitsReleaseBranch :=  self releaseBranch commits].
 			
 			commitsReferenceBranch := self referenceBranch commits.
+			commitsReferenceBranch := commitsReferenceBranch copyFrom: 1 to: (commitsReferenceBranch size min: (50 max: 0)).
+			commitsReleaseBranch := commitsReleaseBranch copyFrom: 1 to: (commitsReleaseBranch size min: (50 max: 0)).
+			commits := commitsReleaseBranch asSet, commitsReferenceBranch.
 			view nodes 
 				stencil: [ :aCommit |
 					| element |
@@ -156,7 +159,7 @@ GtRlDedicatedBranchReleaseStrategy >> gtCommitsAncestryFor: aView [
 						ifTrue: [ commitColor := Color blue ].
 					element background: commitColor.
 					element ];
-				with: commitsReleaseBranch asSet, commitsReferenceBranch.
+				with: commits.
 			view edges connectToAll: #ancestors.
 			view layout dominanceTree]
 ]
