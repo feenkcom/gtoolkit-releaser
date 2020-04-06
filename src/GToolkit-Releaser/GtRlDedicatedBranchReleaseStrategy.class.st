@@ -134,7 +134,10 @@ GtRlDedicatedBranchReleaseStrategy >> gtCommitsAncestryFor: aView [
 		priority: 100;
 		painting: [ :view | 
 			| commitColor commitsReleaseBranch commitsReferenceBranch |
-			commitsReleaseBranch :=  self releaseBranch commits.
+			commitsReleaseBranch := Set new.
+			self releaseBranch ifNotNil: 
+				[commitsReleaseBranch :=  self releaseBranch commits].
+			
 			commitsReferenceBranch := self referenceBranch commits.
 			view nodes 
 				stencil: [ :aCommit |

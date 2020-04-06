@@ -101,7 +101,7 @@ GtRlSemanticTagReleaseStrategy >> nextVersionComputation: aVersionComputation [
 
 { #category : #'accessing - dynamic' }
 GtRlSemanticTagReleaseStrategy >> releaseBranch [
-	^ self repositoryRelease icebergRepository branchNamed: self releaseBranchName 
+	^ self repositoryRelease icebergRepository branchNamed: (self releaseBranchName) ifAbsent: nil
 ]
 
 { #category : #accessing }
