@@ -53,6 +53,13 @@ GtRlProjectRelease >> compileBaselineMethod [
  	^ self project compileBaselineWithProjectDependencies: childProjectsWithRepositoryURL
 ]
 
+{ #category : #accessing }
+GtRlProjectRelease >> devVersion [
+	|ver|
+	ver := self version.
+	^ GtRlDevSemanticVersionNumber major: ver major minor: ver minor patch: ver patch
+]
+
 { #category : #actions }
 GtRlProjectRelease >> generateBaselineSource [
 	| childProjectsWithRepositoryURL |
