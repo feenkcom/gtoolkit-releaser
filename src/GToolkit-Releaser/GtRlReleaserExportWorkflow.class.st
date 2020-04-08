@@ -101,8 +101,8 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 	defaultVersionNumber: (GtRlSemanticVersionNumber major:0 minor: 6 patch: 0);
 	defaultReleaseBranchName: 'release';
 	defaultVersionComputation: GtRlPatchVersionComputation new;	
-	setReleaseStrategyOfType: GtRlLeafProjectReleaseStrategy forProjecs: {
-		'github://feenkcom/gtoolkit-releaser/src' };
+	"setReleaseStrategyOfType: GtRlLeafProjectReleaseStrategy forProjecs: {
+		'github://feenkcom/gtoolkit-releaser/src' };"
 	setReleaseStrategyOfType: GtRlHeadCommitReleaseStrategy forProjecs: {
 		'github://kursjan/petitparser2'.
 		'github://j-brant/SmaCC/src'.
