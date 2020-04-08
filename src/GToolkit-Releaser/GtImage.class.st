@@ -13,8 +13,17 @@ Class {
 
 { #category : #accessing }
 GtImage class >> instance [ 
-	singleton ifNil: [ singleton := self new ].
+	singleton ifNil: [ 
+	    singleton := self new.
+	    singleton version: (GtRlReleaserExportWorkflow buildGToolkitRelease rootProjectRelease devVersion).
+	    singleton timestamp: DateAndTime now.
+	].
 	^ singleton
+]
+
+{ #category : #accessing }
+GtImage class >> reset [
+	singleton := nil
 ]
 
 { #category : #accessing }
