@@ -22,6 +22,11 @@ GtImage class >> instance [
 ]
 
 { #category : #accessing }
+GtImage class >> reset [
+	singleton := nil
+]
+
+{ #category : #accessing }
 GtImage class >> timestamp: aTimestamp [
 	self instance timestamp: aTimestamp
 ]
