@@ -44,40 +44,13 @@ GtImage class >> version: aVersion [
 { #category : #accessing }
 GtImage >> gtPreviewFor: aView [
 	<gtView>
-	^ aView explicit
+	^ aView columnedList
 		title: 'Preview';
-		stencil: [ 
-			| aVersionElement aTimestampElement |
-			aVersionElement := BrLabel new 
-				text: self version versionString;
-				look: BrGlamorousLabelLook + BrShadowLook;
-				background: Color white;
-				margin: (BlInsets all: 20);
-				padding: (BlInsets all: 10);
-				layout: BlLinearLayout horizontal;
-				constraintsDo: [ :c | 
-					c vertical fitContent.
-					c horizontal fitContent.
-					c frame horizontal alignCenter.
-					c frame vertical alignCenter ].
-			aTimestampElement := BrLabel new 
-				text: self timestamp asString;
-				look: BrGlamorousLabelLook + BrShadowLook;
-				background: Color white;
-				margin: (BlInsets all: 20);
-				padding: (BlInsets all: 10);
-				layout: BlLinearLayout horizontal;
-				constraintsDo: [ :c | 
-					c vertical fitContent.
-					c horizontal fitContent.
-					c frame horizontal alignCenter.
-					c frame vertical alignCenter ].
-			BlElement new 
-				constraintsDo: [:c | 
-					c vertical matchParent.
-					c horizontal matchParent];
-				layout: BlGridLayout new;
-				addChild: aVersionElement; addChild: aTimestampElement  ]
+		items: [ 
+			{'Version' -> self version versionString. 
+			'Timestamp' -> self timestamp } ];
+		column: 'Property' format: [:each | each key];
+		column: 'Value' format: [:each | each value ]
 ]
 
 { #category : #accessing }
