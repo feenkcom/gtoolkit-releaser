@@ -68,6 +68,14 @@ GtRlSemanticVersionNumber >> >= aSemanticVersionNumber [
 	^ aSemanticVersionNumber <= self
 ]
 
+{ #category : #converting }
+GtRlSemanticVersionNumber >> asDevSemanticVersion [
+	^ GtRlDevSemanticVersionNumber 
+		major: self major 
+		minor: self minor 
+		patch: self patch
+]
+
 { #category : #comparing }
 GtRlSemanticVersionNumber >> hash [
 	^ ((self species hash
