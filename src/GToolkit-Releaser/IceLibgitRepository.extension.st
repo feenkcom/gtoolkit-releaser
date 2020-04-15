@@ -3,8 +3,8 @@ Extension { #name : #IceLibgitRepository }
 { #category : #'*GToolkit-Releaser' }
 IceLibgitRepository >> assertRepositoryNotModified: aMessage [
 	|changes|
-	changes := self workingCopy diffToReferenceCommit treeToShow children asString.
+	changes := ((self workingCopy diffToReferenceCommit treeToShow) withDeep: #children collect: #description)  asString.
 	self 
 		assert: [ self isModified not ]
-		description: aMessage, '\n', changes.
+		description: aMessage, OSPlatform current lineEnding, changes.
 ]
