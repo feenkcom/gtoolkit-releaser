@@ -235,7 +235,7 @@ GtRlReleaserExamples >> projectStructureWithOneChildDependency [
 		assert: (rootProject childProjects collect: #name) asArray
 		equals: #('RepositoryWithNoVersionB').
 	
-	"Fix current issuues caused by projects not being loaded in the image"
+	"Fix current issues caused by projects not being loaded in the image"
 	rootProject metacelloToolbox: GtRlMetacelloToolBoxWithSpecs new.
 	rootProject childProjects do: [ :aProject |
 		rootProject metacelloToolbox addSpecForBaselineClass: aProject baselineClass ].
