@@ -10,7 +10,7 @@ I can be linked to an ${class:IceRepository}$ that provides the concrete reposit
 "
 Class {
 	#name : #GtRlRepository,
-	#superclass : #GtRlNode,
+	#superclass : #Object,
 	#instVars : [
 		'url',
 		'projects',

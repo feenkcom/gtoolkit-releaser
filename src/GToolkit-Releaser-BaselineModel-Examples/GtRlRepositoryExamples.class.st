@@ -4,7 +4,7 @@ Class {
 	#category : #'GToolkit-Releaser-BaselineModel-Examples'
 }
 
-{ #category : #examples }
+{ #category : #'examples - properties' }
 GtRlRepositoryExamples >> repositoryEqualityExample [
 	<gtExample>
 	"I create a repository and verify that quality with other repositories works as expected."
@@ -18,7 +18,7 @@ GtRlRepositoryExamples >> repositoryEqualityExample [
 	^ repository
 ]
 
-{ #category : #examples }
+{ #category : #'examples - properties' }
 GtRlRepositoryExamples >> repositoryHashExample [
 	<gtExample>
 	"I create a repository and verify that computing the hash works as expected."

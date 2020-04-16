@@ -6,15 +6,11 @@ I have as main attributes:
 	- the list of packages loaded by the project 
 	- the repositry containing the project 
 	- a list of child and parent projects representing my dependencies to other projects
-	
-
-	
 "
 Class {
 	#name : #GtRlProject,
 	#superclass : #GtRlNode,
 	#instVars : [
-		'name',
 		'baselineVersion',
 		'baselineClass',
 		'repository',
@@ -117,6 +113,14 @@ GtRlProject >> containedRPackagesDo: aBloc [
 				aBloc value: aRPackage ] ]
 ]
 
+{ #category : #'accessing - dynamic' }
+GtRlProject >> dependencies [
+	^ OrderedCollection new
+		addAll: self childProjects;
+		addAll: self packages;
+		yourself
+]
+
 { #category : #actions }
 GtRlProject >> generateSourceWithProjectDependencies: projectDependenciesMap [
 	| toolbox |
@@ -198,6 +202,16 @@ GtRlProject >> gtSourceFor: aView [
 		text: [ String streamContents: [ :s | 
 			self baselineVersion spec configMethodOn: s] ];
 		priority: 55
+]
+
+{ #category : #ui }
+GtRlProject >> gtViewRepositoriesListFor: aView [
+	<gtView>
+	^ aView list
+		title: 'Packages' translated;
+		items: [ self packages ];
+		itemFormat: #name;
+		priority: 60
 ]
 
 { #category : #initialization }
@@ -310,7 +324,7 @@ GtRlProject >> toolboxForBaselineWithProjectDependencies: projectDependenciesMap
 		requiredProjects: projectNames
 	   packages: (self packages collect: #name)
 	   dependencies: (self packages collect: [ :aPackage | 
-			aPackage name -> aPackage dependencies ])
+			aPackage name -> (aPackage dependencies collect: #name) ])
 	   includes: #()
 	   files: #()
 	   repositories: projectDependenciesMap

@@ -20,6 +20,10 @@ GtRlBaselineVersionNumber >> versionString [
 ]
 
 { #category : #accessing }
-GtRlBaselineVersionNumber >> versionString: anObject [
-	versionString := anObject
+GtRlBaselineVersionNumber >> versionString: aVersionString [
+	self assert: [ aVersionString notNil ].
+	self 
+		assert: [ versionString isNil ]
+		description: 'A version number that uses a baseline number should be immutable'.
+	versionString := aVersionString
 ]
