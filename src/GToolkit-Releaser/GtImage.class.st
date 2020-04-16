@@ -15,7 +15,7 @@ Class {
 GtImage class >> instance [ 
 	singleton ifNil: [ 
 	    singleton := self new.
-	    singleton version: (GtRlReleaserExportWorkflow buildGToolkitRelease rootProjectRelease devVersion).
+	    singleton version: GtRlNullVersionNumber new.
 	    singleton timestamp: DateAndTime now.
 	].
 	^ singleton
