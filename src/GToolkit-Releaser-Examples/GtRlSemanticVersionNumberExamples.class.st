@@ -66,6 +66,19 @@ GtRlSemanticVersionNumberExamples >> semanticVersionNotEqualsWithVersionsWithDif
 	
 ]
 
+{ #category : #'examples - versions' }
+GtRlSemanticVersionNumberExamples >> semanticVersionNumber [
+	<gtExample>
+	| versionNumber |
+	versionNumber := GtRlSemanticVersionNumber major: 1 minor: 2 patch: 3.
+
+	self assert: versionNumber versionString equals: 'v1.2.3'.
+	self assert: versionNumber major equals: 1.
+	self assert: versionNumber minor equals: 2.
+	self assert: versionNumber patch equals: 3.
+	^ versionNumber
+]
+
 { #category : #'examples - equality' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberEqualWithItself [
 	<gtExample>
