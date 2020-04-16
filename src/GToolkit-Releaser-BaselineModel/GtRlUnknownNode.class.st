@@ -4,6 +4,9 @@ I model an known node encountered in baseline that does not corespond to a packa
 Class {
 	#name : #GtRlUnknownNode,
 	#superclass : #GtRlNode,
+	#instVars : [
+		'incomingDependencies'
+	],
 	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
 
@@ -13,16 +16,23 @@ GtRlUnknownNode class >> withName: projectName [
 		name: projectName
 ]
 
-{ #category : #'accessing - dynamic' }
-GtRlUnknownNode >> dependencies [
-	^ #()
+{ #category : #adding }
+GtRlUnknownNode >> addIncomingDependency: aDependency [
+	self incomingDependencies add: aDependency
 ]
 
-{ #category : #printing }
-GtRlUnknownNode >> printOn: aStream [
-	super printOn: aStream.
-	aStream 
-		nextPutAll: '(';
-		nextPutAll: self name;
-		nextPutAll: ')'
+{ #category : #accessing }
+GtRlUnknownNode >> incomingDependencies [
+	^ incomingDependencies
+]
+
+{ #category : #initialization }
+GtRlUnknownNode >> initialize [
+	super initialize.
+	incomingDependencies := OrderedCollection new.
+]
+
+{ #category : #accessing }
+GtRlUnknownNode >> outgoingDependencies [
+	^ #()
 ]
