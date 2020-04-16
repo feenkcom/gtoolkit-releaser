@@ -21,6 +21,12 @@ GtRlTagVersionNumber >> = anObject [
 	^ self tagName = anObject tagName
 ]
 
+{ #category : #comparing }
+GtRlTagVersionNumber >> hash [
+	^ (self species hash
+		bitXor: self tagName hash)
+]
+
 { #category : #accessing }
 GtRlTagVersionNumber >> tagName [
 	^ tagName

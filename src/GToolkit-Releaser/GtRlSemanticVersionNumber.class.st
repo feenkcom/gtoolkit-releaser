@@ -79,9 +79,9 @@ GtRlSemanticVersionNumber >> asDevSemanticVersion [
 { #category : #comparing }
 GtRlSemanticVersionNumber >> hash [
 	^ ((self species hash
-		bitXor: self major)
-		bitXor: self minor)
-		bitXor: self patch
+		bitXor: self major hash)
+		bitXor: self minor hash)
+		bitXor: self patch hash
 ]
 
 { #category : #initialization }
@@ -89,6 +89,9 @@ GtRlSemanticVersionNumber >> initializeMajor: aMajorNumber minor: aMinorNumber p
 	self 
 		assert: [ aMajorNumber notNil and: [ aMinorNumber notNil and: [ aPatchNumber notNil ] ] ]
 		description: 'The components of a semantic version cannot be null'.
+	self 
+		assert: [ aMajorNumber >= 0 and: [ aMinorNumber >= 0 and: [ aPatchNumber >= 0 ] ] ]
+		description: 'The components of a semantic version should not be negative'.
 	self 
 		assert: [ major isNil and: [ minor isNil and: [ patch isNil ] ] ]
 		description: 'Semantic version numbers are immutable'.

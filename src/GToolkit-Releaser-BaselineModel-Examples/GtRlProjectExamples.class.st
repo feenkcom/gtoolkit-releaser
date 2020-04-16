@@ -203,3 +203,22 @@ GtRlProjectExamples >> projectWithTwoParents [
 	
 	^ project
 ]
+
+{ #category : #'examples - generated' }
+GtRlProjectExamples >> systemOneProject [
+	<gtExample>
+	| projectBuilder project repositoryName |
+	repositoryName := 'github://example/SystemOne/src'.
+	projectBuilder := GtRlDependenciesModelBuilder new.
+	project := projectBuilder 
+		buildProjectFromBaselineClass: BaselineOfGtRlBaselineExampleSystemOne
+		withRepositoryDescription: repositoryName. 
+		
+	self assert: project childProjects size equals: 4.
+	self assert: project withAllChildProjects size equals: 7.
+	self assert: project parentProjects size equals: 0.
+	self assert: project repository urlString equals: repositoryName.
+	self assert: project withAllRepositories size equals: 6.
+	
+	^ project
+]

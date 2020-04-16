@@ -20,30 +20,44 @@ GtRlSemanticVersionNumberExamples >> assertSemanticVersion: versionNumber withMa
 	
 ]
 
-{ #category : #examples }
-GtRlSemanticVersionNumberExamples >> semanticVersionNumber [
+{ #category : #'examples - factory' }
+GtRlSemanticVersionNumberExamples >> createSemanticVersionWithComponents: anArray [
+	<gtExample>
+	self assert: [ anArray size = 3 ].
+	
+	^ self createSemanticVersionWithMajor: anArray first 
+		minor: anArray second  
+		patch: anArray third 
+]
+
+{ #category : #'examples - factory' }
+GtRlSemanticVersionNumberExamples >> createSemanticVersionWithMajor: majorNumber minor: minorNumber patch: patchNumber [
 	<gtExample>
 	| versionNumber |
-	versionNumber := GtRlSemanticVersionNumber major: 1 minor: 2 patch: 3.
-	self assertSemanticVersion: versionNumber withMajor: 1 minor: 2 patch: 3.
-	^ versionNumber
+	versionNumber := GtRlSemanticVersionNumber 
+		major: majorNumber
+		minor: minorNumber 
+		patch: patchNumber.
 	
+	self 
+		assertSemanticVersion: versionNumber 
+		withMajor: majorNumber 
+		minor: minorNumber 
+		patch: patchNumber.
+	
+	^ versionNumber
 ]
 
-{ #category : #examples }
-GtRlSemanticVersionNumberExamples >> semanticVersionNumberComparisonExample [
+{ #category : #'examples - equality' }
+GtRlSemanticVersionNumberExamples >> semanticVersionNotEqualsWithVersionsWithDifferentNumbers [
 	<gtExample>
-	| versionNumber anotherEqualVersion anotherNotEqualVersion1 anotherNotEqualVersion2 anotherNotEqualVersion3 |
-	versionNumber := self semanticVersionNumber.
-	anotherEqualVersion := GtRlSemanticVersionNumber new 
-		initializeMajor: 1 minor: 2 patch: 3. "Ensure a new object"
+	| versionNumber anotherNotEqualVersion1 anotherNotEqualVersion2 anotherNotEqualVersion3 |
+	versionNumber := self semanticVersionNumberMajor1Minor2Patch3.
 	
 	anotherNotEqualVersion1 := self semanticVersionNumberMajor2Minor2Patch3.
 	anotherNotEqualVersion2 := self semanticVersionNumberMajor1Minor3Patch3.
 	anotherNotEqualVersion3 := self semanticVersionNumberMajor1Minor2Patch4.
 	
-	self assert: versionNumber = versionNumber.
-	self assert: versionNumber = anotherEqualVersion.
 	self assert: (versionNumber = anotherNotEqualVersion1) not.
 	self assert: (versionNumber = anotherNotEqualVersion2) not.
 	self assert: (versionNumber = anotherNotEqualVersion3) not.
@@ -52,29 +66,32 @@ GtRlSemanticVersionNumberExamples >> semanticVersionNumberComparisonExample [
 	
 ]
 
-{ #category : #examples }
-GtRlSemanticVersionNumberExamples >> semanticVersionNumberEqualityExample [
+{ #category : #'examples - equality' }
+GtRlSemanticVersionNumberExamples >> semanticVersionNumberEqualWithItself [
 	<gtExample>
-	| versionNumber anotherEqualVersion anotherNotEqualVersion1 anotherNotEqualVersion2 anotherNotEqualVersion3 |
-	versionNumber := self semanticVersionNumber.
-	anotherEqualVersion := GtRlSemanticVersionNumber major: 1 minor: 2 patch: 3. "Ensure a new object"
-	
-	anotherNotEqualVersion1 := self semanticVersionNumberMajor2Minor2Patch3.
-	anotherNotEqualVersion2 := self semanticVersionNumberMajor1Minor3Patch3.
-	anotherNotEqualVersion3 := self semanticVersionNumberMajor1Minor2Patch4.
-	
+	| versionNumber |
+	versionNumber := self semanticVersionNumberMajor1Minor2Patch3.
 	self assert: versionNumber = versionNumber.
+	^ versionNumber
+	
+]
+
+{ #category : #'examples - equality' }
+GtRlSemanticVersionNumberExamples >> semanticVersionNumberEqualWithTheSameVersion [
+	<gtExample>
+	| versionNumber anotherEqualVersion |
+	versionNumber := self semanticVersionNumberMajor1Minor2Patch3.
+	anotherEqualVersion := self createSemanticVersionWithMajor: 1 minor: 2 patch: 3. "Ensure a new object"
+	
+	self assert: versionNumber ~~ anotherEqualVersion.
 	self assert: versionNumber = anotherEqualVersion.
-	self assert: (versionNumber = anotherNotEqualVersion1) not.
-	self assert: (versionNumber = anotherNotEqualVersion2) not.
-	self assert: (versionNumber = anotherNotEqualVersion3) not.
 	
 	^ versionNumber
 	
 ]
 
-{ #category : #examples }
-GtRlSemanticVersionNumberExamples >> semanticVersionNumberGreaterThenEqualityExample [
+{ #category : #'examples - comparison' }
+GtRlSemanticVersionNumberExamples >> semanticVersionNumberGreaterThenComparison [
 	<gtExample>
 	| anotherVersionM2M2P3 anotherVersionM1M3P3 anotherVersionM1M2P4 anotherVersionM1M2P5 |
 	anotherVersionM2M2P3 := self semanticVersionNumberMajor2Minor2Patch3.
@@ -95,48 +112,74 @@ GtRlSemanticVersionNumberExamples >> semanticVersionNumberGreaterThenEqualityExa
 	
 ]
 
-{ #category : #examples }
+{ #category : #'examples - hash' }
+GtRlSemanticVersionNumberExamples >> semanticVersionNumberHasDifferentWithOtherVersions [
+	<gtExample>
+	| versionNumber anotherNotEqualVersion1 anotherNotEqualVersion2 anotherNotEqualVersion3 |
+	versionNumber := self semanticVersionNumberMajor1Minor2Patch3.
+	
+	anotherNotEqualVersion1 := self semanticVersionNumberMajor2Minor2Patch3.
+	anotherNotEqualVersion2 := self semanticVersionNumberMajor1Minor3Patch3.
+	anotherNotEqualVersion3 := self semanticVersionNumberMajor1Minor2Patch4.
+	
+	self assert: (versionNumber hash ~= anotherNotEqualVersion1 hash).
+	self assert: (versionNumber hash ~= anotherNotEqualVersion2 hash).
+	self assert: (versionNumber hash ~= anotherNotEqualVersion3 hash).
+	
+	^ versionNumber
+	
+]
+
+{ #category : #'examples - hash' }
+GtRlSemanticVersionNumberExamples >> semanticVersionNumberHasEqualHashWithTheSameVersion [
+	<gtExample>
+	| versionNumber anotherEqualVersion |
+	versionNumber := self semanticVersionNumberMajor1Minor2Patch3.
+	anotherEqualVersion := self createSemanticVersionWithMajor: 1 minor: 2 patch: 3. "Ensure a new object"
+	
+	self assert: versionNumber ~~ anotherEqualVersion.
+	self assert: versionNumber hash equals: versionNumber hash.
+	self assert: versionNumber hash equals: anotherEqualVersion hash.
+	
+	^ versionNumber
+	
+]
+
+{ #category : #'examples - versions' }
+GtRlSemanticVersionNumberExamples >> semanticVersionNumberMajor1Minor2Patch3 [
+	<gtExample>
+	^ self createSemanticVersionWithMajor: 1 minor: 2 patch: 3.
+]
+
+{ #category : #'examples - versions' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberMajor1Minor2Patch4 [
 	<gtExample>
-	| versionNumber |
-	versionNumber := GtRlSemanticVersionNumber major: 1 minor: 2 patch: 4.
-	self assertSemanticVersion: versionNumber withMajor: 1 minor: 2 patch: 4.
-	^ versionNumber
-	
+	^ self createSemanticVersionWithMajor: 1 minor: 2 patch: 4.
 ]
 
-{ #category : #examples }
+{ #category : #'examples - versions' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberMajor1Minor2Patch5 [
 	<gtExample>
-	| versionNumber |
-	versionNumber := GtRlSemanticVersionNumber major: 1 minor: 2 patch: 5.
-	self assertSemanticVersion: versionNumber withMajor: 1 minor: 2 patch: 5.
-	^ versionNumber
+	^ self createSemanticVersionWithMajor: 1 minor: 2 patch: 5.
 	
 ]
 
-{ #category : #examples }
+{ #category : #'examples - versions' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberMajor1Minor3Patch3 [
 	<gtExample>
-	| versionNumber |
-	versionNumber := GtRlSemanticVersionNumber major: 1 minor: 3 patch: 3.
-	self assertSemanticVersion: versionNumber withMajor: 1 minor: 3 patch: 3.
-	^ versionNumber
+	^ self createSemanticVersionWithMajor: 1 minor: 3 patch: 3.
 	
 ]
 
-{ #category : #examples }
+{ #category : #'examples - versions' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberMajor2Minor2Patch3 [
 	<gtExample>
-	| versionNumber |
-	versionNumber := GtRlSemanticVersionNumber major: 2 minor: 2 patch: 3.
-	self assertSemanticVersion: versionNumber withMajor: 2 minor: 2 patch: 3.
-	^ versionNumber
+	^ self createSemanticVersionWithMajor: 2 minor: 2 patch: 3.
 	
 ]
 
-{ #category : #examples }
-GtRlSemanticVersionNumberExamples >> semanticVersionNumberOtherEqualityExample [
+{ #category : #'examples - comparison' }
+GtRlSemanticVersionNumberExamples >> semanticVersionNumberOtherComparisons [
 	<gtExample>
 	|  anotherVersionM1M2P4 anotherVersionM1M2P5 |
 	anotherVersionM1M2P4 := self semanticVersionNumberMajor1Minor2Patch4.
@@ -155,7 +198,7 @@ GtRlSemanticVersionNumberExamples >> semanticVersionNumberOtherEqualityExample [
 	
 ]
 
-{ #category : #examples }
+{ #category : #'examples - versions' }
 GtRlSemanticVersionNumberExamples >> uninitializedSemanticVersionNumber [
 	<gtExample>
 	| versionNumber |

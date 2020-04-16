@@ -43,6 +43,12 @@ GtRlCommitIdVersionNumber >> description [
 	
 ]
 
+{ #category : #comparing }
+GtRlCommitIdVersionNumber >> hash [
+	^ (self species hash
+		bitXor: self commitId hash)
+]
+
 { #category : #accessing }
 GtRlCommitIdVersionNumber >> versionString [
 	^ self commitId

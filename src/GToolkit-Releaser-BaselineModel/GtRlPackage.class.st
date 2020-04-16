@@ -12,42 +12,46 @@ Class {
 	#name : #GtRlPackage,
 	#superclass : #GtRlNode,
 	#instVars : [
-		'name',
 		'dependencies',
 		'parentProject'
 	],
 	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
 
+{ #category : #'instance creation' }
+GtRlPackage class >> withName: aPackageName [
+	^ self new
+		name: aPackageName
+]
+
+{ #category : #adding }
+GtRlPackage >> addDependencies: aCollectionOfDependencies [
+	self dependencies addAll: aCollectionOfDependencies
+]
+
 { #category : #converting }
 GtRlPackage >> asRPackage [
 	[^ self name asPackage] on: NotFound do:[ ^ nil ]
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - dynamic' }
 GtRlPackage >> dependencies [
 	^ dependencies
 ]
 
-{ #category : #accessing }
-GtRlPackage >> dependencies: aSymbolArray [
-	dependencies := aSymbolArray
+{ #category : #ui }
+GtRlPackage >> gtViewDependenciesListFor: aView [
+	<gtView>
+	^ aView list
+		title: 'Dependencies' translated;
+		items: [ self dependencies ];
+		priority: 60
 ]
 
 { #category : #initialization }
 GtRlPackage >> initialize [ 	
 	super initialize.
 	dependencies := OrderedCollection new
-]
-
-{ #category : #accessing }
-GtRlPackage >> name [
-	^ name
-]
-
-{ #category : #accessing }
-GtRlPackage >> name: aString [
-	name := aString
 ]
 
 { #category : #accessing }
@@ -67,4 +71,10 @@ GtRlPackage >> printOn: aStream [
 		nextPutAll: '(';
 		nextPutAll: self name;
 		nextPutAll: ')'
+]
+
+{ #category : #accessing }
+GtRlPackage >> repository [
+	^ self parentProject ifNotNil: [ :aProject | 
+		aProject repository ]
 ]
