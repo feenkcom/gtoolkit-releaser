@@ -23,7 +23,7 @@ GtRlPackageExamples >> emptyPackageShouldHaveNoPackagedAndProjects [
 	| package |
 	package :=self packageWithName.
 	self assert: package requiredPackages isEmpty.	
-	self assert: package requiredProjects isEmpty.
+	self assert: package requiredProjectReferences isEmpty.
 	self assert: package dependentPackages isEmpty.
 	
 	^ package
@@ -46,10 +46,10 @@ GtRlPackageExamples >> packageWithIncomingPackageDependencies [
 	package := self packageWithName.
 	packageA := GtRlPackage withName: 'PackageA'.
 	packageB := GtRlPackage withName: 'PackageB'.
-	package addIncomingDependency: (GtRlDependency new 
+	package addIncomingDependency: (GtRlPackageDependency new 
 		sourceNode: packageA;
 		targetNode: package).
-	package addIncomingDependency: (GtRlDependency new 
+	package addIncomingDependency: (GtRlPackageDependency new 
 		sourceNode: packageB;
 		targetNode: package).
 	
@@ -69,13 +69,13 @@ GtRlPackageExamples >> packageWithMixedOutgoingDependencies [
 	projectA := GtRlProject withName: 'ProjectA'.
 	packageA := GtRlPackage withName: 'PackageA'.
 	package := self packageWithName.
-	package addOutgoingDependency: (GtRlDependency new 
+	package addOutgoingDependency: (GtRlPackageDependency new 
 		sourceNode: package;
 		targetNode: unknownNode).
-	package addOutgoingDependency: (GtRlDependency new 
+	package addOutgoingDependency: (GtRlPackageDependency new 
 		sourceNode: package;
 		targetNode: projectA).
-	package addOutgoingDependency: (GtRlDependency new 
+	package addOutgoingDependency: (GtRlPackageDependency new 
 		sourceNode: package;
 		targetNode: packageA).
 	
@@ -85,10 +85,10 @@ GtRlPackageExamples >> packageWithMixedOutgoingDependencies [
 	
 	self assert: package requiredNodes size equals: 3.
 	self assert: package requiredPackages size equals: 1.
-	self assert: package requiredProjects size equals: 1.
+	self assert: package requiredProjectReferences size equals: 1.
 	
 	self assert: package requiredPackages first equals: packageA.
-	self assert: package requiredProjects first equals: projectA.
+	self assert: package requiredProjectReferences first equals: projectA.
 	
 	^ package
 ]
@@ -125,10 +125,10 @@ GtRlPackageExamples >> packageWithOutgoingPackageDependencies [
 	package := self packageWithName.
 	packageA := GtRlPackage withName: 'PackageA'.
 	packageB := GtRlPackage withName: 'PackageB'.
-	package addOutgoingDependency: (GtRlDependency new 
+	package addOutgoingDependency: (GtRlPackageDependency new 
 		sourceNode: package;
 		targetNode: packageA).
-	package addOutgoingDependency: (GtRlDependency new 
+	package addOutgoingDependency: (GtRlPackageDependency new 
 		sourceNode: package;
 		targetNode: packageB).
 	
@@ -159,7 +159,7 @@ GtRlPackageExamples >> packageWithOutgoingPackageDependenciesHasNoProjectDepende
 	| package |
 	package := self packageWithOutgoingPackageDependencies.
 	
-	self assert: package requiredProjects size equals: 0.
+	self assert: package requiredProjectReferences size equals: 0.
 	
 	^ package
 ]
@@ -171,17 +171,17 @@ GtRlPackageExamples >> packageWithOutgoingProjectDependencies [
 	package := self packageWithName.
 	projectA := GtRlProject withName: 'ProjectA'.
 	projectB := GtRlProject withName: 'ProjectB'.
-	package addOutgoingDependency: (GtRlDependency new 
+	package addOutgoingDependency: (GtRlPackageDependency new 
 		sourceNode: package;
 		targetNode: projectA).
-	package addOutgoingDependency: (GtRlDependency new 
+	package addOutgoingDependency: (GtRlPackageDependency new 
 		sourceNode: package;
 		targetNode: projectB).
 	
 	self assert: package outgoingDependencies size equals: 2.
 	self assert: package outgoingProjectDependencies size equals: 2.
-	self assert: package requiredProjects first equals: projectA.
-	self assert: package requiredProjects second equals: projectB.
+	self assert: package requiredProjectReferences first equals: projectA.
+	self assert: package requiredProjectReferences second equals: projectB.
 	self assert: package requiredNodes size equals: 2.
 	
 	^ package
@@ -243,7 +243,7 @@ GtRlPackageExamples >> packageWithUnknownOutgoingDependency [
 	unknownNode := GtRlUnknownNode withName: 'Unknown'.
 	package := self packageWithName.
 	package
-		addOutgoingDependency: (GtRlDependency new 
+		addOutgoingDependency: (GtRlPackageDependency new 
 			sourceNode: package;
 			targetNode: unknownNode).
 	
@@ -261,7 +261,7 @@ GtRlPackageExamples >> packageWithUnknownOutgoingDependencyHasNoProjectsOrPackag
 	
 	package := self packageWithUnknownOutgoingDependency.
 	
-	self assert: package requiredProjects size equals: 0.
+	self assert: package requiredProjectReferences size equals: 0.
 	self assert: package requiredPackages size equals: 0.
 	self assert: package dependentPackages size equals: 0.
 	

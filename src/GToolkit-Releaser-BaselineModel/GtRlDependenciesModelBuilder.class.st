@@ -70,7 +70,7 @@ GtRlDependenciesModelBuilder >> buildProjectFromMetacelloSpec: aMetacelloProject
 { #category : #'private - building' }
 GtRlDependenciesModelBuilder >> createDependencyFromPackage: aSourcePackage toNode: aTargetNode [
 	| dependency |
-	dependency := GtRlDependency new
+	dependency := GtRlPackageDependency new
 		sourceNode: aSourcePackage;
 		targetNode: aTargetNode.
 	aSourcePackage addOutgoingDependency: dependency.
@@ -80,7 +80,7 @@ GtRlDependenciesModelBuilder >> createDependencyFromPackage: aSourcePackage toNo
 { #category : #'private - building' }
 GtRlDependenciesModelBuilder >> createDependencyFromPackage: aSourcePackage toProjectNode: aTargetPackage [
 	| dependency |
-	dependency := GtRlDependency new
+	dependency := GtRlPackageDependency new
 		sourceNode: aSourcePackage;
 		targetNode: aTargetPackage.
 	aSourcePackage addOutgoingDependency: dependency.
