@@ -68,6 +68,25 @@ GtRlDependenciesModelBuilder >> buildProjectFromMetacelloSpec: aMetacelloProject
 ]
 
 { #category : #'private - building' }
+GtRlDependenciesModelBuilder >> createDependencyFromPackage: aSourcePackage toNode: aTargetNode [
+	| dependency |
+	dependency := GtRlDependency new
+		sourceNode: aSourcePackage;
+		targetNode: aTargetNode.
+	aSourcePackage addOutgoingDependency: dependency.
+	aTargetNode addIncomingDependency: dependency
+]
+
+{ #category : #'private - building' }
+GtRlDependenciesModelBuilder >> createDependencyFromPackage: aSourcePackage toProjectNode: aTargetPackage [
+	| dependency |
+	dependency := GtRlDependency new
+		sourceNode: aSourcePackage;
+		targetNode: aTargetPackage.
+	aSourcePackage addOutgoingDependency: dependency.
+]
+
+{ #category : #'private - building' }
 GtRlDependenciesModelBuilder >> ensureRepositoriesFor: aRepositoryUrl [
 	^ repositoriesByUrl 
 		at: aRepositoryUrl 
@@ -108,22 +127,31 @@ GtRlDependenciesModelBuilder >> projectsByBaselineClass [
 
 { #category : #dependencies }
 GtRlDependenciesModelBuilder >> resolvePackageDependenciesFor: currentProject fromMCVersion: aMetacelloVersion [
-	| dependenciesByName |
-	dependenciesByName := Dictionary new.
-	"Create a dictionary with all possible package and project dependencies"
+	| packagesByName projectsByName |
+	packagesByName := Dictionary new.
+	projectsByName := Dictionary new.
+	"Create two dictionaries with all possible package and project dependencies"
 	currentProject packages do: [ :aReleaserPackage |
-		dependenciesByName at: aReleaserPackage name put: aReleaserPackage ].
+		packagesByName at: aReleaserPackage name put: aReleaserPackage ].
 	currentProject childProjects do: [ :aReleaserProject |
-		dependenciesByName at: aReleaserProject name put: aReleaserProject ].
+		projectsByName at: aReleaserProject name put: aReleaserProject ].
 	
 	aMetacelloVersion packages do: [ :aMetacelloPackageSpec | 
-		| currentPackage packageDependencies |
-		currentPackage := dependenciesByName at: aMetacelloPackageSpec name.
-		packageDependencies := aMetacelloPackageSpec requires collect: [ :aRequirementName | 
-			dependenciesByName 
+		| currentPackage |
+		currentPackage := packagesByName at: aMetacelloPackageSpec name.
+		aMetacelloPackageSpec requires do: [ :aRequirementName | 
+			packagesByName 
 				at: aRequirementName 
-				ifAbsentPut: [ GtRlUnknownNode withName: aRequirementName ] ].
-		currentPackage addDependencies: packageDependencies ].
+				ifPresent: [ :aTargetPackage | 
+					self createDependencyFromPackage: currentPackage toNode: aTargetPackage ]
+				ifAbsent: [ projectsByName 
+					at: aRequirementName
+					ifPresent: [ :aTargetProject |
+						self createDependencyFromPackage: currentPackage toProjectNode: aTargetProject ]
+					ifAbsent: [ 
+						self 
+							createDependencyFromPackage: currentPackage 
+							toNode: (GtRlUnknownNode withName: aRequirementName) ] ] ] ].
 ]
 
 { #category : #dependencies }

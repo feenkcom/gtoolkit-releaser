@@ -46,7 +46,7 @@ GtRlSystemOneModelExamples >> projectComponentA [
 		repository := self repositoryComponentA.
 		project
 			linkWithRepository: repository.
-	
+		
 		self assertBaseline: BaselineOfGtRlBaselineExampleComponentA forProject: project.
 		self assert: project repository equals: repository.
 		self assert: repository projects asArray equals: { project }.

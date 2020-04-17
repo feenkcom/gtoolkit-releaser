@@ -1,7 +1,7 @@
 Class {
 	#name : #BaselineOfGtRlBaselineExampleStandaloneWithActions,
 	#superclass : #BaselineOf,
-	#category : #'GToolkit-Releaser-BaselineModel-SystemOneExamples'
+	#category : #'GToolkit-Releaser-BaselineModel-StandaloneSystemsExamples'
 }
 
 { #category : #baselines }

@@ -10,9 +10,14 @@ Class {
 	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
 
-{ #category : #'accessing - dynamic' }
-GtRlNode >> dependencies [ 
-	^ self subclassResponsibility
+{ #category : #testing }
+GtRlNode >> isPackageModel [
+	^ false
+]
+
+{ #category : #testing }
+GtRlNode >> isProjectModel [
+	^ false
 ]
 
 { #category : #accessing }
@@ -24,4 +29,13 @@ GtRlNode >> name [
 GtRlNode >> name: aString [
 	self assert: [ aString notNil ].
 	name := aString
+]
+
+{ #category : #printing }
+GtRlNode >> printOn: aStream [
+	super printOn: aStream.
+	aStream 
+		nextPutAll: '(';
+		nextPutAll: self name;
+		nextPutAll: ')'
 ]

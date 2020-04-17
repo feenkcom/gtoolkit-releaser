@@ -113,14 +113,6 @@ GtRlProject >> containedRPackagesDo: aBloc [
 				aBloc value: aRPackage ] ]
 ]
 
-{ #category : #'accessing - dynamic' }
-GtRlProject >> dependencies [
-	^ OrderedCollection new
-		addAll: self childProjects;
-		addAll: self packages;
-		yourself
-]
-
 { #category : #actions }
 GtRlProject >> generateSourceWithProjectDependencies: projectDependenciesMap [
 	| toolbox |
@@ -227,6 +219,11 @@ GtRlProject >> isLeaf [
 	^ self childProjects isEmpty
 ]
 
+{ #category : #testing }
+GtRlProject >> isProjectModel [
+	^ true
+]
+
 { #category : #actions }
 GtRlProject >> linkWithRepository: aRepository [
 	self repository: aRepository.
@@ -294,14 +291,6 @@ GtRlProject >> preLoadAction: aSymbol [
 	preLoadAction := aSymbol
 ]
 
-{ #category : #printing }
-GtRlProject >> printOn: aStream [
-	super printOn: aStream.
-	aStream nextPutAll: '('.
-	aStream nextPutAll: self name.
-	aStream nextPutAll: ')'
-]
-
 { #category : #accessing }
 GtRlProject >> repository [
 	^ repository
@@ -324,7 +313,7 @@ GtRlProject >> toolboxForBaselineWithProjectDependencies: projectDependenciesMap
 		requiredProjects: projectNames
 	   packages: (self packages collect: #name)
 	   dependencies: (self packages collect: [ :aPackage | 
-			aPackage name -> (aPackage dependencies collect: #name) ])
+			aPackage name -> (aPackage requiredNodes collect: #name) ])
 	   includes: #()
 	   files: #()
 	   repositories: projectDependenciesMap

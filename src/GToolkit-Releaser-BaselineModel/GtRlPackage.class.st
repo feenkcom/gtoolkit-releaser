@@ -12,7 +12,8 @@ Class {
 	#name : #GtRlPackage,
 	#superclass : #GtRlNode,
 	#instVars : [
-		'dependencies',
+		'incomingDependencies',
+		'outgoingDependencies',
 		'parentProject'
 	],
 	#category : #'GToolkit-Releaser-BaselineModel-Model'
@@ -25,8 +26,23 @@ GtRlPackage class >> withName: aPackageName [
 ]
 
 { #category : #adding }
-GtRlPackage >> addDependencies: aCollectionOfDependencies [
-	self dependencies addAll: aCollectionOfDependencies
+GtRlPackage >> addIncomingDependency: aDependency [
+	self assert: [ aDependency notNil ].
+	self 
+		assert: [ aDependency targetNode == self] 
+		description: 'Within an incoming dependency the current node should be the target'.
+	
+	self incomingDependencies add: aDependency
+]
+
+{ #category : #adding }
+GtRlPackage >> addOutgoingDependency: aDependency [
+	self assert: [ aDependency notNil ].
+	self 
+		assert: [ aDependency sourceNode == self] 
+		description: 'Within an outgoing dependency the current node should be the source'.
+	
+	self outgoingDependencies add: aDependency
 ]
 
 { #category : #converting }
@@ -35,23 +51,97 @@ GtRlPackage >> asRPackage [
 ]
 
 { #category : #'accessing - dynamic' }
-GtRlPackage >> dependencies [
-	^ dependencies
+GtRlPackage >> dependentPackages [
+	^ self incomingPackageDependencies collect: [ :aDependency |
+		aDependency sourceNode ]
 ]
 
 { #category : #ui }
-GtRlPackage >> gtViewDependenciesListFor: aView [
+GtRlPackage >> gtViewDependentPackagesListFor: aView [
 	<gtView>
 	^ aView list
-		title: 'Dependencies' translated;
-		items: [ self dependencies ];
+		title: 'Dependent packages' translated;
+		items: [ self dependentPackages ];
+		itemFormat: #name;
 		priority: 60
+]
+
+{ #category : #ui }
+GtRlPackage >> gtViewIncomingDependenciesListFor: aView [
+	<gtView>
+	^ aView list
+		title: 'Incoming Dependencies' translated;
+		items: [ self incomingDependencies ];
+		priority: 90
+]
+
+{ #category : #ui }
+GtRlPackage >> gtViewOutgoingDependenciesListFor: aView [
+	<gtView>
+	^ aView list
+		title: 'Outgoing Dependencies' translated;
+		items: [ self outgoingDependencies ];
+		priority: 92
+]
+
+{ #category : #ui }
+GtRlPackage >> gtViewRequiredPackagesListFor: aView [
+	<gtView>
+	^ aView list
+		title: 'Required packages' translated;
+		items: [ self requiredPackages ];
+		itemFormat: #name;
+		priority: 50
+]
+
+{ #category : #ui }
+GtRlPackage >> gtViewRequiredProjectsListFor: aView [
+	<gtView>
+	^ aView list
+		title: 'Required projects' translated;
+		items: [ self requiredProjects ];
+		itemFormat: #name;
+		priority: 55
+]
+
+{ #category : #accessing }
+GtRlPackage >> incomingDependencies [
+	^ incomingDependencies
+]
+
+{ #category : #'accessing - dynamic' }
+GtRlPackage >> incomingPackageDependencies [
+	^ self incomingDependencies select: [ :aDependency |
+		aDependency targetNode isPackageModel ]
 ]
 
 { #category : #initialization }
 GtRlPackage >> initialize [ 	
 	super initialize.
-	dependencies := OrderedCollection new
+	incomingDependencies := OrderedCollection new.
+	outgoingDependencies := OrderedCollection new.
+]
+
+{ #category : #testing }
+GtRlPackage >> isPackageModel [
+	^ true
+]
+
+{ #category : #accessing }
+GtRlPackage >> outgoingDependencies [
+	^ outgoingDependencies
+]
+
+{ #category : #'accessing - dynamic' }
+GtRlPackage >> outgoingPackageDependencies [
+	^ self outgoingDependencies select: [ :aDependency |
+		aDependency targetNode isPackageModel ]
+]
+
+{ #category : #'accessing - dynamic' }
+GtRlPackage >> outgoingProjectDependencies [
+	^ self outgoingDependencies select: [ :aDependency |
+		aDependency targetNode isProjectModel ]
 ]
 
 { #category : #accessing }
@@ -64,17 +154,26 @@ GtRlPackage >> parentProject: aProject [
 	parentProject := aProject
 ]
 
-{ #category : #printing }
-GtRlPackage >> printOn: aStream [
-	super printOn: aStream.
-	aStream 
-		nextPutAll: '(';
-		nextPutAll: self name;
-		nextPutAll: ')'
-]
-
 { #category : #accessing }
 GtRlPackage >> repository [
 	^ self parentProject ifNotNil: [ :aProject | 
 		aProject repository ]
+]
+
+{ #category : #'accessing - dynamic' }
+GtRlPackage >> requiredNodes [
+	^ self outgoingDependencies collect: [ :aDependency |
+		aDependency targetNode ]
+]
+
+{ #category : #'accessing - dynamic' }
+GtRlPackage >> requiredPackages [
+	^ self outgoingPackageDependencies collect: [ :aDependency |
+		aDependency targetNode ]
+]
+
+{ #category : #'accessing - dynamic' }
+GtRlPackage >> requiredProjects [
+	^ self outgoingProjectDependencies collect: [ :aDependency |
+		aDependency targetNode ]
 ]
