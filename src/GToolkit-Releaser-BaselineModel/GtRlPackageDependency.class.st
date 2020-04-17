@@ -1,5 +1,5 @@
 Class {
-	#name : #GtRlDependency,
+	#name : #GtRlPackageDependency,
 	#superclass : #Object,
 	#instVars : [
 		'sourceNode',
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #printing }
-GtRlDependency >> printOn: aStream [
+GtRlPackageDependency >> printOn: aStream [
 	super printOn: aStream.
 	aStream 
 		nextPutAll: '(';
@@ -20,21 +20,21 @@ GtRlDependency >> printOn: aStream [
 ]
 
 { #category : #accessing }
-GtRlDependency >> sourceNode [
+GtRlPackageDependency >> sourceNode [
 	^ sourceNode
 ]
 
 { #category : #accessing }
-GtRlDependency >> sourceNode: anObject [
+GtRlPackageDependency >> sourceNode: anObject [
 	sourceNode := anObject
 ]
 
 { #category : #accessing }
-GtRlDependency >> targetNode [
+GtRlPackageDependency >> targetNode [
 	^ targetNode
 ]
 
 { #category : #accessing }
-GtRlDependency >> targetNode: anObject [
+GtRlPackageDependency >> targetNode: anObject [
 	targetNode := anObject
 ]

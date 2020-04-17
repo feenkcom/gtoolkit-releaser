@@ -31,7 +31,7 @@ GtRlSystemFourGeneratedModelExamples >> packageAMainHasNoRequiredDependencies [
 	package := self packageAMainNode. 
 	
 	self assert: package requiredPackages size equals: 0.
-	self assert: package requiredProjects size equals: 0.
+	self assert: package requiredProjectReferences size equals: 0.
 	self assert: package requiredNodes size equals: 0.
 	self assert: package outgoingDependencies size equals: 0.
 	

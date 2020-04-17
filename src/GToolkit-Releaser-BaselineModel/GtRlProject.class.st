@@ -9,8 +9,9 @@ I have as main attributes:
 "
 Class {
 	#name : #GtRlProject,
-	#superclass : #GtRlNode,
+	#superclass : #Object,
 	#instVars : [
+		'name',
 		'baselineVersion',
 		'baselineClass',
 		'repository',
@@ -220,7 +221,14 @@ GtRlProject >> isLeaf [
 ]
 
 { #category : #testing }
-GtRlProject >> isProjectModel [
+GtRlProject >> isPackageNode [
+	"Hack to be compatible with ProjectReference"
+	^ false
+]
+
+{ #category : #testing }
+GtRlProject >> isProjectReference [
+	"Hack to be compatible with ProjectReference"
 	^ true
 ]
 
@@ -289,6 +297,15 @@ GtRlProject >> preLoadAction: aSymbol [
 	"Set a selector existing in the baseline class that will be executed after the project is loaded.
 	${example:GtRlProjectExamples>>#projectWithPreLoadAction}$"
 	preLoadAction := aSymbol
+]
+
+{ #category : #printing }
+GtRlProject >> printOn: aStream [
+	super printOn: aStream.
+	aStream 
+		nextPutAll: '(';
+		nextPutAll: self name;
+		nextPutAll: ')'
 ]
 
 { #category : #accessing }
