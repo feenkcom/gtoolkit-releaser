@@ -68,18 +68,22 @@ GtRlDependenciesModelBuilder >> buildProjectFromMetacelloSpec: aMetacelloProject
 ]
 
 { #category : #'private - building' }
-GtRlDependenciesModelBuilder >> createDependencyFromPackage: aPackage toNode: aTargetNode [
+GtRlDependenciesModelBuilder >> createDependencyFromPackage: aSourcePackage toNode: aTargetNode [
 	| dependency |
 	dependency := GtRlDependency new
-		sourceNode: aPackage;
+		sourceNode: aSourcePackage;
 		targetNode: aTargetNode.
-	aPackage addOutgoingDependency: dependency.
-	(aTargetNode isKindOf: GtRlPackage) ifTrue: [
-		aTargetNode addIncomingDependency: dependency ].
-	(aTargetNode isKindOf: GtRlProject) ifTrue: [
-		aTargetNode addPackage: aPackage ].
-	(aTargetNode isKindOf: GtRlUnknownNode) ifTrue: [
-		aTargetNode addIncomingDependency: dependency ].
+	aSourcePackage addOutgoingDependency: dependency.
+	aTargetNode addIncomingDependency: dependency
+]
+
+{ #category : #'private - building' }
+GtRlDependenciesModelBuilder >> createDependencyFromPackage: aSourcePackage toProjectNode: aTargetPackage [
+	| dependency |
+	dependency := GtRlDependency new
+		sourceNode: aSourcePackage;
+		targetNode: aTargetPackage.
+	aSourcePackage addOutgoingDependency: dependency.
 ]
 
 { #category : #'private - building' }
@@ -136,13 +140,18 @@ GtRlDependenciesModelBuilder >> resolvePackageDependenciesFor: currentProject fr
 		| currentPackage |
 		currentPackage := packagesByName at: aMetacelloPackageSpec name.
 		aMetacelloPackageSpec requires do: [ :aRequirementName | 
-			| targetNode |
-			targetNode := packagesByName 
+			packagesByName 
 				at: aRequirementName 
+				ifPresent: [ :aTargetPackage | 
+					self createDependencyFromPackage: currentPackage toNode: aTargetPackage ]
 				ifAbsent: [ projectsByName 
 					at: aRequirementName
-					ifAbsent: [ GtRlUnknownNode withName: aRequirementName ] ].
-			self createDependencyFromPackage: currentPackage toNode: targetNode ] ].
+					ifPresent: [ :aTargetProject |
+						self createDependencyFromPackage: currentPackage toProjectNode: aTargetProject ]
+					ifAbsent: [ 
+						self 
+							createDependencyFromPackage: currentPackage 
+							toNode: (GtRlUnknownNode withName: aRequirementName) ] ] ] ].
 ]
 
 { #category : #dependencies }
