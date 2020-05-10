@@ -45,12 +45,17 @@ GtImage class >> version: aVersion [
 GtImage >> gtPreviewFor: aView [
 	<gtView>
 	^ aView columnedList
-		title: 'Preview';
+		title: 'Details';
 		items: [ 
-			{'Version' -> self version versionString. 
-			'Timestamp' -> self timestamp } ];
+			{'GT version' -> self version versionString. 
+			'GT release timestamp' -> self timestamp.
+			'Image directory' -> Smalltalk image imageDirectory asFileReference.
+			'Image format version' -> Smalltalk image imageFormatVersion.
+			"'License' -> self licenseString."
+			'VM' -> Smalltalk vm } ];
 		column: 'Property' format: [:each | each key];
-		column: 'Value' format: [:each | each value ]
+		column: 'Value' format: [:each | each value ];
+		send: #value
 ]
 
 { #category : #accessing }
