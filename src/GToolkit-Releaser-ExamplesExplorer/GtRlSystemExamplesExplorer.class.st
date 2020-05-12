@@ -14,6 +14,12 @@ GtRlSystemExamplesExplorer class >> forProject: aProject [
 		initializeForRootProject: aProject
 ]
 
+{ #category : #converting }
+GtRlSystemExamplesExplorer >> asPreviewElement [
+	"Used by ${method:GtSpotterStart>>#gtSpotterForToolsFor:}$"
+	^ Gt2Inspector newOn: self
+]
+
 { #category : #ui }
 GtRlSystemExamplesExplorer >> gtDisplayOn: stream [
 	stream nextPutAll: 'Examples Explorer'
