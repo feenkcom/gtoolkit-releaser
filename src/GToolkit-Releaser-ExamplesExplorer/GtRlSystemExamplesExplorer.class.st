@@ -17,7 +17,7 @@ GtRlSystemExamplesExplorer class >> forProject: aProject [
 { #category : #converting }
 GtRlSystemExamplesExplorer >> asPreviewElement [
 	"Used by ${method:GtSpotterStart>>#gtSpotterForToolsFor:}$"
-	^ Gt2Inspector newOn: self
+	^ GtInspector newOn: self
 ]
 
 { #category : #ui }
