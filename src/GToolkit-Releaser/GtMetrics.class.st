@@ -55,12 +55,16 @@ GtMetrics >> gtMetricsFor: aView [
 		title: 'Metrics';
 		items: [ 
 			{
-				'GT lines of code' -> self gtLinesOfCode.
-				'Pharo lines of code' -> self basePharoLinesOfCode.
-				'Pharo lines not used in GT' -> self pharoToReplaceLinesOfCode.
+				'Total code in image' -> self totalLinesOfCode.
+				'Glamorous Toolkit code' -> self gtLinesOfCode.
+				'Pharo code' -> self basePharoLinesOfCode.
+				'Pharo code not used in Glamorous Toolkit' -> self pharoToReplaceLinesOfCode.
+				'Parsers for other langauges' -> self smaccParsersLinesOfCode.
+				'Code analysis model' -> self famix3LinesOfCode.
+				'XML support' -> self xmlSupportLinesOfCode
 			} ];
-		column: 'Metric' format: #key;
-		column: 'Value' format: #value
+		column: 'Item' format: #key;
+		column: 'Lines of code' format: #value
 ]
 
 { #category : #'as yet unclassified' }
