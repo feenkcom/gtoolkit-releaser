@@ -43,6 +43,86 @@ GtMetrics >> gtLinesOfCode [
 	^ gtLinesOfCode ifNil: [ gtLinesOfCode := self gtMethods sumNumbers: [ :each | each linesOfCode ] ]
 ]
 
+{ #category : #accessing }
+GtMetrics >> gtMapFor: aView [
+	<gtView>
+	^ aView explicit
+		title: 'Map';
+		stencil: [ 
+		| value container |
+value := GtNestedTreeNode new
+	name: 'Entire distribution';
+	nodes: {
+		GtNestedTreeNode new 
+			name: 'Default Pharo';
+			leaves: {
+				GtNestedTreeItemLeaf new 
+					item: 'Pharo used in GT' -> ((Color fromHexString: '5eb3ea') alpha: 1);
+					weight: [:x | GtMetrics default basePharoLinesOfCode - GtMetrics default pharoToReplaceLinesOfCode ].
+				GtNestedTreeItemLeaf new 
+					item: 'Pharo not used in GT' -> ((Color fromHexString: '5eb3ea') alpha: 0.5);
+					weight: [ :x | GtMetrics default pharoToReplaceLinesOfCode ]. }.
+		GtNestedTreeNode new 
+			name: 'Glamorous Toolkit';
+			leaves: {
+				GtNestedTreeItemLeaf new 
+					item: 'Rest of GT' -> ((Color fromHexString: '20d8fd') alpha: 1);
+					weight: [:x | GtMetrics default gtLinesOfCode - GtMetrics default smaccParsersLinesOfCode - GtMetrics default xmlSupportLinesOfCode - GtMetrics default famix3LinesOfCode ].
+				GtNestedTreeItemLeaf new 
+					item: 'Parsers' -> ((Color fromHexString: '20d8fd') alpha: 0.5);
+					weight: [ :x | GtMetrics default smaccParsersLinesOfCode ].
+				GtNestedTreeItemLeaf new 
+					item: 'XML' -> ((Color fromHexString: '20d8fd') alpha: 0.5);
+					weight: [ :x | GtMetrics default xmlSupportLinesOfCode].
+				GtNestedTreeItemLeaf new 
+					item: 'Famix' -> ((Color fromHexString: '20d8fd') alpha: 0.5);
+					weight: [ :x | GtMetrics default famix3LinesOfCode]. }}.
+
+
+container := BlElement new
+	constraintsDo: [:c | c vertical fitContent. c horizontal fitContent];
+	layout: BlLinearLayout horizontal.
+value nodes do: [ :group | 
+	| groupElement barsContainer | 
+	groupElement := BlElement new 
+		constraintsDo: [:c | c vertical fitContent. c horizontal fitContent];
+		layout: BlLinearLayout vertical alignCenter;
+		margin: (BlInsets left: 2 right: 2).
+	barsContainer := BlElement new 
+		constraintsDo: [:c | c vertical fitContent. c horizontal fitContent];
+		layout: BlLinearLayout horizontal.
+	container addChild: groupElement.
+	groupElement 
+		addChild: barsContainer;
+		addChild: (BlElement new 
+			margin: (BlInsets top: 20);
+			constraintsDo: [:c | c vertical exact: 1. c horizontal matchParent];
+			background: (Color black alpha: 0.2));
+		addChild: (BrLabel new look: (BrGlamorousLabelLook new fontSize: 10; foreground: Color black); text: group name);
+		addChild: (BrLabel new look: (BrGlamorousLabelLook new fontSize: 10; foreground: Color gray); text: group weight asString).
+	group leaves do: [:leaf | 
+		| leafContainer leafBar |
+		leafBar := BlElement new 
+			constraintsDo: [:c | c vertical exact: 50. c horizontal exact: leaf weight / 1200];
+			background: (leaf item value).
+		leafContainer := BlElement new 
+			constraintsDo: [:c | c vertical fitContent. c horizontal fitContent];
+			layout: BlLinearLayout vertical alignCenter;
+			margin: (BlInsets left: 2 right: 2).
+		leafContainer
+			addChild: leafBar; 
+			addChild: (BlElement new 
+					margin: (BlInsets top: 20);
+					constraintsDo: [:c | c vertical exact: 1. c horizontal matchParent];
+					background: (Color black alpha: 0.2));
+			addChild: (BrLabel new look: (BrGlamorousLabelLook new fontSize: 10; foreground: Color black); text: leaf item key gtDisplayString);
+			addChild: (BrLabel new look: (BrGlamorousLabelLook new fontSize: 10; foreground: Color gray); text: leaf weight asString).
+		barsContainer addChild: leafContainer.
+		] ].
+container asScalableElement maxScale: 1.2
+	]
+]
+
 { #category : #'as yet unclassified' }
 GtMetrics >> gtMethods [
 	^ self methodsInProjects: self gtProjects
