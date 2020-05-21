@@ -7,7 +7,8 @@ Class {
 		'pharoToReplaceLinesOfCode',
 		'smaccParsersLinesOfCode',
 		'famix3LinesOfCode',
-		'xmlSupportLinesOfCode'
+		'xmlSupportLinesOfCode',
+		'totalLinesOfCode'
 	],
 	#classVars : [
 		'default'
@@ -49,7 +50,7 @@ GtMetrics >> gtMapFor: aView [
 	^ aView explicit
 		title: 'Map';
 		stencil: [ 
-		| value container |
+		| value container all allBarsContainer |
 value := GtNestedTreeNode new
 	name: 'Entire distribution';
 	nodes: {
@@ -78,10 +79,20 @@ value := GtNestedTreeNode new
 					item: 'Famix' -> ((Color fromHexString: '20d8fd') alpha: 0.5);
 					weight: [ :x | GtMetrics default famix3LinesOfCode]. }}.
 
-
 container := BlElement new
 	constraintsDo: [:c | c vertical fitContent. c horizontal fitContent];
-	layout: BlLinearLayout horizontal.
+	layout: BlLinearLayout vertical alignCenter.
+allBarsContainer := BlElement new 
+		constraintsDo: [:c | c vertical fitContent. c horizontal fitContent];
+		layout: BlLinearLayout horizontal.
+container 
+	addChild: allBarsContainer;
+	addChild: (BlElement new 
+			margin: (BlInsets top: 20);
+			constraintsDo: [:c | c vertical exact: 1. c horizontal matchParent];
+			background: (Color black alpha: 0.2));
+		addChild: (BrLabel new look: (BrGlamorousLabelLook new fontSize: 10; foreground: Color black); text: 'Entire image');
+		addChild: (BrLabel new look: (BrGlamorousLabelLook new fontSize: 10; foreground: Color gray); text: GtMetrics default totalLinesOfCode asString).
 value nodes do: [ :group | 
 	| groupElement barsContainer | 
 	groupElement := BlElement new 
@@ -91,7 +102,7 @@ value nodes do: [ :group |
 	barsContainer := BlElement new 
 		constraintsDo: [:c | c vertical fitContent. c horizontal fitContent];
 		layout: BlLinearLayout horizontal.
-	container addChild: groupElement.
+	allBarsContainer addChild: groupElement.
 	groupElement 
 		addChild: barsContainer;
 		addChild: (BlElement new 
@@ -119,7 +130,7 @@ value nodes do: [ :group |
 			addChild: (BrLabel new look: (BrGlamorousLabelLook new fontSize: 10; foreground: Color gray); text: leaf weight asString).
 		barsContainer addChild: leafContainer.
 		] ].
-container asScalableElement maxScale: 1.2
+(container asScalableElement maxScale: 1.2) margin: (BlInsets all: 20)
 	]
 ]
 
@@ -227,9 +238,9 @@ GtMetrics >> smaccParsersLinesOfCode [
 	^ smaccParsersLinesOfCode ifNil: [ smaccParsersLinesOfCode := self smaccParserPackages sum: #linesOfCode]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GtMetrics >> totalLinesOfCode [
-	^ (Smalltalk allClassesAndTraits flatCollect: #localMethods) sumNumbers: #linesOfCode
+	^ totalLinesOfCode ifNil: [ totalLinesOfCode := (Smalltalk allClassesAndTraits flatCollect: #localMethods) sumNumbers: #linesOfCode ]
 ]
 
 { #category : #accessing }
