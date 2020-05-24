@@ -2,7 +2,7 @@
 
 ## How to load
 
-You can load the whole code in Pharo 7.0 using the following snippet:
+You can load the whole code in Pharo 8.0 using the following snippet:
 ```
 EpMonitor current disable.
 Metacello new
