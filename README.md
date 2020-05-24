@@ -1,4 +1,4 @@
-# gtoolkit-releaser
+# GT releaser
 
 ## How to load
 
