@@ -27,7 +27,7 @@ GtRlRepositoriesCloner class >> loadProject: aBaselineClassName fromRepository: 
 	self getProject: aBaselineClassName fromRepository: aRepositoryUrl.
 	projectBuilder := GtRlDependenciesModelBuilder new.
 	project := projectBuilder 
-		buildProjectFromBaselineClass: (aBaselineClassName asClass)
+		buildProjectFromBaselineClass: (('BaselineOf',aBaselineClassName) asClass)
 		withRepositoryDescription: aRepositoryUrl.
 		
 	repos := GtRlReleaseOrderTraversal new releaseOrderFor: project repositoryRelease.
