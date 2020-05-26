@@ -23,13 +23,14 @@ GtRlRepositoriesCloner class >> getProject: projectName fromRepository: repoURL 
 
 { #category : #releasing }
 GtRlRepositoriesCloner class >> loadProject: aBaselineClassName fromRepository: aRepositoryUrl [
-	|repos loadWarnings projectBuilder project release|
+	|repos loadWarnings projectBuilder project release config |
 	self getProject: aBaselineClassName fromRepository: aRepositoryUrl.
 	projectBuilder := GtRlDependenciesModelBuilder new.
 	project := projectBuilder 
 		buildProjectFromBaselineClass: (('BaselineOf',aBaselineClassName) asClass)
 		withRepositoryDescription: aRepositoryUrl.
-	release := GtRlReleaseBuilder new configuration: GtRlReleaseConfiguration new;
+	config := GtRlReleaseConfiguration new defaultReleaseStrategy: GtRlNullReleaseStrategy new.
+	release := GtRlReleaseBuilder new configuration: config;
 		buildReleaseForProject: project.
 	repos := GtRlReleaseOrderTraversal new releaseOrderFor: release repositoryRelease.
 	loadWarnings := OrderedCollection new.

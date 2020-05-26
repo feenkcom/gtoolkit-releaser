@@ -22,7 +22,8 @@ Class {
 		'customReleaseStrategies',
 		'shouldForceNewRelease',
 		'defaultVersionNumber',
-		'enforcedVersion'
+		'enforcedVersion',
+		'defaultReleaseStrategy'
 	],
 	#category : #'GToolkit-Releaser'
 }
@@ -57,7 +58,13 @@ GtRlReleaseConfiguration >> defaultReleaseBranchName: aBranchName [
 
 { #category : #accessing }
 GtRlReleaseConfiguration >> defaultReleaseStrategy [
-	^ GtRlDedicatedBranchReleaseStrategy new
+	^ defaultReleaseStrategy ifNil: [
+		 GtRlDedicatedBranchReleaseStrategy new]
+]
+
+{ #category : #accessing }
+GtRlReleaseConfiguration >> defaultReleaseStrategy: aDefaultReleaseStrategy [
+	defaultReleaseStrategy := aDefaultReleaseStrategy
 ]
 
 { #category : #accessing }
