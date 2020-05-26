@@ -17,5 +17,40 @@ GtRlRepositoriesCloner class >> getProject: projectName fromRepository: repoURL 
 			url := pspec spec projectReference repositories list first name.
 			(url beginsWith: 'github')
 				ifTrue: [ self getProject: pspec name fromRepository: url ];
-				ifFalse: [ Transcript crTrace: url ] ]
+				ifFalse: [ Transcript crTrace: url ] ].
+	
+]
+
+{ #category : #releasing }
+GtRlRepositoriesCloner class >> loadProject: aBaselineClass fromRepository: aRepositoryUrl [
+	|repos loadWarnings projectBuilder project|
+	self getProject: aBaselineClass fromRepository: aRepositoryUrl.
+	projectBuilder := GtRlDependenciesModelBuilder new.
+	project := projectBuilder 
+		buildProjectFromBaselineClass: aBaselineClass
+		withRepositoryDescription: aRepositoryUrl.
+		
+	repos := GtRlReleaseOrderTraversal new releaseOrderFor: project repositoryRelease.
+	loadWarnings := OrderedCollection new.
+	(repos flatCollect: [:r | r projectReleases]) 
+		collect: [ :pr | Metacello new baseline: pr name; repository: pr repositoryRelease repository url asString;
+		 onWarning: [ :anException |
+			"Log the error now."
+			MetacelloNotification signal: anException description.
+			"Create a list of all warnings."
+			loadWarnings add: anException description.
+			
+			anException resume ];
+		load].
+		
+	"In case there are warnings during the loading fail here.
+	Otherwise most likely the failure will happen only when 
+	running tests or when running releaser."
+	loadWarnings ifNotEmpty: [  
+		Error signal: (String streamContents: [ :aStream |
+			aStream nextPutAll: 'Warnings detected during loading: '.
+			aStream nextPutAll: OSPlatform current lineEnding.
+			loadWarnings 
+				asStringOn: aStream 
+				delimiter: OSPlatform current lineEnding ]) ].
 ]
