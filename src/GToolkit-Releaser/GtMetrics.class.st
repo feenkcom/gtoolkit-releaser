@@ -55,28 +55,28 @@ value := GtNestedTreeNode new
 	name: 'Entire distribution';
 	nodes: {
 		GtNestedTreeNode new 
-			name: 'Default Pharo';
+			name: 'Pharo';
 			leaves: {
 				GtNestedTreeItemLeaf new 
-					item: 'Pharo used in GT' -> ((Color fromHexString: '5eb3ea') alpha: 1);
+					item: 'Pharo used in GT' -> ((Color fromHexString: '20d8fd') alpha: 1);
 					weight: [:x | GtMetrics default basePharoLinesOfCode - GtMetrics default pharoToReplaceLinesOfCode ].
 				GtNestedTreeItemLeaf new 
-					item: 'Pharo not used in GT' -> ((Color fromHexString: '5eb3ea') alpha: 0.5);
+					item: 'Pharo not used in GT' -> ((Color fromHexString: '20d8fd') alpha: 0.5);
 					weight: [ :x | GtMetrics default pharoToReplaceLinesOfCode ]. }.
 		GtNestedTreeNode new 
 			name: 'Glamorous Toolkit';
 			leaves: {
 				GtNestedTreeItemLeaf new 
-					item: 'Rest of GT' -> ((Color fromHexString: '20d8fd') alpha: 1);
+					item: 'Glamorous Toolkit Core' -> ((BrGlamorousColors primaryBorderColor) alpha: 1);
 					weight: [:x | GtMetrics default gtLinesOfCode - GtMetrics default smaccParsersLinesOfCode - GtMetrics default xmlSupportLinesOfCode - GtMetrics default famix3LinesOfCode ].
 				GtNestedTreeItemLeaf new 
-					item: 'Parsers' -> ((Color fromHexString: '20d8fd') alpha: 0.5);
+					item: 'Parsers' -> ((BrGlamorousColors primaryBorderColor) alpha: 0.5);
 					weight: [ :x | GtMetrics default smaccParsersLinesOfCode ].
 				GtNestedTreeItemLeaf new 
-					item: 'XML' -> ((Color fromHexString: '20d8fd') alpha: 0.5);
+					item: 'XML' -> ((BrGlamorousColors primaryBorderColor) alpha: 0.5);
 					weight: [ :x | GtMetrics default xmlSupportLinesOfCode].
 				GtNestedTreeItemLeaf new 
-					item: 'Famix' -> ((Color fromHexString: '20d8fd') alpha: 0.5);
+					item: 'Famix' -> ((BrGlamorousColors primaryBorderColor) alpha: 0.5);
 					weight: [ :x | GtMetrics default famix3LinesOfCode]. }}.
 
 container := BlElement new
