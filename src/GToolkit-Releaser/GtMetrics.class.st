@@ -58,10 +58,10 @@ value := GtNestedTreeNode new
 			name: 'Pharo';
 			leaves: {
 				GtNestedTreeItemLeaf new 
-					item: 'Pharo used in GT' -> ((Color fromHexString: '20d8fd') alpha: 1);
+					item: 'Pharo used in GT' -> ((Color lightGray) alpha: 1);
 					weight: [:x | GtMetrics default basePharoLinesOfCode - GtMetrics default pharoToReplaceLinesOfCode ].
 				GtNestedTreeItemLeaf new 
-					item: 'Pharo not used in GT' -> ((Color fromHexString: '20d8fd') alpha: 0.5);
+					item: 'Pharo not used in GT' -> ((Color lightGray) alpha: 0.5);
 					weight: [ :x | GtMetrics default pharoToReplaceLinesOfCode ]. }.
 		GtNestedTreeNode new 
 			name: 'Glamorous Toolkit';
