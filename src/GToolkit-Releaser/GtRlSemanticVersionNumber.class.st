@@ -22,11 +22,28 @@ Class {
 }
 
 { #category : #'instance creation' }
+GtRlSemanticVersionNumber class >> createFromString: aString [
+	^ (aString beginsWith: GtRlDevSemanticVersionNumber devVersionIdentifier) 
+		ifTrue: [ GtRlDevSemanticVersionNumber readFromString: aString ]
+		ifFalse: [ GtRlSemanticVersionNumber readFromString: aString ].
+]
+
+{ #category : #'instance creation' }
 GtRlSemanticVersionNumber class >> major: majorNumber minor: minorNumber patch: patchNumber [
 	^ self new 
 		initializeMajor: majorNumber
 		minor: minorNumber
 		patch: patchNumber
+]
+
+{ #category : #converting }
+GtRlSemanticVersionNumber class >> readFromString: aString [
+	| tokens |
+	tokens := aString allButFirst findTokens: '.'. 
+	^ self 
+		major: tokens first asInteger
+		minor: tokens second asInteger
+		patch: tokens third asInteger. 
 ]
 
 { #category : #comparing }
@@ -74,6 +91,10 @@ GtRlSemanticVersionNumber >> asDevSemanticVersion [
 		major: self major 
 		minor: self minor 
 		patch: self patch
+]
+
+{ #category : #converting }
+GtRlSemanticVersionNumber >> asDictionary [ 
 ]
 
 { #category : #comparing }
