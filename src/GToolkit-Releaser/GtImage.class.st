@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'version',
-		'timestamp'
+		'timestamp',
+		'lastOpenedVersion'
 	],
 	#classInstVars : [
 		'singleton'
@@ -84,6 +85,7 @@ GtImage class >> startUp: resuming [
 		show: 'Last opened version ';
 		show: lastOpenedVersion printString.
 	self instance lastOpenedVersion: lastOpenedVersion.
+	"The comparison of current version > last version is important as GtRlNullVersionNumber answers false for #<"
 	self instance version > lastOpenedVersion
 		ifTrue: [ self updateLastOpenedVersion ]
 ]

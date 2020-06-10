@@ -7,11 +7,26 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
+{ #category : #testing }
+GtRlBaselineVersionNumber >> < aMagnitude [ 
+	"We currently don't have a sensible comparison of arbitrary version strings, answer true.
+	If comparisons are required a semantic version number should be used."
+
+	^ true
+]
+
 { #category : #comparing }
 GtRlBaselineVersionNumber >> = anObject [
 	self == anObject ifTrue: [ ^ true ].
 	self class = anObject class ifFalse: [ ^ false ].
 	^ self versionString = anObject versionString
+]
+
+{ #category : #comparing }
+GtRlBaselineVersionNumber >> hash [
+
+	^ (self species hash
+		bitXor: versionString hash)
 ]
 
 { #category : #accessing }
