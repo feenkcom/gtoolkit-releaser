@@ -6,7 +6,7 @@ All my subclasses should provide immutable versions numbers. Once created a vers
 "
 Class {
 	#name : #GtRlVersionNumber,
-	#superclass : #Object,
+	#superclass : #Magnitude,
 	#category : #'GToolkit-Releaser'
 }
 
@@ -17,6 +17,12 @@ GtRlVersionNumber >> description [
 
 { #category : #testing }
 GtRlVersionNumber >> isNullVersion [
+	^ false
+]
+
+{ #category : #testing }
+GtRlVersionNumber >> isSemanticVersion [
+
 	^ false
 ]
 
