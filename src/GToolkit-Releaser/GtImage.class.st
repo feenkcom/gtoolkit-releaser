@@ -77,7 +77,7 @@ GtImage class >> startUp: resuming [
 	resuming
 		ifFalse: [ ^ self ].
 	self defaultPreferences exists
-		ifFalse: [ self updateLastOpenedVersion.
+		ifFalse: [ self storeLastOpenedVersion.
 			NonInteractiveTranscript stdout
 				show: 'Preference file does not exist. Creating...' ].
 	lastOpenedVersion := self loadLastOpenedVersion.
@@ -87,20 +87,20 @@ GtImage class >> startUp: resuming [
 	self instance lastOpenedVersion: lastOpenedVersion.
 	"The comparison of current version > last version is important as GtRlNullVersionNumber answers false for #<"
 	self instance version > lastOpenedVersion
-		ifTrue: [ self updateLastOpenedVersion ]
+		ifTrue: [ self storeLastOpenedVersion ]
+]
+
+{ #category : #'load and saving' }
+GtImage class >> storeLastOpenedVersion [
+	self defaultPreferences
+		writeStreamDo:
+			[ :aPreferenceStream | self save: self instance version versionString into: aPreferenceStream ].
+	
 ]
 
 { #category : #accessing }
 GtImage class >> timestamp: aTimestamp [
 	self instance timestamp: aTimestamp
-]
-
-{ #category : #'load and saving' }
-GtImage class >> updateLastOpenedVersion [
-	self defaultPreferences
-		writeStreamDo:
-			[ :aPreferenceStream | self save: self instance version versionString into: aPreferenceStream ].
-	
 ]
 
 { #category : #accessing }
