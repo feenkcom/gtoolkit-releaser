@@ -14,14 +14,6 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
-{ #category : #testing }
-GtRlTagVersionNumber >> < aMagnitude [ 
-	"We currently don't have a sensible comparison of arbitrary tag strings, answer true.
-	If comparisons are required a semantic version number should be used."
-
-	^ true
-]
-
 { #category : #comparing }
 GtRlTagVersionNumber >> = anObject [
 	self == anObject ifTrue: [ ^ true ].

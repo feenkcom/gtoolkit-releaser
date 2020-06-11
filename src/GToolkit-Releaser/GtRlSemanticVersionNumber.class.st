@@ -50,8 +50,6 @@ GtRlSemanticVersionNumber class >> readFromString: aString [
 
 { #category : #comparing }
 GtRlSemanticVersionNumber >> < aSemanticVersionNumber [
-
-	aSemanticVersionNumber isSemanticVersion ifFalse: [ ^ false ].
 	self major < aSemanticVersionNumber major ifTrue: [ ^ true ].
 		self major = aSemanticVersionNumber major ifTrue: [ 
 			self minor < aSemanticVersionNumber minor ifTrue: [ ^ true ].
@@ -61,12 +59,32 @@ GtRlSemanticVersionNumber >> < aSemanticVersionNumber [
 ]
 
 { #category : #comparing }
+GtRlSemanticVersionNumber >> <= aSemanticVersionNumber [
+	"Answer whether the receiver is less than or equal to the given version number."
+	^ (self > aSemanticVersionNumber) not
+]
+
+{ #category : #comparing }
 GtRlSemanticVersionNumber >> = anObject [
 	self == anObject ifTrue: [ ^ true ].
 	self class = anObject class ifFalse: [ ^ false ].
 	^ self major = anObject major and: [ 
 		 self minor = anObject minor and: [ 
 			self patch = anObject patch ] ]
+]
+
+{ #category : #comparing }
+GtRlSemanticVersionNumber >> > aSemanticVersionNumber [ 
+	"Answer whether the receiver is greater than the argument."
+
+	^aSemanticVersionNumber < self
+]
+
+{ #category : #comparing }
+GtRlSemanticVersionNumber >> >= aSemanticVersionNumber [ 
+	"Answer whether the receiver is greater than or equal to the argument."
+
+	^ aSemanticVersionNumber <= self
 ]
 
 { #category : #converting }

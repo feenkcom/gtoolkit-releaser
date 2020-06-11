@@ -14,14 +14,6 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
-{ #category : #testing }
-GtRlCommitIdVersionNumber >> < aMagnitude [ 
-	"Commit ids can't be sorted, answer true.
-	If comparisons are required a semantic version number should be used."
-
-	^ true
-]
-
 { #category : #comparing }
 GtRlCommitIdVersionNumber >> = anObject [
 	self == anObject ifTrue: [ ^ true ].
