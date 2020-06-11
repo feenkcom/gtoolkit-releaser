@@ -85,9 +85,15 @@ GtImage class >> startUp: resuming [
 		show: 'Last opened version ';
 		show: lastOpenedVersion printString.
 	self instance lastOpenedVersion: lastOpenedVersion.
-	"The comparison of current version > last version is important as GtRlNullVersionNumber answers false for #<"
-	self instance version > lastOpenedVersion
-		ifTrue: [ self storeLastOpenedVersion ]
+	self instance version isSemanticVersion ifFalse:
+		[ self error: 'Image setup is not complete, see GtImageSetup>>performLocalSetup' ].
+	(lastOpenedVersion isSemanticVersion not or: [ self instance version > lastOpenedVersion ])
+		ifTrue: [ self storeLastOpenedVersion ].
+]
+
+{ #category : #accessing }
+GtImage class >> timestamp: aTimestamp [
+	self instance timestamp: aTimestamp
 ]
 
 { #category : #'load and saving' }
