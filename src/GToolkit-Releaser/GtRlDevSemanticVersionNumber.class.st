@@ -9,6 +9,12 @@ GtRlDevSemanticVersionNumber class >> devVersionIdentifier [
 	^ 'DEV '
 ]
 
+{ #category : #testing }
+GtRlDevSemanticVersionNumber class >> matchesString: aString [
+	^ aString 
+		matchesRegex: self devVersionIdentifier, self versionNumberRegexString
+]
+
 { #category : #converting }
 GtRlDevSemanticVersionNumber class >> readFromString: aString [
 	| versionString tokens |
