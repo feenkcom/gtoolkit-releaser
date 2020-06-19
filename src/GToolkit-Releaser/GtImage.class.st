@@ -91,11 +91,6 @@ GtImage class >> startUp: resuming [
 		ifTrue: [ self storeLastOpenedVersion ].
 ]
 
-{ #category : #accessing }
-GtImage class >> timestamp: aTimestamp [
-	self instance timestamp: aTimestamp
-]
-
 { #category : #'load and saving' }
 GtImage class >> storeLastOpenedVersion [
 	self defaultPreferences
@@ -180,6 +175,14 @@ GtImage >> gtOSInfoFor: aView [
 		priority: 14;
 		look: BrGlamorousCodeEditorLook new;
 		text: [ info asRopedText ]
+]
+
+{ #category : #accessing }
+GtImage >> gtPreferencesDirectoryFor: aView [
+	<gtView>
+	^ ((FileLocator preferences / 'pharo') gtItemsFor: aView)
+		title: 'Preferences directory';
+		priority: 40
 ]
 
 { #category : #ui }
