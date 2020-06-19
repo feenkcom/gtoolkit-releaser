@@ -31,8 +31,15 @@ GtImage class >> commandLine [
 ]
 
 { #category : #configuration }
-GtImage class >> defaultPreferences [
-	^ FileLocator preferences / 'pharo' / 'org.glamoroustoolkit.last-opened-version.ston'
+GtImage class >> defaultPreferencesFolder [
+	^ FileLocator preferences / 'pharo'
+]
+
+{ #category : #'load and saving' }
+GtImage class >> ensureLastOpenVersionPreferences [
+	"In case there is no data for the last opened version we store the current version."
+	self lastOpenVersionPreferences exists ifFalse: [ 
+		self storeLastOpenedVersion ]
 ]
 
 { #category : #'class initialization' }
@@ -42,6 +49,24 @@ GtImage class >> initialize [
 		inCategory: SessionManager default systemCategory  
 		atPriority: SessionManager default defaultPriority.
 	
+]
+
+{ #category : #'system startup' }
+GtImage class >> initializeLastOpenedVersion [
+	| lastOpenedVersion |
+	
+	self ensureLastOpenVersionPreferences.
+	
+	lastOpenedVersion := self loadLastOpenedVersion.
+	self instance lastOpenedVersion: lastOpenedVersion.
+	self instance version isSemanticVersion ifFalse: [ 
+		"In case the image version is not set do not attemot to update 
+		the last opened version preference on disk."
+		'Image setup is not complete: missing local version (see GtImageSetup>>performLocalSetup)' traceCr.
+		^ self ].
+	
+	(lastOpenedVersion isSemanticVersion not or: [ self instance version > lastOpenedVersion ])
+		ifTrue: [ self storeLastOpenedVersion ].
 ]
 
 { #category : #accessing }
@@ -54,11 +79,21 @@ GtImage class >> instance [
 	^ singleton
 ]
 
-{ #category : #loading }
+{ #category : #configuration }
+GtImage class >> lastOpenVersionPreferences [
+	^ self defaultPreferencesFolder / 'org.glamoroustoolkit.last-opened-version.ston'
+]
+
+{ #category : #'load and saving' }
 GtImage class >> loadLastOpenedVersion [
 	| versionString |
-	versionString := self defaultPreferences readStreamDo: [ :aReadStream | STON fromStream: aReadStream].
-	^ GtRlSemanticVersionNumber createFromString: versionString.
+	versionString := self lastOpenVersionPreferences readStreamDo: [ :aReadStream | 
+		STON fromStream: aReadStream].
+	versionString = GtRlNullVersionNumber versionString ifTrue: [ 
+		^ GtRlNullVersionNumber new ].
+	^ (GtRlSemanticVersionNumber canCreateFromString: versionString)
+		ifTrue: [ GtRlSemanticVersionNumber createFromString: versionString ]
+		ifFalse: [ GtRlNullVersionNumber new ]
 ]
 
 { #category : #accessing }
@@ -67,35 +102,27 @@ GtImage class >> reset [
 ]
 
 { #category : #'load and saving' }
-GtImage class >> save: aValue into: aWriteStream [
-	STON put: aValue onStreamPretty: (ZnCharacterWriteStream on: aWriteStream encoding: 'utf8')
+GtImage class >> saveStonFor: aValue into: aWriteStream [
+	STON 
+		put: aValue 
+		onStreamPretty: (ZnCharacterWriteStream on: aWriteStream encoding: 'utf8')
 ]
 
 { #category : #'system startup' }
 GtImage class >> startUp: resuming [
-	| lastOpenedVersion |
 	resuming
 		ifFalse: [ ^ self ].
-	self defaultPreferences exists
-		ifFalse: [ self storeLastOpenedVersion.
-			NonInteractiveTranscript stdout
-				show: 'Preference file does not exist. Creating...' ].
-	lastOpenedVersion := self loadLastOpenedVersion.
-	NonInteractiveTranscript stdout
-		show: 'Last opened version ';
-		show: lastOpenedVersion printString.
-	self instance lastOpenedVersion: lastOpenedVersion.
-	self instance version isSemanticVersion ifFalse:
-		[ self error: 'Image setup is not complete, see GtImageSetup>>performLocalSetup' ].
-	(lastOpenedVersion isSemanticVersion not or: [ self instance version > lastOpenedVersion ])
-		ifTrue: [ self storeLastOpenedVersion ].
+	self initializeLastOpenedVersion.
 ]
 
 { #category : #'load and saving' }
 GtImage class >> storeLastOpenedVersion [
-	self defaultPreferences
-		writeStreamDo:
-			[ :aPreferenceStream | self save: self instance version versionString into: aPreferenceStream ].
+	self defaultPreferencesFolder ensureCreateDirectory.
+	self lastOpenVersionPreferences
+		writeStreamDo: [ :aPreferenceStream | 
+			self 
+				saveStonFor: self instance version versionString 
+				into: aPreferenceStream ]
 	
 ]
 
@@ -186,6 +213,16 @@ GtImage >> gtPreferencesDirectoryFor: aView [
 ]
 
 { #category : #ui }
+GtImage >> gtPreferencesFilesFor: aView [
+	<gtView >
+	^ self class defaultPreferencesFolder exists 
+		ifTrue: [ (self class defaultPreferencesFolder gtItemsFor: aView)
+			title: 'Preferences folder';
+			priority: 50 ]
+		ifFalse: [ aView empty ]
+]
+
+{ #category : #ui }
 GtImage >> gtPreviewFor: aView [
 	<gtView>
 	^ aView columnedList
@@ -197,7 +234,8 @@ GtImage >> gtPreviewFor: aView [
 			'Image directory' -> Smalltalk image imageDirectory asFileReference.
 			'Image format version' -> Smalltalk image imageFormatVersion.
 			"'License' -> self licenseString."
-			'VM' -> Smalltalk vm } ];
+			'VM' -> Smalltalk vm .
+			'Last opened version' -> self lastOpenedVersion versionString } ];
 		column: 'Property' format: [:each | each key];
 		column: 'Value' format: [:each | each value ];
 		send: #value

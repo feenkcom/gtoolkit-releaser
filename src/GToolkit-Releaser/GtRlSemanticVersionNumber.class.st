@@ -21,10 +21,14 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
+{ #category : #testing }
+GtRlSemanticVersionNumber class >> canCreateFromString: aString [
+	^ (GtRlDevSemanticVersionNumber matchesString: aString)
+		or: [ GtRlSemanticVersionNumber matchesString: aString ]
+]
+
 { #category : #'instance creation' }
 GtRlSemanticVersionNumber class >> createFromString: aString [
-
-	aString = 'unknown' ifTrue: [ ^ GtRlNullVersionNumber new ].
 	^ (aString beginsWith: GtRlDevSemanticVersionNumber devVersionIdentifier) 
 		ifTrue: [ GtRlDevSemanticVersionNumber readFromString: aString ]
 		ifFalse: [ GtRlSemanticVersionNumber readFromString: aString ].
@@ -38,6 +42,11 @@ GtRlSemanticVersionNumber class >> major: majorNumber minor: minorNumber patch: 
 		patch: patchNumber
 ]
 
+{ #category : #testing }
+GtRlSemanticVersionNumber class >> matchesString: aString [
+	^ aString matchesRegex: self versionNumberRegexString
+]
+
 { #category : #converting }
 GtRlSemanticVersionNumber class >> readFromString: aString [
 	| tokens |
@@ -46,6 +55,11 @@ GtRlSemanticVersionNumber class >> readFromString: aString [
 		major: tokens first asInteger
 		minor: tokens second asInteger
 		patch: tokens third asInteger. 
+]
+
+{ #category : #accessing }
+GtRlSemanticVersionNumber class >> versionNumberRegexString [
+	^ 'v[0-9]+\.[0-9]+\.[0-9]+'
 ]
 
 { #category : #comparing }
