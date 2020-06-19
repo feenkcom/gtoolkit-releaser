@@ -204,20 +204,12 @@ GtImage >> gtOSInfoFor: aView [
 		text: [ info asRopedText ]
 ]
 
-{ #category : #accessing }
-GtImage >> gtPreferencesDirectoryFor: aView [
-	<gtView>
-	^ ((FileLocator preferences / 'pharo') gtItemsFor: aView)
-		title: 'Preferences directory';
-		priority: 40
-]
-
 { #category : #ui }
 GtImage >> gtPreferencesFilesFor: aView [
 	<gtView >
 	^ self class defaultPreferencesFolder exists 
 		ifTrue: [ (self class defaultPreferencesFolder gtItemsFor: aView)
-			title: 'Preferences folder';
+			title: 'Preferences directory';
 			priority: 50 ]
 		ifFalse: [ aView empty ]
 ]
