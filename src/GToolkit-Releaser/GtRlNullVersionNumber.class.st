@@ -12,6 +12,11 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
+{ #category : #versions }
+GtRlNullVersionNumber class >> versionString [
+	^ 'unknown'
+]
+
 { #category : #comparing }
 GtRlNullVersionNumber >> = anObject [
 	self == anObject ifTrue: [ ^ true ].
@@ -32,5 +37,5 @@ GtRlNullVersionNumber >> isNullVersion [
 
 { #category : #accessing }
 GtRlNullVersionNumber >> versionString [
-	^ 'unknown'
+	^ self class versionString
 ]
