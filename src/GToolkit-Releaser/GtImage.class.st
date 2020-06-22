@@ -186,7 +186,7 @@ GtImage >> gtImageInfoFor: aView [
 	^ aView textEditor 
 		title: 'Image Info' translated;
 		priority: 12;
-		look: BrGlamorousCodeEditorLook new;
+		look: BrGlamorousCodeEditorLook;
 		text: [ (String streamContents: [ :s | self imageInfoOn: s]) asRopedText ]
 ]
 
@@ -200,7 +200,7 @@ GtImage >> gtOSInfoFor: aView [
 	^ aView textEditor 
 		title: 'OS Info' translated;
 		priority: 14;
-		look: BrGlamorousCodeEditorLook new;
+		look: BrGlamorousCodeEditorLook;
 		text: [ info asRopedText ]
 ]
 
@@ -240,7 +240,7 @@ GtImage >> gtVmInfoFor: aView [
 	^ aView textEditor 
 		title: 'VM Info' translated;
 		priority: 13;
-		look: BrGlamorousCodeEditorLook new;
+		look: BrGlamorousCodeEditorLook;
 		text: [ (String streamContents: [ :s | self vmInfoOn: s]) asRopedText ]
 ]
 
