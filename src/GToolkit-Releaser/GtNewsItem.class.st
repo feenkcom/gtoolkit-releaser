@@ -24,6 +24,6 @@ GtNewsItem >> version [
 ]
 
 { #category : #accessing }
-GtNewsItem >> version: aVersion [
-	version := aVersion
+GtNewsItem >> version: aVersionString [
+	version := GtRlSemanticVersionNumber createFromString: aVersionString
 ]
