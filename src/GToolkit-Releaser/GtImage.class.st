@@ -75,6 +75,7 @@ GtImage class >> instance [
 	    singleton := self new.
 	    singleton version: GtRlNullVersionNumber new.
 	    singleton timestamp: DateAndTime now.
+	    singleton addNewsItems: self allNewsItems.
 	].
 	^ singleton
 ]
@@ -141,6 +142,16 @@ GtImage class >> version: aVersion [
 	self instance version: aVersion
 ]
 
+{ #category : #accessing }
+GtImage >> allNewsItems [
+	|list|
+	list := OrderedCollection new.
+	list add: (GtNewsItem new version: 'v0.7.1001'; newItem: GtPharo101 new).
+	list add: (GtNewsItem new version: 'v0.7.1111'; newItem: GtPharo101 new).
+	"add more news items below"
+	^list
+]
+
 { #category : #private }
 GtImage >> commitInfo [
 	"Answer information about the current commitish for each repository"
@@ -188,6 +199,20 @@ GtImage >> gtImageInfoFor: aView [
 		priority: 12;
 		look: BrGlamorousCodeEditorLook;
 		text: [ (String streamContents: [ :s | self imageInfoOn: s]) asRopedText ]
+]
+
+{ #category : #accessing }
+GtImage >> gtNewNewsItemsFor: aView [
+	<gtView>
+	
+	^ aView columnedList 
+		title: 'News Items' translated;
+		priority: 11;
+		items: [ self allNewsItems ];
+		column: 'Version' translated 
+			do: [ :column | column item: [ :each | each version asString ] ];
+		column: 'New Item' translated 
+			do: [ :column | column item: [ :each | each newItem asString ] ].
 ]
 
 { #category : #ui }
@@ -260,6 +285,11 @@ GtImage >> lastOpenedVersion [
 { #category : #accessing }
 GtImage >> lastOpenedVersion: anObject [
 	lastOpenedVersion := anObject
+]
+
+{ #category : #accessing }
+GtImage >> newNewsItems [
+	^ self allNewsItems select: [:newsItem | newsItem version > self lastOpenedVersion]
 ]
 
 { #category : #private }
