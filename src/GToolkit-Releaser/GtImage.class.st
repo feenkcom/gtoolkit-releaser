@@ -75,7 +75,6 @@ GtImage class >> instance [
 	    singleton := self new.
 	    singleton version: GtRlNullVersionNumber new.
 	    singleton timestamp: DateAndTime now.
-	    "singleton addNewsItems: self allNewsItems."
 	].
 	^ singleton
 ]

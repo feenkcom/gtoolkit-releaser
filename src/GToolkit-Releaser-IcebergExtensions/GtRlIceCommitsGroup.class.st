@@ -30,7 +30,7 @@ GtRlIceCommitsGroup >> gtViewCommitsListFor: aView [
 		title: 'Commits' translated;
 		items: [ self commits ];
 		column: 'Timestamp' item: [ :aCommit | aCommit timeStamp asStringYMDHM ] width: 120;
-		column: 'Commit' item: #shortId width: 70;
-		column: 'Author' item: #author;
-		column: 'Description' item: #comment
+		column: 'Author' item: #author width: 80;
+		column: 'Description' item: #comment;
+		column: 'Commit' item: #shortId width: 70
 ]
