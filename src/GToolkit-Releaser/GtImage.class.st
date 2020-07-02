@@ -81,14 +81,20 @@ GtImage class >> instance [
 
 { #category : #configuration }
 GtImage class >> lastOpenVersionPreferences [
-	^ self defaultPreferencesFolder / 'org.glamoroustoolkit.last-opened-version.ston'
+	^ self defaultPreferencesFolder / 'com.glamoroustoolkit.last-opened-version.v1.ston'
 ]
 
 { #category : #'load and saving' }
 GtImage class >> loadLastOpenedVersion [
-	| versionString |
-	versionString := self lastOpenVersionPreferences readStreamDo: [ :aReadStream | 
+	| rawData versionString |
+	rawData := self lastOpenVersionPreferences readStreamDo: [ :aReadStream | 
 		STON fromStream: aReadStream].
+	
+	(rawData isDictionary and: [ rawData includesKey: 'data' ]) ifFalse: [  
+		"Validate "
+		^ GtRlNullVersionNumber new ].
+	
+	versionString := rawData at: 'data'.
 	versionString = GtRlNullVersionNumber versionString ifTrue: [ 
 		^ GtRlNullVersionNumber new ].
 	^ (GtRlSemanticVersionNumber canCreateFromString: versionString)
@@ -121,7 +127,9 @@ GtImage class >> storeLastOpenedVersion [
 	self lastOpenVersionPreferences
 		writeStreamDo: [ :aPreferenceStream | 
 			self 
-				saveStonFor: self instance version versionString 
+				saveStonFor: {
+					'schema' -> 'v1'.
+					'data' -> self instance version versionString } asDictionary 
 				into: aPreferenceStream ]
 	
 ]
