@@ -108,8 +108,8 @@ GtImage class >> reset [
 ]
 
 { #category : #'load and saving' }
-GtImage class >> saveStonFor: aValue into: aWriteStream [
-	STON 
+GtImage class >> saveJsonFor: aValue into: aWriteStream [
+	STONJSON 
 		put: aValue 
 		onStreamPretty: (ZnCharacterWriteStream on: aWriteStream encoding: 'utf8')
 ]
@@ -127,7 +127,7 @@ GtImage class >> storeLastOpenedVersion [
 	self lastOpenVersionPreferences
 		writeStreamDo: [ :aPreferenceStream | 
 			self 
-				saveStonFor: {
+				saveJsonFor: {
 					'schema' -> 'v1'.
 					'data' -> self instance version versionString } asDictionary 
 				into: aPreferenceStream ]
