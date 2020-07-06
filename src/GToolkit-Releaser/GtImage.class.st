@@ -88,7 +88,7 @@ GtImage class >> lastOpenVersionPreferences [
 GtImage class >> loadLastOpenedVersion [
 	| rawData versionString |
 	rawData := self lastOpenVersionPreferences readStreamDo: [ :aReadStream | 
-		STON fromStream: aReadStream].
+		STONJSON fromStream: aReadStream].
 	
 	(rawData isDictionary and: [ rawData includesKey: 'data' ]) ifFalse: [  
 		"Validate "
