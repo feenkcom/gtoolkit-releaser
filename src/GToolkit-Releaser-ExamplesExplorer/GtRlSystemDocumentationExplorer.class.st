@@ -21,7 +21,8 @@ GtRlSystemDocumentationExplorer >> gtViewPerProjectsListFor: aView [
 		title: 'Per-projects' translated;
 		priority: 50;
 		items: [ repositoryExplorers ];
-		itemFormat: [ :aRepositoryExplorer | aRepositoryExplorer repository repositoryName ]
+		itemText:
+				[ :aRepositoryExplorer | aRepositoryExplorer repository repositoryName ]
 ]
 
 { #category : #initialization }

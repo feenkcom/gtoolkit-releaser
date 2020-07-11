@@ -45,14 +45,13 @@ GtRlRepositoryExamplesExplorer >> gtViewProjectsFor: aView [
 	^ aView columnedList
 		title: 'Projects' translated;
 		items: [ self projectExplorers ];
-		column: 'Name' format: [ :projectExplorer | projectExplorer name ];
-		column: 'Examples' 
-			format: [ :projectExplorer | projectExplorer containedExamplesCount ] 
+		column: 'Name' text: [ :projectExplorer | projectExplorer name ];
+		column: 'Examples'
+			text: [ :projectExplorer | projectExplorer containedExamplesCount ]
 			width: 100;
-		column: 'Test cases' 
-			format: [ :projectExplorer | projectExplorer containedTestCasesCount ] 
+		column: 'Test cases'
+			text: [ :projectExplorer | projectExplorer containedTestCasesCount ]
 			width: 100
-		
 ]
 
 { #category : #initialization }

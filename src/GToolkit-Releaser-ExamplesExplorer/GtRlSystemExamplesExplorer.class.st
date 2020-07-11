@@ -31,9 +31,14 @@ GtRlSystemExamplesExplorer >> gtViewRepositoriesListFor: aView [
 	^ aView columnedList
 		title: 'Repositories' translated;
 		items: [ self repositoryExplorers ];
-		column: 'Name' format: [ :repositoryExplorer | repositoryExplorer name ];
-		column: 'Examples' format: [ :repositoryExplorer | repositoryExplorer containedExamplesCount ] width: 100 ;
-		column: 'Test cases' format: [ :repositoryExplorer | repositoryExplorer containedTestCasesCount ]  width: 100
+		column: 'Name'
+			text: [ :repositoryExplorer | repositoryExplorer name ];
+		column: 'Examples'
+			text: [ :repositoryExplorer | repositoryExplorer containedExamplesCount ]
+			width: 100;
+		column: 'Test cases'
+			text: [ :repositoryExplorer | repositoryExplorer containedTestCasesCount ]
+			width: 100
 ]
 
 { #category : #initialization }
