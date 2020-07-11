@@ -6,9 +6,12 @@ RPackage >> gtDependencyTreeFor: aView [
 	^ aView columnedList
 		title: 'Dependencies';
 		priority: 2;
-		items: [((self gtDependencies groupedBy: [:each | each toPackage]) associations sorted: [:a :b | a key name < b key name])];
+		items: [ (self gtDependencies groupedBy: [ :each | each toPackage ])
+				associations sorted: [ :a :b | a key name < b key name ] ];
 		"children: [:each | (each gtPackagesUsed asOrderedCollection) copyWithout: each];
-		"column: 'Package' format: [:assoc | assoc key name];
-		column: 'Dependencies' format: [:assoc | assoc value size] width: 100;
+		"
+		column: 'Package' text: [ :assoc | assoc key name ];
+		column: 'Dependencies'
+			text: [ :assoc | assoc value size ];
 		send: #value
 ]
