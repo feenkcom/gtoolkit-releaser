@@ -114,7 +114,7 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://pharo-contributions/BitmapCharacterSet/src'.
 		'github://pharo-contributions/CollectionExtensions/src'};
 	setReleaseStrategyOfType: GtRlBaselineTagReleaseStrategy forProjecs: {
-		'github://noha/mustache/repository'.
+		'github://feenkcom/mustache/repository'.
 		'github://svenvc/NeoJSON/repository'.
 		'github://msgpack/msgpack-smalltalk/repository'.
 		'github://feenkcom/Containers-PropertyEnvironment'.
