@@ -1,7 +1,7 @@
 "
 !Releaser
 
-This is the Releser wiki, a live, interactive document living and evolving in the image. It contains details about Releaser, like its intent, usage, internal structure, as well rationale about various design decisions. 
+This is the Releaser wiki, a live, interactive document living and evolving in the image. It contains details about Releaser, like its intent, usage, internal structure, as well rationale about various design decisions. 
 
 !!Overview
 Releaser allows the creation of release versions for applications that use Metacello baselines to specify their loading configuration (what packages to load, their loading order and their dependencies). Releaser supports projects that use deeply nested baselines spread across many git repositories with a mix of baselines with fix dependencies and dependencies to latest versions. 
