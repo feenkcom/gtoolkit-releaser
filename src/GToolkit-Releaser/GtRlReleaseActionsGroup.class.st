@@ -78,10 +78,7 @@ GtRlReleaseActionsGroup >> gtReleaseActionsFor: aView [
 		title: 'Release actions' translated;
 		priority: 50;
 		items: [ self actions ifNil: [ #() ] ];
-		column: 'Order' do: [ :aColumn | 
-			aColumn 
-				item: [ :anAction | anAction order ];
-				width: 50 ];
+		column: 'Order' item: [ :anAction | anAction order ] width: 50;
 		column: 'Repository' item: [ :anAction | 
 			self format: anAction repositoryRelease repository id for: anAction ];
 		column: 'Action' item: [ :anAction | 
