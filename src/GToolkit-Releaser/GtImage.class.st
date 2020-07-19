@@ -226,16 +226,16 @@ GtImage >> gtPreviewFor: aView [
 	^ aView columnedList
 		title: 'Details';
 		priority: 10;
-		items: [ 
-			{'GT version' -> self version versionString. 
-			'GT release timestamp' -> self timestamp.
-			'Image directory' -> Smalltalk image imageDirectory asFileReference.
-			'Image format version' -> Smalltalk image imageFormatVersion.
+		items: [ {('GT version' -> self version versionString).
+			('GT release timestamp' -> self timestamp).
+			('Image directory'
+				-> Smalltalk image imageDirectory asFileReference).
+			('Image format version' -> Smalltalk image imageFormatVersion).
 			"'License' -> self licenseString."
-			'VM' -> Smalltalk vm .
-			'Last opened version' -> self lastOpenedVersion versionString } ];
-		column: 'Property' format: [:each | each key];
-		column: 'Value' format: [:each | each value ];
+			('VM' -> Smalltalk vm).
+			('Last opened version' -> self lastOpenedVersion versionString)} ];
+		column: 'Property' text: [ :each | each key ];
+		column: 'Value' text: [ :each | each value ];
 		send: #value
 ]
 
