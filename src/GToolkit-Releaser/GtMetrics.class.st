@@ -39,6 +39,36 @@ GtMetrics >> famix3LinesOfCode [
 		sum: [:each | each gtRPackages sum: #linesOfCode ] ]
 ]
 
+{ #category : #accessing }
+GtMetrics >> gtBarChartFor: aView [
+	<gtView>
+	| theData projectsAndSizes maxLines aBarWidthScale barChart |
+	^ aView explicit
+		title: 'Bar chart';
+		stencil: [
+			projectsAndSizes := self gtProjects collect: [:project | 
+				{project . project gtRPackages sumNumbers: #linesOfCode}].
+			theData := GtPlotterDataGroup new 
+				values: projectsAndSizes.
+			theData := theData sorted: [ :a :b | (a last) > (b last) ].
+			theData := theData labelled: [ :each | each first gtDisplayString gtRemovePrefix: 'BaselineOf' ].
+			theData := theData colored: [ :each | Color r: 66 g: 188 b: 238 range: 255 ].
+			maxLines := theData inject: 0 intoValues: [ :anAmount :eachValue | anAmount max: eachValue last ].
+			aBarWidthScale := GtPlotterLinearScale new domainFrom: 0 to: maxLines.
+			GtPlotterHorizontalBarChart new
+				barElement: [ :aGtPlotterContext | 
+				BlElement new
+					look: ((BrGlamorousWithTooltipLook2 content: [
+						BrLabel new
+							text: (aGtPlotterContext originalValue second);
+							look: (BrGlamorousLabelLook new padding: (BlInsets all: 1)) ]) hideDelay: 0; showDelay: 0) ];
+				barLabelWidth: 200;
+				barWidthScale: aBarWidthScale;
+				barWidthData: [ :eachValue | eachValue last ];
+				amountOfTicks: 4;
+				with: theData ]
+]
+
 { #category : #'as yet unclassified' }
 GtMetrics >> gtLinesOfCode [
 	^ gtLinesOfCode ifNil: [ gtLinesOfCode := self gtMethods sumNumbers: [ :each | each linesOfCode ] ]
@@ -144,18 +174,16 @@ GtMetrics >> gtMetricsFor: aView [
 	<gtView>
 	^ aView columnedList
 		title: 'Metrics';
-		items: [ 
-			{
-				'Total code in image' -> self totalLinesOfCode.
-				'Glamorous Toolkit code' -> self gtLinesOfCode.
-				'Pharo code' -> self basePharoLinesOfCode.
-				'Pharo code not used in Glamorous Toolkit' -> self pharoToReplaceLinesOfCode.
-				'Parsers for other langauges' -> self smaccParsersLinesOfCode.
-				'Code analysis model' -> self famix3LinesOfCode.
-				'XML support' -> self xmlSupportLinesOfCode
-			} ];
-		column: 'Item' format: #key;
-		column: 'Lines of code' format: #value
+		items: [ {('Total code in image' -> self totalLinesOfCode).
+			('Glamorous Toolkit code' -> self gtLinesOfCode).
+			('Pharo code' -> self basePharoLinesOfCode).
+			('Pharo code not used in Glamorous Toolkit'
+				-> self pharoToReplaceLinesOfCode).
+			('Parsers for other langauges' -> self smaccParsersLinesOfCode).
+			('Code analysis model' -> self famix3LinesOfCode).
+			('XML support' -> self xmlSupportLinesOfCode)} ];
+		column: 'Item' text: #key;
+		column: 'Lines of code' text: #value
 ]
 
 { #category : #'as yet unclassified' }
@@ -175,13 +203,10 @@ GtMetrics >> gtProjectsFor: aView [
 	^ aView columnedList
 		title: 'Projects';
 		priority: 1;
-		items: [ 
-			{
-				'GT projects' -> self gtProjects.
-				'Pharo projects not used in GT' -> self pharoToReplaceProjects.
-			} ];
-		column: 'Metric' format: #key;
-		column: 'Value' format: [ :each | each value size ];
+		items: [ {('GT projects' -> self gtProjects).
+			('Pharo projects not used in GT' -> self pharoToReplaceProjects)} ];
+		column: 'Metric' text: #key;
+		column: 'Value' text: [ :each | each value size ];
 		send: #value
 ]
 

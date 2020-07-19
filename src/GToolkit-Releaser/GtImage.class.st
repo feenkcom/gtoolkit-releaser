@@ -181,10 +181,8 @@ GtImage >> gtCommitInfoFor: aView [
 		title: 'Commit Info' translated;
 		priority: 11;
 		items: [ self commitInfo ];
-		column: 'Repository' translated 
-			do: [ :column | column item: [ :each | each key asString ] ];
-		column: 'Commit' translated 
-			do: [ :column | column item: [ :each | each value asString ] ].
+		column: 'Repository' translated item: [ :each | each key asString ];
+		column: 'Commit' translated item: [ :each | each value asString ].
 ]
 
 { #category : #ui }
