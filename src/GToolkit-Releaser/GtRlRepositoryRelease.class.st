@@ -283,10 +283,10 @@ GtRlRepositoryRelease >> gtRepositoryMapFor: aView [
 							c vertical fitContent ].
 					container
 						connector 
+							model: aRepositoryRelease;
 							beLayoutSource; 
 							beLayoutTarget;
-							beVisualTarget;
-							model: aRepositoryRelease.
+							beVisualTarget.
 					label := BlTextElement new
 						text: (aRepositoryRelease description asRopedText foreground: textColor);
 						constraintsDo: [ :c | 
@@ -321,9 +321,9 @@ GtRlRepositoryRelease >> gtRepositoryMapFor: aView [
 									c horizontal fitContent.
 									c vertical fitContent]").
 						vocalProject connector beVisualSource.
-						aProjectRelease childReleases do: [ :each | 
+						"aProjectRelease childReleases do: [ :each | 
 							each repositoryRelease ~= aRepositoryRelease ifTrue: [
-								vocalProject connector addToModelObjectList: each repositoryRelease]].
+								vocalProject connector addToModelObjectList: each repositoryRelease]]."
 						vocalProject when: BlDoubleClickEvent do: [ :event | 
 							aProjectRelease childReleases do: [ :each | 
 								each repositoryRelease ~= aRepositoryRelease ifTrue: [
