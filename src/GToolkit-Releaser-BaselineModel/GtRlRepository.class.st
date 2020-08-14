@@ -51,10 +51,10 @@ GtRlRepository >> childRepositories [
 { #category : #ui }
 GtRlRepository >> gtBranchesFor: aView [
 	<gtView>
-	^ aView list 
+	^ aView list
 		title: 'Branches' translated;
 		items: [ self icebergRepository allBranches ];
-		itemFormat: #gtSummaryDescription
+		itemText: #gtSummaryDescription
 ]
 
 { #category : #ui }

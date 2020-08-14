@@ -163,11 +163,11 @@ GtRlRepositoryRelease >> gtReleaseActionsFor: aView [
 { #category : #ui }
 GtRlRepositoryRelease >> gtReleaseTagsFor: aView [
 	<gtView>
-	^ aView list 
+	^ aView list
 		title: 'Release tags' translated;
 		items: [ self semanticVersionTags ];
-		itemFormat: [ :anIceTag |
-			anIceTag name, ' [', (anIceTag commit id first: 7), ']' ]
+		itemText: [ :anIceTag | 
+			anIceTag name , ' [' , (anIceTag commit id first: 7) , ']' ]
 ]
 
 { #category : #ui }
