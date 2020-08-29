@@ -122,8 +122,9 @@ GtRlRepository >> gtRepoMapFor: aView [
 							c padding: (BlInsets all: 5).
 							c horizontal fitContent.
 							c vertical fitContent ].
-					label := BlTextElement new
-						text: aRepository urlString asRopedText;
+					label := BrLabel new
+						text: aRepository urlString;
+						look: BrGlamorousLabelLook;
 						constraintsDo: [ :c | 
 							c padding: (BlInsets all: 5).
 							c linear horizontal alignCenter ].
