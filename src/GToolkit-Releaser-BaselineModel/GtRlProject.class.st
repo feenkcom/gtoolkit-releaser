@@ -127,7 +127,7 @@ GtRlProject >> gtChildProjectsFor: aView [
 	^ aView list
 		title: 'Child Projects' translated;
 		items: [ self childProjects ];
-		itemFormat: #name;
+		itemText: #name;
 		priority: 45
 ]
 
@@ -148,7 +148,7 @@ GtRlProject >> gtParentProjectsFor: aView [
 	^ aView list
 		title: 'Parent Projects' translated;
 		items: [ self parentProjects ];
-		itemFormat: #name;
+		itemText: #name;
 		priority: 50
 ]
 
@@ -161,7 +161,7 @@ GtRlProject >> gtProjectMapFor: aView [
 		painting: [ :mondrian |
 			mondrian nodes 
 				shape: [ :aProject |
-					BlTextElement new text: aProject name asRopedText ];
+					BrLabel new text: aProject name; look: BrGlamorousLabelLook ];
 				with: self withAllChildProjects.
 			mondrian edges
 				shape: [ 
@@ -203,7 +203,7 @@ GtRlProject >> gtViewRepositoriesListFor: aView [
 	^ aView list
 		title: 'Packages' translated;
 		items: [ self packages ];
-		itemFormat: #name;
+		itemText: #name;
 		priority: 60
 ]
 
