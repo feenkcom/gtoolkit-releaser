@@ -47,6 +47,7 @@ GtRlGToolkitExamplesExplorer >> gtViewGtoolkitRepositoriesListFor: aView [
 
 { #category : #ui }
 GtRlGToolkitExamplesExplorer >> gtViewRepositoriesListFor: aView [
+	<gtView>
 	^ (super gtViewRepositoriesListFor: aView)
 		title: 'GToolkit & Dependencies' translated;
 		priority: 15

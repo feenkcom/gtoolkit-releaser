@@ -49,6 +49,7 @@ GtRlGToolkitRepositoriesExplorer >> gtViewGraphicalStackRepositoriesFor: aView [
 
 { #category : #ui }
 GtRlGToolkitRepositoriesExplorer >> gtViewSystemRepositoriesFor: aView [
+	<gtView>
 	^ (super gtViewSystemRepositoriesFor: aView)
 			title: 'GToolkit & Dependencies' translated;
 			priority: 15

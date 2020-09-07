@@ -153,6 +153,7 @@ GtRlRepositoryRelease >> gtProjectsFor: aView [
 
 { #category : #ui }
 GtRlRepositoryRelease >> gtReleaseActionsFor: aView [
+	<gtView>
 	| allActions |
 	allActions := self projectReleases 
 		inject: self releaseActions
