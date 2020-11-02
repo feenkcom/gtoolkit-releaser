@@ -86,10 +86,12 @@ GtRlDedicatedBranchReleaseStrategy >> findNewCommits [
 	
 	repo remoteNamed: 'origin' ifAbsent:[ ^ result ].
 	masterCommit := (repo 
-		branchNamed: 'master'	
-		ifAbsent: [ repo createBranch: 'master' ]) commit.
+		branchNamed: self referenceBranchName	
+		ifAbsent: [ 
+			"Return in case there is no branch"
+			^ result ]) commit.
 	releaseCommit := ((repo remoteNamed: 'origin') 
-		remoteBranchNamed: 'release' 
+		remoteBranchNamed: self releaseBranchName
 		ifPresent: [ :branch |  branch commit] 
 		ifAbsent: [ ^ result ]).
 	
@@ -115,7 +117,7 @@ GtRlDedicatedBranchReleaseStrategy >> findNewCommits [
 	walk := IceLibgitCommitWalk new.
 	walk repository: repoRelease icebergRepository.
 	walk 
-		fromBranch: (repo branchNamed: 'master'	ifAbsent: [	repo createBranch: 'master' ]); 
+		fromBranch: (repo branchNamed: self referenceBranchName); 
 		uptoCommit: lastMergedCommit.
 	walk commitsDo: [ :c | result addCommit: c ].
 	
