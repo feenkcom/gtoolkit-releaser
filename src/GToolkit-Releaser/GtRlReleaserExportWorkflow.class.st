@@ -19,6 +19,18 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
+{ #category : #accessing }
+GtRlReleaserExportWorkflow class >> allExamplePackagesInDedicatedReleaseRepositories [
+	| repoReleases ourRepos targetProjectReleases allPackages |
+	repoReleases := (GtRlReleaserExportWorkflow buildGToolkitRelease  
+		rootProjectRelease repositoryRelease 
+		withDeepCollect: #childRepositoryReleases) asSet.
+	ourRepos := repoReleases select: [:r | r releaseStrategy class = GtRlDedicatedBranchReleaseStrategy ].
+	targetProjectReleases := ourRepos flatCollect: [:r | r projectReleases].
+	allPackages := targetProjectReleases flatCollect: [:pr | pr project packages ].
+	^ (allPackages collect: #asRPackage) select:[:p | p gtExamplesAllContained size > 0]
+]
+
 { #category : #releasing }
 GtRlReleaserExportWorkflow class >> attemtToFixDirtyPackagesFor: repo [
 	"Aim to only recalculate the dirty flag for packages that are marked as dirty.
