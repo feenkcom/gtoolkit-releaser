@@ -10,6 +10,9 @@ GtReleaserDedicatedBranchExamplesCommandLineHandler class >> commandName [
 ]
 
 { #category : #accessing }
-GtReleaserDedicatedBranchExamplesCommandLineHandler >> packages [
-	^ GtRlReleaserExportWorkflow allExamplePackagesInDedicatedReleaseRepositories collect: [:p | p name]
+GtReleaserDedicatedBranchExamplesCommandLineHandler >> packages [ 
+	|packages|
+	packages := GtRlReleaserExportWorkflow allExamplePackagesInDedicatedReleaseRepositories collect: [:p | p name].
+	packages := packages \ { #'Brick-Examples'}.
+	^ packages
 ]
