@@ -21,26 +21,27 @@ Class {
 
 { #category : #accessing }
 GtRlReleaserExportWorkflow class >> allExamplePackagesInDedicatedReleaseRepositories [
-	| repoReleases ourRepos targetProjectReleases allPackages |
-	repoReleases := (GtRlReleaserExportWorkflow buildGToolkitRelease  
-		rootProjectRelease repositoryRelease 
-		withDeepCollect: #childRepositoryReleases) asSet.
-	ourRepos := repoReleases select: [:r | r releaseStrategy class = GtRlDedicatedBranchReleaseStrategy ].
-	targetProjectReleases := ourRepos flatCollect: [:r | r projectReleases].
-	allPackages := targetProjectReleases flatCollect: [:pr | pr project packages ].
-	^ (allPackages collect: #asRPackage) select:[:p | p gtExamplesAllContained size > 0]
+	^ (self allPackagesInDedicatedReleaseRepositories collect: #asRPackage) select:[:p | p gtExamplesAllContained size > 0]
+]
+
+{ #category : #accessing }
+GtRlReleaserExportWorkflow class >> allPackagesInDedicatedReleaseRepositories [
+	| repoReleases ourRepos targetProjectReleases allPackages projectBuilder project |
+	projectBuilder := GtRlDependenciesModelBuilder new.
+	project := projectBuilder 
+		buildProjectFromBaselineClass: BaselineOfGToolkit
+		withRepositoryDescription: 'github://feenkcom/gtoolkit/src'.
+	repoReleases := (project repository withDeepCollect: #childRepositories) asSet.
+	ourRepos := repoReleases select: [:r | 
+		(GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration releaseStrategyForRepository: r ) 			class = GtRlDedicatedBranchReleaseStrategy].
+	targetProjectReleases := ourRepos flatCollect: [:r | r projects].
+	allPackages := targetProjectReleases flatCollect: [:pr | pr packages ].
+	^ allPackages
 ]
 
 { #category : #accessing }
 GtRlReleaserExportWorkflow class >> allSlidesPackagesInDedicatedReleaseRepositories [
-	| repoReleases ourRepos targetProjectReleases allPackages |
-	repoReleases := (GtRlReleaserExportWorkflow buildGToolkitRelease  
-		rootProjectRelease repositoryRelease 
-		withDeepCollect: #childRepositoryReleases) asSet.
-	ourRepos := repoReleases select: [:r | r releaseStrategy class = GtRlDedicatedBranchReleaseStrategy ].
-	targetProjectReleases := ourRepos flatCollect: [:r | r projectReleases].
-	allPackages := targetProjectReleases flatCollect: [:pr | pr project packages ].
-	^ (allPackages collect: #asRPackage) select:[:p | p gtSlidesAllContained size > 0]
+	^ (self allPackagesInDedicatedReleaseRepositories collect: #asRPackage) select:[:p | p gtSlidesAllContained size > 0]
 ]
 
 { #category : #releasing }
