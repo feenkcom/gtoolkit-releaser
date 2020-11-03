@@ -45,18 +45,20 @@ GtRlLeafProjectReleaseStrategy >> findNewCommits [
 	|repoRelease releaseCommit result walk repo|
 	repoRelease := self  repositoryRelease.
 	repo := repoRelease icebergRepository.
-	releaseCommit := (repo branchNamed: 'master'	ifAbsent: [	repo createBranch: 'master' ]) commit.
+	result := GtRlNewCommits new.
+	result repository: repo.
+	releaseCommit := (repo branchNamed: self releaseBranchName	ifAbsent: [	
+		^ result ]) commit.
+	
 	"on the release branch we may have a string of release commits"
 	"we need to find the one right after the merge"
 	[releaseCommit ancestors size == 1 and: [(releaseCommit tags) detect:[:t | 'v0.*' match: (t name)] 
 		ifFound: [false] ifNone: [true] ]] 
 			whileTrue: [ releaseCommit := releaseCommit parent ].
 	
-	result := GtRlNewCommits new.
-	result repository: repo.
 	walk := IceLibgitCommitWalk new.
 	walk repository: repoRelease icebergRepository.
-	walk fromBranch: (repo branchNamed: 'master'	ifAbsent: [	repo createBranch: 'master' ]); uptoCommit: releaseCommit.
+	walk fromBranch: (repo branchNamed: self releaseBranchName); uptoCommit: releaseCommit.
 	walk commitsDo: [ :c | result addCommit:c ].
 	
 	^ result
