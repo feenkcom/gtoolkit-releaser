@@ -19,6 +19,31 @@ Class {
 	#category : #'GToolkit-Releaser'
 }
 
+{ #category : #accessing }
+GtRlReleaserExportWorkflow class >> allExamplePackagesInDedicatedReleaseRepositories [
+	^ (self allPackagesInDedicatedReleaseRepositories collect: #asRPackage) select:[:p | p gtExamplesAllContained size > 0]
+]
+
+{ #category : #accessing }
+GtRlReleaserExportWorkflow class >> allPackagesInDedicatedReleaseRepositories [
+	| repoReleases ourRepos targetProjectReleases allPackages projectBuilder project |
+	projectBuilder := GtRlDependenciesModelBuilder new.
+	project := projectBuilder 
+		buildProjectFromBaselineClass: BaselineOfGToolkit
+		withRepositoryDescription: 'github://feenkcom/gtoolkit/src'.
+	repoReleases := (project repository withDeepCollect: #childRepositories) asSet.
+	ourRepos := repoReleases select: [:r | 
+		(GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration releaseStrategyForRepository: r ) 			class = GtRlDedicatedBranchReleaseStrategy].
+	targetProjectReleases := ourRepos flatCollect: [:r | r projects].
+	allPackages := targetProjectReleases flatCollect: [:pr | pr packages ].
+	^ allPackages
+]
+
+{ #category : #accessing }
+GtRlReleaserExportWorkflow class >> allSlidesPackagesInDedicatedReleaseRepositories [
+	^ (self allPackagesInDedicatedReleaseRepositories collect: #asRPackage) select:[:p | p gtSlidesAllContained size > 0]
+]
+
 { #category : #releasing }
 GtRlReleaserExportWorkflow class >> attemtToFixDirtyPackagesFor: repo [
 	"Aim to only recalculate the dirty flag for packages that are marked as dirty.

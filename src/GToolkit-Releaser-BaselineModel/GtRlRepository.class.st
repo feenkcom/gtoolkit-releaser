@@ -166,11 +166,11 @@ GtRlRepository >> gtRepoMapFor: aView [
 { #category : #ui }
 GtRlRepository >> gtTagsFor: aView [
 	<gtView>
-	^ aView list 
+	^ aView list
 		title: 'Tags' translated;
 		items: [ self icebergRepository tags ];
-		itemFormat: [ :anIceTag |
-			anIceTag name, ' [', (anIceTag commit id first: 7), ']' ]
+		itemText:
+				[ :anIceTag | anIceTag name , ' [' , (anIceTag commit id first: 7) , ']' ]
 ]
 
 { #category : #testing }
