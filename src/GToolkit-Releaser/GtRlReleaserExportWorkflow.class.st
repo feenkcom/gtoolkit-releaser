@@ -41,7 +41,8 @@ GtRlReleaserExportWorkflow class >> allPackagesInDedicatedReleaseRepositories [
 
 { #category : #accessing }
 GtRlReleaserExportWorkflow class >> allSlidesPackagesInDedicatedReleaseRepositories [
-	^ (self allPackagesInDedicatedReleaseRepositories collect: #asRPackage) select:[:p | p gtSlidesAllContained size > 0]
+	^ (self allPackagesInDedicatedReleaseRepositories collect: #asRPackage) select:[ :aRPackage | 
+			aRPackage gtSlideBuildersAllContained isNotEmpty ]
 ]
 
 { #category : #releasing }
