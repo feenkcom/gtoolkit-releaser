@@ -22,6 +22,6 @@ GtRlDedicatedBranchSlidesCommandLineHandler >> exampleReport [
 
 { #category : #accessing }
 GtRlDedicatedBranchSlidesCommandLineHandler >> packages [ 
-	|packages|
-	^ GtRlReleaserExportWorkflow allSlidesPackagesInDedicatedReleaseRepositories collect: [:p | p name].
+	^ GtRlReleaserExportWorkflow allSlidesPackagesInDedicatedReleaseRepositories 
+			collect: #name.
 ]
