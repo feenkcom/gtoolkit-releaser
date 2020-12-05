@@ -13,6 +13,6 @@ GtReleaserDedicatedBranchExamplesCommandLineHandler class >> commandName [
 GtReleaserDedicatedBranchExamplesCommandLineHandler >> packages [ 
 	|packages|
 	packages := GtRlReleaserExportWorkflow allExamplePackagesInDedicatedReleaseRepositories collect: [:p | p name].
-	packages := packages \ { #'Brick-Examples'}.
+	"packages := packages \ { #'Brick-Examples'}."
 	^ packages
 ]
