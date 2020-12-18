@@ -14,11 +14,13 @@ GtRlRepositoriesCloner class >> getProject: projectName fromRepository: repoURL 
 	(project version spec packages list
 		select: [ :spec | spec spec class = MetacelloProjectReferenceSpec ])
 		collect: [ :pspec | 
-			url := pspec spec projectReference repositories list first name.
-			(url beginsWith: 'github')
-				ifTrue: [ self getProject: pspec name fromRepository: url ];
-				ifFalse: [ Transcript crTrace: url ] ].
-	
+			|theList|
+			theList := pspec spec projectReference repositories list.
+			theList ifNotEmpty: [  
+				url := pspec spec projectReference repositories list first name.
+				(url beginsWith: 'github')
+					ifTrue: [ self getProject: pspec name fromRepository: url ];
+					ifFalse: [ Transcript crTrace: url ] ]].
 ]
 
 { #category : #releasing }
