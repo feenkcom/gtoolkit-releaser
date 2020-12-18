@@ -35,15 +35,19 @@ GtRlRepositoriesCloner class >> loadProject: aBaselineClassName fromRepository: 
 	repos := GtRlReleaseOrderTraversal new releaseOrderFor: release repositoryRelease.
 	loadWarnings := OrderedCollection new.
 	(repos flatCollect: [:r | r projectReleases]) 
-		collect: [ :pr | Metacello new baseline: pr name; repository: pr repositoryRelease repository url asString;
-		 onWarning: [ :anException |
-			"Log the error now."
-			MetacelloNotification signal: anException description.
-			"Create a list of all warnings."
-			loadWarnings add: anException description.
-			
-			anException resume ];
-		load].
+		collect: [ :pr |
+			Metacello new
+				baseline: pr name;
+				repository: pr repositoryRelease repository url asString;
+				onConflictUseIncoming;
+				 onWarning: [ :anException |
+					"Log the error now."
+					MetacelloNotification signal: anException description.
+					"Create a list of all warnings."
+					loadWarnings add: anException description.
+					
+					anException resume ];
+				load].
 		
 	"In case there are warnings during the loading fail here.
 	Otherwise most likely the failure will happen only when 
