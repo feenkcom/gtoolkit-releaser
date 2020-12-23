@@ -16,7 +16,7 @@ Class {
 		'baselineClass',
 		'repository',
 		'parentProjects',
-		'childProjects',
+		'projectReferences',
 		'packages',
 		'preLoadAction',
 		'postLoadAction',
@@ -32,19 +32,9 @@ GtRlProject class >> withName: projectName [
 ]
 
 { #category : #adding }
-GtRlProject >> addChildProject: aChildProject [ 
-	self childProjects add: aChildProject.
-	aChildProject basicAddParentProject: self
-]
-
-{ #category : #adding }
-GtRlProject >> addChildProjects: aCollection [
-	aCollection do: [ :aChildProject | 
-		self addChildProject: aChildProject ]
-]
-
-{ #category : #adding }
 GtRlProject >> addPackage: aPackage [
+	self assert: [ aPackage notNil ].
+	
 	aPackage parentProject: self. 
 	self packages add: aPackage.
 ]
@@ -53,6 +43,29 @@ GtRlProject >> addPackage: aPackage [
 GtRlProject >> addPackages: aCollection [
 	aCollection do: [ :aPackage |
 		self addPackage: aPackage ]
+]
+
+{ #category : #adding }
+GtRlProject >> addProjectReference: aProjectReference [
+	self assert: [ aProjectReference notNil ].
+	self assert: [ aProjectReference referencedProject notNil ].
+	
+	self projectReferences add: aProjectReference.
+	aProjectReference parentProject: self.
+	aProjectReference referencedProject basicAddParentProject: self.
+]
+
+{ #category : #adding }
+GtRlProject >> addProjectReferences: aCollection [
+	aCollection do: [ :aProjectReference | 
+		self addProjectReference: aProjectReference ]
+]
+
+{ #category : #traversing }
+GtRlProject >> allProjectReferences [
+	^ self
+		withDeep: [ :aProject | aProject childProjects ] 
+		flatCollect: [ :aProject | aProject projectReferences ]
 ]
 
 { #category : #accessing }
@@ -95,7 +108,8 @@ GtRlProject >> basicAddParentProject: aParentProject [
 
 { #category : #accessing }
 GtRlProject >> childProjects [
-	^ childProjects
+	^ self projectReferences collect: [ :aProjectReference |
+		aProjectReference referencedProject ]
 ]
 
 { #category : #actions }
@@ -128,14 +142,14 @@ GtRlProject >> gtChildProjectsFor: aView [
 		title: 'Child Projects' translated;
 		items: [ self childProjects ];
 		itemText: #name;
-		priority: 45
+		priority: 46
 ]
 
 { #category : #ui }
 GtRlProject >> gtMCProjectMapFor: aView [
 	<gtView>
 	^ self baselineVersion 
-		ifNil: [ aView ]
+		ifNil: [ aView empty ]
 		ifNotNil: [ :aBaselineVersion |
 			(aBaselineVersion gtProjectMapFor: aView)
 				title: 'MC Map' translated;
@@ -149,7 +163,7 @@ GtRlProject >> gtParentProjectsFor: aView [
 		title: 'Parent Projects' translated;
 		items: [ self parentProjects ];
 		itemText: #name;
-		priority: 50
+		priority: 45
 ]
 
 { #category : #ui }
@@ -177,10 +191,21 @@ GtRlProject >> gtProjectMapFor: aView [
 ]
 
 { #category : #ui }
+GtRlProject >> gtProjectReferencesFor: aView [
+	<gtView>
+	^ aView list
+		title: 'Project References' translated;
+		items: [ self projectReferences ];
+		itemText: [ :aProjectReference |
+			aProjectReference referencedProject name ];
+		priority: 55
+]
+
+{ #category : #ui }
 GtRlProject >> gtRepoMapFor: aView [
 	<gtView> 
 	^ self repository 
-		ifNil: [ aView ]
+		ifNil: [ aView empty ]
 		ifNotNil:  [ :aRepository | 
 			(aRepository gtRepoMapFor: aView)
 				priority: 60 ]
@@ -189,7 +214,7 @@ GtRlProject >> gtRepoMapFor: aView [
 { #category : #ui }
 GtRlProject >> gtSourceFor: aView [
 	<gtView> 
-	self baselineVersion ifNil: [ ^ aView ].
+	self baselineVersion ifNil: [ ^ aView empty ].
 	^ aView textEditor
 		title: 'Source' translated;
 		text: [ String streamContents: [ :s | 
@@ -212,24 +237,12 @@ GtRlProject >> initialize [
 	super initialize.
 	packages := OrderedCollection new.
 	parentProjects := OrderedCollection new.
-	childProjects := OrderedCollection new
+	projectReferences := OrderedCollection new.
 ]
 
 { #category : #testing }
 GtRlProject >> isLeaf [
 	^ self childProjects isEmpty
-]
-
-{ #category : #testing }
-GtRlProject >> isPackageNode [
-	"Hack to be compatible with ProjectReference"
-	^ false
-]
-
-{ #category : #testing }
-GtRlProject >> isProjectReference [
-	"Hack to be compatible with ProjectReference"
-	^ true
 ]
 
 { #category : #actions }
@@ -309,6 +322,11 @@ GtRlProject >> printOn: aStream [
 ]
 
 { #category : #accessing }
+GtRlProject >> projectReferences [
+	^ projectReferences
+]
+
+{ #category : #accessing }
 GtRlProject >> repository [
 	^ repository
 ]
@@ -359,5 +377,5 @@ GtRlProject >> withAllChildProjects [
 GtRlProject >> withAllRepositories [
 	"Return all repositores that can be reached from the this project, 
 	including the repository holding this project."
-	^ (self withDeep: #childProjects  collect: #repository) removeDuplicates
+	^ (self withDeep: #childProjects collect: #repository) removeDuplicates
 ]

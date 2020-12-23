@@ -11,9 +11,9 @@ GtRlPackageExamples >> emptyPackageShouldHaveNoDependencies [
 	package :=self packageWithName.
 	self assert: package outgoingDependencies isEmpty.	
 	self assert: package incomingDependencies isEmpty.
-	self assert: package incomingPackageDependencies isEmpty.
-	self assert: package outgoingPackageDependencies isEmpty.
-	self assert: package outgoingProjectDependencies isEmpty.
+	self assert: package incomingDependenciesFromPackages isEmpty.
+	self assert: package outgoingDependenciesToPackages isEmpty.
+	self assert: package outgoingDependenciesToProjects isEmpty.
 	^ package
 ]
 
@@ -54,7 +54,7 @@ GtRlPackageExamples >> packageWithIncomingPackageDependencies [
 		targetNode: package).
 	
 	self assert: package incomingDependencies size equals: 2.
-	self assert: package incomingPackageDependencies size equals: 2.
+	self assert: package incomingDependenciesFromPackages size equals: 2.
 	self assert: package dependentPackages first equals: packageA.
 	self assert: package dependentPackages second equals: packageB.
 	
@@ -64,31 +64,30 @@ GtRlPackageExamples >> packageWithIncomingPackageDependencies [
 { #category : #'examples - outgoing' }
 GtRlPackageExamples >> packageWithMixedOutgoingDependencies [
 	<gtExample>
-	| package unknownNode projectA packageA |
-	unknownNode := GtRlUnknownNode withName: 'Unknown'.
+	| package projectA projectReferenceA packageA |
 	projectA := GtRlProject withName: 'ProjectA'.
+	projectReferenceA := GtRlProjectReference forReferencedProject: projectA.
 	packageA := GtRlPackage withName: 'PackageA'.
 	package := self packageWithName.
 	package addOutgoingDependency: (GtRlPackageDependency new 
 		sourceNode: package;
-		targetNode: unknownNode).
-	package addOutgoingDependency: (GtRlPackageDependency new 
-		sourceNode: package;
-		targetNode: projectA).
+		targetNode: projectReferenceA).
 	package addOutgoingDependency: (GtRlPackageDependency new 
 		sourceNode: package;
 		targetNode: packageA).
 	
-	self assert: package outgoingDependencies size equals: 3.
-	self assert: package outgoingPackageDependencies size equals: 1.
-	self assert: package outgoingProjectDependencies size equals: 1.
+	self assert: package outgoingDependencies size equals: 2.
+	self assert: package outgoingDependenciesToPackages size equals: 1.
+	self assert: package outgoingDependenciesToProjects size equals: 1.
 	
-	self assert: package requiredNodes size equals: 3.
+	self assert: package requiredNodes size equals: 2.
 	self assert: package requiredPackages size equals: 1.
 	self assert: package requiredProjectReferences size equals: 1.
+	self assert: package requiredProjects size equals: 1.
 	
 	self assert: package requiredPackages first equals: packageA.
-	self assert: package requiredProjectReferences first equals: projectA.
+	self assert: package requiredProjectReferences first equals: projectReferenceA.
+	self assert: package requiredProjects first equals: projectA.
 	
 	^ package
 ]
@@ -100,8 +99,26 @@ GtRlPackageExamples >> packageWithMixedOutgoingDependenciesHasNoIncomingDependen
 	package := self packageWithMixedOutgoingDependencies.
 	
 	self assert: package incomingDependencies size equals: 0.
-	self assert: package incomingPackageDependencies size equals: 0.
+	self assert: package incomingDependenciesFromPackages size equals: 0.
 	self assert: package dependentPackages size equals: 0.
+	
+	^ package
+]
+
+{ #category : #'examples - outgoing' }
+GtRlPackageExamples >> packageWithMixedOutgoingUknownDependency [
+	<gtExample>
+	| package unknownNode |
+	unknownNode := GtRlUnknownNode withName: 'Unknown'.
+	
+	package := self packageWithName.
+	package addOutgoingDependency: (GtRlPackageDependency new 
+		sourceNode: package;
+		targetNode: unknownNode).
+	
+	self assert: package outgoingDependencies size equals: 1.
+	self assert: package outgoingDependenciesToPackages size equals: 0.
+	self assert: package outgoingDependenciesToProjects size equals: 0.
 	
 	^ package
 ]
@@ -133,7 +150,8 @@ GtRlPackageExamples >> packageWithOutgoingPackageDependencies [
 		targetNode: packageB).
 	
 	self assert: package outgoingDependencies size equals: 2.
-	self assert: package outgoingPackageDependencies size equals: 2.
+	self assert: package outgoingDependenciesToPackages size equals: 2.
+	self assert: package requiredProjectReferences size equals: 0.
 	self assert: package requiredPackages first equals: packageA.
 	self assert: package requiredPackages second equals: packageB.
 	self assert: package requiredNodes size equals: 2.
@@ -148,7 +166,7 @@ GtRlPackageExamples >> packageWithOutgoingPackageDependenciesHasNoIncomingDepend
 	package := self packageWithOutgoingPackageDependencies.
 	
 	self assert: package incomingDependencies size equals: 0.
-	self assert: package incomingPackageDependencies size equals: 0.
+	self assert: package incomingDependenciesFromPackages size equals: 0.
 	
 	^ package
 ]
@@ -167,21 +185,27 @@ GtRlPackageExamples >> packageWithOutgoingPackageDependenciesHasNoProjectDepende
 { #category : #'examples - outgoing' }
 GtRlPackageExamples >> packageWithOutgoingProjectDependencies [
 	<gtExample>
-	| package projectA projectB |
+	| package projectA projectB projectReferenceA projectReferenceB |
 	package := self packageWithName.
 	projectA := GtRlProject withName: 'ProjectA'.
 	projectB := GtRlProject withName: 'ProjectB'.
+	projectReferenceA := GtRlProjectReference forReferencedProject: projectA.
+	projectReferenceB := GtRlProjectReference forReferencedProject: projectB.
 	package addOutgoingDependency: (GtRlPackageDependency new 
 		sourceNode: package;
-		targetNode: projectA).
+		targetNode: projectReferenceA).
 	package addOutgoingDependency: (GtRlPackageDependency new 
 		sourceNode: package;
-		targetNode: projectB).
+		targetNode: projectReferenceB).
 	
 	self assert: package outgoingDependencies size equals: 2.
-	self assert: package outgoingProjectDependencies size equals: 2.
-	self assert: package requiredProjectReferences first equals: projectA.
-	self assert: package requiredProjectReferences second equals: projectB.
+	self assert: package outgoingDependenciesToProjects size equals: 2.
+	self assert: package requiredProjects size equals: 2.
+	self assert: package requiredProjectReferences size equals: 2.
+	self assert: package requiredProjectReferences first equals: projectReferenceA.
+	self assert: package requiredProjectReferences second equals: projectReferenceB.
+	self assert: package requiredProjects first equals: projectA.
+	self assert: package requiredProjects second equals: projectB.
 	self assert: package requiredNodes size equals: 2.
 	
 	^ package
@@ -205,7 +229,7 @@ GtRlPackageExamples >> packageWithOutgoingProjectDependenciesHasNoIncomingDepend
 	package := self packageWithOutgoingProjectDependencies.
 	
 	self assert: package incomingDependencies size equals: 0.
-	self assert: package incomingPackageDependencies size equals: 0.
+	self assert: package incomingDependenciesFromPackages size equals: 0.
 	
 	^ package
 ]

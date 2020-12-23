@@ -37,16 +37,24 @@ GtRlProjectExamples >> projectWithBaselineVersion [
 { #category : #'examples - basic' }
 GtRlProjectExamples >> projectWithChildren [
 	<gtExample>
-	| project childA childB |
+	| project childA childB referenceA referenceB |
 	project := self projectWithName.
 	childA := GtRlProject new 
 		name: 'ChildA'.
 	childB := GtRlProject new 
 		name: 'ChildB'.
+	referenceA := GtRlProjectReference new
+		referencedProject: childA.
+	referenceB := GtRlProjectReference new
+		referencedProject: childB.
 	
 	project 
-		addChildProject: childA;
-		addChildProject: childB.
+		addProjectReference: referenceA;
+		addProjectReference: referenceB.
+	
+	self assert: referenceA parentProject equals: project.
+	self assert: referenceB parentProject equals: project.
+	self assert: project projectReferences asArray equals: {referenceA . referenceB}.
 	
 	self assert: project childProjects asArray equals: {childA . childB}.
 	self assert: project isLeaf not.
@@ -184,15 +192,24 @@ GtRlProjectExamples >> projectWithStructureWithinOneRepo [
 { #category : #'examples - basic' }
 GtRlProjectExamples >> projectWithTwoParents [
 	<gtExample>
-	| project parentA parentB |
+	| project parentA parentB parentReferenceA parentReferenceB |
 	project := self projectWithName.
 	parentA := GtRlProject new 
 		name: 'ParentA'.
 	parentB := GtRlProject new 
 		name: 'ParentB'.
+	parentReferenceA := GtRlProjectReference new
+		referencedProject: project.
+	parentReferenceB := GtRlProjectReference new
+		referencedProject: project.
 	
-	parentA addChildProject: project.
-	parentB addChildProject: project.
+	parentA addProjectReference: parentReferenceA.
+	parentB addProjectReference: parentReferenceB.
+	
+	self assert: parentReferenceA parentProject equals: parentA.
+	self assert: parentReferenceB parentProject equals: parentB.
+	self assert: parentA projectReferences asArray equals: {parentReferenceA}.
+	self assert: parentB projectReferences asArray equals: {parentReferenceB}.
 	
 	self assert: project parentProjects asArray equals: {parentA . parentB}.
 	self assert: project isLeaf.
@@ -213,9 +230,11 @@ GtRlProjectExamples >> systemOneProject [
 	project := projectBuilder 
 		buildProjectFromBaselineClass: BaselineOfGtRlBaselineExampleSystemOne
 		withRepositoryDescription: repositoryName. 
-		
+	
+	self assert: project projectReferences size equals: 4.
 	self assert: project childProjects size equals: 4.
 	self assert: project withAllChildProjects size equals: 7.
+	self assert: project allProjectReferences size equals: 6.
 	self assert: project parentProjects size equals: 0.
 	self assert: project repository urlString equals: repositoryName.
 	self assert: project withAllRepositories size equals: 6.

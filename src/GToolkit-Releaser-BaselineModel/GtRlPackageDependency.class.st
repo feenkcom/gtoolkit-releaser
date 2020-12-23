@@ -1,3 +1,8 @@
+"
+I model a package requirement in a baseline.
+
+The source node of the dependency is the package. The target is another type of ${class:GtRlNode}$ from the baseline. Currently only dependencies to other packages or projects are supported.
+"
 Class {
 	#name : #GtRlPackageDependency,
 	#superclass : #Object,

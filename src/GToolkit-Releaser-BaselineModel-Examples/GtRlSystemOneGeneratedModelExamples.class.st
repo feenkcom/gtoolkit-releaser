@@ -1,6 +1,13 @@
 Class {
 	#name : #GtRlSystemOneGeneratedModelExamples,
 	#superclass : #Object,
+	#instVars : [
+		'theSystemOneProject',
+		'theComponentAProject',
+		'theComponentBProject',
+		'theComponentCProject',
+		'theComponentDProject'
+	],
 	#category : #'GToolkit-Releaser-BaselineModel-Examples'
 }
 
@@ -25,6 +32,8 @@ GtRlSystemOneGeneratedModelExamples >> componentAHasNoChildren [
 		
 	self assert: project isLeaf.
 	self assert: project childProjects size equals: 0.
+	self assert: project projectReferences size equals: 0.
+	self assert: project allProjectReferences size equals: 0.
 	self assert: project withAllChildProjects size equals: 1.
 	
 	^ project
@@ -69,12 +78,13 @@ GtRlSystemOneGeneratedModelExamples >> componentAHasSystemOneAsParent [
 GtRlSystemOneGeneratedModelExamples >> componentAProject [
 	<gtExample>
 	| project component |
-	project := self systemOneProject. 
-	component := project childProjects first.
+	^ theComponentAProject ifNil: [ 
+		project := self systemOneProject. 
+		component := project childProjects first.
 	
-	self assert: component name equals: 'GtRlBaselineExampleComponentA'.
+		self assert: component name equals: 'GtRlBaselineExampleComponentA'.
 	
-	^ component
+		theComponentAProject := component ]
 ]
 
 { #category : #'examples - component B' }
@@ -126,6 +136,18 @@ GtRlSystemOneGeneratedModelExamples >> componentBHasOneChild [
 ]
 
 { #category : #'examples - component B' }
+GtRlSystemOneGeneratedModelExamples >> componentBHasOneProjectReference [
+	<gtExample>
+	| project |
+	project := self componentBProject. 
+		
+	self assert: project projectReferences size equals: 1.
+	self assert: project allProjectReferences size equals: 1.
+	
+	^ project
+]
+
+{ #category : #'examples - component B' }
 GtRlSystemOneGeneratedModelExamples >> componentBHasOneRepositoryForAllChildren [
 	<gtExample>
 	|  project |
@@ -152,12 +174,13 @@ GtRlSystemOneGeneratedModelExamples >> componentBHasSystemOneAsParent [
 GtRlSystemOneGeneratedModelExamples >> componentBProject [
 	<gtExample>
 	| project component |
-	project := self systemOneProject. 
-	component := project childProjects second.
+	^ theComponentBProject ifNil: [ 
+		project := self systemOneProject. 
+		component := project childProjects second.
 	
-	self assert: component name equals: 'GtRlBaselineExampleComponentBMain'.
+		self assert: component name equals: 'GtRlBaselineExampleComponentBMain'.
 	
-	^ component
+		theComponentBProject := component ]
 ]
 
 { #category : #'examples - component C' }
@@ -182,6 +205,8 @@ GtRlSystemOneGeneratedModelExamples >> componentCHasNoChildren [
 	self assert: project isLeaf.
 	self assert: project childProjects size equals: 0.
 	self assert: project withAllChildProjects size equals: 1.
+	self assert: project projectReferences size equals: 0.
+	self assert: project allProjectReferences size equals: 0.
 	
 	^ project
 ]
@@ -225,12 +250,13 @@ GtRlSystemOneGeneratedModelExamples >> componentCHasSystemOneAsParent [
 GtRlSystemOneGeneratedModelExamples >> componentCProject [
 	<gtExample>
 	| project component |
-	project := self systemOneProject. 
-	component := project childProjects third.
+	^ theComponentCProject ifNil: [
+		project := self systemOneProject. 
+		component := project childProjects third.
 	
-	self assert: component name equals: 'GtRlBaselineExampleComponentC'.
+		self assert: component name equals: 'GtRlBaselineExampleComponentC'.
 	
-	^ component
+		theComponentCProject := component ]
 ]
 
 { #category : #'examples - component D' }
@@ -281,6 +307,21 @@ GtRlSystemOneGeneratedModelExamples >> componentDHasOneChild [
 ]
 
 { #category : #'examples - component D' }
+GtRlSystemOneGeneratedModelExamples >> componentDHasOneProjectReference [
+	<gtExample>
+	| project |
+	project := self componentDProject. 
+		
+	self assert: project isLeaf not.
+	self assert: project childProjects size equals: 1.
+	self assert: project withAllChildProjects size equals: 2.
+	self assert: project projectReferences size equals: 1.
+	self assert: project allProjectReferences size equals: 1.
+	
+	^ project
+]
+
+{ #category : #'examples - component D' }
 GtRlSystemOneGeneratedModelExamples >> componentDHasSystemOneAsParent [
 	<gtExample>
 	| project |
@@ -296,12 +337,13 @@ GtRlSystemOneGeneratedModelExamples >> componentDHasSystemOneAsParent [
 GtRlSystemOneGeneratedModelExamples >> componentDProject [
 	<gtExample>
 	| project component |
-	project := self systemOneProject. 
-	component := project childProjects fourth.
+	^ theComponentDProject ifNil: [
+		project := self systemOneProject. 
+		component := project childProjects fourth.
 	
-	self assert: component name equals: 'GtRlBaselineExampleComponentD'.
+		self assert: component name equals: 'GtRlBaselineExampleComponentD'.
 	
-	^ component
+		theComponentDProject := component ]
 ]
 
 { #category : #'examples - systemOne' }
@@ -313,6 +355,8 @@ GtRlSystemOneGeneratedModelExamples >> systemOneCorrectNumberOfChildProjects [
 	self assert: project isLeaf not.
 	self assert: project childProjects size equals: 4.
 	self assert: project withAllChildProjects size equals: 7.
+	self assert: project childProjects asArray equals: {
+		self componentAProject. self componentBProject. self componentCProject. self componentDProject }.
 	
 	^ project
 ]
@@ -324,6 +368,18 @@ GtRlSystemOneGeneratedModelExamples >> systemOneCorrectNumberOfParentProjects [
 	project := self systemOneProject. 
 	
 	self assert: project parentProjects size equals: 0.
+	
+	^ project
+]
+
+{ #category : #'examples - systemOne' }
+GtRlSystemOneGeneratedModelExamples >> systemOneCorrectNumberOfProjectReferences [
+	<gtExample>
+	| project |
+	project := self systemOneProject. 
+	
+	self assert: project projectReferences size equals: 4.
+	self assert: project allProjectReferences size equals: 6.
 	
 	^ project
 ]
@@ -378,13 +434,14 @@ GtRlSystemOneGeneratedModelExamples >> systemOneHasNoPreAndPostLoadActions [
 GtRlSystemOneGeneratedModelExamples >> systemOneProject [
 	<gtExample>
 	| projectBuilder project repositoryName |
-	repositoryName := 'github://example/SystemOne/src'.
-	projectBuilder := GtRlDependenciesModelBuilder new.
-	project := projectBuilder 
-		buildProjectFromBaselineClass: BaselineOfGtRlBaselineExampleSystemOne
-		withRepositoryDescription: repositoryName. 
+	^ theSystemOneProject ifNil: [ 
+		repositoryName := 'github://example/SystemOne/src'.
+		projectBuilder := GtRlDependenciesModelBuilder new.
+		project := projectBuilder 
+			buildProjectFromBaselineClass: BaselineOfGtRlBaselineExampleSystemOne
+			withRepositoryDescription: repositoryName. 
 	
-	self assert: project name equals: 'GtRlBaselineExampleSystemOne'.
+		self assert: project name equals: 'GtRlBaselineExampleSystemOne'.
 	
-	^ project
+		theSystemOneProject := project ]
 ]

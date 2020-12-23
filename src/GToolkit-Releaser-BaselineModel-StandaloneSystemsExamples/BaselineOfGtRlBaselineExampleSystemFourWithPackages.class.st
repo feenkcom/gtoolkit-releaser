@@ -1,3 +1,6 @@
+"
+I am a baseline with dependencies between packages
+"
 Class {
 	#name : #BaselineOfGtRlBaselineExampleSystemFourWithPackages,
 	#superclass : #BaselineOf,
