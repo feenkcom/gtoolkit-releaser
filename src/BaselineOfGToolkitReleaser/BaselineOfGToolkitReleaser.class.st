@@ -192,8 +192,7 @@ BaselineOfGToolkitReleaser >> baseline: spec [
 			package: 'GToolkit-Releaser-BaselineModel-StandaloneSystemsExamples';
 			package: 'GToolkit-Releaser-BaselineModel-MinimalIceberg';
 			package: 'GToolkit-Releaser-BaselineModel-Examples' with: [ spec requires: #('GToolkit-Releaser-BaselineModel-SystemOneExamples' 'GToolkit-Releaser-BaselineModel-SystemThreeExamples' 'GToolkit-Releaser-BaselineModel-SystemTwoExamples' 'GToolkit-Releaser-BaselineModel-StandaloneSystemsExamples' 'GToolkit-Releaser-BaselineModel-MinimalIceberg') ];
-			package: 'GToolkit-Releaser-Examples' with: [ spec requires: #('GToolkit-Releaser' 'GToolkit-Releaser-IcebergExtensions' 'GToolkit-Releaser-BaselineModel-Examples') ];
-			package: 'GToolkit-DependencyAnalyzer' with: [ spec requires: #('GToolkit-Releaser-BaselineModel') ]. ].
+			package: 'GToolkit-Releaser-Examples' with: [ spec requires: #('GToolkit-Releaser' 'GToolkit-Releaser-IcebergExtensions' 'GToolkit-Releaser-BaselineModel-Examples') ]. ].
 		spec
     		baseline: 'DeepTraverser'
     		with: [ spec repository: 'github://feenkcom/DeepTraverser/src' ]
