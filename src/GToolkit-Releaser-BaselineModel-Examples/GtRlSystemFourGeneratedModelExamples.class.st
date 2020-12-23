@@ -28,7 +28,7 @@ GtRlSystemFourGeneratedModelExamples >> packageAMainHasDependentPackages [
 GtRlSystemFourGeneratedModelExamples >> packageAMainHasNoRequiredDependencies [
 	<gtExample>
 	| package |
-	package := self packageAMainNode. 
+	package := self packageAMainNode.
 	
 	self assert: package requiredPackages size equals: 0.
 	self assert: package requiredProjectReferences size equals: 0.
@@ -50,6 +50,33 @@ GtRlSystemFourGeneratedModelExamples >> packageAMainNode [
 		self assert: package parentProject equals: project.
 	
 		thePackageAMainNode := package ]
+]
+
+{ #category : #'examples - packages' }
+GtRlSystemFourGeneratedModelExamples >> packageAPart1HasBothDependencies [
+	<gtExample>
+	| package |
+	package := self packageAPart1Node. 
+	
+	self assert: package incomingDependencies size equals: 1.
+	self assert: package outgoingDependencies size equals: 1.
+	self assert: package dependentPackages size equals: 1.
+	self assert: package requiredPackages size equals: 1.
+	
+	self assert: package dependentPackages first equals: self packageATestNode.
+	self assert: package requiredPackages first equals: self packageAMainNode.
+	^ package
+]
+
+{ #category : #'examples - packages' }
+GtRlSystemFourGeneratedModelExamples >> packageAPart1HasCorrectParent [
+	<gtExample>
+	| package |
+	package := self packageAPart1Node. 
+	
+	self assert: package parentProject equals: self systemProject.
+	
+	^ package
 ]
 
 { #category : #'examples - nodes' }
@@ -106,6 +133,7 @@ GtRlSystemFourGeneratedModelExamples >> systemHasNoProjectDependencoes [
 	
 	self assert: project isLeaf.
 	self assert: project childProjects size equals: 0.
+	self assert: project projectReferences size equals: 0.
 	self assert: project parentProjects size equals: 0.
 	^ project
 ]
@@ -120,7 +148,7 @@ GtRlSystemFourGeneratedModelExamples >> systemProject [
 		project := projectBuilder 
 			buildProjectFromBaselineClass: BaselineOfGtRlBaselineExampleSystemFourWithPackages
 			withRepositoryDescription: repositoryName. 
-	
+		
 		self assert: project name equals: 'GtRlBaselineExampleSystemFourWithPackages'.
 		
 		theSystemProject := project ]

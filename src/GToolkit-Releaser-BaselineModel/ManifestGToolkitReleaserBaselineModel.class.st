@@ -1,5 +1,5 @@
 "
-I store metadata for this package used by various other tools.
+I contain a model for capturing Metacello baselines and dependencies between baselines.
 "
 Class {
 	#name : #ManifestGToolkitReleaserBaselineModel,

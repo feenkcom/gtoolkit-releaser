@@ -78,15 +78,6 @@ GtRlDependenciesModelBuilder >> createDependencyFromPackage: aSourcePackage toNo
 ]
 
 { #category : #'private - building' }
-GtRlDependenciesModelBuilder >> createDependencyFromPackage: aSourcePackage toProjectNode: aTargetPackage [
-	| dependency |
-	dependency := GtRlPackageDependency new
-		sourceNode: aSourcePackage;
-		targetNode: aTargetPackage.
-	aSourcePackage addOutgoingDependency: dependency.
-]
-
-{ #category : #'private - building' }
 GtRlDependenciesModelBuilder >> ensureRepositoriesFor: aRepositoryUrl [
 	^ repositoriesByUrl 
 		at: aRepositoryUrl 
@@ -127,14 +118,14 @@ GtRlDependenciesModelBuilder >> projectsByBaselineClass [
 
 { #category : #dependencies }
 GtRlDependenciesModelBuilder >> resolvePackageDependenciesFor: currentProject fromMCVersion: aMetacelloVersion [
-	| packagesByName projectsByName |
+	| packagesByName projectReferencesByName |
 	packagesByName := Dictionary new.
-	projectsByName := Dictionary new.
+	projectReferencesByName := Dictionary new.
 	"Create two dictionaries with all possible package and project dependencies"
 	currentProject packages do: [ :aReleaserPackage |
 		packagesByName at: aReleaserPackage name put: aReleaserPackage ].
-	currentProject childProjects do: [ :aReleaserProject |
-		projectsByName at: aReleaserProject name put: aReleaserProject ].
+	currentProject projectReferences do: [ :aProjectReference |
+		projectReferencesByName at: aProjectReference name put: aProjectReference ].
 	
 	aMetacelloVersion packages do: [ :aMetacelloPackageSpec | 
 		| currentPackage |
@@ -143,11 +134,15 @@ GtRlDependenciesModelBuilder >> resolvePackageDependenciesFor: currentProject fr
 			packagesByName 
 				at: aRequirementName 
 				ifPresent: [ :aTargetPackage | 
-					self createDependencyFromPackage: currentPackage toNode: aTargetPackage ]
-				ifAbsent: [ projectsByName 
+					self 
+						createDependencyFromPackage: currentPackage 
+						toNode: aTargetPackage ]
+				ifAbsent: [ projectReferencesByName 
 					at: aRequirementName
-					ifPresent: [ :aTargetProject |
-						self createDependencyFromPackage: currentPackage toProjectNode: aTargetProject ]
+					ifPresent: [ :aTargetProjectReference |
+						self 
+							createDependencyFromPackage: currentPackage 
+							toNode: aTargetProjectReference ]
 					ifAbsent: [ 
 						self 
 							createDependencyFromPackage: currentPackage 
@@ -176,8 +171,8 @@ GtRlDependenciesModelBuilder >> updatePackageDependenciesFor: currentProject fro
 
 { #category : #dependencies }
 GtRlDependenciesModelBuilder >> updateProjectDependenciesFor: currentProject fromMCVersion: aMetacelloVersion [
-	| childProjects |
-	childProjects := (aMetacelloVersion projects 
+	| projectReferences |
+	projectReferences := (aMetacelloVersion projects 
 		select: [ :aMetacelloProjectSpec || shouldKeep |
 			shouldKeep := aMetacelloProjectSpec version notNil and: [ 
 				aMetacelloProjectSpec version name = 'baseline' ].
@@ -185,6 +180,9 @@ GtRlDependenciesModelBuilder >> updateProjectDependenciesFor: currentProject fro
 				StringSignal emit: ('Ignoring dependency ', aMetacelloProjectSpec className, ' of ', currentProject name) ].
 			shouldKeep ])
 		collect: [ :aMCProjectSpec | 
-			self buildProjectFromMetacelloSpec: aMCProjectSpec ].
-	currentProject addChildProjects: childProjects.
+			| referencedProject |
+			referencedProject := self buildProjectFromMetacelloSpec: aMCProjectSpec.
+			GtRlProjectReference new 
+				referencedProject: referencedProject ].
+	currentProject addProjectReferences: projectReferences.
 ]

@@ -1,3 +1,6 @@
+"
+I am a baseline that has pre and post actions
+"
 Class {
 	#name : #BaselineOfGtRlBaselineExampleStandaloneWithActions,
 	#superclass : #BaselineOf,

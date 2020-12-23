@@ -1,5 +1,5 @@
 "
-I model an known node encountered in baseline that does not corespond to a package or project from that baseline.
+I model an unknown node encountered in baseline that does not corespond to a package or project from that baseline.
 "
 Class {
 	#name : #GtRlUnknownNode,
@@ -11,4 +11,9 @@ Class {
 GtRlUnknownNode class >> withName: projectName [
 	^ self new
 		name: projectName
+]
+
+{ #category : #testing }
+GtRlUnknownNode >> isUnknownNode [
+	^ true
 ]

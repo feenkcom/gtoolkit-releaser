@@ -1,5 +1,7 @@
 "
 I am an abstraction for a type of dependency in the loading configuration of a system.
+
+I hold a list of incomming dependencies that indicate what other nodes in the baseline depend on me. Currently those dependencies are only of type ${class:GtRlPackageDependency}$, as only packages can have outgoing dependencies.
 "
 Class {
 	#name : #GtRlNode,
@@ -16,7 +18,7 @@ Class {
 GtRlNode >> addIncomingDependency: aDependency [
 	self assert: [ aDependency notNil ].
 	self 
-		assert: [ aDependency targetNode == self] 
+		assert: [ aDependency targetNode == self ] 
 		description: 'Within an incoming dependency the current node should be the target'.
 	
 	self incomingDependencies add: aDependency
@@ -24,8 +26,27 @@ GtRlNode >> addIncomingDependency: aDependency [
 
 { #category : #'accessing - dynamic' }
 GtRlNode >> dependentPackages [
-	^ self incomingPackageDependencies collect: [ :aDependency |
+	^ self incomingDependenciesFromPackages collect: [ :aDependency |
 		aDependency sourceNode ]
+]
+
+{ #category : #ui }
+GtRlNode >> gtViewDependentPackagesListFor: aView [
+	<gtView>
+	^ aView list
+		title: 'Dependent packages' translated;
+		priority: 60;
+		items: [ self dependentPackages ];
+		itemText: #name
+]
+
+{ #category : #ui }
+GtRlNode >> gtViewIncomingDependenciesListFor: aView [
+	<gtView>
+	^ aView list
+		title: 'Incoming Dependencies' translated;
+		priority: 90;
+		items: [ self incomingDependencies ]
 ]
 
 { #category : #accessing }
@@ -34,9 +55,9 @@ GtRlNode >> incomingDependencies [
 ]
 
 { #category : #'accessing - dynamic' }
-GtRlNode >> incomingPackageDependencies [
+GtRlNode >> incomingDependenciesFromPackages [
 	^ self incomingDependencies select: [ :aDependency |
-		aDependency targetNode isPackageNode ]
+		aDependency sourceNode isPackageNode ]
 ]
 
 { #category : #initialization }
@@ -52,6 +73,11 @@ GtRlNode >> isPackageNode [
 
 { #category : #testing }
 GtRlNode >> isProjectReference [
+	^ false
+]
+
+{ #category : #testing }
+GtRlNode >> isUnknownNode [
 	^ false
 ]
 

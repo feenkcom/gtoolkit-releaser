@@ -1,12 +1,13 @@
 "
-I model a package that is loaded by a project.
+I model a package that is loaded by a project. 
 
 I have as main attributes:
 	- the name of the package 
 	- the project that contains me
-	- dependencies to other packages or projects
+	- outgoing dependencies to other packages or projects
+	- incomming dependencies from other packages that depend on me
 	
-I do not have an explicit repository. I am placed in the same repository as the project that contains me.
+I do not have an explicit repository. I am placed in the same repository as the project that contains me. Also packages are internal to the project and should not be referenced from other projects. Dependencies should only be at the level of projects.
 "
 Class {
 	#name : #GtRlPackage,
@@ -39,25 +40,6 @@ GtRlPackage >> asRPackage [
 ]
 
 { #category : #ui }
-GtRlPackage >> gtViewDependentPackagesListFor: aView [
-	<gtView>
-	^ aView list
-		title: 'Dependent packages' translated;
-		priority: 60;
-		items: [ self dependentPackages ];
-		itemFormat: #name
-]
-
-{ #category : #ui }
-GtRlPackage >> gtViewIncomingDependenciesListFor: aView [
-	<gtView>
-	^ aView list
-		title: 'Incoming Dependencies' translated;
-		priority: 90;
-		items: [ self incomingDependencies ]
-]
-
-{ #category : #ui }
 GtRlPackage >> gtViewOutgoingDependenciesListFor: aView [
 	<gtView>
 	^ aView list
@@ -73,7 +55,17 @@ GtRlPackage >> gtViewRequiredPackagesListFor: aView [
 		title: 'Required packages' translated;
 		priority: 50;
 		items: [ self requiredPackages ];
-		itemFormat: #name
+		itemText: #name
+]
+
+{ #category : #ui }
+GtRlPackage >> gtViewRequiredProjectReferencesListFor: aView [
+	<gtView>
+	^ aView list
+		title: 'Project References' translated;
+		priority: 56;
+		items: [ self requiredProjectReferences ];
+		itemText: #name
 ]
 
 { #category : #ui }
@@ -82,8 +74,8 @@ GtRlPackage >> gtViewRequiredProjectsListFor: aView [
 	^ aView list
 		title: 'Required projects' translated;
 		priority: 55;
-		items: [ self requiredProjectReferences ];
-		itemFormat: #name
+		items: [ self requiredProjects ];
+		itemText: #name
 ]
 
 { #category : #initialization }
@@ -103,13 +95,13 @@ GtRlPackage >> outgoingDependencies [
 ]
 
 { #category : #'accessing - dynamic' }
-GtRlPackage >> outgoingPackageDependencies [
+GtRlPackage >> outgoingDependenciesToPackages [
 	^ self outgoingDependencies select: [ :aDependency |
 		aDependency targetNode isPackageNode ]
 ]
 
 { #category : #'accessing - dynamic' }
-GtRlPackage >> outgoingProjectDependencies [
+GtRlPackage >> outgoingDependenciesToProjects [
 	^ self outgoingDependencies select: [ :aDependency |
 		aDependency targetNode isProjectReference ]
 ]
@@ -128,12 +120,18 @@ GtRlPackage >> requiredNodes [
 
 { #category : #'accessing - dynamic' }
 GtRlPackage >> requiredPackages [
-	^ self outgoingPackageDependencies collect: [ :aDependency |
+	^ self outgoingDependenciesToPackages collect: [ :aDependency |
 		aDependency targetNode ]
 ]
 
 { #category : #'accessing - dynamic' }
 GtRlPackage >> requiredProjectReferences [
-	^ self outgoingProjectDependencies collect: [ :aDependency |
+	^ self outgoingDependenciesToProjects collect: [ :aDependency |
 		aDependency targetNode ]
+]
+
+{ #category : #'accessing - dynamic' }
+GtRlPackage >> requiredProjects [
+	^ self requiredProjectReferences collect: [ :aProjectReference |
+		aProjectReference referencedProject ]
 ]

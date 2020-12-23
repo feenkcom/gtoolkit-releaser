@@ -58,19 +58,23 @@ GtRlSystemOneModelExamples >> projectComponentA [
 GtRlSystemOneModelExamples >> projectComponentBMain [
 	<gtExample>
 	^ projectComponentBMain ifNil: [ 
-		| projectBMain projectBUtil repository |
+		| projectBMain projectBUtil projectBUtilReference repository |
 		projectBMain := GtRlProject new
 			name: 'GtRlBaselineExampleComponentBMain';
 			baselineClass: BaselineOfGtRlBaselineExampleComponentBMain;
 			baselineVersion: BaselineOfGtRlBaselineExampleComponentBMain project version.
 		projectBUtil := self projectComponentBUtil.
-		projectBMain addChildProject: projectBUtil.
+		projectBUtilReference := GtRlProjectReference forReferencedProject: projectBUtil.
+		projectBMain addProjectReference: projectBUtilReference.
 		repository := self repositoryComponentB.
 		projectBMain linkWithRepository: repository.
 	
 		self assertBaseline: BaselineOfGtRlBaselineExampleComponentBMain forProject: projectBMain.
 		self assert: repository projects asArray equals: { projectBUtil . projectBMain }.
 		self assert: repository childRepositories isEmpty.
+		
+		self assert: projectBMain childProjects asArray equals: { projectBUtil }.
+		self assert: projectBMain projectReferences asArray equals: { projectBUtilReference }.
 	
 		projectComponentBMain := projectBMain ]
 ]
@@ -117,22 +121,24 @@ GtRlSystemOneModelExamples >> projectComponentC [
 GtRlSystemOneModelExamples >> projectComponentD [
 	<gtExample>
 	^ projectComponentD ifNil: [
-		| projectD projectDModuleA repository |
+		| projectD projectDModuleA projectDModuleAReference repository |
 		projectD := GtRlProject new
 			name: 'GtRlBaselineExampleComponentD';
 			baselineClass: BaselineOfGtRlBaselineExampleComponentD;
 			baselineVersion: BaselineOfGtRlBaselineExampleComponentD project version.
 		projectDModuleA := self projectComponentDModuleA.
+		projectDModuleAReference := GtRlProjectReference forReferencedProject: projectDModuleA.
 		repository := self repositoryComponentD.
 		projectD
 			linkWithRepository: repository;
-			addChildProject: projectDModuleA.
-	
+			addProjectReference: projectDModuleAReference.
+		
 		self assertBaseline: BaselineOfGtRlBaselineExampleComponentD forProject: projectD.
 		self assert: projectD repository equals: repository.
 		self assert: repository projects asArray equals: { projectD }.
 		self assert: repository childRepositories asArray equals: { projectDModuleA repository }.
 		self assert: projectD childProjects asArray equals: { projectDModuleA }.
+		self assert: projectD projectReferences asArray equals: { projectDModuleAReference }.
 	
 		projectComponentD := projectD ]
 ]
@@ -160,7 +166,7 @@ GtRlSystemOneModelExamples >> projectComponentDModuleA [
 { #category : #'examples - projects' }
 GtRlSystemOneModelExamples >> projectSystem [
 	<gtExample>
-	| projectSystem componentA componentB componentC componentD repository |
+	| projectSystem componentA componentB componentC componentD componentAReference componentBReference componentCReference componentDReference repository |
 	projectSystem := GtRlProject new
 		name: 'GtRlBaselineExampleSystemOne';
 		baselineClass: BaselineOfGtRlBaselineExampleSystemOne;
@@ -169,10 +175,14 @@ GtRlSystemOneModelExamples >> projectSystem [
 	componentB := self projectComponentBMain.
 	componentC := self projectComponentC.
 	componentD := self projectComponentD.
+	componentAReference := GtRlProjectReference forReferencedProject: componentA.
+	componentBReference := GtRlProjectReference forReferencedProject: componentB.
+	componentCReference := GtRlProjectReference forReferencedProject: componentC.
+	componentDReference := GtRlProjectReference forReferencedProject: componentD.
 	repository := self repositorySystem.
 	projectSystem
 		linkWithRepository: repository;
-		addChildProjects: { componentA . componentB . componentC . componentD }.
+		addProjectReferences: { componentAReference . componentBReference . componentCReference . componentDReference }.
 	
 	self assertBaseline: BaselineOfGtRlBaselineExampleSystemOne forProject: projectSystem.
 	self 
@@ -253,4 +263,31 @@ GtRlSystemOneModelExamples >> repositorySystem [
 	self assertStandaloneRepository: repository.
 	
 	^ repository
+]
+
+{ #category : #'examples - systemOne' }
+GtRlSystemOneModelExamples >> systemOneCorrectNumberOfChildProjects [
+	<gtExample>
+	| project |
+	project := self projectSystem. 
+		
+	self assert: project isLeaf not.
+	self assert: project childProjects size equals: 4.
+	self assert: project withAllChildProjects size equals: 7.
+	self assert: project childProjects asArray equals: {
+		self projectComponentA. self projectComponentBMain. self projectComponentC. self projectComponentD }.
+	
+	^ project
+]
+
+{ #category : #'examples - systemOne' }
+GtRlSystemOneModelExamples >> systemOneCorrectNumberOfProjectReferences [
+	<gtExample>
+	| project |
+	project := self projectSystem. 
+	
+	self assert: project projectReferences size equals: 4.
+	self assert: project allProjectReferences size equals: 6.
+	
+	^ project
 ]
