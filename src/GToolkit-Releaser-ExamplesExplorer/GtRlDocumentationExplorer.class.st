@@ -35,7 +35,11 @@ GtRlDocumentationExplorer >> gtViewExplanationsListFor: aView [
 	^ aView list
 		title: 'Explanations' translated;
 		priority: 10;
-		items: [ self explanationClasses ]
+		items: [ self explanationClasses ];
+		column: 'Name' text: [:each | each gtDisplayString];
+		sendTool: [ :anItem | GtPhlowCompositeTool new
+						addTool: (GtDocumenterTool forClass: anItem);
+						addTool: (GtClassCoderTool forClass: anItem)  ]
 ]
 
 { #category : #ui }
