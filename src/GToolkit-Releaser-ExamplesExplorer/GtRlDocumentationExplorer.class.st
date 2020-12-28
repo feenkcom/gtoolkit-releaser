@@ -26,7 +26,10 @@ GtRlDocumentationExplorer >> gtViewExamplesListFor: aView [
 	^ aView list
 		title: 'Examples' translated;
 		priority: 25;
-		items: [ self exampleClasses ]
+		items: [ self exampleClasses ];
+		sendTool: [ :anItem | GtPhlowCompositeTool new
+						addTool: (GtDocumenterTool forClass: anItem);
+						addTool: (GtClassCoderTool forClass: anItem)  ]
 ]
 
 { #category : #ui }
@@ -36,7 +39,6 @@ GtRlDocumentationExplorer >> gtViewExplanationsListFor: aView [
 		title: 'Explanations' translated;
 		priority: 10;
 		items: [ self explanationClasses ];
-		column: 'Name' text: [:each | each gtDisplayString];
 		sendTool: [ :anItem | GtPhlowCompositeTool new
 						addTool: (GtDocumenterTool forClass: anItem);
 						addTool: (GtClassCoderTool forClass: anItem)  ]
@@ -48,7 +50,10 @@ GtRlDocumentationExplorer >> gtViewHowToGuidesListFor: aView [
 	^ aView list
 		title: 'How-to Guides' translated;
 		priority: 15;
-		items: [ self howToGuideClasses ]
+		items: [ self howToGuideClasses ];
+		sendTool: [ :anItem | GtPhlowCompositeTool new
+						addTool: (GtDocumenterTool forClass: anItem);
+						addTool: (GtClassCoderTool forClass: anItem)  ]
 ]
 
 { #category : #ui }
@@ -57,7 +62,10 @@ GtRlDocumentationExplorer >> gtViewTutorialsListFor: aView [
 	^ aView list
 		title: 'Tutorials' translated;
 		priority: 20;
-		items: [ self tutorialClasses ]
+		items: [ self tutorialClasses ];
+		sendTool: [ :anItem | GtPhlowCompositeTool new
+						addTool: (GtDocumenterTool forClass: anItem);
+						addTool: (GtClassCoderTool forClass: anItem)  ]
 ]
 
 { #category : #accessing }
