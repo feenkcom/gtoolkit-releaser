@@ -19,7 +19,8 @@ GtRlPrePostLoadAction >> performAction [
 	self assert: [ self actionSelector notNil ].
 	
 	self loadDirective project baselineClass new 
-		perform: self actionSelector
+		perform: self actionSelector 
+		withEnoughArguments: { nil }
 ]
 
 { #category : #printing }
