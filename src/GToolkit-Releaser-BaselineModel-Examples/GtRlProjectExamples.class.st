@@ -98,6 +98,7 @@ GtRlProjectExamples >> projectWithPackages [
 		addPackage: packageB.
 	
 	self assert: project packages asArray equals: { packageA . packageB }.
+	self assert: project rootPackages asArray equals: { packageA . packageB }.
 	self assert: packageA parentProject equals: project.
 	self assert: packageB parentProject equals: project.
 	
@@ -112,6 +113,8 @@ GtRlProjectExamples >> projectWithPostLoadAction [
 	project baselineClass: BaselineOfGtRlBaselineExampleStandaloneWithActions.
 	project postLoadAction: #postloadAction:.
 	
+	self assert: project hasPostLoadActionSpecified.
+	self assert: project hasPreLoadActionSpecified not.
 	self assert: project postLoadAction equals: #postloadAction:.
 	self assert: (BaselineOfGtRlBaselineExampleStandaloneWithActions includesSelector: #postloadAction:).
 	
@@ -126,6 +129,8 @@ GtRlProjectExamples >> projectWithPreLoadAction [
 	project baselineClass: BaselineOfGtRlBaselineExampleStandaloneWithActions.
 	project preLoadAction: #preloadAction:.
 	
+	self assert: project hasPostLoadActionSpecified not.
+	self assert: project hasPreLoadActionSpecified.
 	self assert: project preLoadAction equals: #preloadAction:.
 	self assert: (BaselineOfGtRlBaselineExampleStandaloneWithActions includesSelector: #preloadAction:).
 	

@@ -232,6 +232,16 @@ GtRlProject >> gtViewRepositoriesListFor: aView [
 		priority: 60
 ]
 
+{ #category : #testing }
+GtRlProject >> hasPostLoadActionSpecified [
+	^ self postLoadAction notNil
+]
+
+{ #category : #testing }
+GtRlProject >> hasPreLoadActionSpecified [
+	^ self preLoadAction notNil
+]
+
 { #category : #initialization }
 GtRlProject >> initialize [ 
 	super initialize.
@@ -334,6 +344,13 @@ GtRlProject >> repository [
 { #category : #accessing }
 GtRlProject >> repository: aRepository [
 	repository := aRepository 
+]
+
+{ #category : #'accessing - dynamic' }
+GtRlProject >> rootPackages [
+	"Return the list of packages on which other packages do not depend upon."
+	^ self packages select: [ :aPackage |
+		aPackage dependentPackages isEmpty ].
 ]
 
 { #category : #private }
