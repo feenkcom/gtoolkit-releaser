@@ -65,12 +65,12 @@ GtRlProjectsCloner >> loadBaseline: aBaselineName fromRepository: aRepositoryLoc
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GtRlProjectsCloner >> loadBaselinePackageFor: aBaselineName fromRepository: aRepositoryLocationString [
 	| icebergRepository icebergPackage baselineClassName |
 	baselineClassName := MetacelloScriptEngine baselineNameFrom: aBaselineName.
-	(RPackage organizer includesPackageNamed: baselineClassName)
-		ifTrue: [ ^ RPackage organizer packageNamed: baselineClassName ].
+	"(RPackage organizer includesPackageNamed: baselineClassName)
+		ifTrue: [ ^ RPackage organizer packageNamed: baselineClassName ]."
 	
 	icebergRepository := self ensureRepositoryCloneFor: aRepositoryLocationString.
 	(icebergRepository workingCopy packageNames 
