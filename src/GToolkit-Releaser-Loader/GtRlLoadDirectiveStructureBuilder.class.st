@@ -10,6 +10,8 @@ Class {
 { #category : #building }
 GtRlLoadDirectiveStructureBuilder >> buildLoadDirectiveForProject: aProject [
 	| loadDirective |
+	self assert: [ (self loadDirectivesMap includesKey: aProject) not ].
+	
 	loadDirective := GtRlProjectLoadDirective forProject: aProject.
 	self loadDirectivesMap 
 		at: aProject 
@@ -21,13 +23,15 @@ GtRlLoadDirectiveStructureBuilder >> buildLoadDirectiveForProject: aProject [
 ]
 
 { #category : #'private building' }
-GtRlLoadDirectiveStructureBuilder >> createChildrenForLoadDirective: loadDirective [.
+GtRlLoadDirectiveStructureBuilder >> createChildrenForLoadDirective: loadDirective [
+	"We ignore relations to child projects that have already been added to the load directive.
+	So we just add a project to the load directive the first time we encounter it, 
+	even if multiple projects referenced it."
 	loadDirective project childProjects do: [ :aChildProject |
 		| childLoadDirective |
-		childLoadDirective := self loadDirectivesMap
-			at: aChildProject
-			ifAbsent: [ self buildLoadDirectiveForProject: aChildProject ].
-		loadDirective addChildLoadDirective: childLoadDirective ]
+		(self loadDirectivesMap includesKey: aChildProject) ifFalse: [ 
+			childLoadDirective := self buildLoadDirectiveForProject: aChildProject.
+		loadDirective addChildLoadDirective: childLoadDirective ]  ]
 ]
 
 { #category : #accessing }

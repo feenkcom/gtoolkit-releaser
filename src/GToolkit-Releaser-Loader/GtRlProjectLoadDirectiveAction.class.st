@@ -20,7 +20,7 @@ GtRlProjectLoadDirectiveAction >> emitExecutionSignal [
 
 { #category : #execution }
 GtRlProjectLoadDirectiveAction >> execute [ 
-	isExecuted ifTrue: [ Error signal: 'Action already executed' ].
+	self isExecuted ifTrue: [ Error signal: 'Action already executed' ].
 	self emitExecutionSignal.
 	[ self performAction ] 
 		ensure: [ isExecuted := true ].

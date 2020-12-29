@@ -38,6 +38,75 @@ GtRlProjectLoadDirective >> childLoadDirectives [
 		childLoadDirectives := OrderedCollection new ]
 ]
 
+{ #category : #accessing }
+GtRlProjectLoadDirective >> gtLoadDirectivesMapFor: aView [
+	<gtView>
+	^ aView mondrian
+		title: 'Load map' translated;
+		priority: 1;
+		painting: [ :mondrian |
+			mondrian nodes 
+				shape: [ :aLoadDirective |
+					BrLabel new 
+						text: aLoadDirective projectName; 
+						look: BrGlamorousLabelLook;
+						when: BlClickEvent do: [ :anEvent | 
+							anEvent currentTarget phlow spawnObject: aLoadDirective ] ];
+				with: self withAllChildLoadDirectived.
+			mondrian edges
+				shape: [ 
+					BlLineElement new 
+						zIndex: -1;
+						border: (BlBorder paint: (Color gray alpha: 0.5) width: 2);
+						toHead: (BlArrowheadSimpleArrow new
+							border: (BlBorder builder paint: (Color gray alpha: 0.5); width: 2; build)) ];
+				fromRightCenter;
+				toLeftCenter;
+				connectToAll: #childLoadDirectives.
+			mondrian layout custom: (GtGradWestHierarchicalLayout new) ]
+]
+
+{ #category : #accessing }
+GtRlProjectLoadDirective >> gtProjectWithDirectivesMapFor: aView [
+	<gtView>
+	^ aView mondrian
+		title: 'Project map' translated;
+		priority: 10;
+		painting: [ :mondrian |
+			| projectEdges |
+			projectEdges := OrderedCollection new.
+			self 
+				withDeep: #childLoadDirectives 
+				edgesDo: [ :from :to | projectEdges add: (from project -> to project) ].
+			mondrian nodes 
+				shape: [ :aProject |
+					BrLabel new 
+						text: aProject name; 
+						look: BrGlamorousLabelLook;
+						in: [ :label | label userData at: #projectModel put: aProject ];
+						yourself ];
+				with: self project withAllChildProjects.
+			mondrian edges
+				shape: [ :each :fromElement :toElement|
+					"self halt."
+					| isInLoadDirective |
+					"self halt."
+					isInLoadDirective := (projectEdges anySatisfy: [:anEdge |
+						(anEdge key = (fromElement userData at: #projectModel)) and: [
+							anEdge value = (toElement userData at: #projectModel) ] ]).
+					BlLineElement new 
+						zIndex: -1;
+						border: (isInLoadDirective 
+							ifTrue: [(BlBorder  paint: (Color gray alpha: 0.5) width: 2)]
+							ifFalse: [(BlBorder  paint: (Color gray alpha: 0.2) width: 1)]) ;
+						toHead: (BlArrowheadSimpleArrow new
+							border: (BlBorder builder paint: (Color gray alpha: 0.5); width: 2; build)) ];
+				fromRightCenter;
+				toLeftCenter;
+				connectToAll: #childProjects.
+			mondrian layout custom: (GtGradWestHierarchicalLayout new) ]
+]
+
 { #category : #'as yet unclassified' }
 GtRlProjectLoadDirective >> gtViewChildLoadDirectivesFor: aView [
 	<gtView>
@@ -143,4 +212,9 @@ GtRlProjectLoadDirective >> project [
 { #category : #accessing }
 GtRlProjectLoadDirective >> projectName [
 	^ self project name
+]
+
+{ #category : #accessing }
+GtRlProjectLoadDirective >> withAllChildLoadDirectived [
+	^ self withDeepCollect: #childLoadDirectives
 ]
