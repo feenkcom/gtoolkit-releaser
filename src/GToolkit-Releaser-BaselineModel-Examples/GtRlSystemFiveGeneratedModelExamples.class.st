@@ -175,3 +175,16 @@ GtRlSystemFiveGeneratedModelExamples >> systemProject [
 		
 		theSystemProject := project ]
 ]
+
+{ #category : #examples }
+GtRlSystemFiveGeneratedModelExamples >> systemProjectHasTwoRootPackagess [
+	<gtExample>
+	| system rootPackages |
+	system := self systemProject.
+	rootPackages := system rootPackages.
+	
+	self assert: rootPackages size equals: 2.
+	self assert: rootPackages asArray equals: {
+		self packageBNode. self packageCNode}.
+	^ system
+]

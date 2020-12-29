@@ -78,6 +78,16 @@ GtRlPackage >> gtViewRequiredProjectsListFor: aView [
 		itemText: #name
 ]
 
+{ #category : #accessing }
+GtRlPackage >> icebergPackage [
+	^ self icebergRepository workingCopy packageNamed: self name
+]
+
+{ #category : #accessing }
+GtRlPackage >> icebergRepository [
+	^ self parentProject repository icebergRepository
+]
+
 { #category : #initialization }
 GtRlPackage >> initialize [ 	
 	super initialize.

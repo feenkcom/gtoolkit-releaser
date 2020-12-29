@@ -11,7 +11,6 @@ GtRlLocalDependenciesModelBuilder >> buildProjectFromMetacelloSpec: aMetacelloPr
 	self assert: [ aMetacelloProjectSpec repositorySpecs size = 1 ].
 	self assert: [ aMetacelloProjectSpec className notNil ].
 
-	
 	"If the project was already created return the existing project.
 	This does not initialize any dependencies as it assumes they are already initialized."
 	(self projectsByBaselineClass includesKey: aMetacelloProjectSpec className)
