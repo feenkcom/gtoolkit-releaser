@@ -5,6 +5,7 @@ Class {
 		'project',
 		'parentLoadDirectives',
 		'childLoadDirectives',
+		'ignoredChildLoadDirectives',
 		'preLoadAction',
 		'postLoadAction',
 		'packageLoadActions'
@@ -22,6 +23,12 @@ GtRlProjectLoadDirective class >> forProject: aProject [
 GtRlProjectLoadDirective >> addChildLoadDirective: aLoadDirective [
 	aLoadDirective parentLoadDirectives add: self.
 	self childLoadDirectives add: aLoadDirective
+	
+]
+
+{ #category : #adding }
+GtRlProjectLoadDirective >> addIgnoredChildLoadDirective: aLoadDirective [
+	self ignoredChildLoadDirectives add: aLoadDirective
 	
 ]
 
@@ -107,7 +114,7 @@ GtRlProjectLoadDirective >> gtProjectWithDirectivesMapFor: aView [
 			mondrian layout custom: (GtGradWestHierarchicalLayout new) ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'gt-extensions' }
 GtRlProjectLoadDirective >> gtViewChildLoadDirectivesFor: aView [
 	<gtView>
 	^ aView list 
@@ -116,7 +123,7 @@ GtRlProjectLoadDirective >> gtViewChildLoadDirectivesFor: aView [
 		items: [ self childLoadDirectives ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'gt-extensions' }
 GtRlProjectLoadDirective >> gtViewLocalLoadActionsFor: aView [
 	<gtView>
 	^ aView list 
@@ -125,13 +132,19 @@ GtRlProjectLoadDirective >> gtViewLocalLoadActionsFor: aView [
 		items: [ self loadActions ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'gt-extensions' }
 GtRlProjectLoadDirective >> gtViewParentLoadDirectivesFor: aView [
 	<gtView>
 	^ aView list 
 		title: 'Parent directives' translated;
 		priority: 20;
 		items: [ self parentLoadDirectives ]
+]
+
+{ #category : #accessing }
+GtRlProjectLoadDirective >> ignoredChildLoadDirectives [
+	^ ignoredChildLoadDirectives ifNil: [ 
+		ignoredChildLoadDirectives := OrderedCollection new ]
 ]
 
 { #category : #initialization }

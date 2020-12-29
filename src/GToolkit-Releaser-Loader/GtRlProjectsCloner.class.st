@@ -61,8 +61,9 @@ GtRlProjectsCloner >> loadBaseline: aBaselineName fromRepository: aRepositoryLoc
 	project childProjects do: [ :aProject |
 		self 
 			loadBaseline: aProject name 
-			fromRepository: aProject repository urlString ]
+			fromRepository: aProject repository urlString ].
 	
+	^ project
 ]
 
 { #category : #accessing }

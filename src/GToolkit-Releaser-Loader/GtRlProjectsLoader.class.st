@@ -4,16 +4,36 @@ Class {
 	#category : #'GToolkit-Releaser-Loader'
 }
 
-{ #category : #'as yet unclassified' }
-GtRlProjectsLoader >> loadFullProject2: aRootProject [
-	| projectsInLoadOrder |
-	projectsInLoadOrder := GtRlLoadDirectivesOrderTraversal new
-		loadOrderFor: aRootProject.
-	projectsInLoadOrder do: [ :aProject | 
-		self loadProject: aProject ]
+{ #category : #actions }
+GtRlProjectsLoader >> cloneBaseline: aBaselineName fromRepository: aRepositoryLocationString [
+	| projectCloner |
+	projectCloner := GtRlProjectsCloner new.
+	^ projectCloner 
+		loadBaseline: aBaselineName 
+		fromRepository: aRepositoryLocationString.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
+GtRlProjectsLoader >> loadBaseline: aBaselineName fromRepository: aRepositoryLocationString [
+	| clonedProject |
+	clonedProject := self 
+		cloneBaseline: aBaselineName 
+		fromRepository: aRepositoryLocationString.
+	self 
+		loadBaselineClass: clonedProject baselineClass
+		fromRepository: clonedProject repository urlString
+]
+
+{ #category : #actions }
+GtRlProjectsLoader >> loadBaselineClass: aBaselineClass fromRepository: aRepositoryLocationString [
+	| rootProject |
+	rootProject := aBaselineClass
+		gtRlProjectWithRepository: aRepositoryLocationString.
+	
+	self loadFullProject: rootProject
+]
+
+{ #category : #actions }
 GtRlProjectsLoader >> loadFullProject: aRootProject [
 	| structureBuilder loadDirective loadWorkflow |
 	structureBuilder := GtRlLoadDirectiveStructureBuilder new.
@@ -23,10 +43,4 @@ GtRlProjectsLoader >> loadFullProject: aRootProject [
 	loadWorkflow := GtRlProjectsLoadWorkflow new
 		rootLoadDirective: loadDirective.
 	loadWorkflow executeLoadActions
-]
-
-{ #category : #'as yet unclassified' }
-GtRlProjectsLoader >> loadProject: aProject [
-	| rootPackages |
-	rootPackages := aProject rootPackages.
 ]
