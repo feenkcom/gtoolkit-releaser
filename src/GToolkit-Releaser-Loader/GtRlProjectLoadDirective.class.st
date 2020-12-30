@@ -156,6 +156,16 @@ GtRlProjectLoadDirective >> gtProjectWithDirectivesMapFor: aView [
 ]
 
 { #category : #'gt-extensions' }
+GtRlProjectLoadDirective >> gtViewBaselineCodeFor: aView [
+	<gtView>
+	^ aView forward 
+		title: 'Code' translated;
+		priority: 35;
+		object: [ self project baselineClass >> #baseline: ];
+		view: #gtSourceFor: 
+]
+
+{ #category : #'gt-extensions' }
 GtRlProjectLoadDirective >> gtViewChildLoadDirectivesFor: aView [
 	<gtView>
 	^ aView list 
@@ -171,6 +181,15 @@ GtRlProjectLoadDirective >> gtViewLocalLoadActionsFor: aView [
 		title: 'Local actions' translated;
 		priority: 25;
 		items: [ self loadActions ]
+]
+
+{ #category : #'gt-extensions' }
+GtRlProjectLoadDirective >> gtViewPackagesFor: aView [
+	<gtView>
+	^ aView list 
+		title: 'Packages' translated;
+		priority: 30;
+		items: [ self packagesInLoadOrder ]
 ]
 
 { #category : #'gt-extensions' }
@@ -209,7 +228,7 @@ GtRlProjectLoadDirective >> initializeLoadActions [
 		postLoadAction := GtRlPostLoadAction new 	
 			loadDirective: self ].
 	
-	self project packages do: [ :aPackage | 
+	self packagesInLoadOrder do: [ :aPackage | 
 		self addPackageAction: (GtRlPackageLoadAction new
 			package: aPackage;
 			loadDirective: self) ]
@@ -232,6 +251,12 @@ GtRlProjectLoadDirective >> loadActions [
 GtRlProjectLoadDirective >> packageLoadActions [
 	^ packageLoadActions ifNil: [ 
 		packageLoadActions := OrderedCollection new ]
+]
+
+{ #category : #accessing }
+GtRlProjectLoadDirective >> packagesInLoadOrder [
+	^ GtRlPackagesLoadOrderTraversal new 
+		packagesLoadOrderFor: self project
 ]
 
 { #category : #accessing }

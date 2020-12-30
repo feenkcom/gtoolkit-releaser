@@ -14,6 +14,15 @@ GtRlPrePostLoadAction >> descriptionDetails [
 	^ self actionSelector
 ]
 
+{ #category : #accessing }
+GtRlPrePostLoadAction >> gtViewCodeFor: aView [
+	<gtView>
+	^ aView forward
+		title: 'Method';
+		object: [ self loadDirective project baselineClass >> self actionSelector ];
+		view: #gtSourceFor:
+]
+
 { #category : #actions }
 GtRlPrePostLoadAction >> performAction [ 
 	self assert: [ self actionSelector notNil ].
