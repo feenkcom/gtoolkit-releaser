@@ -29,9 +29,13 @@ GtRlLoadDirectiveStructureBuilder >> createChildrenForLoadDirective: loadDirecti
 	even if multiple projects referenced it."
 	loadDirective project childProjects do: [ :aChildProject |
 		| childLoadDirective |
-		(self loadDirectivesMap includesKey: aChildProject) ifFalse: [ 
-			childLoadDirective := self buildLoadDirectiveForProject: aChildProject.
-		loadDirective addChildLoadDirective: childLoadDirective ]  ]
+		(self loadDirectivesMap includesKey: aChildProject) 
+			ifFalse: [ 
+				childLoadDirective := self buildLoadDirectiveForProject: aChildProject.
+				loadDirective addChildLoadDirective: childLoadDirective ]
+			ifTrue: [
+				childLoadDirective := self loadDirectivesMap at: aChildProject.
+				loadDirective addIgnoredChildLoadDirective: childLoadDirective ]  ]
 ]
 
 { #category : #accessing }
