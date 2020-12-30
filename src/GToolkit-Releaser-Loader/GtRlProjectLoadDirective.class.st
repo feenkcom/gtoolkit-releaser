@@ -46,6 +46,47 @@ GtRlProjectLoadDirective >> childLoadDirectives [
 ]
 
 { #category : #accessing }
+GtRlProjectLoadDirective >> gtFullLoadDirectivesMapFor: aView [
+	<gtView>
+	^ aView mondrian
+		title: 'Load map (full)' translated;
+		priority: 10;
+		painting: [ :mondrian |
+			mondrian nodes 
+				shape: [ :aLoadDirective |
+					BrLabel new 
+						text: aLoadDirective projectName; 
+						look: BrGlamorousLabelLook;
+						when: BlClickEvent do: [ :anEvent | 
+							anEvent currentTarget phlow spawnObject: aLoadDirective ] ];
+				with: (self withAllChildLoadDirectived
+					, self withAllChildIgnoredLoadDirectived).
+			mondrian edges
+				shape: [ 
+					BlLineElement new 
+						zIndex: -1;
+						border: (BlBorder paint: (Color gray alpha: 0.5) width: 2);
+						toHead: (BlArrowheadSimpleArrow new
+							border: (BlBorder builder paint: (Color gray alpha: 0.5); width: 2; build)) ];
+				fromRightCenter;
+				toLeftCenter;
+				connectToAll: #childLoadDirectives.
+			mondrian edges
+				passive;
+				shape: [ 
+					BlParabollaArcElement new 
+						zIndex: -1;
+						curvatureFraction: 0.3;
+						border: (BlBorder paint: (Color lightGray alpha: 0.5) width: 1);
+						toHead: (BlArrowheadSimpleArrow new
+							border: (BlBorder builder paint: (Color lightGray alpha: 0.5); width: 1; build)) ];
+				fromRightCenter;
+				toLeftCenter;
+				connectToAll: #ignoredChildLoadDirectives.
+			mondrian layout custom: (GtGradWestHierarchicalLayout new) ]
+]
+
+{ #category : #accessing }
 GtRlProjectLoadDirective >> gtLoadDirectivesMapFor: aView [
 	<gtView>
 	^ aView mondrian
@@ -225,6 +266,11 @@ GtRlProjectLoadDirective >> project [
 { #category : #accessing }
 GtRlProjectLoadDirective >> projectName [
 	^ self project name
+]
+
+{ #category : #accessing }
+GtRlProjectLoadDirective >> withAllChildIgnoredLoadDirectived [
+	^ self withDeepCollect: #ignoredChildLoadDirectives
 ]
 
 { #category : #accessing }
