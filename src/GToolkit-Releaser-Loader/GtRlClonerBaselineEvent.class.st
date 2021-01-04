@@ -19,6 +19,23 @@ GtRlClonerBaselineEvent >> baselineName: anObject [
 ]
 
 { #category : #accessing }
+GtRlClonerBaselineEvent >> eventName [
+	^ 'Baseline Event'
+]
+
+{ #category : #printing }
+GtRlClonerBaselineEvent >> printOneLineContentsOn: stream [
+	stream 
+		"nextPutAll: 'Baseline ';
+		nextPutAll: self eventName;
+		nextPutAll: ' -> ';"
+		nextPutAll: self baselineName;
+		nextPutAll: ' --- ';
+		nextPutAll: self repositoryUrlString
+		
+]
+
+{ #category : #accessing }
 GtRlClonerBaselineEvent >> repositoryUrlString [
 	^ repositoryUrlString
 ]

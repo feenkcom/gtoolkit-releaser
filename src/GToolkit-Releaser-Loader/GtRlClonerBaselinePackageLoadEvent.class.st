@@ -3,3 +3,8 @@ Class {
 	#superclass : #GtRlClonerBaselineEvent,
 	#category : #'GToolkit-Releaser-Loader-Logging'
 }
+
+{ #category : #accessing }
+GtRlClonerBaselinePackageLoadEvent >> eventName [
+	^ 'Package Load'
+]
