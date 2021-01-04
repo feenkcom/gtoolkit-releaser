@@ -3,7 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'loadedProjectsByName',
-		'loadedRepositoriesById'
+		'repositoriesCacheById'
 	],
 	#category : #'GToolkit-Releaser-Loader'
 }
@@ -76,9 +76,9 @@ GtRlProjectsCloneWorkflow >> ensureRepositoryRegisteredFor: aRepositoryLocationS
 	repository := GtRlRepository 
 		fromUrlString: aRepositoryLocationString.
 	
-	(loadedRepositoriesById includesKey: repository id asLowercase) 
+	(repositoriesCacheById includesKey: repository id asLowercase) 
 		ifFalse: [ 
-			loadedRepositoriesById at: repository id asLowercase put: repository ].
+			repositoriesCacheById at: repository id asLowercase put: repository ].
 ]
 
 { #category : #testing }
@@ -103,10 +103,10 @@ GtRlProjectsCloneWorkflow >> ensureSingleRepositoryVersionFor: aRepositoryLocati
 	toLoadRepository := GtRlRepository 
 		fromUrlString: aRepositoryLocationString.
 		
-	(loadedRepositoriesById includesKey: toLoadRepository id asLowercase) 
+	(repositoriesCacheById includesKey: toLoadRepository id asLowercase) 
 		ifFalse: [ ^ self ].
 
-	loadedRepository := loadedRepositoriesById at: toLoadRepository id asLowercase.
+	loadedRepository := repositoriesCacheById at: toLoadRepository id asLowercase.
 	"In case we try to load two different versions for the same repository
 	we raise an error."
 	(loadedRepository versionStringOrNil = toLoadRepository versionStringOrNil) ifFalse: [ 
@@ -116,11 +116,29 @@ GtRlProjectsCloneWorkflow >> ensureSingleRepositoryVersionFor: aRepositoryLocati
 			signal ] 
 ]
 
+{ #category : #'gt extensions' }
+GtRlProjectsCloneWorkflow >> gtViewLoadedProjectsListFor: aView [
+	<gtView>
+	^ aView list
+		title: 'Loaded Projects';
+		priority: 15;
+		items: [ loadedProjectsByName values ]
+]
+
+{ #category : #'gt extensions' }
+GtRlProjectsCloneWorkflow >> gtViewRepositoriesCacheFor: aView [
+	<gtView>
+	^ aView list
+		title: 'Repositories Cache';
+		priority: 20;
+		items: [ repositoriesCacheById values ]
+]
+
 { #category : #initialization }
 GtRlProjectsCloneWorkflow >> initialize [
 	super initialize.
 	loadedProjectsByName := OrderedDictionary new.
-	loadedRepositoriesById := OrderedDictionary new.
+	repositoriesCacheById := OrderedDictionary new.
 ]
 
 { #category : #testing }
@@ -146,8 +164,8 @@ GtRlProjectsCloneWorkflow >> loadBaseline: aBaselineName fromRepository: aReposi
 		createBaselineProjectForPackage: baselinePackage
 		fromRepository: aRepositoryLocationString.
 	loadedProjectsByName 
-		at: project
-		put: aBaselineName.
+		at: aBaselineName
+		put: project.
 	
 	self loadProjectDependenciesFor: project.
 	self 
