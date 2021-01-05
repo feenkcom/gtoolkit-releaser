@@ -179,11 +179,11 @@ GtRlProjectsCloneWorkflow >> isBaselineNamedAlreadyLoadedFor: aBaselineName [
 GtRlProjectsCloneWorkflow >> loadBaseline: aBaselineName fromRepository: aRepositoryLocationString [
 	| baselinePackage project |
 	
-	self 
-		emitLoadStartEventFor: aBaselineName fromRepository: aRepositoryLocationString.
 	(self 
 		shouldLoadBaselineNamed: aBaselineName 
 		fromRepository: aRepositoryLocationString) ifFalse: [ ^ self ].
+	self 
+		emitLoadStartEventFor: aBaselineName fromRepository: aRepositoryLocationString.
 	
 	baselinePackage := self 
 		loadBaselinePackageFor: aBaselineName 

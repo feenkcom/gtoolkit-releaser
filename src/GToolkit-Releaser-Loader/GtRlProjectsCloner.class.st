@@ -49,6 +49,18 @@ GtRlProjectsCloner >> gtViewEventsFor: aView [
 ]
 
 { #category : #'gt extensions' }
+GtRlProjectsCloner >> gtViewGroupedEventsFor: aView [
+	<gtView>
+	memoryLogger ifNil: [ ^ aView empty ].
+	^ aView forward
+		title: 'Events (grouped)';
+		priority: 35;
+		object: [ GtRlClonerBaselineEventsGroup 
+			fromEvents: memoryLogger recordings  ];
+		view: #gtViewSubgroupsFor:
+]
+
+{ #category : #'gt extensions' }
 GtRlProjectsCloner >> gtViewLoadedProjectsListFor: aView [
 	<gtView>
 	cloneWorkflow ifNil: [ ^ aView empty ].
