@@ -2,28 +2,39 @@ Class {
 	#name : #GtRlClonerBaselineError,
 	#superclass : #Error,
 	#instVars : [
-		'baselineName',
-		'repositoryUrlString'
+		'baselineSpec'
 	],
 	#category : #'GToolkit-Releaser-Cloner-Errors'
 }
 
 { #category : #accessing }
 GtRlClonerBaselineError >> baselineName [
-	^ baselineName
+	^ self baselineSpec baselineName
 ]
 
 { #category : #accessing }
-GtRlClonerBaselineError >> baselineName: anObject [
-	baselineName := anObject
+GtRlClonerBaselineError >> baselineSpec [
+	^ baselineSpec
 ]
 
 { #category : #accessing }
-GtRlClonerBaselineError >> repositoryUrlString [
-	^ repositoryUrlString
+GtRlClonerBaselineError >> baselineSpec: anObject [
+	baselineSpec := anObject
 ]
 
 { #category : #accessing }
-GtRlClonerBaselineError >> repositoryUrlString: anObject [
-	repositoryUrlString := anObject
+GtRlClonerBaselineError >> defaultMessageText [
+	^ ''
+]
+
+{ #category : #accessing }
+GtRlClonerBaselineError >> messageText [
+	"Return an exception's message text."
+
+	^ messageText ifNil: [ self defaultMessageText ]
+]
+
+{ #category : #accessing }
+GtRlClonerBaselineError >> repositoryLocation [
+	^ self baselineSpec repositoryLocation
 ]
