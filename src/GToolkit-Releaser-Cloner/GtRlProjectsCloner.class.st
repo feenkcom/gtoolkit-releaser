@@ -5,7 +5,7 @@ Class {
 		'baselineName',
 		'repositoryUrlString',
 		'cloneWorkflow',
-		'memoryLogger'
+		'loggersById'
 	],
 	#category : #'GToolkit-Releaser-Cloner-Core'
 }
@@ -16,7 +16,7 @@ GtRlProjectsCloner >> baseline: aBaselineName [
 	baselineName := aBaselineName
 ]
 
-{ #category : #copying }
+{ #category : #actions }
 GtRlProjectsCloner >> execute [ 
 	self assert: [ cloneWorkflow isNil ].
 	self assert: [ baselineName notNil ].
@@ -25,26 +25,26 @@ GtRlProjectsCloner >> execute [
 	cloneWorkflow := GtRlProjectsCloneWorkflow new.
 	cloneWorkflow initializeIcebergRepos.
 	
-	memoryLogger := MemoryLogger new.
-	memoryLogger startFor: GtRlClonerBaselineEvent.
+	self loggers do: [ :aLogger |
+		aLogger startFor: GtRlClonerBaselineEvent ].
 	[ 
 		cloneWorkflow
 			loadBaselineSpec: (GtRlClonerBaselineSpec new
 				baselineName: baselineName;
 				repositoryLocation: repositoryUrlString) 
 	] ensure: [
-			memoryLogger stop ].
+		self loggers do: [ :aLogger | aLogger stop ] ].
 	
 ]
 
 { #category : #'gt extensions' }
 GtRlProjectsCloner >> gtViewEventsFor: aView [
 	<gtView>
-	memoryLogger ifNil: [ ^ aView empty ].
+	self hasMemoryLogger ifNil: [ ^ aView empty ].
 	^ aView columnedList
 	 	title: 'Events';
 	 	priority: 30;
-	 	items: [ memoryLogger recordings ];
+	 	items: [ self memoryLogger recordings ];
 	 	column: 'Timestamp' text: [ :aRecording | aRecording timestamp asString ];
 	 	column: 'Type' text: [ :aRecording | aRecording eventName ];
 	 	column: 'Baseline' text: [ :aRecording | aRecording baselineName ];
@@ -54,12 +54,12 @@ GtRlProjectsCloner >> gtViewEventsFor: aView [
 { #category : #'gt extensions' }
 GtRlProjectsCloner >> gtViewGroupedEventsFor: aView [
 	<gtView>
-	memoryLogger ifNil: [ ^ aView empty ].
+	self hasMemoryLogger ifNil: [ ^ aView empty ].
 	^ aView forward
 		title: 'Events (grouped)';
 		priority: 35;
 		object: [ GtRlClonerBaselineEventsGroup 
-			fromEvents: memoryLogger recordings  ];
+			fromEvents: self memoryLogger recordings  ];
 		view: #gtViewSubgroupsFor:
 ]
 
@@ -85,8 +85,57 @@ GtRlProjectsCloner >> gtViewRepositoriesCacheFor: aView [
 		view: #gtViewRepositoriesCacheFor:
 ]
 
+{ #category : #testing }
+GtRlProjectsCloner >> hasMemoryLogger [
+	^ loggersById includesKey: #memoryLogger
+]
+
+{ #category : #testing }
+GtRlProjectsCloner >> hasTranscriptLogger [
+	^ loggersById includesKey: #transcriptLogger
+]
+
+{ #category : #initialization }
+GtRlProjectsCloner >> initialize [
+	super initialize.
+	loggersById := OrderedDictionary new.
+	self registerMemoryLogger.
+	self registerTranscriptLogger.
+]
+
+{ #category : #'accessing - logging' }
+GtRlProjectsCloner >> loggers [
+	^ loggersById values
+]
+
+{ #category : #'accessing - logging' }
+GtRlProjectsCloner >> memoryLogger [
+	^ loggersById at: #memoryLogger
+]
+
+{ #category : #configuration }
+GtRlProjectsCloner >> registerMemoryLogger [
+	self hasMemoryLogger ifTrue: [ ^ self ].
+	loggersById
+		at: #memoryLogger 
+		put: MemoryLogger new
+]
+
+{ #category : #configuration }
+GtRlProjectsCloner >> registerTranscriptLogger [
+	self hasMemoryLogger ifTrue: [ ^ self ].
+	loggersById
+		at: #transcriptLogger 
+		put: TranscriptLogger new
+]
+
 { #category : #baselines }
 GtRlProjectsCloner >> repository: aUrlString [
 	self assert: [ aUrlString notNil and: [ repositoryUrlString isNil ] ].
 	repositoryUrlString := aUrlString
+]
+
+{ #category : #'accessing - logging' }
+GtRlProjectsCloner >> transcriptLogger [
+	^ loggersById at: #transcriptLogger
 ]
