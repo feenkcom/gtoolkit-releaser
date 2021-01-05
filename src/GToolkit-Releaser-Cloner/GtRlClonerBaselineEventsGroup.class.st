@@ -63,16 +63,24 @@ GtRlClonerBaselineEventsGroup >> events [
 ]
 
 { #category : #accessing }
-GtRlClonerBaselineEventsGroup >> gtViewEventsFor: aView [
+GtRlClonerBaselineEventsGroup >> gtViewAllEventsFor: aView [
 	<gtView>
-	^ aView columnedList
-	 	title: 'Events';
+	^ aView forward
+	 	title: 'Events (all)';
+	 	priority: 33;
+	 	object: [ GtRlClonerEventsGroup 
+			withAll: (self withDeep: #subgroups flatCollect: #events) ];
+	 	view: #gtItemsFor:
+]
+
+{ #category : #accessing }
+GtRlClonerBaselineEventsGroup >> gtViewLocalEventsFor: aView [
+	<gtView>
+	^ aView forward
+	 	title: 'Events (local)';
 	 	priority: 30;
-	 	items: [ self events ];
-	 	column: 'Timestamp' text: [ :aRecording | aRecording timestamp asString ];
-	 	column: 'Type' text: [ :aRecording | aRecording eventName ];
-	 	column: 'Baseline' text: [ :aRecording | aRecording baselineName ];
-	 	column: 'Repository' text: [ :aRecording | aRecording repositoryUrlString ]
+	 	object: [ self events ];
+	 	view: #gtItemsFor:
 ]
 
 { #category : #accessing }
@@ -88,7 +96,7 @@ GtRlClonerBaselineEventsGroup >> gtViewSubgroupsFor: aView [
 { #category : #initialization }
 GtRlClonerBaselineEventsGroup >> initialize [ 
 	super initialize.
-	events := OrderedCollection new. 
+	events := GtRlClonerEventsGroup new. 
 	subgroups := OrderedCollection new. 
 ]
 
