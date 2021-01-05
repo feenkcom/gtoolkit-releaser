@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'loadedProjectsByName',
-		'repositoriesCacheById'
+		'repositoriesCacheById',
+		'initialIcebergRepos'
 	],
 	#category : #'GToolkit-Releaser-Loader'
 }
@@ -51,6 +52,28 @@ GtRlProjectsCloneWorkflow >> emitPackageLoadFor: aBaselineName fromRepository: a
 		baselineName: aBaselineName;
 		repositoryUrlString: aRepositoryLocationString;
 		emit
+]
+
+{ #category : #testing }
+GtRlProjectsCloneWorkflow >> ensureNoConflictWithIcebergRepoFor: aRepositoryLocationString forBaseline: aBaselineName [
+	| toLoadRepository icebergRepo repoVersion |
+	toLoadRepository := GtRlRepository 
+		fromUrlString: aRepositoryLocationString.
+	
+	icebergRepo := initialIcebergRepos  
+		detect: [ :anIcebergRepo | 
+			anIcebergRepo name asLowercase = toLoadRepository repositoryName asLowercase ]
+		ifNone: [ ^ self ].
+		
+	((icebergRepo isMissing) or: [ 
+		(icebergRepo hasRemoteNamed: 'origin') not ]) ifTrue: [ 
+			Error signal: 'Iceberg repo is missing origin. Not supported currently!' ].
+	
+	repoVersion := toLoadRepository versionStringOrNil ifNil: [ 'master' ].
+	((toLoadRepository projectPath = icebergRepo origin projectPath) and: [ 
+		toLoadRepository repoPath = icebergRepo subdirectory and: [
+			repoVersion = icebergRepo head description ] ]) ifFalse: [ 
+				Error signal: 'Confict with local iceberg repo' ]
 ]
 
 { #category : #'private - building' }
@@ -139,6 +162,12 @@ GtRlProjectsCloneWorkflow >> initialize [
 	super initialize.
 	loadedProjectsByName := OrderedDictionary new.
 	repositoriesCacheById := OrderedDictionary new.
+	initialIcebergRepos := OrderedCollection new.
+]
+
+{ #category : #initialization }
+GtRlProjectsCloneWorkflow >> initializeIcebergRepos [
+	initialIcebergRepos addAll: IceRepository registry
 ]
 
 { #category : #testing }
@@ -208,6 +237,9 @@ GtRlProjectsCloneWorkflow >> shouldLoadBaselineNamed: aBaselineName fromReposito
 	or baselines loaded. Throw an error if there is a conflict from which we 
 	cannot recover."
 	
+	self 
+		ensureNoConflictWithIcebergRepoFor: aRepositoryLocationString
+		forBaseline: aBaselineName.
 	self 
 		ensureSingleRepositoryVersionFor: aRepositoryLocationString
 		forBaseline: aBaselineName.

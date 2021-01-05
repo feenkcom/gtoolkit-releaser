@@ -23,6 +23,7 @@ GtRlProjectsCloner >> execute [
 	self assert: [ repositoryUrlString notNil ].
 	
 	cloneWorkflow := GtRlProjectsCloneWorkflow new.
+	cloneWorkflow initializeIcebergRepos.
 	
 	memoryLogger := MemoryLogger new.
 	memoryLogger startFor: GtRlClonerBaselineEvent.
