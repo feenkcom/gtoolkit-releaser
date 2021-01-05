@@ -125,7 +125,7 @@ GtRlProjectsCloneWorkflow >> ensureSingleRepositoryVersionForSpec: aBaselineSpec
 	and use a temporary repository to work with urls."
 	toLoadRepository := GtRlRepository 
 		fromUrlString: aBaselineSpec repositoryLocation.
-		
+	
 	(repositoriesCacheById includesKey: toLoadRepository id asLowercase) 
 		ifFalse: [ ^ self ].
 
@@ -135,6 +135,8 @@ GtRlProjectsCloneWorkflow >> ensureSingleRepositoryVersionForSpec: aBaselineSpec
 	(loadedRepository versionStringOrNil = toLoadRepository versionStringOrNil) ifFalse: [ 
 		GtRlClonerDifferentRepositoryVersionError new
 			baselineSpec: aBaselineSpec;
+			loadedVersionString: loadedRepository versionStringOrNil;
+			newVersionString: toLoadRepository versionStringOrNil;
 			signal ] 
 ]
 
