@@ -123,7 +123,7 @@ GtRlProjectsCloner >> registerMemoryLogger [
 
 { #category : #configuration }
 GtRlProjectsCloner >> registerTranscriptLogger [
-	self hasMemoryLogger ifTrue: [ ^ self ].
+	self hasTranscriptLogger ifTrue: [ ^ self ].
 	loggersById
 		at: #transcriptLogger 
 		put: TranscriptLogger new

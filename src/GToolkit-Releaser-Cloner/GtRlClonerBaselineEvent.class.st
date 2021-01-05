@@ -8,6 +8,14 @@ Class {
 	#category : #'GToolkit-Releaser-Cloner-Logging'
 }
 
+{ #category : #converting }
+GtRlClonerBaselineEvent >> asDictionary [
+	^ super asDictionary 
+		at: #baselineName put: self baselineName;
+		at: #repositoryUrlString put: self repositoryUrlString;
+		yourself.
+]
+
 { #category : #accessing }
 GtRlClonerBaselineEvent >> baselineName [
 	^ baselineName
@@ -26,12 +34,14 @@ GtRlClonerBaselineEvent >> eventName [
 { #category : #printing }
 GtRlClonerBaselineEvent >> printOneLineContentsOn: stream [
 	stream 
-		"nextPutAll: 'Baseline ';
-		nextPutAll: self eventName;
-		nextPutAll: ' -> ';"
+		nextPut: $|; space;
+		nextPutAll: 'ClonerEvent';
+		space; nextPut: $|; space;
 		nextPutAll: self baselineName;
-		nextPutAll: ' --- ';
-		nextPutAll: self repositoryUrlString
+		space; nextPut: $|; space;
+		nextPutAll: self repositoryUrlString;
+		space; nextPut: $|; space;
+		nextPutAll: self processId
 		
 ]
 
