@@ -27,9 +27,12 @@ GtRlProjectsCloner >> execute [
 	
 	memoryLogger := MemoryLogger new.
 	memoryLogger startFor: GtRlClonerBaselineEvent.
-	[ cloneWorkflow
-		loadBaseline: baselineName 
-		fromRepository: repositoryUrlString ] ensure: [
+	[ 
+		cloneWorkflow
+			loadBaselineSpec: (GtRlClonerBaselineSpec new
+				baselineName: baselineName;
+				repositoryLocation: repositoryUrlString) 
+	] ensure: [
 			memoryLogger stop ].
 	
 ]

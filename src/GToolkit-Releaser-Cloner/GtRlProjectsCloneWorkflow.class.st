@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : #'private - building' }
-GtRlProjectsCloneWorkflow >> createBaselineProjectForPackage: baselinePackage fromRepository: aRepositoryLocationString [
+GtRlProjectsCloneWorkflow >> createBaselineProjectForPackage: baselinePackage fromSpec: aBaselineSpec [
 	| baselineClassName baselineClass |
 	baselineClassName := baselinePackage name.
 	baselineClass := baselinePackage classes
@@ -18,47 +18,47 @@ GtRlProjectsCloneWorkflow >> createBaselineProjectForPackage: baselinePackage fr
 	
 	^ GtRlLocalDependenciesModelBuilder new
 		buildProjectFromBaselineClass: baselineClass
-		withRepositoryDescription: aRepositoryLocationString.
+		withRepositoryDescription: aBaselineSpec repositoryLocation.
 	
 ]
 
 { #category : #logging }
-GtRlProjectsCloneWorkflow >> emitBaselineAlreadyLoadedFor: aBaselineName fromRepository: aRepositoryLocationString [
+GtRlProjectsCloneWorkflow >> emitBaselineAlreadyLoadedForSpec: aBaselineSpec [
 	GtRlClonerBaselineSkipLoadEvent new
-		baselineName: aBaselineName;
-		repositoryUrlString: aRepositoryLocationString;
+		baselineName: aBaselineSpec baselineName;
+		repositoryUrlString: aBaselineSpec repositoryLocation;
 		emit
 ]
 
 { #category : #logging }
-GtRlProjectsCloneWorkflow >> emitLoadCompletedEventFor: aBaselineName fromRepository: aRepositoryLocationString [
+GtRlProjectsCloneWorkflow >> emitLoadCompletedEventForSpec: aBaselineSpec [
 	GtRlClonerBaselineLoadCompletedEvent new
-		baselineName: aBaselineName;
-		repositoryUrlString: aRepositoryLocationString;
+		baselineName: aBaselineSpec baselineName;
+		repositoryUrlString: aBaselineSpec repositoryLocation;
 		emit
 ]
 
 { #category : #logging }
-GtRlProjectsCloneWorkflow >> emitLoadStartEventFor: aBaselineName fromRepository: aRepositoryLocationString [
+GtRlProjectsCloneWorkflow >> emitLoadStartEventForSpec: aBaselineSpec [
 	GtRlClonerBaselineLoadStartedEvent new
-		baselineName: aBaselineName;
-		repositoryUrlString: aRepositoryLocationString;
+		baselineName: aBaselineSpec baselineName;
+		repositoryUrlString: aBaselineSpec repositoryLocation;
 		emit
 ]
 
 { #category : #logging }
-GtRlProjectsCloneWorkflow >> emitPackageLoadFor: aBaselineName fromRepository: aRepositoryLocationString [
+GtRlProjectsCloneWorkflow >> emitPackageLoadForSpec: aBaselineSpec [
 	GtRlClonerBaselinePackageLoadEvent new
-		baselineName: aBaselineName;
-		repositoryUrlString: aRepositoryLocationString;
+		baselineName: aBaselineSpec baselineName;
+		repositoryUrlString: aBaselineSpec repositoryLocation;
 		emit
 ]
 
 { #category : #testing }
-GtRlProjectsCloneWorkflow >> ensureNoConflictWithIcebergRepoFor: aRepositoryLocationString forBaseline: aBaselineName [
+GtRlProjectsCloneWorkflow >> ensureNoConflictWithIcebergRepoForSpec: aBaselineSpec [
 	| toLoadRepository icebergRepo repoVersion |
 	toLoadRepository := GtRlRepository 
-		fromUrlString: aRepositoryLocationString.
+		fromUrlString: aBaselineSpec repositoryLocation.
 	
 	icebergRepo := initialIcebergRepos  
 		detect: [ :anIcebergRepo | 
@@ -105,26 +105,26 @@ GtRlProjectsCloneWorkflow >> ensureRepositoryRegisteredFor: aRepositoryLocationS
 ]
 
 { #category : #testing }
-GtRlProjectsCloneWorkflow >> ensureSameRepositoryForBaseline: aBaselineName fromRepository: aRepositoryLocationString [
+GtRlProjectsCloneWorkflow >> ensureSameRepositoryForBaselineSpec: aBaselineSpec [
 	| loadedProject |
-	(loadedProjectsByName includesKey: aBaselineName) ifFalse: [ ^ self ].
+	(loadedProjectsByName includesKey: aBaselineSpec baselineName) ifFalse: [ ^ self ].
 	
-	loadedProject := loadedProjectsByName at: aBaselineName.
-	(loadedProject repository urlString = aRepositoryLocationString) ifFalse: [ 
+	loadedProject := loadedProjectsByName at: aBaselineSpec baselineName.
+	(loadedProject repository urlString = aBaselineSpec repositoryLocation) ifFalse: [ 
 		GtRlClonerDifferentBaselineRepositoryError new
-			baselineName: aBaselineName;
-			repositoryUrlString: aRepositoryLocationString;
+			baselineName: aBaselineSpec baselineName;
+			repositoryUrlString: aBaselineSpec repositoryLocation;
 			signal ]
 ]
 
 { #category : #testing }
-GtRlProjectsCloneWorkflow >> ensureSingleRepositoryVersionFor: aRepositoryLocationString forBaseline: aBaselineName [
+GtRlProjectsCloneWorkflow >> ensureSingleRepositoryVersionForSpec: aBaselineSpec [
 	| toLoadRepository loadedRepository  |
 	
 	"This is a hack as we are missing a url model. So we create
 	and use a temporary repository to work with urls."
 	toLoadRepository := GtRlRepository 
-		fromUrlString: aRepositoryLocationString.
+		fromUrlString: aBaselineSpec repositoryLocation.
 		
 	(repositoriesCacheById includesKey: toLoadRepository id asLowercase) 
 		ifFalse: [ ^ self ].
@@ -134,8 +134,8 @@ GtRlProjectsCloneWorkflow >> ensureSingleRepositoryVersionFor: aRepositoryLocati
 	we raise an error."
 	(loadedRepository versionStringOrNil = toLoadRepository versionStringOrNil) ifFalse: [ 
 		GtRlClonerDifferentRepositoryVersionError new
-			baselineName: aBaselineName;
-			repositoryUrlString: aRepositoryLocationString;
+			baselineName: aBaselineSpec baselineName;
+			repositoryUrlString: aBaselineSpec repositoryLocation;
 			signal ] 
 ]
 
@@ -171,51 +171,22 @@ GtRlProjectsCloneWorkflow >> initializeIcebergRepos [
 ]
 
 { #category : #testing }
-GtRlProjectsCloneWorkflow >> isBaselineNamedAlreadyLoadedFor: aBaselineName [
-	^ loadedProjectsByName includesKey: aBaselineName
+GtRlProjectsCloneWorkflow >> isBaselineNamedAlreadyLoadedForSpec: aBaselineSpec [
+	^ loadedProjectsByName includesKey: aBaselineSpec baselineName
 ]
 
 { #category : #loading }
-GtRlProjectsCloneWorkflow >> loadBaseline: aBaselineName fromRepository: aRepositoryLocationString [
-	| baselinePackage project |
-	
-	(self 
-		shouldLoadBaselineNamed: aBaselineName 
-		fromRepository: aRepositoryLocationString) ifFalse: [ ^ self ].
-	self 
-		emitLoadStartEventFor: aBaselineName fromRepository: aRepositoryLocationString.
-	
-	baselinePackage := self 
-		loadBaselinePackageFor: aBaselineName 
-		fromRepository: aRepositoryLocationString.
-	
-	project := self 
-		createBaselineProjectForPackage: baselinePackage
-		fromRepository: aRepositoryLocationString.
-	loadedProjectsByName 
-		at: aBaselineName
-		put: project.
-	
-	self loadProjectDependenciesFor: project.
-	self 
-		emitLoadCompletedEventFor: aBaselineName fromRepository: aRepositoryLocationString.
-	
-	^ project
-]
-
-{ #category : #loading }
-GtRlProjectsCloneWorkflow >> loadBaselinePackageFor: aBaselineName fromRepository: aRepositoryLocationString [
+GtRlProjectsCloneWorkflow >> loadBaselinePackageForSpec: aBaselineSpec [
 	| icebergRepository icebergPackage baselineClassName |
-	baselineClassName := MetacelloScriptEngine baselineNameFrom: aBaselineName.
+	baselineClassName := MetacelloScriptEngine 
+		baselineNameFrom: aBaselineSpec baselineName.
 	
-	icebergRepository := self ensureRepositoryCloneFor: aRepositoryLocationString.
+	icebergRepository := self ensureRepositoryCloneFor: aBaselineSpec repositoryLocation.
 	(icebergRepository workingCopy packageNames 
 		includes: baselineClassName)
 			ifFalse: [ Error signal: 'Cannot find baseline package' ].
 	
-	self 
-		emitPackageLoadFor: aBaselineName
-		fromRepository: aRepositoryLocationString.
+	self emitPackageLoadForSpec: aBaselineSpec.
 	icebergPackage := icebergRepository workingCopy packageNamed: baselineClassName.
 	icebergPackage load.
 	
@@ -224,35 +195,49 @@ GtRlProjectsCloneWorkflow >> loadBaselinePackageFor: aBaselineName fromRepositor
 ]
 
 { #category : #loading }
+GtRlProjectsCloneWorkflow >> loadBaselineSpec: aBaselineSpec [
+	| baselinePackage project |
+	
+	(self shouldLoadBaselineSpec: aBaselineSpec) ifFalse: [ ^ self ].
+	
+	self emitLoadStartEventForSpec: aBaselineSpec.
+	baselinePackage := self loadBaselinePackageForSpec: aBaselineSpec.
+	
+	project := self 
+		createBaselineProjectForPackage: baselinePackage
+		fromSpec: aBaselineSpec.
+	loadedProjectsByName 
+		at: aBaselineSpec baselineName
+		put: project.
+	
+	self loadProjectDependenciesFor: project.
+	self emitLoadCompletedEventForSpec: aBaselineSpec.
+	
+	^ project
+]
+
+{ #category : #loading }
 GtRlProjectsCloneWorkflow >> loadProjectDependenciesFor: aBaselineProject [
 	aBaselineProject childProjects do: [ :aProject |
 		self 
-			loadBaseline: aProject name 
-			fromRepository: aProject repository urlString ].
+			loadBaselineSpec: (GtRlClonerBaselineSpec new
+				baselineName: aProject name;
+				repositoryLocation: aProject repository urlString) ].
 ]
 
 { #category : #testing }
-GtRlProjectsCloneWorkflow >> shouldLoadBaselineNamed: aBaselineName fromRepository: aRepositoryLocationString [
+GtRlProjectsCloneWorkflow >> shouldLoadBaselineSpec: aBaselineSpec [
 	"Ensure that we can load the baseline without having conflictual repositories 
 	or baselines loaded. Throw an error if there is a conflict from which we 
 	cannot recover."
 	
-	self 
-		ensureNoConflictWithIcebergRepoFor: aRepositoryLocationString
-		forBaseline: aBaselineName.
-	self 
-		ensureSingleRepositoryVersionFor: aRepositoryLocationString
-		forBaseline: aBaselineName.
-	self 
-		ensureSameRepositoryForBaseline: aBaselineName 
-		fromRepository: aRepositoryLocationString.
+	self ensureNoConflictWithIcebergRepoForSpec: aBaselineSpec.
+	self ensureSingleRepositoryVersionForSpec: aBaselineSpec.
+	self ensureSameRepositoryForBaselineSpec: aBaselineSpec.
 		
-	(self isBaselineNamedAlreadyLoadedFor: aBaselineName) ifTrue: [
-		self 
-			emitBaselineAlreadyLoadedFor: aBaselineName
-			fromRepository: aRepositoryLocationString.
+	(self isBaselineNamedAlreadyLoadedForSpec: aBaselineSpec) ifTrue: [
+		self emitBaselineAlreadyLoadedForSpec: aBaselineSpec.
 		^ false].
-		
 
 	^ true
 ]
