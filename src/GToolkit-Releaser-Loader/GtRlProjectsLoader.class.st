@@ -7,10 +7,11 @@ Class {
 { #category : #actions }
 GtRlProjectsLoader >> cloneBaseline: aBaselineName fromRepository: aRepositoryLocationString [
 	| projectCloner |
-	projectCloner := GtRlProjectsCloneWorkflow new.
-	^ projectCloner 
-		loadBaseline: aBaselineName 
-		fromRepository: aRepositoryLocationString.
+	projectCloner := GtRlProjectsCloner new.
+	projectCloner 
+		baseline: aBaselineName;
+		repository: aRepositoryLocationString.
+	^ projectCloner execute
 ]
 
 { #category : #actions }
