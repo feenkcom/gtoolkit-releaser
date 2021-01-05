@@ -41,6 +41,7 @@ GtRlRepositoriesCloner class >> loadProject: aBaselineClassName fromRepository: 
 			Metacello new
 				baseline: pr name;
 				repository: pr repositoryRelease repository url asString;
+				silently;
 				onConflictUseIncoming;
 				 onWarning: [ :anException |
 					"Log the error now."

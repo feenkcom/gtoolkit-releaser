@@ -46,6 +46,47 @@ GtRlProjectLoadDirective >> childLoadDirectives [
 ]
 
 { #category : #accessing }
+GtRlProjectLoadDirective >> gtFullLoadDirectivesMapFor: aView [
+	<gtView>
+	^ aView mondrian
+		title: 'Load map (full)' translated;
+		priority: 10;
+		painting: [ :mondrian |
+			mondrian nodes 
+				shape: [ :aLoadDirective |
+					BrLabel new 
+						text: aLoadDirective projectName; 
+						look: BrGlamorousLabelLook;
+						when: BlClickEvent do: [ :anEvent | 
+							anEvent currentTarget phlow spawnObject: aLoadDirective ] ];
+				with: (self withAllChildLoadDirectived
+					, self withAllChildIgnoredLoadDirectived).
+			mondrian edges
+				shape: [ 
+					BlLineElement new 
+						zIndex: -1;
+						border: (BlBorder paint: (Color gray alpha: 0.5) width: 2);
+						toHead: (BlArrowheadSimpleArrow new
+							border: (BlBorder builder paint: (Color gray alpha: 0.5); width: 2; build)) ];
+				fromRightCenter;
+				toLeftCenter;
+				connectToAll: #childLoadDirectives.
+			mondrian edges
+				passive;
+				shape: [ 
+					BlParabollaArcElement new 
+						zIndex: -1;
+						curvatureFraction: 0.3;
+						border: (BlBorder paint: (Color lightGray alpha: 0.5) width: 1);
+						toHead: (BlArrowheadSimpleArrow new
+							border: (BlBorder builder paint: (Color lightGray alpha: 0.5); width: 1; build)) ];
+				fromRightCenter;
+				toLeftCenter;
+				connectToAll: #ignoredChildLoadDirectives.
+			mondrian layout custom: (GtGradWestHierarchicalLayout new) ]
+]
+
+{ #category : #accessing }
 GtRlProjectLoadDirective >> gtLoadDirectivesMapFor: aView [
 	<gtView>
 	^ aView mondrian
@@ -115,6 +156,16 @@ GtRlProjectLoadDirective >> gtProjectWithDirectivesMapFor: aView [
 ]
 
 { #category : #'gt-extensions' }
+GtRlProjectLoadDirective >> gtViewBaselineCodeFor: aView [
+	<gtView>
+	^ aView forward 
+		title: 'Code' translated;
+		priority: 35;
+		object: [ self project baselineClass >> #baseline: ];
+		view: #gtSourceFor: 
+]
+
+{ #category : #'gt-extensions' }
 GtRlProjectLoadDirective >> gtViewChildLoadDirectivesFor: aView [
 	<gtView>
 	^ aView list 
@@ -130,6 +181,15 @@ GtRlProjectLoadDirective >> gtViewLocalLoadActionsFor: aView [
 		title: 'Local actions' translated;
 		priority: 25;
 		items: [ self loadActions ]
+]
+
+{ #category : #'gt-extensions' }
+GtRlProjectLoadDirective >> gtViewPackagesFor: aView [
+	<gtView>
+	^ aView list 
+		title: 'Packages' translated;
+		priority: 30;
+		items: [ self packagesInLoadOrder ]
 ]
 
 { #category : #'gt-extensions' }
@@ -168,7 +228,7 @@ GtRlProjectLoadDirective >> initializeLoadActions [
 		postLoadAction := GtRlPostLoadAction new 	
 			loadDirective: self ].
 	
-	self project packages do: [ :aPackage | 
+	self packagesInLoadOrder do: [ :aPackage | 
 		self addPackageAction: (GtRlPackageLoadAction new
 			package: aPackage;
 			loadDirective: self) ]
@@ -191,6 +251,12 @@ GtRlProjectLoadDirective >> loadActions [
 GtRlProjectLoadDirective >> packageLoadActions [
 	^ packageLoadActions ifNil: [ 
 		packageLoadActions := OrderedCollection new ]
+]
+
+{ #category : #accessing }
+GtRlProjectLoadDirective >> packagesInLoadOrder [
+	^ GtRlPackagesLoadOrderTraversal new 
+		packagesLoadOrderFor: self project
 ]
 
 { #category : #accessing }
@@ -225,6 +291,11 @@ GtRlProjectLoadDirective >> project [
 { #category : #accessing }
 GtRlProjectLoadDirective >> projectName [
 	^ self project name
+]
+
+{ #category : #accessing }
+GtRlProjectLoadDirective >> withAllChildIgnoredLoadDirectived [
+	^ self withDeepCollect: #ignoredChildLoadDirectives
 ]
 
 { #category : #accessing }

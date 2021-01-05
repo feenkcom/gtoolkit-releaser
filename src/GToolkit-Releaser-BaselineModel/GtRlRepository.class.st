@@ -300,3 +300,10 @@ GtRlRepository >> versionString [
 		ifTrue: [ nameSegment copyAfter: $: ]
 		ifFalse: [ Error signal: 'The repository does not have a version number.' ]
 ]
+
+{ #category : #accessing }
+GtRlRepository >> versionStringOrNil [
+	^ self hasVersion 
+		ifTrue: [ self versionString ] 
+		ifFalse: [ nil ]
+]

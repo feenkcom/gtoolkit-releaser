@@ -7,7 +7,7 @@ Class {
 		'parentProjects',
 		'projectReferences'
 	],
-	#category : #'GToolkit-Releaser-Loader'
+	#category : #'GToolkit-Releaser-Cloner-Core'
 }
 
 { #category : #adding }

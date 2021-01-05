@@ -6,12 +6,12 @@ Class {
 
 { #category : #private }
 GtRlPackagesLoadOrderTraversal >> loadOrderFor: aPackage in: currentPackages [
-	"I traverse first the children recursively, and only after all the children are traversed, 
-	I add the current project to the list if needed. The project is added to the list only if 
+	"I traverse first the required packages recursively, and only after all the requirements are traversed, 
+	I add the current package to the list if needed. The package is added to the list only if 
 	it is not already present. If its present it means it was already traversed as it was also
-	a child of another release."
-	aPackage requiredPackages do: [ :aChildPackage | 
-		self loadOrderFor: aChildPackage in: currentPackages ].
+	a requiremenet of another package."
+	aPackage requiredPackages do: [ :aRequiredPackage | 
+		self loadOrderFor: aRequiredPackage in: currentPackages ].
 	(currentPackages includes: aPackage) ifFalse: [
 		currentPackages add: aPackage ].
 ]
@@ -21,6 +21,6 @@ GtRlPackagesLoadOrderTraversal >> packagesLoadOrderFor: aProject [
 	| packagesInLoadOrder |
 	packagesInLoadOrder := OrderedCollection new.
 	aProject rootPackages do: [ :aPackage | 
-		"self loadOrderFor: aPackage in: packagesInLoadOrder" ].
+		self loadOrderFor: aPackage in: packagesInLoadOrder ].
 	^ packagesInLoadOrder
 ]

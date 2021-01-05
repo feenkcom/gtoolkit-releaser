@@ -8,9 +8,10 @@ Class {
 GtRlProjectsLoader >> cloneBaseline: aBaselineName fromRepository: aRepositoryLocationString [
 	| projectCloner |
 	projectCloner := GtRlProjectsCloner new.
-	^ projectCloner 
-		loadBaseline: aBaselineName 
-		fromRepository: aRepositoryLocationString.
+	projectCloner 
+		baseline: aBaselineName;
+		repository: aRepositoryLocationString.
+	^ projectCloner execute
 ]
 
 { #category : #actions }
