@@ -22,6 +22,11 @@ GtRlProjectsCloneWorkflow >> createBaselineProjectForPackage: baselinePackage fr
 	
 ]
 
+{ #category : #testing }
+GtRlProjectsCloneWorkflow >> defaultBranchName [
+	^ 'master'
+]
+
 { #category : #logging }
 GtRlProjectsCloneWorkflow >> emitBaselineAlreadyLoadedForSpec: aBaselineSpec [
 	GtRlClonerBaselineSkipLoadEvent new
@@ -69,11 +74,31 @@ GtRlProjectsCloneWorkflow >> ensureNoConflictWithIcebergRepoForSpec: aBaselineSp
 		(icebergRepo hasRemoteNamed: 'origin') not ]) ifTrue: [ 
 			Error signal: 'Iceberg repo is missing origin. Not supported currently!' ].
 	
-	repoVersion := toLoadRepository versionStringOrNil ifNil: [ 'master' ].
-	((toLoadRepository projectPath = icebergRepo origin projectPath) and: [ 
-		toLoadRepository repoPath = icebergRepo subdirectory and: [
-			repoVersion = icebergRepo head description ] ]) ifFalse: [ 
-				Error signal: 'Confict with local iceberg repo' ]
+	(toLoadRepository projectPath = icebergRepo origin projectPath) ifFalse: [
+		GtRlClonerIcebergRepoMismatchError new 
+			baselineSpec: aBaselineSpec;
+			mismatchType: 'Project Path';
+			baselineData: toLoadRepository projectPath;
+			icebergData: icebergRepo origin projectPath;
+			signal ].
+	
+	(toLoadRepository repoPath = icebergRepo subdirectory) ifFalse: [
+		GtRlClonerIcebergRepoMismatchError new 
+			baselineSpec: aBaselineSpec;
+			mismatchType: 'Repo Path';
+			baselineData: toLoadRepository repoPath;
+			icebergData: icebergRepo subdirectory;
+			signal ].
+	
+	repoVersion := toLoadRepository versionStringOrNil 
+		ifNil: [ self defaultBranchName ].
+	(repoVersion = icebergRepo head description) ifFalse: [
+		GtRlClonerIcebergRepoMismatchError new 
+			baselineSpec: aBaselineSpec;
+			mismatchType: 'Baseline Version';
+			baselineData: repoVersion;
+			icebergData: icebergRepo head description;
+			signal ].
 ]
 
 { #category : #'private - building' }
