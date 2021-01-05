@@ -41,14 +41,11 @@ GtRlProjectsCloner >> execute [
 GtRlProjectsCloner >> gtViewEventsFor: aView [
 	<gtView>
 	self hasMemoryLogger ifNil: [ ^ aView empty ].
-	^ aView columnedList
+	^ aView forward
 	 	title: 'Events';
 	 	priority: 30;
-	 	items: [ self memoryLogger recordings ];
-	 	column: 'Timestamp' text: [ :aRecording | aRecording timestamp asString ];
-	 	column: 'Type' text: [ :aRecording | aRecording eventName ];
-	 	column: 'Baseline' text: [ :aRecording | aRecording baselineName ];
-	 	column: 'Repository' text: [ :aRecording | aRecording repositoryUrlString ]
+	 	object: [ GtRlClonerEventsGroup withAll: self memoryLogger recordings ];
+	 	view: #gtItemsFor:
 ]
 
 { #category : #'gt extensions' }

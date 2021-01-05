@@ -35,7 +35,7 @@ GtRlClonerEventLogReader >> readEventFromLine: aLine [
 { #category : #initialization }
 GtRlClonerEventLogReader >> readFrom: aStream [
 	| newEvents |
-	newEvents := OrderedCollection new.
+	newEvents := GtRlClonerEventsGroup new.
 	aStream contents linesDo: [ :aLine |
 		(aLine includesSubstring: '| ClonerEvent |') ifTrue: [
 			| newEvent |
