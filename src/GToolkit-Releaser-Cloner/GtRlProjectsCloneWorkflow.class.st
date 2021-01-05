@@ -6,7 +6,7 @@ Class {
 		'repositoriesCacheById',
 		'initialIcebergRepos'
 	],
-	#category : #'GToolkit-Releaser-Loader'
+	#category : #'GToolkit-Releaser-Cloner-Core'
 }
 
 { #category : #'private - building' }

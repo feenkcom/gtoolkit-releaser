@@ -1,11 +1,11 @@
 Extension { #name : #GtRlRepository }
 
-{ #category : #'*GToolkit-Releaser-Loader' }
+{ #category : #'*GToolkit-Releaser-Cloner' }
 GtRlRepository >> ownerName [
 	^ self url host
 ]
 
-{ #category : #'*GToolkit-Releaser-Loader' }
+{ #category : #'*GToolkit-Releaser-Cloner' }
 GtRlRepository >> projectPath [
 	| projectPath |
 	projectPath := OrderedCollection new.
@@ -14,7 +14,7 @@ GtRlRepository >> projectPath [
 	^ (RelativePath withAll: projectPath) pathString
 ]
 
-{ #category : #'*GToolkit-Releaser-Loader' }
+{ #category : #'*GToolkit-Releaser-Cloner' }
 GtRlRepository >> repoPath [
 	| urlSegments |
 	urlSegments := self url segments.

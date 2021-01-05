@@ -7,7 +7,7 @@ Class {
 		'cloneWorkflow',
 		'memoryLogger'
 	],
-	#category : #'GToolkit-Releaser-Loader'
+	#category : #'GToolkit-Releaser-Cloner-Core'
 }
 
 { #category : #baselines }

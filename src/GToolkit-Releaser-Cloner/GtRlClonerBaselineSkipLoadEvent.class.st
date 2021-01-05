@@ -1,7 +1,7 @@
 Class {
 	#name : #GtRlClonerBaselineSkipLoadEvent,
 	#superclass : #GtRlClonerBaselineLoadEvent,
-	#category : #'GToolkit-Releaser-Loader-Logging'
+	#category : #'GToolkit-Releaser-Cloner-Logging'
 }
 
 { #category : #accessing }

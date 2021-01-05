@@ -6,7 +6,7 @@ Class {
 		'events',
 		'subgroups'
 	],
-	#category : #'GToolkit-Releaser-Loader-Logging'
+	#category : #'GToolkit-Releaser-Cloner-Logging'
 }
 
 { #category : #'instance creation' }
