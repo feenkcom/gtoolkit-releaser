@@ -10,7 +10,7 @@ Class {
 
 { #category : #accessing }
 GtRlClonerDifferentRepositoryVersionError >> defaultMessageText [
-	'Different versions for baseline of project {1} detected! Loaded version: {2}; new version: {3}. Update the baselines to only use one version.' format: { 
+	^ 'Different versions for baseline of project {1} detected! Loaded version: {2}; new version: {3}. Update the baselines to only use one version.' format: { 
 		self baselineName.
 		self loadedVersionString.
 		self newVersionString }
