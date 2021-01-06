@@ -92,12 +92,12 @@ GtRlProjectsCloneWorkflow >> ensureNoConflictWithIcebergRepoForSpec: aBaselineSp
 	
 	repoVersion := toLoadRepository versionStringOrNil 
 		ifNil: [ self defaultBranchName ].
-	(repoVersion = icebergRepo head description) ifFalse: [
+	(repoVersion = icebergRepo head gtClonerVersionDescription) ifFalse: [
 		GtRlClonerIcebergRepoMismatchError new 
 			baselineSpec: aBaselineSpec;
 			mismatchType: 'Baseline Version';
 			baselineData: repoVersion;
-			icebergData: icebergRepo head description;
+			icebergData: icebergRepo head gtClonerVersionDescription;
 			signal ].
 ]
 
