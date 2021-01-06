@@ -28,10 +28,10 @@ GtRlProjectsCloner >> execute [
 	self loggers do: [ :aLogger |
 		aLogger startFor: GtRlClonerBaselineEvent ].
 	[ 
-		cloneWorkflow
+		^ cloneWorkflow
 			loadBaselineSpec: (GtRlClonerBaselineSpec new
 				baselineName: baselineName;
-				repositoryLocation: repositoryUrlString) 
+				repositoryLocation: repositoryUrlString)
 	] ensure: [
 		self loggers do: [ :aLogger | aLogger stop ] ].
 	
