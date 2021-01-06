@@ -18,6 +18,17 @@ GtRlClonerBaselineSpec >> baselineName: anObject [
 	baselineName := anObject
 ]
 
+{ #category : #printing }
+GtRlClonerBaselineSpec >> printOn: aStream [
+	super printOn: aStream.
+	aStream 
+		nextPutAll: '(';
+		nextPutAll: (self baselineName ifNil: [ '<missing>' ]);
+		nextPutAll: ', ';
+		nextPutAll: (self repositoryLocation ifNil: [ '<missing>' ]);
+		nextPutAll: ')'
+]
+
 { #category : #accessing }
 GtRlClonerBaselineSpec >> repositoryLocation [
 	^ repositoryLocation
