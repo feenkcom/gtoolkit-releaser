@@ -29,6 +29,23 @@ GtRlDedicatedBranchReleaseStrategy >> assertBaselineMethodNodeFor: aNode [
 	self assert: (aNode parent value definition name matchesRegex: 'BaselineOf.+').
 ]
 
+{ #category : #actions }
+GtRlDedicatedBranchReleaseStrategy >> assertNotModified: icebergRepository [
+	icebergRepository isModified
+		ifTrue:
+			[ "Attemp here to make the repository clean. Sometimes repository are marked as dirty even if
+		they have no changes." icebergRepository workingCopy forceCalculateDirtyPackages ].
+
+	"Hacky tachy way of ensuring the repo is clean."
+	icebergRepository isModified
+		ifTrue:
+			[ "Attemp here to make the repository clean. Sometimes repository are marked as dirty even if
+		they have no changes." icebergRepository workingCopy forceCalculateDirtyPackages ].
+	icebergRepository
+		assertRepositoryNotModified:
+			'There should be no changes in the repository after loading.'
+]
+
 { #category : #assertions }
 GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChanges [
 	| referenceCommit releaseCommit |
@@ -81,6 +98,7 @@ GtRlDedicatedBranchReleaseStrategy >> findNewCommits [
 	|repoRelease releaseCommit lastMergedCommit result walk repo masterCommit|
 	repoRelease := self  repositoryRelease.
 	repo := repoRelease icebergRepository.
+	self assertNotModified: repo.
 	result := GtRlNewCommits new.
 	result repository: repo.
 	
@@ -184,28 +202,18 @@ GtRlDedicatedBranchReleaseStrategy >> isReferenceBranchMergedIn: anIceCommit [
 { #category : #actions }
 GtRlDedicatedBranchReleaseStrategy >> mergeToReleaseBranch [
 	| icebergRepository |
-	icebergRepository := self repositoryRelease icebergRepository.
-	icebergRepository isModified ifTrue: [ 
-		"Attemp here to make the repository clean. Sometimes repository are marked as dirty even if
+	"Attemp here to make the repository clean. Sometimes repository are marked as dirty even if
 		they have no changes."
-		icebergRepository workingCopy forceCalculateDirtyPackages ].
-	
 	"Hacky tachy way of ensuring the repo is clean."
-	icebergRepository isModified ifTrue: [ 
-		
-		"Attemp here to make the repository clean. Sometimes repository are marked as dirty even if
+	"Attemp here to make the repository clean. Sometimes repository are marked as dirty even if
 		they have no changes."
-		icebergRepository workingCopy forceCalculateDirtyPackages ].
-		
-	icebergRepository 
-		assertRepositoryNotModified: 
-			'There should be no changes in the repository when switching to the release branch.'.
-	self 
+	"Baselines and the metadata file can appear as changed as we do not update the code in the image."
+	icebergRepository := self repositoryRelease icebergRepository.
+	self assertNotModified: icebergRepository.
+	self
 		assert: [ icebergRepository branchName = self referenceBranchName ]
 		description: 'The Iceberg repository needs to be on the reference branch.'.
 	self repositoryRelease mergeToBranch: self releaseBranchName.
-	
-	"Baselines and the metadata file can appear as changed as we do not update the code in the image."
 	self assertOnlyAllowedChanges
 ]
 
