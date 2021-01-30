@@ -98,7 +98,7 @@ GtRlDedicatedBranchReleaseStrategy >> findNewCommits [
 	|repoRelease releaseCommit lastMergedCommit result walk repo masterCommit|
 	repoRelease := self  repositoryRelease.
 	repo := repoRelease icebergRepository.
-	self assertNotModified: repo.
+	"self assertNotModified: repo."
 	result := GtRlNewCommits new.
 	result repository: repo.
 	
