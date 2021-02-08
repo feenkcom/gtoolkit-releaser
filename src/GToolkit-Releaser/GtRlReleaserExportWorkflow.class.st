@@ -134,12 +134,12 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://j-brant/SmaCC/src'.
 		'github://feenkcom/pharo-beacon/repository'.
 		'github://pharo-contributions/OrderPreservingDictionary/src'.
-		'github://marianopeck/FFICHeaderExtractor/repository'.
 		'github://feenkcom/pharo-unicode/repository'.
 		'github://feenkcom/taskit'.
 		'github://pharo-contributions/BitmapCharacterSet/src'.
 		'github://pharo-contributions/CollectionExtensions/src'};
 	setReleaseStrategyOfType: GtRlBaselineTagReleaseStrategy forProjecs: {
+		'github://pharo-contributions/FFICHeaderExtractor/repository'.
 		'github://feenkcom/mustache/repository'.
 		'github://svenvc/NeoJSON/repository'.
 		'github://msgpack/msgpack-smalltalk/repository'.
