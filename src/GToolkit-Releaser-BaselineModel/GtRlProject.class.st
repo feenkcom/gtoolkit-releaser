@@ -62,6 +62,14 @@ GtRlProject >> addProjectReferences: aCollection [
 ]
 
 { #category : #traversing }
+GtRlProject >> allPPackages [
+	self 
+		withDeep: #childProjects 
+		flatCollect: [ :aProject | 
+			aProject packages collect: [ :aRlPackage | aRlPackage asRPackage ] ]
+]
+
+{ #category : #traversing }
 GtRlProject >> allProjectReferences [
 	^ self
 		withDeep: [ :aProject | aProject childProjects ] 
