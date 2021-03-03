@@ -1,6 +1,6 @@
 Class {
 	#name : #GtRlRepositoryActiveReleaseVersionSignal,
-	#superclass : #BeaconSignal,
+	#superclass : #GtReleaserSignal,
 	#instVars : [
 		'repositoryRelease',
 		'version'

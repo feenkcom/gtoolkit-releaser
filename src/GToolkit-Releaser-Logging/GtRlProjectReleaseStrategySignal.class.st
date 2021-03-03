@@ -1,6 +1,6 @@
 Class {
 	#name : #GtRlProjectReleaseStrategySignal,
-	#superclass : #BeaconSignal,
+	#superclass : #GtReleaserSignal,
 	#instVars : [
 		'project',
 		'strategy'

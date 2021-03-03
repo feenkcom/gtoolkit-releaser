@@ -1,6 +1,6 @@
 Class {
 	#name : #GtRlReleaseConfigurationSignal,
-	#superclass : #BeaconSignal,
+	#superclass : #GtReleaserSignal,
 	#instVars : [
 		'configuration'
 	],
