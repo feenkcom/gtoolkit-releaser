@@ -1,6 +1,6 @@
 Class {
 	#name : #GtRlProjectLinkWithRepositorySignal,
-	#superclass : #BeaconSignal,
+	#superclass : #GtReleaserSignal,
 	#instVars : [
 		'projectName',
 		'repositoryName',

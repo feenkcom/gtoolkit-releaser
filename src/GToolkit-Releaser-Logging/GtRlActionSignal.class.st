@@ -1,6 +1,6 @@
 Class {
 	#name : #GtRlActionSignal,
-	#superclass : #BeaconSignal,
+	#superclass : #GtReleaserSignal,
 	#instVars : [
 		'action'
 	],

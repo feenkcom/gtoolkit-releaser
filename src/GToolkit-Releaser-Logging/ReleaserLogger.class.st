@@ -13,7 +13,7 @@ ReleaserLogger >> gtReleaserRecordingsFor: aView [
 		items: [ self recordings reverse ];
 		column: 'Type' translated item: [ :each | each name ];
 		column: 'Contents' translated 
-			item: [ :each | String streamContents: [ :s | each printOneLineContentsOn: s ]
-			width: 600 ];
+			item: [ :each | String streamContents: [ :s | each printOneLineContentsOn: s ] ]
+			width: 600;
 		column: 'Timestamp' translated item: [ :each | each timestamp asString ]
 ]
