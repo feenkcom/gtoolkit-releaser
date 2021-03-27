@@ -64,7 +64,7 @@ GtRlCompileBaselineReleaseAction >> gtViewBaselineSourceDiffFor: aView [
 		stencil: [ :anEditor | 
 			(GtDiffElement on: (TextDiffBuilder 
 				from: (self projectRelease project baselineClass >> #baseline:)
-				to: (self projectRelease generateBaselineSource))) look: GtDiffShadowLook ]
+				to: (self projectRelease generateBaselineSource))) aptitude: GtDiffShadowAptitude ]
 ]
 
 { #category : #ui }
@@ -82,7 +82,7 @@ GtRlCompileBaselineReleaseAction >> gtViewPreviousVersionDiffFor: aView [
 			originalCode := self baselineCodeForCommit: latestTag commit.
 			(GtDiffElement on: (TextDiffBuilder 
 				from: (originalCode ifNil: [ '' ])
-				to: (self projectRelease generateBaselineSource))) look: GtDiffShadowLook ]
+				to: (self projectRelease generateBaselineSource))) aptitude: GtDiffShadowAptitude ]
 ]
 
 { #category : #accessing }

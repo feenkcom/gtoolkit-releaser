@@ -64,7 +64,7 @@ GtRlProjectRelease >> generateBaselineSource [
 GtRlProjectRelease >> gtGeneratedSourceFor: aView [
 	<gtView> 
 	^ aView textEditor
-		look: BrGlamorousCodeEditorLook;
+		aptitude: BrGlamorousCodeEditorAptitude;
 		styler: (BrRBTextStyler new classOrMetaClass: ('BaselineOf', self project name) asClass);
 		title: 'Release source' translated;
 		text: [ self generateBaselineSource ];

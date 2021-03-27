@@ -183,7 +183,7 @@ GtRlProject >> gtProjectMapFor: aView [
 		painting: [ :mondrian |
 			mondrian nodes 
 				shape: [ :aProject |
-					BrLabel new text: aProject name; look: BrGlamorousLabelLook ];
+					BrLabel new text: aProject name; aptitude: BrGlamorousLabelAptitude ];
 				with: self withAllChildProjects.
 			mondrian edges
 				shape: [ 

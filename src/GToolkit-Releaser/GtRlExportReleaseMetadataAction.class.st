@@ -43,7 +43,7 @@ GtRlExportReleaseMetadataAction >> gtViewPreviousMetadataDiffFor: aView [
 			metadataCode := self metadataForCommit: latestTag commit.
 			(GtDiffElement on: (TextDiffBuilder 
 				from: (metadataCode ifNil: [ '' ])
-				to: (STON toJsonStringPretty: self repositoryRelease versionsMetadata))) look: GtDiffShadowLook ]
+				to: (STON toJsonStringPretty: self repositoryRelease versionsMetadata))) aptitude: GtDiffShadowAptitude ]
 ]
 
 { #category : #baselines }

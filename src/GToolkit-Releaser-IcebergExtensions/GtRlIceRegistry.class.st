@@ -46,7 +46,7 @@ GtRlIceRegistry >> gtRepositoriesListFor: aView [
 		send: [ :aRepositoryModel | aRepositoryModel entity ];
 		actionStencil: [ :aTab | 
 			BrButton new  
-				look: BrGlamorousButtonWithLabelLook;
+				aptitude: BrGlamorousButtonWithLabelAptitude;
 				label: 'Fetch';
 				action: [ 
 					self repositoryModels do: #fetch.

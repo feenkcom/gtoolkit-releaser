@@ -58,10 +58,10 @@ GtMetrics >> gtBarChartFor: aView [
 			GtPlotterHorizontalBarChart new
 				barElement: [ :aGtPlotterContext | 
 				BlElement new
-					look: ((BrGlamorousWithTooltipLook2 content: [
+					aptitude: ((BrGlamorousWithTooltipAptitude2 content: [
 						BrLabel new
 							text: (aGtPlotterContext originalValue second);
-							look: (BrGlamorousLabelLook new padding: (BlInsets all: 1)) ]) hideDelay: 0; showDelay: 0) ];
+							aptitude: (BrGlamorousLabelAptitude new padding: (BlInsets all: 1)) ]) hideDelay: 0; showDelay: 0) ];
 				barLabelWidth: 200;
 				barWidthScale: aBarWidthScale;
 				barWidthData: [ :eachValue | eachValue last ];
@@ -121,8 +121,8 @@ container
 			margin: (BlInsets top: 20);
 			constraintsDo: [:c | c vertical exact: 1. c horizontal matchParent];
 			background: (Color black alpha: 0.2));
-		addChild: (BrLabel new look: (BrGlamorousLabelLook new fontSize: 10; foreground: Color black); text: 'Entire image');
-		addChild: (BrLabel new look: (BrGlamorousLabelLook new fontSize: 10; foreground: Color gray); text: GtMetrics default totalLinesOfCode asString).
+		addChild: (BrLabel new aptitude: (BrGlamorousLabelAptitude new fontSize: 10; foreground: Color black); text: 'Entire image');
+		addChild: (BrLabel new aptitude: (BrGlamorousLabelAptitude new fontSize: 10; foreground: Color gray); text: GtMetrics default totalLinesOfCode asString).
 value nodes do: [ :group | 
 	| groupElement barsContainer | 
 	groupElement := BlElement new 
@@ -139,8 +139,8 @@ value nodes do: [ :group |
 			margin: (BlInsets top: 20);
 			constraintsDo: [:c | c vertical exact: 1. c horizontal matchParent];
 			background: (Color black alpha: 0.2));
-		addChild: (BrLabel new look: (BrGlamorousLabelLook new fontSize: 10; foreground: Color black); text: group name);
-		addChild: (BrLabel new look: (BrGlamorousLabelLook new fontSize: 10; foreground: Color gray); text: group weight asString).
+		addChild: (BrLabel new aptitude: (BrGlamorousLabelAptitude new fontSize: 10; foreground: Color black); text: group name);
+		addChild: (BrLabel new aptitude: (BrGlamorousLabelAptitude new fontSize: 10; foreground: Color gray); text: group weight asString).
 	group leaves do: [:leaf | 
 		| leafContainer leafBar |
 		leafBar := BlElement new 
@@ -156,8 +156,8 @@ value nodes do: [ :group |
 					margin: (BlInsets top: 20);
 					constraintsDo: [:c | c vertical exact: 1. c horizontal matchParent];
 					background: (Color black alpha: 0.2));
-			addChild: (BrLabel new look: (BrGlamorousLabelLook new fontSize: 10; foreground: Color black); text: leaf item key gtDisplayString);
-			addChild: (BrLabel new look: (BrGlamorousLabelLook new fontSize: 10; foreground: Color gray); text: leaf weight asString).
+			addChild: (BrLabel new aptitude: (BrGlamorousLabelAptitude new fontSize: 10; foreground: Color black); text: leaf item key gtDisplayString);
+			addChild: (BrLabel new aptitude: (BrGlamorousLabelAptitude new fontSize: 10; foreground: Color gray); text: leaf weight asString).
 		barsContainer addChild: leafContainer.
 		] ].
 (container asScalableElement maxScale: 1.2) margin: (BlInsets all: 20)
