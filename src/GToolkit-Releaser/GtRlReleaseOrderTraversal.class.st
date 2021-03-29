@@ -7,16 +7,15 @@ Class {
 	#name : #GtRlReleaseOrderTraversal,
 	#superclass : #Object,
 	#instVars : [
-		'visitedRepositories'
+		'traversalContext'
 	],
 	#category : #'GToolkit-Releaser'
 }
 
 { #category : #initialization }
 GtRlReleaseOrderTraversal >> initialize [
-
 	super initialize.
-	visitedRepositories := Set new.
+	traversalContext := Stack new.
 ]
 
 { #category : #actions }
@@ -34,11 +33,14 @@ GtRlReleaseOrderTraversal >> releaseOrderFor: aRepositoryRelease in: currentRele
 	it is not already present. If its present it means it was already traversed as it was also
 	a child of another release."
 	
-	(visitedRepositories includes: aRepositoryRelease) ifTrue:
+	(traversalContext includes: aRepositoryRelease) ifTrue:
 		[ self error: 'Circular dependency to repository: ', aRepositoryRelease printString ].
-	visitedRepositories add: aRepositoryRelease.
+	traversalContext push: aRepositoryRelease.
+	
 	aRepositoryRelease childRepositoryReleases do: [ :aChildRelease | 
 		self releaseOrderFor: aChildRelease in: currentReleases].
 	(currentReleases includes: aRepositoryRelease) ifFalse: [
 		currentReleases add: aRepositoryRelease ].
+	
+	traversalContext pop.
 ]
