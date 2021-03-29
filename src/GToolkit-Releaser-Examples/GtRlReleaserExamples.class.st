@@ -42,7 +42,11 @@ GtRlReleaserExamples >> baselineClassForProjectName: projectName [
 GtRlReleaserExamples >> commiNewMethodNamed: methodSelector onMasterToProject: targetProject [
 	| icebergRepository |
 	icebergRepository := targetProject repository icebergRepository.
-	(icebergRepository branchNamed: 'master') checkout.
+	
+	"checkout ends up with MCPackageLoader>>basicLoad which may flush changes file"
+	GtPharoCodeModifier current critical: [
+		(icebergRepository branchNamed: 'master') checkout ].
+	
 	self addNewMethodNamed: #method1 toProject: targetProject.
 	icebergRepository workingCopy 
 		forceCalculateDirtyPackages
@@ -292,7 +296,10 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndChanges [
 	icebergRepository := project repository icebergRepository.
 	self releaseNewVersionForProject: project.
 	
-	(icebergRepository branchNamed: 'master') checkout.
+	"checkout endd up with MCPackageLoader>>basicLoad which may flush changes file"
+	GtPharoCodeModifier current critical: [
+		(icebergRepository branchNamed: 'master') checkout. ].
+
 	self addNewMethodNamed: #method1 toProject: project.
 	icebergRepository workingCopy forceCalculateDirtyPackages.
 	
