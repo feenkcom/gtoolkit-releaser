@@ -6,8 +6,18 @@ Releases should be updated starting with all the children of a parent release, b
 Class {
 	#name : #GtRlReleaseOrderTraversal,
 	#superclass : #Object,
+	#instVars : [
+		'visitedRepositories'
+	],
 	#category : #'GToolkit-Releaser'
 }
+
+{ #category : #initialization }
+GtRlReleaseOrderTraversal >> initialize [
+
+	super initialize.
+	visitedRepositories := Set new.
+]
 
 { #category : #actions }
 GtRlReleaseOrderTraversal >> releaseOrderFor: aRepositoryRelease [ 
@@ -23,11 +33,12 @@ GtRlReleaseOrderTraversal >> releaseOrderFor: aRepositoryRelease in: currentRele
 	I add the current release to the list if needed. The release is added to the list only if 
 	it is not already present. If its present it means it was already traversed as it was also
 	a child of another release."
-
-	(currentReleases includes: aRepositoryRelease) ifTrue: 
+	
+	(visitedRepositories includes: aRepositoryRelease) ifTrue:
 		[ self error: 'Circular dependency to repository: ', aRepositoryRelease printString ].
-	currentReleases add: aRepositoryRelease.
+	visitedRepositories add: aRepositoryRelease.
 	aRepositoryRelease childRepositoryReleases do: [ :aChildRelease | 
 		self releaseOrderFor: aChildRelease in: currentReleases].
-
+	(currentReleases includes: aRepositoryRelease) ifFalse: [
+		currentReleases add: aRepositoryRelease ].
 ]
