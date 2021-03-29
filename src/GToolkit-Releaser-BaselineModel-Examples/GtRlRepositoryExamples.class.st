@@ -38,8 +38,7 @@ GtRlRepositoryExamples >> repositoryWithFiletreeUrl [
 	<gtExample>
 	"I build a repository that uses a filetree url to identify a repository."
 	| repository |
-	repository := GtRlRepository new
-		url: (ZnUrl fromString: 'filetree:///Users/example/Documents/temp/repo').
+	repository := GtRlRepository fromUrlString: 'filetree:///Users/example/Documents/temp/repo'.
 	
 	self assert: repository hasVersion equals: false.
 	self assert: repository id equals: 'filetree:///Users/example/Documents/temp/repo'.
@@ -57,8 +56,7 @@ GtRlRepositoryExamples >> repositoryWithGithubUrlExplicitTagVersion [
 	<gtExample>
 	"I build a repository that uses a Github url pointing to a tag instead of the latest version."
 	| repository |
-	repository := GtRlRepository new
-		url: (ZnUrl fromString: 'github://example/gtoolkit:v0.2.1/src').
+	repository := GtRlRepository fromUrlString: 'github://example/gtoolkit:v0.2.1/src'.
 	
 	self assert: repository hasVersion.
 	self assert: repository id equals: 'github://example/gtoolkit/src'.
@@ -78,8 +76,7 @@ GtRlRepositoryExamples >> repositoryWithGithubUrlNoVersion [
 	<gtExample>
 	"I build a repository that uses a Github url with no version information."
 	| repository |
-	repository := GtRlRepository new
-		url: (ZnUrl fromString: 'github://example/gtoolkit/src').
+	repository := GtRlRepository fromUrlString: 'github://example/gtoolkit/src'.
 	
 	self assert: repository hasVersion equals: false.
 	self assert: repository id equals: 'github://example/gtoolkit/src'.
