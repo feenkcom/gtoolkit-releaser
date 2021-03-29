@@ -62,9 +62,9 @@ GtRlReleaserExamples >> createBaselineForProjectNamed: projectName withDependenc
 	baselinePackage := RPackage named: 'BaselineOf', projectName.
 	
 	SystemAnnouncer uniqueInstance suspendAllWhile: [ 
-		baselineClass := BaselineOf subclass: 'BaselineOf', projectName
-			instanceVariableNames: ''
-			classVariableNames: ''
+		baselineClass := GtPharoCodeModifier current
+			createSubclassOf: BaselineOf
+			named: 'BaselineOf', projectName
 			package: 'BaselineOf', projectName ].
 	baselinePackage addClassDefinition: baselineClass.
 	
@@ -81,11 +81,13 @@ GtRlReleaserExamples >> createBaselineForProjectNamed: projectName withDependenc
 dependenciesCode,'
 	].'.
 	
-	baselineClass compileSilently: methodSourceCode classified: 'baseline'.
+	GtPharoCodeModifier current critical: [
+		baselineClass compileSilently: methodSourceCode classified: 'baseline' ].
+	
 	baselinePackage addMethod: baselineClass>>#baseline:.
 	
 	SystemAnnouncer uniqueInstance suspendAllWhile: [ 
-		RPackageOrganizer default registerPackage: baselinePackage ].
+		GtPharoCodeModifier registerPackage: baselinePackage ].
 	^ baselineClass
 ]
 
