@@ -298,7 +298,7 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndChanges [
 	icebergRepository := project repository icebergRepository.
 	self releaseNewVersionForProject: project.
 	
-	"checkout endd up with MCPackageLoader>>basicLoad which may flush changes file"
+	"checkout ends up with MCPackageLoader>>basicLoad which may flush changes file"
 	GtPharoCodeModifier current critical: [
 		(icebergRepository branchNamed: 'master') checkout. ].
 
@@ -437,7 +437,9 @@ GtRlReleaserExamples >> repositories [
 GtRlReleaserExamples >> switchAllToMasterForProject: project [
 	(project repository withDeepCollect: #childRepositories) do: [ :aRepository |
 		self assert: (aRepository icebergRepository hasLocalBranchNamed: 'master').
-		(aRepository icebergRepository branchNamed: 'master') checkout ]
+		"checkout ends up with MCPackageLoader>>basicLoad which may flush changes file"
+		GtPharoCodeModifier current critical: [
+			(aRepository icebergRepository branchNamed: 'master') checkout ] ]
 ]
 
 { #category : #private }
