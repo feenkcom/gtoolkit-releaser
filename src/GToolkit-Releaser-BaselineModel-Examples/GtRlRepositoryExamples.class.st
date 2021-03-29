@@ -63,6 +63,8 @@ GtRlRepositoryExamples >> repositoryWithGithubUrlExplicitTagVersion [
 	self assert: repository hasVersion.
 	self assert: repository id equals: 'github://example/gtoolkit/src'.
 	self assert: repository projectName equals: 'gtoolkit'.
+	self assert: repository versionString equals: 'v0.2.1'.
+	self assert: repository versionStringOrNil equals: 'v0.2.1'.
 	self assert: repository repositoryName equals: 'gtoolkit'.
 	self assert: repository url equals: (ZnUrl fromString: 'github://example/gtoolkit:v0.2.1/src').
 	self assert: repository urlString equals: 'github://example/gtoolkit:v0.2.1/src'.
@@ -82,6 +84,7 @@ GtRlRepositoryExamples >> repositoryWithGithubUrlNoVersion [
 	self assert: repository hasVersion equals: false.
 	self assert: repository id equals: 'github://example/gtoolkit/src'.
 	self assert: repository projectName equals: 'gtoolkit'.
+	self assert: repository versionStringOrNil isNil.
 	self assert: repository repositoryName equals: 'gtoolkit'.
 	self assert: repository url equals: (ZnUrl fromString: 'github://example/gtoolkit/src').
 	self assert: repository urlString equals: 'github://example/gtoolkit/src'.
