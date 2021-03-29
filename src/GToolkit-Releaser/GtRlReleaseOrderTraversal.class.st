@@ -2,6 +2,8 @@
 I traverse a structure of repository releases and return them in the order in which they should be updated.
 
 Releases should be updated starting with all the children of a parent release, before updating the parent. Also a release should be updated only once. The children should be updated first so update their version. Then the parent can check whether or not its children have new versions.
+
+I assume that the release has no cycles between repositories. I use ${class:GtRlReleaseTraversalContext}$ to detect cycles and trigger an error in case a cycles between repositories is found.
 "
 Class {
 	#name : #GtRlReleaseOrderTraversal,
@@ -15,7 +17,7 @@ Class {
 { #category : #initialization }
 GtRlReleaseOrderTraversal >> initialize [
 	super initialize.
-	traversalContext := Stack new.
+	traversalContext := GtRlReleaseTraversalContext new.
 ]
 
 { #category : #actions }
@@ -33,14 +35,17 @@ GtRlReleaseOrderTraversal >> releaseOrderFor: aRepositoryRelease in: currentRele
 	it is not already present. If its present it means it was already traversed as it was also
 	a child of another release."
 	
-	(traversalContext includes: aRepositoryRelease) ifTrue:
-		[ self error: 'Circular dependency to repository: ', aRepositoryRelease printString ].
-	traversalContext push: aRepositoryRelease.
+	traversalContext 
+		withRecursionDetectionFor: aRepositoryRelease
+		during: [ 
+			aRepositoryRelease childRepositoryReleases do: [ :aChildRelease | 
+				self releaseOrderFor: aChildRelease in: currentReleases ].
+			"The same repository release can be a child of multiple other repository releases.
+			When building the release order we only take it into account the first time we encouter it,
+			since we process repositories usign depth first stragegy."
+			(currentReleases includes: aRepositoryRelease) ifFalse: [
+				currentReleases add: aRepositoryRelease ] ]
 	
-	aRepositoryRelease childRepositoryReleases do: [ :aChildRelease | 
-		self releaseOrderFor: aChildRelease in: currentReleases].
-	(currentReleases includes: aRepositoryRelease) ifFalse: [
-		currentReleases add: aRepositoryRelease ].
 	
-	traversalContext pop.
+
 ]

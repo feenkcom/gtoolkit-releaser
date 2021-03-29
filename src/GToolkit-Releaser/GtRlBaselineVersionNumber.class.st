@@ -16,7 +16,6 @@ GtRlBaselineVersionNumber >> = anObject [
 
 { #category : #comparing }
 GtRlBaselineVersionNumber >> hash [
-
 	^ (self species hash
 		bitXor: versionString hash)
 ]
