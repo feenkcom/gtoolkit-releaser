@@ -23,8 +23,11 @@ GtRlReleaseOrderTraversal >> releaseOrderFor: aRepositoryRelease in: currentRele
 	I add the current release to the list if needed. The release is added to the list only if 
 	it is not already present. If its present it means it was already traversed as it was also
 	a child of another release."
+
+	(currentReleases includes: aRepositoryRelease) ifTrue: [ ^ self ].
 	aRepositoryRelease childRepositoryReleases do: [ :aChildRelease | 
 		self releaseOrderFor: aChildRelease in: currentReleases].
 	(currentReleases includes: aRepositoryRelease) ifFalse: [
 		currentReleases add: aRepositoryRelease ].
+
 ]
