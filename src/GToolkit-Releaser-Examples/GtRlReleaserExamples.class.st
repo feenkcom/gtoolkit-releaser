@@ -11,10 +11,12 @@ Class {
 
 { #category : #'creation projects' }
 GtRlReleaserExamples >> addNewMethodNamed: methodSelector toProject: targetProject [
-	targetProject baselineClass compileSilently: methodSelector,' 
-	"I am a new method"
-	^ 1 + 2 + 3' classified: 'new method'.
-	targetProject baselineClass package addMethod: targetProject baselineClass >> methodSelector.
+
+	GtPharoCodeModifier current critical: [
+		targetProject baselineClass compileSilently: methodSelector,' 
+		"I am a new method"
+		^ 1 + 2 + 3' classified: 'new method'.
+		targetProject baselineClass package addMethod: targetProject baselineClass >> methodSelector ]
 ]
 
 { #category : #assertions }
