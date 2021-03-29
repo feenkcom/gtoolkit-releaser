@@ -24,7 +24,8 @@ GtRlReleaseOrderTraversal >> releaseOrderFor: aRepositoryRelease in: currentRele
 	it is not already present. If its present it means it was already traversed as it was also
 	a child of another release."
 
-	(currentReleases includes: aRepositoryRelease) ifTrue: [ ^ self ].
+	(currentReleases includes: aRepositoryRelease) ifTrue: 
+		[ self error: 'Circular dependency to repository: ', aRepositoryRelease printString ].
 	currentReleases add: aRepositoryRelease.
 	aRepositoryRelease childRepositoryReleases do: [ :aChildRelease | 
 		self releaseOrderFor: aChildRelease in: currentReleases].
