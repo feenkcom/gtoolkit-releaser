@@ -25,9 +25,8 @@ GtRlReleaseOrderTraversal >> releaseOrderFor: aRepositoryRelease in: currentRele
 	a child of another release."
 
 	(currentReleases includes: aRepositoryRelease) ifTrue: [ ^ self ].
+	currentReleases add: aRepositoryRelease.
 	aRepositoryRelease childRepositoryReleases do: [ :aChildRelease | 
 		self releaseOrderFor: aChildRelease in: currentReleases].
-	(currentReleases includes: aRepositoryRelease) ifFalse: [
-		currentReleases add: aRepositoryRelease ].
 
 ]
