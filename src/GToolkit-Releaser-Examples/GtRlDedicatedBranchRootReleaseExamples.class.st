@@ -130,8 +130,10 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseWithHeadCommitChildRepositoryWi
 	| project releaseBuiler projectRelease |
 	project := self projectStructureWithOneChildDependency.
 	self releaseNewVersionForProject: project usingConfig: self releaseConfigurationWithHeadCommitStrategyForChild.
-	(project repository icebergRepository branchNamed: 'master') checkout.
 	
+	GtPharoCodeModifier current critical: [
+		(project repository icebergRepository branchNamed: 'master') checkout ].
+
 	releaseBuiler := GtRlReleaseBuilder new
 		configuration: self releaseConfigurationWithHeadCommitStrategyForChild.
 	projectRelease := releaseBuiler buildReleaseForProject: project.
