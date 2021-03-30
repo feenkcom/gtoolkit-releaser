@@ -2,7 +2,7 @@
 I model a repository that contains projects.
 
 I have as main attributes:
-	- an url used to identify the repository, following the same conventions as Metacello;
+	- a load specification that indicates the location of the repository (following the same conventions as Metacello);
 	- a list of contained projects. 
 
 I can have indirect child and parent repositories, depending on the relations between the projects that I contain.  
@@ -12,7 +12,7 @@ Class {
 	#name : #GtRlRepository,
 	#superclass : #Object,
 	#instVars : [
-		'url',
+		'loadSpecification',
 		'projects',
 		'icebergRepository'
 	],
@@ -22,7 +22,7 @@ Class {
 { #category : #'instance creation' }
 GtRlRepository class >> fromUrlString: aString [
 	^ self new
-		url: (ZnUrl fromString: aString)
+		loadSpecification: (GtRlRepositoryLoadSpecification fromUrlString: aString)
 ]
 
 { #category : #comparing }
@@ -31,7 +31,7 @@ GtRlRepository >> = anotherObject [
 		ifTrue: [ ^ true ].
 	(anotherObject isKindOf: self class)
 		ifFalse: [ ^ false ].
-	^ self urlString asSymbol == anotherObject urlString asSymbol
+	^ self loadSpecification = anotherObject loadSpecification
 ]
 
 { #category : #accessing }
@@ -78,7 +78,7 @@ GtRlRepository >> gtRepoDependenciesFor: aView [
 				shape: [ :aRepository | 
 					| text element |
 					text := [
-						aRepository urlString asRopedText ]
+						aRepository loadSpecificationString asRopedText ]
 						on: Error do: [ :e | e asString asRopedText foreground: BrGlamorousColors linkWithErrorColor ].
 					element := BlTextElement new.
 					element 	
@@ -123,7 +123,7 @@ GtRlRepository >> gtRepoMapFor: aView [
 							c horizontal fitContent.
 							c vertical fitContent ].
 					label := BrLabel new
-						text: aRepository urlString;
+						text: aRepository loadSpecificationString;
 						aptitude: BrGlamorousLabelAptitude;
 						constraintsDo: [ :c | 
 							c padding: (BlInsets all: 5).
@@ -175,12 +175,13 @@ GtRlRepository >> gtTagsFor: aView [
 
 { #category : #testing }
 GtRlRepository >> hasVersion [
-	^ self url segments first includes: $:
+	^ self loadSpecification hasVersion
 ]
 
 { #category : #comparing }
 GtRlRepository >> hash [ 
-	^ self urlString hash
+	^ self class hash 
+		bitXor: self loadSpecification hash
 ]
 
 { #category : #'accessing - dynamic' }
@@ -196,15 +197,9 @@ GtRlRepository >> icebergRepository: aIcebergRepository [
 	icebergRepository := aIcebergRepository
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : #deprecated }
 GtRlRepository >> id [ 	
-	| urlCopy |
-	urlCopy := self url copy.
-	urlCopy segments: OrderedCollection new. 
-	urlCopy addPathSegment: self projectName.
-	(self url segments size > 1)
-		ifTrue: [ urlCopy addPathSegments: (self url segments copyFrom: 2 to: self url segments size )  ].
-	^ urlCopy asString.
+	^ self loadSpecificationId
 ]
 
 { #category : #initialization }
@@ -218,14 +213,36 @@ GtRlRepository >> isLeaf [
 	^ self childRepositories isEmpty
 ]
 
-{ #category : #testing }
-GtRlRepository >> nameSegment [
-	| size segmentIndex |
-	size := self url segments size. 
-	segmentIndex := size - 1. 
-	segmentIndex == 0 ifTrue: [ segmentIndex := 1 ].
-	^ self url segments at: segmentIndex.
+{ #category : #'accessing - load specification' }
+GtRlRepository >> loadSpecification [
+	^ loadSpecification
+]
+
+{ #category : #'accessing - load specification' }
+GtRlRepository >> loadSpecification: aRepositoryLoadSpecification [
+	self assert: [ aRepositoryLoadSpecification notNil ].
 	
+	loadSpecification := aRepositoryLoadSpecification
+]
+
+{ #category : #'accessing - load specification' }
+GtRlRepository >> loadSpecificationId [
+	^ self loadSpecification specificationId
+]
+
+{ #category : #'accessing - load specification' }
+GtRlRepository >> loadSpecificationString [
+	^ self loadSpecification specificationString
+]
+
+{ #category : #'accessing - load specification' }
+GtRlRepository >> loadSpecificationUrl [
+	^ self loadSpecification specificationUrl
+]
+
+{ #category : #'accessing - load specification' }
+GtRlRepository >> nameSegment [
+	^ self loadSpecification nameSegment
 ]
 
 { #category : #'accessing - dynamic' }
@@ -242,17 +259,13 @@ GtRlRepository >> printOn: aStream [
 	super printOn: aStream.
 	aStream 
 		nextPutAll: '(';
-		nextPutAll: self urlString;
+		nextPutAll: self loadSpecificationString;
 		nextPutAll: ')'
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : #'accessing - load specification' }
 GtRlRepository >> projectName [
-	| firstSegment |
-	firstSegment := self url segments first.
-	^ (firstSegment includes: $:)
-		ifTrue: [ firstSegment copyUpTo: $: ]
-		ifFalse: [ firstSegment ]
+	^ self loadSpecification projectName
 ]
 
 { #category : #accessing }
@@ -260,50 +273,32 @@ GtRlRepository >> projects [
 	^ projects
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : #'accessing - load specification' }
 GtRlRepository >> repositoryName [
-	| nameSegment |
-	nameSegment := self nameSegment.
-	^ (nameSegment includes: $:)
-		ifTrue: [ nameSegment copyUpTo: $: ]
-		ifFalse: [ nameSegment ]
+	^ self loadSpecification repositoryName
 ]
 
-{ #category : #accessing }
+{ #category : #deprecated }
 GtRlRepository >> url [
-	^ url
+	^ self loadSpecificationUrl
 ]
 
-{ #category : #accessing }
-GtRlRepository >> url: aZnUrl [
-	url := aZnUrl
-]
-
-{ #category : #accessing }
+{ #category : #deprecated }
 GtRlRepository >> urlString [
-	^ self url asString
+	^ self loadSpecificationString
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : #'accessing - load specification' }
 GtRlRepository >> urlWithVersion: aVersionString [
-	| currentUrl |
-	currentUrl := self url copy.
-	currentUrl segments at: 1 put: self projectName,':', aVersionString. 
-	^ currentUrl
+	^ self loadSpecification
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - load specification' }
 GtRlRepository >> versionString [
-	| nameSegment |
-	nameSegment := self nameSegment.
-	^ (nameSegment includes: $:)
-		ifTrue: [ nameSegment copyAfter: $: ]
-		ifFalse: [ Error signal: 'The repository does not have a version number.' ]
+	^ self loadSpecification versionString
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - load specification' }
 GtRlRepository >> versionStringOrNil [
-	^ self hasVersion 
-		ifTrue: [ self versionString ] 
-		ifFalse: [ nil ]
+	^ self loadSpecification versionStringOrNil
 ]
