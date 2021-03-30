@@ -420,7 +420,7 @@ GtRlReleaserExamples >> removeRepositoriesAndCode [
 		"Remove all packages from the system"
 		anIcebergRepository workingCopy packages do: [ :aPackage |
 			SystemAnnouncer uniqueInstance suspendAllWhile: [ 
-				GtPharoCodeModifier removePackage: aPackage ] ].
+				GtPharoCodeModifier removePackageNamed: aPackage name ] ].
 
 		"Delete all files from disk related to this repository"
 		anIcebergRepository workingCopy fileSystem ensureDeleteAll ].
