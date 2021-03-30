@@ -416,12 +416,12 @@ GtRlReleaserExamples >> removeRepositoriesAndCode [
 		IceRepository registry 
 			detect: [ :aRepo | aRepo name = anIcebergRepository name ] 
 			ifFound: [ :aRepo | aRepo forget ].
-		
+
 		"Remove all packages from the system"
 		anIcebergRepository workingCopy packages do: [ :aPackage |
 			SystemAnnouncer uniqueInstance suspendAllWhile: [ 
-				aPackage name asPackage removeFromSystem ] ].
-		
+				GtPharoCodeModifier removePackage: aPackage ] ].
+
 		"Delete all files from disk related to this repository"
 		anIcebergRepository workingCopy fileSystem ensureDeleteAll ].
 	self repositories removeAll.
