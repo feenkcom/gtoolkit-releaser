@@ -124,7 +124,8 @@ GtRlProject >> childProjects [
 GtRlProject >> compileBaselineWithProjectDependencies: projectDependenciesMap [
 	| toolbox |
 	toolbox := self toolboxForBaselineWithProjectDependencies: projectDependenciesMap.
-	^ toolbox commitBaselineOfMethod.
+	
+	^ GtPharoCodeModifier current critical: [ toolbox commitBaselineOfMethod ]
 ]
 
 { #category : #traversing }
