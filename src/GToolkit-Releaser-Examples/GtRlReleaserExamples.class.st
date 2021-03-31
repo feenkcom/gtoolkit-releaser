@@ -11,10 +11,12 @@ Class {
 
 { #category : #'creation projects' }
 GtRlReleaserExamples >> addNewMethodNamed: methodSelector toProject: targetProject [
-	targetProject baselineClass compileSilently: methodSelector,' 
-	"I am a new method"
-	^ 1 + 2 + 3' classified: 'new method'.
-	targetProject baselineClass package addMethod: targetProject baselineClass >> methodSelector.
+
+	GtPharoCodeModifier current critical: [
+		targetProject baselineClass compileSilently: methodSelector,' 
+		"I am a new method"
+		^ 1 + 2 + 3' classified: 'new method'.
+		targetProject baselineClass package addMethod: targetProject baselineClass >> methodSelector ]
 ]
 
 { #category : #assertions }
@@ -42,7 +44,11 @@ GtRlReleaserExamples >> baselineClassForProjectName: projectName [
 GtRlReleaserExamples >> commiNewMethodNamed: methodSelector onMasterToProject: targetProject [
 	| icebergRepository |
 	icebergRepository := targetProject repository icebergRepository.
-	(icebergRepository branchNamed: 'master') checkout.
+	
+	"checkout ends up with MCPackageLoader>>basicLoad which may flush changes file"
+	GtPharoCodeModifier current critical: [
+		(icebergRepository branchNamed: 'master') checkout ].
+	
 	self addNewMethodNamed: #method1 toProject: targetProject.
 	icebergRepository workingCopy 
 		forceCalculateDirtyPackages
@@ -62,9 +68,9 @@ GtRlReleaserExamples >> createBaselineForProjectNamed: projectName withDependenc
 	baselinePackage := RPackage named: 'BaselineOf', projectName.
 	
 	SystemAnnouncer uniqueInstance suspendAllWhile: [ 
-		baselineClass := BaselineOf subclass: 'BaselineOf', projectName
-			instanceVariableNames: ''
-			classVariableNames: ''
+		baselineClass := GtPharoCodeModifier current
+			createSubclassOf: BaselineOf
+			named: 'BaselineOf', projectName
 			package: 'BaselineOf', projectName ].
 	baselinePackage addClassDefinition: baselineClass.
 	
@@ -81,11 +87,13 @@ GtRlReleaserExamples >> createBaselineForProjectNamed: projectName withDependenc
 dependenciesCode,'
 	].'.
 	
-	baselineClass compileSilently: methodSourceCode classified: 'baseline'.
+	GtPharoCodeModifier current critical: [
+		baselineClass compileSilently: methodSourceCode classified: 'baseline' ].
+	
 	baselinePackage addMethod: baselineClass>>#baseline:.
 	
 	SystemAnnouncer uniqueInstance suspendAllWhile: [ 
-		RPackageOrganizer default registerPackage: baselinePackage ].
+		GtPharoCodeModifier registerPackage: baselinePackage ].
 	^ baselineClass
 ]
 
@@ -290,7 +298,10 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndChanges [
 	icebergRepository := project repository icebergRepository.
 	self releaseNewVersionForProject: project.
 	
-	(icebergRepository branchNamed: 'master') checkout.
+	"checkout ends up with MCPackageLoader>>basicLoad which may flush changes file"
+	GtPharoCodeModifier current critical: [
+		(icebergRepository branchNamed: 'master') checkout. ].
+
 	self addNewMethodNamed: #method1 toProject: project.
 	icebergRepository workingCopy forceCalculateDirtyPackages.
 	
@@ -405,12 +416,12 @@ GtRlReleaserExamples >> removeRepositoriesAndCode [
 		IceRepository registry 
 			detect: [ :aRepo | aRepo name = anIcebergRepository name ] 
 			ifFound: [ :aRepo | aRepo forget ].
-		
+
 		"Remove all packages from the system"
 		anIcebergRepository workingCopy packages do: [ :aPackage |
 			SystemAnnouncer uniqueInstance suspendAllWhile: [ 
-				aPackage name asPackage removeFromSystem ] ].
-		
+				GtPharoCodeModifier removePackageNamed: aPackage name ] ].
+
 		"Delete all files from disk related to this repository"
 		anIcebergRepository workingCopy fileSystem ensureDeleteAll ].
 	self repositories removeAll.
@@ -426,7 +437,9 @@ GtRlReleaserExamples >> repositories [
 GtRlReleaserExamples >> switchAllToMasterForProject: project [
 	(project repository withDeepCollect: #childRepositories) do: [ :aRepository |
 		self assert: (aRepository icebergRepository hasLocalBranchNamed: 'master').
-		(aRepository icebergRepository branchNamed: 'master') checkout ]
+		"checkout ends up with MCPackageLoader>>basicLoad which may flush changes file"
+		GtPharoCodeModifier current critical: [
+			(aRepository icebergRepository branchNamed: 'master') checkout ] ]
 ]
 
 { #category : #private }

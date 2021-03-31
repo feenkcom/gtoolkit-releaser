@@ -56,7 +56,7 @@ GtRlProjectLoadDirective >> gtFullLoadDirectivesMapFor: aView [
 				shape: [ :aLoadDirective |
 					BrLabel new 
 						text: aLoadDirective projectName; 
-						look: BrGlamorousLabelLook;
+						aptitude: BrGlamorousLabelAptitude;
 						when: BlClickEvent do: [ :anEvent | 
 							anEvent currentTarget phlow spawnObject: aLoadDirective ] ];
 				with: (self withAllChildLoadDirectived
@@ -97,7 +97,7 @@ GtRlProjectLoadDirective >> gtLoadDirectivesMapFor: aView [
 				shape: [ :aLoadDirective |
 					BrLabel new 
 						text: aLoadDirective projectName; 
-						look: BrGlamorousLabelLook;
+						aptitude: BrGlamorousLabelAptitude;
 						when: BlClickEvent do: [ :anEvent | 
 							anEvent currentTarget phlow spawnObject: aLoadDirective ] ];
 				with: self withAllChildLoadDirectived.
@@ -130,7 +130,7 @@ GtRlProjectLoadDirective >> gtProjectWithDirectivesMapFor: aView [
 				shape: [ :aProject |
 					BrLabel new 
 						text: aProject name; 
-						look: BrGlamorousLabelLook;
+						aptitude: BrGlamorousLabelAptitude;
 						in: [ :label | label userData at: #projectModel put: aProject ];
 						yourself ];
 				with: self project withAllChildProjects.

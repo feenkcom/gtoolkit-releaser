@@ -102,7 +102,11 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseWithHeadCommitChildRepositoryWi
 	| project releaseBuiler projectRelease |
 	project := self projectStructureWithOneChildDependency.
 	self releaseNewVersionForProject: project usingConfig: self releaseConfigurationWithHeadCommitStrategyForChild.
-	(project repository icebergRepository branchNamed: 'master') checkout.
+	
+	"checkout ends up with MCPackageLoader>>basicLoad which may flush changes file"
+	GtPharoCodeModifier current critical: [
+		(project repository icebergRepository branchNamed: 'master') checkout ].
+
 	self commiNewMethodNamed: #method1 onMasterToProject: project childProjects first.
 	
 	releaseBuiler := GtRlReleaseBuilder new
@@ -126,8 +130,10 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseWithHeadCommitChildRepositoryWi
 	| project releaseBuiler projectRelease |
 	project := self projectStructureWithOneChildDependency.
 	self releaseNewVersionForProject: project usingConfig: self releaseConfigurationWithHeadCommitStrategyForChild.
-	(project repository icebergRepository branchNamed: 'master') checkout.
 	
+	GtPharoCodeModifier current critical: [
+		(project repository icebergRepository branchNamed: 'master') checkout ].
+
 	releaseBuiler := GtRlReleaseBuilder new
 		configuration: self releaseConfigurationWithHeadCommitStrategyForChild.
 	projectRelease := releaseBuiler buildReleaseForProject: project.

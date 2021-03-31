@@ -124,7 +124,8 @@ GtRlProject >> childProjects [
 GtRlProject >> compileBaselineWithProjectDependencies: projectDependenciesMap [
 	| toolbox |
 	toolbox := self toolboxForBaselineWithProjectDependencies: projectDependenciesMap.
-	^ toolbox commitBaselineOfMethod.
+	
+	^ GtPharoCodeModifier current critical: [ toolbox commitBaselineOfMethod ]
 ]
 
 { #category : #traversing }
@@ -183,7 +184,7 @@ GtRlProject >> gtProjectMapFor: aView [
 		painting: [ :mondrian |
 			mondrian nodes 
 				shape: [ :aProject |
-					BrLabel new text: aProject name; look: BrGlamorousLabelLook ];
+					BrLabel new text: aProject name; aptitude: BrGlamorousLabelAptitude ];
 				with: self withAllChildProjects.
 			mondrian edges
 				shape: [ 
