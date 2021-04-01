@@ -290,7 +290,7 @@ GtRlRepository >> urlString [
 
 { #category : #'accessing - load specification' }
 GtRlRepository >> urlWithVersion: aVersionString [
-	^ self loadSpecification
+	^ self loadSpecification urlWithVersion: aVersionString
 ]
 
 { #category : #'accessing - load specification' }
