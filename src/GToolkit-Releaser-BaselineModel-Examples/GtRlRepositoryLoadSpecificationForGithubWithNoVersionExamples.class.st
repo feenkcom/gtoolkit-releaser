@@ -1,0 +1,39 @@
+Class {
+	#name : #GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples,
+	#superclass : #GtRlRepositoryLoadSpecificationBasicExamples,
+	#category : #'GToolkit-Releaser-BaselineModel-Examples'
+}
+
+{ #category : #examples }
+GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples >> loadSpecificationHasCorrectVersion [
+	<gtExample>
+	| loadSpecification |
+	loadSpecification := self loadSpecification.
+	
+	self assert: loadSpecification hasVersion not.
+	self assert: loadSpecification versionStringOrNil isNil.
+	
+	^ loadSpecification
+]
+
+{ #category : #examples }
+GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples >> loadSpecificationHasNames [
+	<gtExample>
+	| loadSpecification |
+	loadSpecification := self loadSpecification.
+	
+	self assert: loadSpecification projectName equals: 'gtoolkit'.
+	self assert: loadSpecification repositoryName equals: 'gtoolkit'.
+	
+	^ loadSpecification
+]
+
+{ #category : #accessing }
+GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples >> specificationId [
+	^ 'github://example/gtoolkit/src'
+]
+
+{ #category : #accessing }
+GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples >> specificationUrlString [
+	^ 'github://example/gtoolkit/src'
+]
