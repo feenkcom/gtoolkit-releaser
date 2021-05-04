@@ -88,7 +88,7 @@ GtRlRepositoryRelease >> commitMessageForRelease [
 				nextPutAll: 'Metacello new
     baseline: ''', localRootProjects first name, ''';
     repository: ''', self urlWithReleaseVersion asString,  ''';
-    load'.
+    load' ; lf.
 			self isRootRepositoryRelease ifTrue: [  
 				commits := self printNewCommitsToString.
 				(commits isNotEmpty) ifTrue: [
