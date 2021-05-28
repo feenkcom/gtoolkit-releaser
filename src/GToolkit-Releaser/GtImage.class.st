@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'version',
 		'timestamp',
-		'lastOpenedVersion'
+		'lastOpenedVersion',
+		'isLepiterEnabled'
 	],
 	#classInstVars : [
 		'singleton'
@@ -77,6 +78,11 @@ GtImage class >> instance [
 	    singleton timestamp: DateAndTime now.
 	].
 	^ singleton
+]
+
+{ #category : #accessing }
+GtImage class >> isLepiterEnabled [ 
+	^ self instance isLepiterEnabled 
 ]
 
 { #category : #configuration }
@@ -173,6 +179,11 @@ GtImage >> commitInfoOn: aStream [
 			cr ].
 ]
 
+{ #category : #accessing }
+GtImage >> enableLepiter [
+	isLepiterEnabled := true.
+]
+
 { #category : #ui }
 GtImage >> gtCommitInfoFor: aView [
 	<gtView>
@@ -256,6 +267,11 @@ GtImage >> imageInfoOn: aStream [
 	aStream 
 		<< SystemVersion current asString;
 		cr.
+]
+
+{ #category : #accessing }
+GtImage >> isLepiterEnabled [
+	^ isLepiterEnabled ifNil: [ false ]
 ]
 
 { #category : #accessing }
