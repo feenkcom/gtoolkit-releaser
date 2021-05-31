@@ -147,7 +147,9 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://feenkcom/Chrysal/src'.
 		'github://feenkcom/XMLParser/src'.
 		'github://feenkcom/XMLWriter/src'.
-		'github://feenkcom/XPath/src'}
+		'github://feenkcom/XPath/src'.
+		'github://feenkcom/zinc/repository'.
+		'github://juliendelplanque/Python3Generator/repository' }
 ]
 
 { #category : #releasing }
