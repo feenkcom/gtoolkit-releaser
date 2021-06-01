@@ -140,16 +140,17 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://pharo-contributions/CollectionExtensions/src'};
 	setReleaseStrategyOfType: GtRlBaselineTagReleaseStrategy forProjecs: {
 		'github://pharo-contributions/FFICHeaderExtractor/repository'.
-		'github://feenkcom/mustache/repository'.
 		'github://svenvc/NeoJSON/repository'.
 		'github://msgpack/msgpack-smalltalk/repository'.
+		'github://juliendelplanque/Python3Generator/repository'.
+		'github://feenkcom/mustache/repository'.
 		'github://feenkcom/Containers-PropertyEnvironment'.
 		'github://feenkcom/Chrysal/src'.
 		'github://feenkcom/XMLParser/src'.
 		'github://feenkcom/XMLWriter/src'.
 		'github://feenkcom/XPath/src'.
 		'github://feenkcom/zinc/repository'.
-		'github://juliendelplanque/Python3Generator/repository' }
+		'github://feenkcom/zodiac/repository' }
 ]
 
 { #category : #releasing }
