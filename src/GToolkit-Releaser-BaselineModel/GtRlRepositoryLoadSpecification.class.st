@@ -2,6 +2,8 @@
 I indicate the location of a repository. 
 
 I rely on a url to model the location. I follow the same conventions as Metacello project specs.
+
+
 "
 Class {
 	#name : #GtRlRepositoryLoadSpecification,

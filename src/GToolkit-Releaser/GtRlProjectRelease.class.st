@@ -1,14 +1,16 @@
 "
-I model a release for a project by decorating a ${class:GtRlProject}$ instance with a concrete version.
+I model a release for a project by decorating a {{gtClass:GtRlProject}} instance with a concrete version.
 
 I do not store my own version version. Instead I used the version number of the repository release that contains me. This is the case as all project releases from a repository should have the same release version number. 
 
-I can also have an empty list of actions if there is nothing to be done at the project level for creating the release. I do not have my own release strategy like repository releases. Instead the release strategy of the ${class:GtRlRepositoryRelease}$ that contains me is responsible for adding actions. Currently the design is like this as there are only few actions needed at the project level.
+I can also have an empty list of actions if there is nothing to be done at the project level for creating the release. I do not have my own release strategy like repository releases. Instead the release strategy of the {{gtClass:GtRlRepositoryRelease}} that contains me is responsible for adding actions. Currently the design is like this as there are only few actions needed at the project level.
 
 I have as main attributes:
-	- project: the ${class:GtRlProject}$ for which I do a release;
+	- project: the {{gtClass:GtRlProject}} for which I do a release;
 	- repositoryRelease: the repository release containing this project release;
 	- parentReleases and childReleases: the parent and child project releases corresponding to the parent and child releases from that project that I reference.
+
+
 "
 Class {
 	#name : #GtRlProjectRelease,

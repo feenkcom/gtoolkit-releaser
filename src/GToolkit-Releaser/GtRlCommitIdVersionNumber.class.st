@@ -1,9 +1,11 @@
 "
 I use the full id of a commit as a version number. I should only be used if a commit id is set.
 
-${example:GtRlCommitIdVersionNumberExamples>>#commitIdVersionNumber}$
+{{gtExample:GtRlCommitIdVersionNumberExamples>>#commitIdVersionNumber}}
 
-More examples are provided by the class ${class:GtRlCommitIdVersionNumberExamples}$
+More examples are provided by the class {{gtClass:GtRlCommitIdVersionNumberExamples}}
+
+
 "
 Class {
 	#name : #GtRlCommitIdVersionNumber,

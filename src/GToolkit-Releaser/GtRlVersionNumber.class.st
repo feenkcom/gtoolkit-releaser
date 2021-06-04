@@ -3,6 +3,8 @@ I provide an abstraction for identify a concrete version number for a repository
 
 My subclasses provide the actual version number. This can be any information that can identify a release within a repository.
 All my subclasses should provide immutable versions numbers. Once created a version number should not change.
+
+
 "
 Class {
 	#name : #GtRlVersionNumber,

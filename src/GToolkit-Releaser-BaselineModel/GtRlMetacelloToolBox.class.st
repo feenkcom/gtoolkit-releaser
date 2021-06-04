@@ -1,5 +1,7 @@
 "
-I am a ${class:MetacelloToolBox}$ that only uses the given repository for a baseline, instead of using all repositories that Metacello knows about a baseline in the current image. If all repositories are used then all repositories will be in the generated code of a baseline, instead of only the repositories contained by the model of a loading configuration.
+I am a {{gtClass:MetacelloToolBox}} that only uses the given repository for a baseline, instead of using all repositories that Metacello knows about a baseline in the current image. If all repositories are used then all repositories will be in the generated code of a baseline, instead of only the repositories contained by the model of a loading configuration.
+
+
 "
 Class {
 	#name : #GtRlMetacelloToolBox,

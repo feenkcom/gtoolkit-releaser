@@ -1,7 +1,9 @@
 "
 I am a toolbox used for testing purposes for handling baselines that are not loaded into the image. 
 
-I make it possible to generate the code of baselines that depend on baselines not loaded into the image. For that I register a list of baselines. When a baseline is not found using ==Metacello image== I search for it in the list of registered baselines.
+I make it possible to generate the code of baselines that depend on baselines not loaded into the image. For that I register a list of baselines. When a baseline is not found using `Metacello image` I search for it in the list of registered baselines.
+
+
 "
 Class {
 	#name : #GtRlMetacelloToolBoxWithSpecs,

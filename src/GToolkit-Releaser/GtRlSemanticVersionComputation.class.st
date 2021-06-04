@@ -1,8 +1,10 @@
 "
 I compute the next semantic version number for a repository. My subclasses decide which part of the version number is incremented.
 
-I allow a default semantic version number in case a previous version number is not found in the repository. If that is not given, a ${class:GtRlNullVersionNumber}$ is used.
+I allow a default semantic version number in case a previous version number is not found in the repository. If that is not given, a {{gtClass:GtRlNullVersionNumber}} is used.
 Subclasses need to override ${method:GtRlSemanticVersionComputation>>#nextSemanticVersionFrom:)$ to provide the logic for computing the next semantic version number.
+
+
 "
 Class {
 	#name : #GtRlSemanticVersionComputation,

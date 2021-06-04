@@ -1,7 +1,8 @@
 "
 I increment the patch number of a semantic version. I leave the other parts of the semantic version unchanged.
 
-${example:GtRlSemanticVersionComputationExamples>>#nextPatchVersionComputation}$
+{{gtExample:GtRlSemanticVersionComputationExamples>>#nextPatchVersionComputation}}
+
 
 "
 Class {

@@ -6,7 +6,9 @@ I have as main attributes:
 	- a list of contained projects. 
 
 I can have indirect child and parent repositories, depending on the relations between the projects that I contain.  
-I can be linked to an ${class:IceRepository}$ that provides the concrete repository holding the code.
+I can be linked to an {{gtClass:IceRepository}} that provides the concrete repository holding the code.
+
+
 "
 Class {
 	#name : #GtRlRepository,

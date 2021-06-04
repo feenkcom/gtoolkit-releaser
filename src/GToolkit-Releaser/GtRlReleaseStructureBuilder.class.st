@@ -2,11 +2,12 @@
 I traverse a baseline model and create an equivalent release model. 
 
 I work as follows:
-	- for each ${class:GtRlProject}$ I create a ${class:GtRlProjectRelease}$
-	- for each ${class:GtRlRepository}$ I create a ${class:GtRlRepositoryRelease}$
+	- for each {{gtClass:GtRlProject}} I create a {{gtClass:GtRlProjectRelease}}
+	- for each {{gtClass:GtRlRepository}} I create a {{gtClass:GtRlRepositoryRelease}}
 	- for each repository and project release I create child/parent relations based on the relations between projects and repositories.
 	
-I also use the given ${class:GtRlReleaseConfiguration}$ instance to initialize each repository release with a release strategy.
+I also use the given {{gtClass:GtRlReleaseConfiguration}} instance to initialize each repository release with a release strategy.
+
 
 "
 Class {

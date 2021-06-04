@@ -1,5 +1,7 @@
 "
 I store metadata for this package used by various other tools.
+
+
 "
 Class {
 	#name : #ManifestGToolkitReleaserExamples,

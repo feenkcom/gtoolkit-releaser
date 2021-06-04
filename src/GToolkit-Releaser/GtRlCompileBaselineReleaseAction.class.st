@@ -1,7 +1,9 @@
 "
 I compiled the Metacello baseline of a project release based on the new version numbers of its child releases. I should be applied on a project release, not on a repository release. 
 
-See ${method:GtRlProjectRelease>>#compileBaselineMethod}$ for more implementation details.
+See {{gtMethod:GtRlProjectRelease>>#compileBaselineMethod}} for more implementation details.
+
+
 "
 Class {
 	#name : #GtRlCompileBaselineReleaseAction,

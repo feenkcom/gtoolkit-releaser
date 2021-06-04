@@ -7,6 +7,7 @@ I only work with Metacello baselines that:
 	- do not use explicit repositories for packages
 	- only use the #'common' spec
 
+
 "
 Class {
 	#name : #GtRlDependenciesModelBuilder,

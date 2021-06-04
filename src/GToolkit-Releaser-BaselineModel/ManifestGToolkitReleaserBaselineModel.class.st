@@ -1,5 +1,7 @@
 "
 I contain a model for capturing Metacello baselines and dependencies between baselines.
+
+
 "
 Class {
 	#name : #ManifestGToolkitReleaserBaselineModel,

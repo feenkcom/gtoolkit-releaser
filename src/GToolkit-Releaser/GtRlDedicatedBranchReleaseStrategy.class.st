@@ -8,7 +8,9 @@ To perform the release I generate actions for:
 	- make a new commit on the release branch and tag it with the version number of this release;
 	- push the commit to origin, if a remote origin can be found.
 	
-See ${method:GtRlDedicatedBranchReleaseStrategy>>#shouldCreateNewRelease}$ for the cases when I generate a new release.
+See {{gtMethod:GtRlDedicatedBranchReleaseStrategy>>#shouldCreateNewRelease}} for the cases when I generate a new release.
+
+
 "
 Class {
 	#name : #GtRlDedicatedBranchReleaseStrategy,

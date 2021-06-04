@@ -2,12 +2,14 @@
 I use as a version number a symbolic version having the format 'vx.y.z', where x,y,z are the major, minor and patch componets of the version numbers. 
 
 For example, `v0.1.0` and 'v2.42.89' are version numbers that I can represent.
-${example:GtRlSemanticVersionNumberExamples>>#semanticVersionNumber}$
+{{gtExample:GtRlSemanticVersionNumberExamples>>#semanticVersionNumber}}
  
 I do not provide any default and I should be explicitly initialize before being used.
-${example:GtRlSemanticVersionNumberExamples>>#uninitializedSemanticVersionNumber}$
+{{gtExample:GtRlSemanticVersionNumberExamples>>#uninitializedSemanticVersionNumber}}
 
-More examples are provided by the class ${class:GtRlSemanticVersionNumberExamples}$
+More examples are provided by the class {{gtClass:GtRlSemanticVersionNumberExamples}}
+
+
 "
 Class {
 	#name : #GtRlSemanticVersionNumber,

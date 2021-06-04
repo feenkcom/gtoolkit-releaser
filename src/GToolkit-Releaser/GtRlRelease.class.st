@@ -2,6 +2,8 @@
 I am an abstraction for entities within a project loading configuration for which a new relese version can be generated.
 
 I hold a list of actions that are executed in order to generate a new release version. Subclasses are responsible with generating the list of actions, updating it if necessary or executing it.
+
+
 "
 Class {
 	#name : #GtRlRelease,

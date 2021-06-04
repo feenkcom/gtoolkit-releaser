@@ -120,6 +120,13 @@ GtImage class >> saveJsonFor: aValue into: aWriteStream [
 		onStreamPretty: (ZnCharacterWriteStream on: aWriteStream encoding: 'utf8')
 ]
 
+{ #category : #configuration }
+GtImage class >> setupLepiterIntegration [
+	self instance enableLepiter.
+	GtPlaygroundStencil playgroundClassName: LePlayground name.
+	GtInspector embeddedPlaygroundName: LeInspectorPlaygroundElement name.
+]
+
 { #category : #'system startup' }
 GtImage class >> startUp: resuming [
 	resuming

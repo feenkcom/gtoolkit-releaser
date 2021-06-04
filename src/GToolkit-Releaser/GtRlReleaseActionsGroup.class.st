@@ -2,8 +2,10 @@
 I model a collection of release actions. I exist to provide an interface for simplifying inspecting and working with groups of actions.  
 
 Some public API methods: 
-	- ${method:GtRlReleaseActionsGroup>>#execute}$ - execute all release actions from this group
+	- {{gtMethod:GtRlReleaseActionsGroup>>#execute}} - execute all release actions from this group
 	- ${method:method:GtRlReleaseActionsGroup>>#sortedByOrder} - return a new group where actions are sorted based on the order attribute. 
+
+
 "
 Class {
 	#name : #GtRlReleaseActionsGroup,

@@ -1,8 +1,10 @@
 "
 I execute a commit of the current changes staged for commit and push a tag corresponding to the version number of the repository release.
 
-I only work with strategies of type ${class:GtRlSemanticTagReleaseStrategy}$. 
+I only work with strategies of type {{gtClass:GtRlSemanticTagReleaseStrategy}}. 
 See ${method:GtRlSemanticTagReleaseStrategy>>#commitAndTagRelease} for more implementation details.
+
+
 "
 Class {
 	#name : #GtRlCommitAndTagReleaseAction,
