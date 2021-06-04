@@ -2,7 +2,8 @@
 I am a baseline in which there is a single dependency to every child baseline. I am used in examples for GtReleaser.
 
 The dependencies between baselines are shown in the figure below.
-${example:BaselineOfGtRlBaselineExampleSystemOne class>>#itself|previewShow=#gtMapFor:|noCode}$
+{{gtExample:BaselineOfGtRlBaselineExampleSystemOne class>>#itself|previewShow=#gtMapFor:|noCode}}
+
 
 "
 Class {

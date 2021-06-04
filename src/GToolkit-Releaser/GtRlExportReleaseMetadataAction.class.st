@@ -1,7 +1,9 @@
 "
 I export metadata associated with the current release. The metadata consists in an external file having information about dependencies and version numbers. This is performed to help tools reason about dependencies without having to load or parse the code of Metacello baselines.
 
-See ${class:GtRlReleaseVersionMetadata}$ for more details about what metadata is associated with a release. 
+See {{gtClass:GtRlReleaseVersionMetadata}} for more details about what metadata is associated with a release. 
+
+
 "
 Class {
 	#name : #GtRlExportReleaseMetadataAction,

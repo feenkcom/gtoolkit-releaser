@@ -2,6 +2,8 @@
 I identify a baseline within a repository. I am used during loading to indicate what code to load. 
 
 My main purpose is to group together the baseline name and the repository containing that baseline.
+
+
 "
 Class {
 	#name : #GtRlClonerBaselineSpec,

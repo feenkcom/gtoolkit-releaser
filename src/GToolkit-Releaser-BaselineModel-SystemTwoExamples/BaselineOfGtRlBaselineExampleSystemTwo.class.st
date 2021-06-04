@@ -2,7 +2,8 @@
 I am a baseline having multiple dependencies where all baselines are placed within the same repository. I am used in examples for GtReleaser.
 
 The dependencies between baselines are shown in the figure below.
-${example:BaselineOfGtRlBaselineExampleSystemTwo class>>#itself|previewShow=#gtMapFor:|noCode}$
+{{gtExample:BaselineOfGtRlBaselineExampleSystemTwo class>>#itself|previewShow=#gtMapFor:|noCode}}
+
 
 "
 Class {

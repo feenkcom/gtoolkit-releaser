@@ -2,10 +2,12 @@
 I provide then main entry point for cloning a baseline from a repository together with all its dependencies.
 
 My main API for configuring the baseline to clone: 
-- ${method:GtRlProjectsCloner>>#baseline:}$
-- ${method:GtRlProjectsCloner>>#repository:}$
+- {{gtMethod:GtRlProjectsCloner>>#baseline:}}
+- {{gtMethod:GtRlProjectsCloner>>#repository:}}
 
-I am a wrapper around ${class:GtRlProjectsCloneWorkflow}$ that provides the cloning logic. I add an API for configuring it and logging support.
+I am a wrapper around {{gtClass:GtRlProjectsCloneWorkflow}} that provides the cloning logic. I add an API for configuring it and logging support.
+
+
 "
 Class {
 	#name : #GtRlProjectsCloner,

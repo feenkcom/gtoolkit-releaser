@@ -1,5 +1,7 @@
 "
-I model a release action executed on a repository release. I only work with release strategies of type ${class:GtRlSemanticTagReleaseStrategy}$ as the other strategies require no release actions.
+I model a release action executed on a repository release. I only work with release strategies of type {{gtClass:GtRlSemanticTagReleaseStrategy}} as the other strategies require no release actions.
+
+
 "
 Class {
 	#name : #GtRlRepositoryReleaseAction,

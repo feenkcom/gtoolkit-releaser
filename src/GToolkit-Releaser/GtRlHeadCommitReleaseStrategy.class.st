@@ -5,7 +5,9 @@ I indicate a passive release as no actions need to be executed. The version numb
 I should only be used for repositories that have no child repositories as I hardcode an existing commit. 
 As I am passive I do not export any metadata.  
 
-See ${method:GtRlHeadCommitReleaseStrategy>>#assertCompatibleWithRepository:}$ for assertions that check when I can be used.
+See {{gtMethod:GtRlHeadCommitReleaseStrategy>>#assertCompatibleWithRepository:}} for assertions that check when I can be used.
+
+
 "
 Class {
 	#name : #GtRlHeadCommitReleaseStrategy,

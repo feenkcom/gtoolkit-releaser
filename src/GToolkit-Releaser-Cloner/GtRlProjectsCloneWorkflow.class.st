@@ -2,7 +2,9 @@
 I implement the main logic for clonning a baseline specification together with all its dependencies.
 
 I start from a main baseline, clone its repository, and then recursively iterate over and close its dependencies. I do not load any code appart from baselines.
-I currently raise errros when I detect conflictual situations. I do not try to recover not currently provide any way to handle conflicts. See ${method:GtRlProjectsCloneWorkflow>>#shouldLoadBaselineSpec:}$ for what checks are performed before cloning and loading a baseline specification.
+I currently raise errros when I detect conflictual situations. I do not try to recover not currently provide any way to handle conflicts. See {{gtMethod:GtRlProjectsCloneWorkflow>>#shouldLoadBaselineSpec:}} for what checks are performed before cloning and loading a baseline specification.
+
+
 "
 Class {
 	#name : #GtRlProjectsCloneWorkflow,

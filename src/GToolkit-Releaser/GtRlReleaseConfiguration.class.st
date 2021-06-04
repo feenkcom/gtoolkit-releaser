@@ -1,15 +1,17 @@
 "
 I model options for configuring how releases are performed.
 
-I am used by a ${class:GtRlReleaseBuilder}$ to create a new release. Users can configure default options that apply to all repositories from a release, or configure options for individual repositories.
+I am used by a {{gtClass:GtRlReleaseBuilder}} to create a new release. Users can configure default options that apply to all repositories from a release, or configure options for individual repositories.
 
 My main API methods for setting other default options are:
-- ${method:GtRlReleaseConfiguration>>#defaultReleaseBranchName:}$ The branch name on which to perform the release.
-- ${method:GtRlReleaseConfiguration>>#defaultVersionComputation:}$ The strategy for computing the next version number in case a version already exists. These are subclasses of ${class:GtRlSemanticVersionComputation}$;
-- ${method:GtRlReleaseConfiguration>>#defaultVersionNumber:}$ The version number to use in case there are no previous releases in a repository.
-- ${method:GtRlReleaseConfiguration>>#forceNewRelease}$ Force a new release in a repository even if there no new changes in that repository and all dependencies did not change.
+- {{gtMethod:GtRlReleaseConfiguration>>#defaultReleaseBranchName:}} The branch name on which to perform the release.
+- {{gtMethod:GtRlReleaseConfiguration>>#defaultVersionComputation:}} The strategy for computing the next version number in case a version already exists. These are subclasses of {{gtClass:GtRlSemanticVersionComputation}};
+- {{gtMethod:GtRlReleaseConfiguration>>#defaultVersionNumber:}} The version number to use in case there are no previous releases in a repository.
+- {{gtMethod:GtRlReleaseConfiguration>>#forceNewRelease}} Force a new release in a repository even if there no new changes in that repository and all dependencies did not change.
 
-By default I use a release strategy of type ${class:GtRlDedicatedBranchReleaseStrategy}$. However, a custom release strategy can be configured for each indivual project using the method ${method:GtRlReleaseConfiguration>>#setReleaseStrategyOfType:forProjecs:}$.
+By default I use a release strategy of type {{gtClass:GtRlDedicatedBranchReleaseStrategy}}. However, a custom release strategy can be configured for each indivual project using the method {{gtMethod:GtRlReleaseConfiguration>>#setReleaseStrategyOfType:forProjecs:}}.
+
+
 "
 Class {
 	#name : #GtRlReleaseConfiguration,

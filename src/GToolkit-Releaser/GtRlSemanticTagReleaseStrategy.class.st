@@ -7,8 +7,9 @@ I mode an active release that needs to execute actions. The actual actions depen
 	
 I offer the following configuration options: 
 	- releaseBranch: the branch on which the release tag will be generated;
-	- nextVersionComputation: the logic used to determine the next symbolic version number. See the subclasses of ${class:GtRlSemanticVersionComputation}$ for available options;
+	- nextVersionComputation: the logic used to determine the next symbolic version number. See the subclasses of {{gtClass:GtRlSemanticVersionComputation}} for available options;
 	- shouldForceNewRelease: By default I try to detect if a new release is neccessary. This flag indicate that a new release should be forced even if no new changes are detected.
+
 
 "
 Class {

@@ -6,6 +6,8 @@ I have as main attributes:
 	- the list of packages loaded by the project 
 	- the repositry containing the project 
 	- a list of child and parent projects representing my dependencies to other projects
+
+
 "
 Class {
 	#name : #GtRlProject,

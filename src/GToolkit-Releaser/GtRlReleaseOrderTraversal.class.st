@@ -3,7 +3,9 @@ I traverse a structure of repository releases and return them in the order in wh
 
 Releases should be updated starting with all the children of a parent release, before updating the parent. Also a release should be updated only once. The children should be updated first so update their version. Then the parent can check whether or not its children have new versions.
 
-I assume that the release has no cycles between repositories. I use ${class:GtRlReleaseTraversalContext}$ to detect cycles and trigger an error in case a cycles between repositories is found.
+I assume that the release has no cycles between repositories. I use {{gtClass:GtRlReleaseTraversalContext}} to detect cycles and trigger an error in case a cycles between repositories is found.
+
+
 "
 Class {
 	#name : #GtRlReleaseOrderTraversal,

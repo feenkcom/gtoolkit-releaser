@@ -6,7 +6,9 @@ I should only be used for repositories that have no child repositories or when a
 As I am passive I do not export any metadata. Even if the repository has child repositories there will be no metadata exported. Because of this I do not use metadata to check previous versions (it is not reliable).
 
 I am a valid release strategy only when all Monticello baselines that load this project use the same tag to load it. 
-See ${method:GtRlBaselineTagReleaseStrategy>>#assertCompatibleWithRepository:}$ for assertions that check when I can be used.
+See {{gtMethod:GtRlBaselineTagReleaseStrategy>>#assertCompatibleWithRepository:}} for assertions that check when I can be used.
+
+
 "
 Class {
 	#name : #GtRlBaselineTagReleaseStrategy,

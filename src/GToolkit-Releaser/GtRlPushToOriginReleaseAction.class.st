@@ -1,5 +1,7 @@
 "
-I execute a push to the remote branch associated with the local release branch. I should only be called if there is a way to determine a remote branch where to do the push. See ${method:GtRlPushToOriginReleaseAction>>#performAction}$ for more details about my preconditions and implementation details.
+I execute a push to the remote branch associated with the local release branch. I should only be called if there is a way to determine a remote branch where to do the push. See {{gtMethod:GtRlPushToOriginReleaseAction>>#performAction}} for more details about my preconditions and implementation details.
+
+
 "
 Class {
 	#name : #GtRlPushToOriginReleaseAction,

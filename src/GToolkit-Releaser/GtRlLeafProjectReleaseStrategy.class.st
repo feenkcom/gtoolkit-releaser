@@ -4,7 +4,9 @@ I am a release strategy that uses the current checked out branch as the release 
 I am a limited release that only makes a new commit, tags it and pushes to the remote origin. I should only be used for leaf projects that have no dependencies.
 The main differences with other strategies are that I use the current branch and I make no changes to any files from the repository.
 
-See ${method:GtRlLeafProjectReleaseStrategy>>#shouldCreateNewRelease}$ for the cases when I generate a new release.
+See {{gtMethod:GtRlLeafProjectReleaseStrategy>>#shouldCreateNewRelease}} for the cases when I generate a new release.
+
+
 "
 Class {
 	#name : #GtRlLeafProjectReleaseStrategy,

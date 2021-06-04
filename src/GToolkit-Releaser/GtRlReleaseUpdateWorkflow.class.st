@@ -1,9 +1,11 @@
 "
 I update the version number and release actions for all repository and project releases contained within a give root release.
 
-I use ${class:GtRlReleaseOrderTraversal}$ to determine the other in which repository releases should be updated. For each release I update its order and its actions using the release strategy associated with that release. See ${method:GtRlReleaseUpdateWorkflow>>#updateRepository:}$ for implementation details about how releases are updated.
+I use {{gtClass:GtRlReleaseOrderTraversal}} to determine the other in which repository releases should be updated. For each release I update its order and its actions using the release strategy associated with that release. See {{gtMethod:GtRlReleaseUpdateWorkflow>>#updateRepository:}} for implementation details about how releases are updated.
 
-A relevant detail is that I keep track of the order attribute that should be associated to the next release action. The release strategy should call ${method:name=GtRlReleaseUpdateWorkflow>>#nextActionOrder}$ to determine the order of a created action within this update workflow. I do this so that it is possible, just by looking at an action to know when it will be executed during the release. This can help debugging given that each release stores its actions.
+A relevant detail is that I keep track of the order attribute that should be associated to the next release action. The release strategy should call {{gtMethod:name=GtRlReleaseUpdateWorkflow>>#nextActionOrder}} to determine the order of a created action within this update workflow. I do this so that it is possible, just by looking at an action to know when it will be executed during the release. This can help debugging given that each release stores its actions.
+
+
 "
 Class {
 	#name : #GtRlReleaseUpdateWorkflow,

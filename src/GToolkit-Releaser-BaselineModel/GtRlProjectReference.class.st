@@ -2,6 +2,8 @@
 I model a dependency to another project from a project.
 
 I directly hold the referenced project, so it should be resolved before.
+
+
 "
 Class {
 	#name : #GtRlProjectReference,

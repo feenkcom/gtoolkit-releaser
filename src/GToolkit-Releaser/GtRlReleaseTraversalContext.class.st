@@ -1,9 +1,11 @@
 "
 I provide recursion detection when traversing repository releases.
 
-My users should use ${method:GtRlReleaseTraversalContext>>#withRecursionDetectionFor:during:}$ to nest each step of the traversal. This method registers the given repository release and triggers an error in case the same repository release is encountered a second time in a nested step.
+My users should use {{gtMethod:GtRlReleaseTraversalContext>>#withRecursionDetectionFor:during:}} to nest each step of the traversal. This method registers the given repository release and triggers an error in case the same repository release is encountered a second time in a nested step.
 
-An an implementation, I use a ${class:Stack}$ to maintain the current chain of repository releases, and pop/push repositories from this stack during traversal.
+An an implementation, I use a {{gtClass:Stack}} to maintain the current chain of repository releases, and pop/push repositories from this stack during traversal.
+
+
 "
 Class {
 	#name : #GtRlReleaseTraversalContext,

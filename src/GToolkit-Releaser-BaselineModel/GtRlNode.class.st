@@ -1,7 +1,9 @@
 "
 I am an abstraction for a type of dependency in the loading configuration of a system.
 
-I hold a list of incomming dependencies that indicate what other nodes in the baseline depend on me. Currently those dependencies are only of type ${class:GtRlPackageDependency}$, as only packages can have outgoing dependencies.
+I hold a list of incomming dependencies that indicate what other nodes in the baseline depend on me. Currently those dependencies are only of type {{gtClass:GtRlPackageDependency}}, as only packages can have outgoing dependencies.
+
+
 "
 Class {
 	#name : #GtRlNode,

@@ -8,6 +8,8 @@ I have as main attributes:
 	- incomming dependencies from other packages that depend on me
 	
 I do not have an explicit repository. I am placed in the same repository as the project that contains me. Also packages are internal to the project and should not be referenced from other projects. Dependencies should only be at the level of projects.
+
+
 "
 Class {
 	#name : #GtRlPackage,
