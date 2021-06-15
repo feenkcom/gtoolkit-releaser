@@ -8,7 +8,8 @@ Class {
 		'isLepiterEnabled'
 	],
 	#classInstVars : [
-		'singleton'
+		'singleton',
+		'isSyncEnabled'
 	],
 	#category : #'GToolkit-Releaser'
 }
@@ -83,6 +84,16 @@ GtImage class >> instance [
 { #category : #accessing }
 GtImage class >> isLepiterEnabled [ 
 	^ self instance isLepiterEnabled 
+]
+
+{ #category : #'private - instance creation' }
+GtImage class >> isSyncEnabled [
+	^ isSyncEnabled ifNil: [ false ]
+]
+
+{ #category : #'private - instance creation' }
+GtImage class >> isSyncEnabled: aBoolean [
+	isSyncEnabled := aBoolean
 ]
 
 { #category : #configuration }
