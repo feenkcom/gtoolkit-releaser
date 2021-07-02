@@ -43,8 +43,22 @@ GtRlReleaserExportWorkflow class >> allPackagesInDedicatedReleaseRepositories [
 
 { #category : #accessing }
 GtRlReleaserExportWorkflow class >> allSlidesPackagesInDedicatedReleaseRepositories [
-	^ (self allPackagesInDedicatedReleaseRepositories collect: #asRPackage) select:[ :aRPackage | 
-			aRPackage gtSlideBuildersAllContained isNotEmpty ]
+	| relevantPackages |
+	NonInteractiveTranscript stdout
+		cr;
+		show: 'allSlidesPackagesInDedicatedReleaseRepositories';
+		cr.
+	relevantPackages := self allPackagesInDedicatedReleaseRepositories.
+	relevantPackages do: [ :each |
+		NonInteractiveTranscript stdout
+			show: each printString;
+			show: ' -- ';
+			show: each asRPackage printString;
+			cr ] .
+	^ (relevantPackages collect: #asRPackage) 
+			select:[ :aRPackage | 
+				aRPackage notNil and: [ 
+					aRPackage gtSlideBuildersAllContained isNotEmpty ] ]
 ]
 
 { #category : #releasing }

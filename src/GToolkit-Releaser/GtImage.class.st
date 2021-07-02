@@ -73,6 +73,7 @@ GtImage class >> initializeLastOpenedVersion [
 
 { #category : #accessing }
 GtImage class >> instance [ 
+	<gtExample>
 	singleton ifNil: [ 
 	    singleton := self new.
 	    singleton version: GtRlNullVersionNumber new.
