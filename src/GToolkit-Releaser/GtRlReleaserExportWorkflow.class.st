@@ -150,7 +150,7 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://j-brant/SmaCC/src'.
 		'github://feenkcom/pharo-beacon/repository'.
 		'github://pharo-contributions/OrderPreservingDictionary/src'.
-		'github://feenkcom/pharo-unicode/repository'.
+		'github://feenkcom/pharo-unicode/src'.
 		'github://feenkcom/taskit'.
 		'github://pharo-contributions/BitmapCharacterSet/src'.
 		'github://pharo-contributions/CollectionExtensions/src'};
