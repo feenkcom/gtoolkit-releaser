@@ -41,7 +41,7 @@ GtRlCommitIdVersionNumber >> commitId: aCommitId [
 GtRlCommitIdVersionNumber >> description [ 
 	^ self versionString 
 		ifNil: [ nil ] 
-		ifNotNil: [ :aVersionString | aVersionString first: 7 ]
+		ifNotNil: [ :aVersionString | aVersionString first: 6 ]
 	
 ]
 
@@ -53,5 +53,5 @@ GtRlCommitIdVersionNumber >> hash [
 
 { #category : #accessing }
 GtRlCommitIdVersionNumber >> versionString [
-	^ self commitId
+	^ 'master'
 ]

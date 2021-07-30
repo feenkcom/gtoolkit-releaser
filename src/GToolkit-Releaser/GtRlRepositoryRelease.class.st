@@ -70,7 +70,7 @@ GtRlRepositoryRelease >> commitAndTagRelease [
 		commitChanges: diff
 		withMessage: self commitMessageForRelease
 		force: true.
-	iceRepository branch commit ensureCreateTag: self versionString.
+	"iceRepository branch commit ensureCreateTag: self versionString."
 ]
 
 { #category : #'accessing - dynamic' }
@@ -81,24 +81,7 @@ GtRlRepositoryRelease >> commitMessageForRelease [
 	^ String streamContents: [ :stream |
 		|commits|
 		stream 
-			nextPutAll: 'Release version ';
-			nextPutAll: self versionString.
-		"If more root projects are detected we do not know which one to choose."
-		localRootProjects size = 1 ifTrue: [ 
-			stream
-				lf; lf;
-				nextPutAll: 'Metacello new
-    baseline: ''', localRootProjects first name, ''';
-    repository: ''', self urlWithReleaseVersion asString,  ''';
-    load' ; lf.
-			self isRootRepositoryRelease ifTrue: [  
-				commits := self printNewCommitsToString.
-				(commits isNotEmpty) ifTrue: [
-					stream
-						lf;
-						nextPutAll: 'All commits (including upstream repositories) since last build:';
-						lf;
-						nextPutAll: commits  ] ] ] ]
+			nextPutAll: 'Switch to main branch'.]
 ]
 
 { #category : #ui }
@@ -567,6 +550,7 @@ GtRlRepositoryRelease >> setRootRepositoryRelease: aBoolean [
 
 { #category : #'accessing - dynamic' }
 GtRlRepositoryRelease >> urlWithReleaseVersion [
+	self version class = GtRlCommitIdVersionNumber ifTrue: [^ self repository url].
 	^ self repository urlWithVersion: self version versionString
 ]
 

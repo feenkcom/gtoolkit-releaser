@@ -50,7 +50,7 @@ GtRlReleaseConfiguration >> customVersionComputations [
 
 { #category : #accessing }
 GtRlReleaseConfiguration >> defaultReleaseBranchName [
-	^ defaultReleaseBranchName ifNil: [ 'release' ]
+	^ defaultReleaseBranchName ifNil: [ 'main' ]
 ]
 
 { #category : #accessing }
