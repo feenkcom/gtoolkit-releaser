@@ -51,7 +51,7 @@ GtRlSemanticTagReleaseStrategy >> configureNewVersionRelease [
 	
 	"newCommits := self findNewCommits."
 	
-	nextVersionNumber := self nextVersionComputation nextMainVersionNumberForRepository: self repositoryRelease repository.
+	nextVersionNumber := self nextVersionComputation nextVersionNumberForRepository: self repositoryRelease repository.
 	
 	(enforcedVersion isNotNil and:[ nextVersionNumber <= enforcedVersion ]) ifTrue: [ 
 		nextVersionNumber := enforcedVersion ].

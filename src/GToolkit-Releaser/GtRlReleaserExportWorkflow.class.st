@@ -141,7 +141,7 @@ GtRlReleaserExportWorkflow class >> forProject: aProject withConfiguration: aRel
 GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 	^ GtRlReleaseConfiguration new
 	defaultVersionNumber: (GtRlSemanticVersionNumber major:0 minor: 6 patch: 0);
-	defaultReleaseBranchName: 'main';
+	defaultReleaseBranchName: 'release';
 	defaultVersionComputation: GtRlPatchVersionComputation new;	
 	"setReleaseStrategyOfType: GtRlLeafProjectReleaseStrategy forProjecs: {
 		'github://feenkcom/gtoolkit-releaser/src' };"

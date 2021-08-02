@@ -12,16 +12,8 @@ Class {
 }
 
 { #category : #accessing }
-GtRlPatchVersionComputation >> nextMainSemanticVersionFrom: aSemanticVersion [
-	^ GtRlMainSemanticVersionNumber 
-		major: aSemanticVersion major
-		minor: aSemanticVersion minor 
-		patch: aSemanticVersion patch + 1
-]
-
-{ #category : #accessing }
 GtRlPatchVersionComputation >> nextSemanticVersionFrom: aSemanticVersion [
-	^ GtRlMainSemanticVersionNumber 
+	^ GtRlSemanticVersionNumber 
 		major: aSemanticVersion major
 		minor: aSemanticVersion minor 
 		patch: aSemanticVersion patch + 1

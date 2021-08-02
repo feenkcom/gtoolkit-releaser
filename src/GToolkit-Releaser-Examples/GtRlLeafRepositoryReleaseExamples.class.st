@@ -131,12 +131,12 @@ GtRlLeafRepositoryReleaseExamples >> dedicatedBranchReleaseStrategy [
 			defaultVersionNumber: (GtRlSemanticVersionNumber major: 0 minor: 1 patch: 0));
 		shouldForceNewRelease: false;
 		referenceBranchName: 'master';
-		releaseBranchName: 'main'.
+		releaseBranchName: 'release'.
 
 	self assert: releaseStrategy repositoryRelease equals: nil.
 	self assert: releaseStrategy shouldForceNewRelease not.
 	self assert: releaseStrategy referenceBranchName equals: 'master'.
-	self assert: releaseStrategy releaseBranchName equals: 'main'.
+	self assert: releaseStrategy releaseBranchName equals: 'release'.
 
 	^ releaseStrategy
 ]

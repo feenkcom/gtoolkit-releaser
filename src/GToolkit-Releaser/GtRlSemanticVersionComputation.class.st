@@ -29,20 +29,6 @@ GtRlSemanticVersionComputation >> defaultVersionNumber: aVersionNumber [
 ]
 
 { #category : #accessing }
-GtRlSemanticVersionComputation >> nextMainVersionNumberForRepository: aRepository [
-	| tags semanticVersions |
-	tags := aRepository icebergRepository tags. 
-	semanticVersions := tags 
-		select: #gtIsSemanticVersion
-		thenCollect: #gtAsSemanticVersionNumber.
-	^ semanticVersions 
-		ifEmpty: [ self defaultVersionNumber ifNil: [ 
-				GtRlNullVersionNumber new ] ]
-		ifNotEmpty: [ 
-			self nextSemanticVersionFrom: semanticVersions sorted last ]
-]
-
-{ #category : #accessing }
 GtRlSemanticVersionComputation >> nextSemanticVersionFrom: aSemanticVersion [
 	"I compute the next symbolic version number based on the given symbolic version.
 	Subclasses should return a new object as semantic version objects are immutable."

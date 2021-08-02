@@ -237,15 +237,33 @@ GtRlDedicatedBranchReleaseStrategy >> referenceBranchName: aBranchName [
 { #category : #testing }
 GtRlDedicatedBranchReleaseStrategy >> shouldCreateNewRelease [
 	| latestVersionTag releaseMetadata|
-
-	^ true
+	
+	"1. If a new release if explicitly requested created it."
+	self shouldForceNewRelease ifTrue: [ 
+		^ true ].
+	
+	"2. If there is no release tag in the repository a new release is needed."
+	self repositoryRelease semanticVersionTags ifEmpty: [
+		^ true ].
+	
+	"3. If the latest release tag does not include the latest commit from the reference branch generate a new release."
+	latestVersionTag := self repositoryRelease latestSemanticVersionTag.
+	(self isReferenceBranchMergedIn: latestVersionTag commit) ifFalse: [
+		^ true ].
+	
+	"4. If any dependency has a different version than in the current release generate a new release."
+	releaseMetadata := GtRlReleaseVersionMetadata fromCommit: latestVersionTag commit.
+	(self repositoryRelease matchesDependenciesIn: releaseMetadata) ifFalse: [
+		^ true ].
+	
+	^ false
 ]
 
 { #category : #'actions - building' }
 GtRlDedicatedBranchReleaseStrategy >> updateReleaseActionsUsing: anUpdateWorkflow [
 	| mergeAction commitAction metadataAction |
 	self repositoryRelease resetReleaseActions.
-	"self repositoryRelease isPassiveRelease ifTrue: [ ^ self ]."
+	self repositoryRelease isPassiveRelease ifTrue: [ ^ self ].
 	
 	mergeAction := GtRlMergeToReleaseBranchAction new
 		repositoryRelease: self repositoryRelease;
@@ -259,10 +277,10 @@ GtRlDedicatedBranchReleaseStrategy >> updateReleaseActionsUsing: anUpdateWorkflo
 			order: anUpdateWorkflow nextActionOrder.
 		aProjectRelease addReleaseAction: baselineAction ].
 		
-	"metadataAction := GtRlExportReleaseMetadataAction new
+	metadataAction := GtRlExportReleaseMetadataAction new
 		repositoryRelease: self repositoryRelease;
 	 	order: anUpdateWorkflow nextActionOrder.
-	self repositoryRelease addReleaseAction: metadataAction."
+	self repositoryRelease addReleaseAction: metadataAction.
 		
 	commitAction := GtRlCommitAndTagReleaseAction new
 		repositoryRelease: self repositoryRelease;
