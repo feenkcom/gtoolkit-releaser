@@ -18,7 +18,7 @@ Class {
 		'rootProjectRelease',
 		'releaseActions'
 	],
-	#category : #'GToolkit-Releaser'
+	#category : 'GToolkit-Releaser'
 }
 
 { #category : #accessing }
@@ -32,7 +32,7 @@ GtRlReleaserExportWorkflow class >> allPackagesInDedicatedReleaseRepositories [
 	projectBuilder := GtRlDependenciesModelBuilder new.
 	project := projectBuilder 
 		buildProjectFromBaselineClass: BaselineOfGToolkit
-		withRepositoryDescription: 'github://feenkcom/gtoolkit/src'.
+		withRepositoryDescription: 'github://feenkcom/gtoolkit:main/src'.
 	repoReleases := (project repository withDeepCollect: #childRepositories) asSet.
 	ourRepos := repoReleases select: [:r | 
 		(GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration releaseStrategyForRepository: r ) 			class = GtRlDedicatedBranchReleaseStrategy].
@@ -91,7 +91,7 @@ GtRlReleaserExportWorkflow class >> buildGToolkitRelease [
 	releaseConfiguration emit.
 	workflow := GtRlReleaserExportWorkflow 
 		forBaseline: BaselineOfGToolkit 
-		fromRepository: 'github://feenkcom/gtoolkit/src'
+		fromRepository: 'github://feenkcom/gtoolkit:main/src'
 		withConfiguration: releaseConfiguration.
 	^ workflow
 ]
@@ -106,7 +106,7 @@ GtRlReleaserExportWorkflow class >> buildGToolkitRelease: version [
 		releaseConfiguration emit.
 		workflow := GtRlReleaserExportWorkflow 
 			forBaseline: BaselineOfGToolkit 
-			fromRepository: 'github://feenkcom/gtoolkit/src'
+			fromRepository: 'github://feenkcom/gtoolkit:main/src'
 			withConfiguration: releaseConfiguration.
 	].
 	^ workflow

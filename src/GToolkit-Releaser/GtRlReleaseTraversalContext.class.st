@@ -13,13 +13,16 @@ Class {
 	#instVars : [
 		'repositoriesChain'
 	],
-	#category : #'GToolkit-Releaser'
+	#category : 'GToolkit-Releaser'
 }
 
 { #category : #utils }
 GtRlReleaseTraversalContext >> ensureNoRecursioErrorFor: aRepositoryRelease [
-	(self repositoriesChain includes: aRepositoryRelease) ifTrue:
-		[ self error: 'Circular dependency to repository: ', aRepositoryRelease printString ].
+	((self repositoriesChain includes: aRepositoryRelease) or: [
+		self repositoriesChain anySatisfy: [ :aVisitedRepositoryRelease |
+			aVisitedRepositoryRelease repository id = aRepositoryRelease repository id ] ])
+	 ifTrue: [ 
+	 	self error: 'Circular dependency to repository: ', aRepositoryRelease printString ].
 ]
 
 { #category : #initialization }

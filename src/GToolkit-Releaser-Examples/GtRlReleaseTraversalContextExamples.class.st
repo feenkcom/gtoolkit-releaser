@@ -20,8 +20,10 @@ GtRlReleaseTraversalContextExamples >> noRecursionErrorIsTriggerInSecondStep [
 	<gtExample>
 	| traversalContext objectOne objectTwo |
 	traversalContext := self emptyTraversalContext.
-	objectOne := Object new.
-	objectTwo := Object new.
+	objectOne := GtRlRepositoryRelease new.
+	objectOne repository: (GtRlRepository new loadSpecification: (GtRlRepositoryLoadSpecification fromUrlString: 'some://nice/url1/src' )).
+	objectTwo := GtRlRepositoryRelease new.
+	objectTwo repository: (GtRlRepository new loadSpecification: (GtRlRepositoryLoadSpecification fromUrlString: 'some://nice/url2/src' )).
 	
 	
 	traversalContext 
@@ -56,8 +58,10 @@ GtRlReleaseTraversalContextExamples >> recursionErrorIsTriggerInThirdStep [
 	<gtExample>
 	| traversalContext objectOne objectTwo objectThree |
 	traversalContext := self emptyTraversalContext.
-	objectOne := Object new.
-	objectTwo := Object new.
+	objectOne := GtRlRepositoryRelease new.
+	objectOne repository: (GtRlRepository new loadSpecification: (GtRlRepositoryLoadSpecification fromUrlString: 'some://nice/url1/src' )).
+	objectTwo := GtRlRepositoryRelease new.
+	objectTwo repository: (GtRlRepository new loadSpecification: (GtRlRepositoryLoadSpecification fromUrlString: 'some://nice/url2/src' )).
 	objectThree := objectOne.
 	
 	self 

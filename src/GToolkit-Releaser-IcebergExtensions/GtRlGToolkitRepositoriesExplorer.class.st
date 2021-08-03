@@ -1,16 +1,16 @@
 Class {
 	#name : #GtRlGToolkitRepositoriesExplorer,
 	#superclass : #GtRlSystemRepositoriesExplorer,
-	#category : #'GToolkit-Releaser-IcebergExtensions'
+	#category : 'GToolkit-Releaser-IcebergExtensions'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GtRlGToolkitRepositoriesExplorer class >> buildForGToolkitProject [
 	| projectBuilder project |
 	projectBuilder := GtRlDependenciesModelBuilder new.
 	project := projectBuilder 
 		buildProjectFromBaselineClass: BaselineOfGToolkit
-		withRepositoryDescription: 'github://feenkcom/gtoolkit/src'.
+		withRepositoryDescription: 'github://feenkcom/gtoolkit:main/src'.
 	^ self forProject: project
 ]
 
