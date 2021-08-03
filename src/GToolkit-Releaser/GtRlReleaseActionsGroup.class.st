@@ -8,32 +8,32 @@ Some public API methods:
 
 "
 Class {
-	#name : #GtRlReleaseActionsGroup,
-	#superclass : #Object,
+	#name : 'GtRlReleaseActionsGroup',
+	#superclass : 'Object',
 	#instVars : [
 		'actions'
 	],
-	#category : #'GToolkit-Releaser'
+	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #copying }
+{ #category : 'copying' }
 GtRlReleaseActionsGroup >> , anActionGroup [
 	^ self class new
 		addActions: (self actions, anActionGroup actions);
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlReleaseActionsGroup >> actions [ 
 	^ actions
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 GtRlReleaseActionsGroup >> addAction: anAction [
 	^ actions add: anAction
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 GtRlReleaseActionsGroup >> addActions: aCollectionOfActions [
 	aCollectionOfActions do: [ :anAction |
 		self addAction: anAction ].
@@ -41,39 +41,39 @@ GtRlReleaseActionsGroup >> addActions: aCollectionOfActions [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlReleaseActionsGroup >> count [
 	^ self actions size
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 GtRlReleaseActionsGroup >> detect: aBlockClosure [ 
 	^ self actions detect: aBlockClosure
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlReleaseActionsGroup >> do: aBlock [
 	^ actions do: aBlock
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlReleaseActionsGroup >> execute [
 	self actions do: #execute
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlReleaseActionsGroup >> executeUnexecutedActions [
 	(self actions reject: #isExecuted) do: #execute
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlReleaseActionsGroup >> format: aString for: anAction [
 	^ anAction isExecuted
 		ifTrue: [ aString asRopedText foreground: Color gray ] 
 		ifFalse: [ aString ]
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlReleaseActionsGroup >> gtReleaseActionsFor: aView [
 	<gtView>
 	^ aView columnedList
@@ -91,18 +91,18 @@ GtRlReleaseActionsGroup >> gtReleaseActionsFor: aView [
 			self executeUnexecutedActions ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GtRlReleaseActionsGroup >> initialize [ 
 	super initialize.
 	actions := OrderedCollection new
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlReleaseActionsGroup >> isEmpty [
 	^ self actions isEmpty
 ]
 
-{ #category : #filtering }
+{ #category : 'filtering' }
 GtRlReleaseActionsGroup >> reject: aBlockClosure [ 
 	^ self class new
 		addActions: (self actions reject: aBlockClosure);
@@ -110,12 +110,12 @@ GtRlReleaseActionsGroup >> reject: aBlockClosure [
 		 
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlReleaseActionsGroup >> removeAll [
 	self actions removeAll.
 ]
 
-{ #category : #filtering }
+{ #category : 'filtering' }
 GtRlReleaseActionsGroup >> select: aBlockClosure [ 
 	^ self class new
 		addActions: (self actions select: aBlockClosure);
@@ -123,7 +123,7 @@ GtRlReleaseActionsGroup >> select: aBlockClosure [
 		 
 ]
 
-{ #category : #sorting }
+{ #category : 'sorting' }
 GtRlReleaseActionsGroup >> sortedByOrder [
 	^ self class new
 		addActions: (self actions sorted: [ :a :b | a order < b order ]);

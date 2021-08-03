@@ -6,43 +6,43 @@ I hold a list of actions that are executed in order to generate a new release ve
 
 "
 Class {
-	#name : #GtRlRelease,
-	#superclass : #Object,
+	#name : 'GtRlRelease',
+	#superclass : 'Object',
 	#instVars : [
 		'releaseActions'
 	],
-	#category : #'GToolkit-Releaser'
+	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRelease >> addReleaseAction: aReleaseAction [
 	aReleaseAction emitCreationSignal.
 	^ self releaseActions addAction: aReleaseAction
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlRelease >> gtReleaseActionsFor: aView [
 	<gtView>
 	^ self releaseActions gtReleaseActionsFor: aView
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlRelease >> hasReleaseActions [ 
 	^ self releaseActions isEmpty not
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRelease >> nodeName [
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRelease >> releaseActions [
 	^ releaseActions ifNil: [ 
 		releaseActions := GtRlReleaseActionsGroup new ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlRelease >> resetReleaseActions [
 	self releaseActions removeAll.
 ]

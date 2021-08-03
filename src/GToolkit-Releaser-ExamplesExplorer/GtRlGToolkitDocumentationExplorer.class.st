@@ -1,15 +1,15 @@
 Class {
-	#name : #GtRlGToolkitDocumentationExplorer,
-	#superclass : #GtRlSystemDocumentationExplorer,
-	#category : #'GToolkit-Releaser-ExamplesExplorer'
+	#name : 'GtRlGToolkitDocumentationExplorer',
+	#superclass : 'GtRlSystemDocumentationExplorer',
+	#category : 'GToolkit-Releaser-ExamplesExplorer'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 GtRlGToolkitDocumentationExplorer class >> buildForGToolkitProject [
 	| projectBuilder project |
 	projectBuilder := GtRlDependenciesModelBuilder new.
 	project := projectBuilder 
 		buildProjectFromBaselineClass: BaselineOfGToolkit
-		withRepositoryDescription: 'github://feenkcom/gtoolkit/src'.
+		withRepositoryDescription: 'github://feenkcom/gtoolkit:main/src'.
 	^ self forProject: project
 ]

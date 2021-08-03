@@ -10,30 +10,30 @@ See {{gtMethod:GtRlHeadCommitReleaseStrategy>>#assertCompatibleWithRepository:}}
 
 "
 Class {
-	#name : #GtRlHeadCommitReleaseStrategy,
-	#superclass : #GtRlReleaseStrategy,
-	#category : #'GToolkit-Releaser'
+	#name : 'GtRlHeadCommitReleaseStrategy',
+	#superclass : 'GtRlReleaseStrategy',
+	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #assertions }
+{ #category : 'assertions' }
 GtRlHeadCommitReleaseStrategy >> assertCompatibleWithRepository: aRepository [
 	self 
 		assert: [ aRepository childRepositories isEmpty ] 
 		description: 'The commit id can be used as a release version only for repositories that do not have any children'.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlHeadCommitReleaseStrategy >> commitVersionNumber [
 	^ GtRlCommitIdVersionNumber new
 		commitId: self repositoryRelease icebergRepository headCommit id
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlHeadCommitReleaseStrategy >> description [
 	^ 'HeadCommit'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlHeadCommitReleaseStrategy >> updateFor: anUpdateWorkflow [
 	(GtRlRepositoryPassiveReleaseVersionSignal repositoryRelease: self repositoryRelease version: self commitVersionNumber) emit.
 	self repositoryRelease

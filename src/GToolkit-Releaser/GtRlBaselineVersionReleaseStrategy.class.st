@@ -1,10 +1,10 @@
 Class {
-	#name : #GtRlBaselineVersionReleaseStrategy,
-	#superclass : #GtRlReleaseStrategy,
-	#category : #'GToolkit-Releaser'
+	#name : 'GtRlBaselineVersionReleaseStrategy',
+	#superclass : 'GtRlReleaseStrategy',
+	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #assertions }
+{ #category : 'assertions' }
 GtRlBaselineVersionReleaseStrategy >> assertCompatibleWithRepository: aRepository [
 	self 
 		assert: [ aRepository hasVersion ]
@@ -23,18 +23,18 @@ GtRlBaselineVersionReleaseStrategy >> assertCompatibleWithRepository: aRepositor
 		description: 'The current version loaded in the image should be a tag present in the head commit.'."
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlBaselineVersionReleaseStrategy >> description [
 	^ 'BaselineVersion'
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : 'accessing - dynamic' }
 GtRlBaselineVersionReleaseStrategy >> loadedVersionNumber [
 	^ GtRlBaselineVersionNumber new 
 		versionString: self repositoryRelease repository versionString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlBaselineVersionReleaseStrategy >> updateFor: anUpdateWorkflow [
 	self flag: 'Improve to check that all repos below this one are passive'.
 	"self 

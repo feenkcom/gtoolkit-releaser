@@ -1,25 +1,25 @@
 Class {
-	#name : #GtRlIceRegistry,
-	#superclass : #Object,
+	#name : 'GtRlIceRegistry',
+	#superclass : 'Object',
 	#instVars : [
 		'repositories'
 	],
-	#category : #'GToolkit-Releaser-IcebergExtensions'
+	#category : 'GToolkit-Releaser-IcebergExtensions'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 GtRlIceRegistry class >> forAllIcebergRepositories [
 	^ self new 
 		repositories: IceRepository registry
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 GtRlIceRegistry class >> forRepositories: aCollection [
 	^ self new 	
 		repositories: aCollection
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 GtRlIceRegistry >> fromTextToRopedText: aText [
 	"Conversion just for this particular case."
 	| ropedText |
@@ -32,7 +32,7 @@ GtRlIceRegistry >> fromTextToRopedText: aText [
 	^ ropedText
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlIceRegistry >> gtRepositoriesListFor: aView [
 	<gtView>
 	^ aView columnedList
@@ -55,23 +55,23 @@ GtRlIceRegistry >> gtRepositoriesListFor: aView [
 		
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlIceRegistry >> repositories [
 	^ repositories
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlIceRegistry >> repositories: aCollection [
 	repositories := aCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlIceRegistry >> repositoryModels [
 	^ self repositories collect: [ :each | 
 		IceTipRepositoryModel on: each ]
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 GtRlIceRegistry >> select: aBloc [
 	^ self class forRepositories: (self repositories select: aBloc)
 ]

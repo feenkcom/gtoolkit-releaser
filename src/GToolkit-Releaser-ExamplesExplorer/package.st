@@ -1,1 +1,1 @@
-Package { #name : #'GToolkit-Releaser-ExamplesExplorer' }
+Package { #name : 'GToolkit-Releaser-ExamplesExplorer' }

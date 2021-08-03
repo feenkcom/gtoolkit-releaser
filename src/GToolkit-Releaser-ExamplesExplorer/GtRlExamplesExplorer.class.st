@@ -1,40 +1,40 @@
 Class {
-	#name : #GtRlExamplesExplorer,
-	#superclass : #Object,
+	#name : 'GtRlExamplesExplorer',
+	#superclass : 'Object',
 	#instVars : [
 		'cachedExamples',
 		'cachedTestCases'
 	],
-	#category : #'GToolkit-Releaser-ExamplesExplorer'
+	#category : 'GToolkit-Releaser-ExamplesExplorer'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlExamplesExplorer >> containedExamples [
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlExamplesExplorer >> containedExamplesCount [
 	^ self containedExamples size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlExamplesExplorer >> containedTestCases [
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlExamplesExplorer >> containedTestCasesCount [
 	^ self containedTestCases size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlExamplesExplorer >> gtClassesFor: aView [ 
 	<gtView>
 	^ self containedExamples gtClassesFor: aView
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlExamplesExplorer >> gtGraphFor: aView [
 	<gtView>
 	^ aView forward
@@ -44,7 +44,7 @@ GtRlExamplesExplorer >> gtGraphFor: aView [
 		view: #gtMapFor:
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlExamplesExplorer >> gtViewExamplesFor: aView [
 	<gtView>
 	^ self containedExamples gtExamplesFor: aView

@@ -1,20 +1,20 @@
 Class {
-	#name : #GtRlGToolkitExamplesExplorer,
-	#superclass : #GtRlSystemExamplesExplorer,
-	#category : #'GToolkit-Releaser-ExamplesExplorer'
+	#name : 'GtRlGToolkitExamplesExplorer',
+	#superclass : 'GtRlSystemExamplesExplorer',
+	#category : 'GToolkit-Releaser-ExamplesExplorer'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 GtRlGToolkitExamplesExplorer class >> buildForGToolkitProject [
 	| projectBuilder project |
 	projectBuilder := GtRlDependenciesModelBuilder new.
 	project := projectBuilder 
 		buildProjectFromBaselineClass: BaselineOfGToolkit
-		withRepositoryDescription: 'github://feenkcom/gtoolkit/src'.
+		withRepositoryDescription: 'github://feenkcom/gtoolkit:main/src'.
 	^ self forProject: project
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlGToolkitExamplesExplorer >> gtViewAllExamplesInImageFor: aView [
 	<gtView>
 	^ ((GtExampleGroup withAll: Smalltalk gtExamplesContained) gtExamplesFor: aView)
@@ -22,7 +22,7 @@ GtRlGToolkitExamplesExplorer >> gtViewAllExamplesInImageFor: aView [
 		priority: 20
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlGToolkitExamplesExplorer >> gtViewBrickStackRepositoriesListFor: aView [
 	<gtView>
 	^ (super gtViewRepositoriesListFor: aView)
@@ -35,7 +35,7 @@ GtRlGToolkitExamplesExplorer >> gtViewBrickStackRepositoriesListFor: aView [
 				repositoryName beginsWith: aPrefix ] ] ]
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlGToolkitExamplesExplorer >> gtViewGtoolkitRepositoriesListFor: aView [
 	<gtView>
 	^ (super gtViewRepositoriesListFor: aView)
@@ -45,7 +45,7 @@ GtRlGToolkitExamplesExplorer >> gtViewGtoolkitRepositoriesListFor: aView [
 				aRepositoryExported repository repositoryName beginsWith: 'gtoolkit' ] ]
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlGToolkitExamplesExplorer >> gtViewRepositoriesListFor: aView [
 	<gtView>
 	^ (super gtViewRepositoriesListFor: aView)

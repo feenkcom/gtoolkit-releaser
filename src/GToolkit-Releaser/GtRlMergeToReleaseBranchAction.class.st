@@ -7,12 +7,12 @@ See ${method:GtRlSemanticTagReleaseStrategy>>#mergeToReleaseBranch} for more imp
 
 "
 Class {
-	#name : #GtRlMergeToReleaseBranchAction,
-	#superclass : #GtRlRepositoryReleaseAction,
-	#category : #'GToolkit-Releaser'
+	#name : 'GtRlMergeToReleaseBranchAction',
+	#superclass : 'GtRlRepositoryReleaseAction',
+	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlMergeToReleaseBranchAction >> description [
 	^ 'Merge reference branch ',
 		'#', self repositoryRelease releaseStrategy referenceBranchName,
@@ -20,7 +20,7 @@ GtRlMergeToReleaseBranchAction >> description [
 		'#', self repositoryRelease releaseStrategy releaseBranchName
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlMergeToReleaseBranchAction >> descriptionDetails [
 	^
 		'#', self repositoryRelease releaseStrategy referenceBranchName,
@@ -28,12 +28,12 @@ GtRlMergeToReleaseBranchAction >> descriptionDetails [
 		'#', self repositoryRelease releaseStrategy releaseBranchName
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlMergeToReleaseBranchAction >> name [ 
 	^ 'Merge to release branch'
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlMergeToReleaseBranchAction >> performAction [
 	self releaseStrategy mergeToReleaseBranch
 ]

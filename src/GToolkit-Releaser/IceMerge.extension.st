@@ -1,6 +1,6 @@
-Extension { #name : #IceMerge }
+Extension { #name : 'IceMerge' }
 
-{ #category : #'*GToolkit-Releaser' }
+{ #category : '*GToolkit-Releaser' }
 IceMerge >> executeWithAcceptingLeftOnConflict [
 	"at begining of this, there is a possibility that imageCommit needs to be 'fixed' to use."
 	| commitToAdvance |
@@ -21,7 +21,7 @@ IceMerge >> executeWithAcceptingLeftOnConflict [
 	^ commitToAdvance
 ]
 
-{ #category : #'*GToolkit-Releaser' }
+{ #category : '*GToolkit-Releaser' }
 IceMerge >> executeWithAcceptingLeftOnConflictAndWithoutImageUpdate [
 	"at begining of this, there is a possibility that imageCommit needs to be 'fixed' to use."
 	| commitToAdvance |

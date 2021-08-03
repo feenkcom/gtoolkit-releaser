@@ -12,36 +12,36 @@ I provide an order attribute that can be used to order the actions of a release 
 
 "
 Class {
-	#name : #GtRlReleaseAction,
-	#superclass : #Object,
+	#name : 'GtRlReleaseAction',
+	#superclass : 'Object',
 	#instVars : [
 		'order',
 		'isExecuted'
 	],
-	#category : #'GToolkit-Releaser'
+	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlReleaseAction >> description [ 	
 	self subclassResponsibility
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlReleaseAction >> descriptionDetails [
 	^ ''
 ]
 
-{ #category : #logging }
+{ #category : 'logging' }
 GtRlReleaseAction >> emitCreationSignal [
 	(GtRlCreateReleaseActionSignal action: self) emit.
 ]
 
-{ #category : #logging }
+{ #category : 'logging' }
 GtRlReleaseAction >> emitExecutionSignal [
 	(GtRlExecuteActionSignal action: self) emit.
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlReleaseAction >> execute [
 	self 
 		assert: [ self repositoryRelease isPassiveRelease not ] 
@@ -53,7 +53,7 @@ GtRlReleaseAction >> execute [
 		ensure: [ isExecuted := true ].
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlReleaseAction >> gtActionExecuteFor: anAction [
 	<gtAction>
 	self isExecuted ifTrue: [ ^ anAction ].
@@ -63,7 +63,7 @@ GtRlReleaseAction >> gtActionExecuteFor: anAction [
 			action: [ self execute ]
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlReleaseAction >> gtDescriptionFor: aView [
 	<gtView>
 	^ aView textEditor
@@ -73,38 +73,38 @@ GtRlReleaseAction >> gtDescriptionFor: aView [
 	
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GtRlReleaseAction >> initialize [ 
 	super initialize.
 	isExecuted := false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlReleaseAction >> isExecuted [
 	^ isExecuted notNil and: [ isExecuted ]
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlReleaseAction >> name [ 	
 	^ 'Release action'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlReleaseAction >> order [
 	^ order
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlReleaseAction >> order: anInteger [
 	order := anInteger
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlReleaseAction >> performAction [
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlReleaseAction >> repositoryRelease [
 	self subclassResponsibility
 ]

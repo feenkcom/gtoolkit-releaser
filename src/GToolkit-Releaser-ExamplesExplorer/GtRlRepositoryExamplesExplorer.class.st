@@ -1,20 +1,20 @@
 Class {
-	#name : #GtRlRepositoryExamplesExplorer,
-	#superclass : #GtRlExamplesExplorer,
+	#name : 'GtRlRepositoryExamplesExplorer',
+	#superclass : 'GtRlExamplesExplorer',
 	#instVars : [
 		'repository',
 		'projectExplorers'
 	],
-	#category : #'GToolkit-Releaser-ExamplesExplorer'
+	#category : 'GToolkit-Releaser-ExamplesExplorer'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 GtRlRepositoryExamplesExplorer class >> forRepository: aRepository [
 	^ self new
 		initializeForRepository: aRepository
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryExamplesExplorer >> containedExamples [
 	^ cachedExamples ifNil: [
 		| currentExamples |
@@ -24,7 +24,7 @@ GtRlRepositoryExamplesExplorer >> containedExamples [
 		cachedExamples := GtExampleGroup withAll: currentExamples ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryExamplesExplorer >> containedTestCases [
 	^ cachedTestCases ifNil: [
 		cachedTestCases := OrderedCollection new.
@@ -33,13 +33,13 @@ GtRlRepositoryExamplesExplorer >> containedTestCases [
 		cachedTestCases ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryExamplesExplorer >> gtPackagesFor: aView [ 
 	<gtView>
 	^ self containedExamples gtPackagesFor: aView
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlRepositoryExamplesExplorer >> gtViewProjectsFor: aView [
 	<gtView>
 	^ aView columnedList
@@ -54,19 +54,19 @@ GtRlRepositoryExamplesExplorer >> gtViewProjectsFor: aView [
 			width: 100
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GtRlRepositoryExamplesExplorer >> initializeForRepository: aRepository [
 	repository := aRepository.
 	projectExplorers := aRepository projects collect: [ :aProject |
 		GtRlProjectExamplesExplorer forProject: aProject ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryExamplesExplorer >> name [
 	^ self repository repositoryName
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlRepositoryExamplesExplorer >> printOn: aStream [
 	super printOn: aStream.
 	aStream 
@@ -75,12 +75,12 @@ GtRlRepositoryExamplesExplorer >> printOn: aStream [
 		nextPut: $)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryExamplesExplorer >> projectExplorers [
 	^ projectExplorers
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryExamplesExplorer >> repository [
 	^ repository
 ]

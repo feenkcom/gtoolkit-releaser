@@ -1,10 +1,10 @@
 Class {
-	#name : #GtRlRepositoriesCloner,
-	#superclass : #Object,
-	#category : #'GToolkit-Releaser'
+	#name : 'GtRlRepositoriesCloner',
+	#superclass : 'Object',
+	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #releasing }
+{ #category : 'releasing' }
 GtRlRepositoriesCloner class >> getProject: projectName fromRepository: repoURL [
 	| project url |
 	project := (Metacello new
@@ -23,7 +23,7 @@ GtRlRepositoriesCloner class >> getProject: projectName fromRepository: repoURL 
 					ifFalse: [ Transcript crTrace: url ] ]].
 ]
 
-{ #category : #releasing }
+{ #category : 'releasing' }
 GtRlRepositoriesCloner class >> loadProject: aBaselineClassName fromRepository: aRepositoryUrl [
 	|repos loadWarnings projectBuilder project release config |
 	self getProject: aBaselineClassName fromRepository: aRepositoryUrl.

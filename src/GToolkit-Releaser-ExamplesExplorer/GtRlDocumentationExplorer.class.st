@@ -1,26 +1,26 @@
 Class {
-	#name : #GtRlDocumentationExplorer,
-	#superclass : #Object,
+	#name : 'GtRlDocumentationExplorer',
+	#superclass : 'Object',
 	#instVars : [
 		'tutorialClasses',
 		'howToGuideClasses',
 		'explanationClasses',
 		'exampleClasses'
 	],
-	#category : #'GToolkit-Releaser-ExamplesExplorer'
+	#category : 'GToolkit-Releaser-ExamplesExplorer'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlDocumentationExplorer >> exampleClasses [
 	^ exampleClasses ifNil: [ exampleClasses := OrderedCollection new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlDocumentationExplorer >> explanationClasses [
 	^ explanationClasses ifNil: [ explanationClasses := OrderedCollection new ]
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlDocumentationExplorer >> gtViewExamplesListFor: aView [
 	<gtView>
 	^ aView list
@@ -32,7 +32,7 @@ GtRlDocumentationExplorer >> gtViewExamplesListFor: aView [
 						addTool: (GtClassCoderTool forClass: anItem)  ]
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlDocumentationExplorer >> gtViewExplanationsListFor: aView [
 	<gtView>
 	^ aView list
@@ -44,7 +44,7 @@ GtRlDocumentationExplorer >> gtViewExplanationsListFor: aView [
 						addTool: (GtClassCoderTool forClass: anItem)  ]
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlDocumentationExplorer >> gtViewHowToGuidesListFor: aView [
 	<gtView>
 	^ aView list
@@ -56,7 +56,7 @@ GtRlDocumentationExplorer >> gtViewHowToGuidesListFor: aView [
 						addTool: (GtClassCoderTool forClass: anItem)  ]
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlDocumentationExplorer >> gtViewTutorialsListFor: aView [
 	<gtView>
 	^ aView list
@@ -68,12 +68,12 @@ GtRlDocumentationExplorer >> gtViewTutorialsListFor: aView [
 						addTool: (GtClassCoderTool forClass: anItem)  ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlDocumentationExplorer >> howToGuideClasses [
 	^ howToGuideClasses ifNil: [ howToGuideClasses := OrderedCollection new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlDocumentationExplorer >> tutorialClasses [
 	^ tutorialClasses ifNil: [ tutorialClasses := OrderedCollection new ]
 ]

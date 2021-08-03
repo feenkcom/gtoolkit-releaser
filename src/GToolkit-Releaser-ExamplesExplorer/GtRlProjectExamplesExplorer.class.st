@@ -1,19 +1,19 @@
 Class {
-	#name : #GtRlProjectExamplesExplorer,
-	#superclass : #GtRlExamplesExplorer,
+	#name : 'GtRlProjectExamplesExplorer',
+	#superclass : 'GtRlExamplesExplorer',
 	#instVars : [
 		'project'
 	],
-	#category : #'GToolkit-Releaser-ExamplesExplorer'
+	#category : 'GToolkit-Releaser-ExamplesExplorer'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 GtRlProjectExamplesExplorer class >> forProject: aProject [
 	^ self new
 		initializeForProject: aProject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectExamplesExplorer >> containedExamples [
 	^ cachedExamples ifNil: [
 		| currentExamples |
@@ -23,7 +23,7 @@ GtRlProjectExamplesExplorer >> containedExamples [
 		cachedExamples := GtExampleGroup withAll: currentExamples ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectExamplesExplorer >> containedTestCases [
 	^ cachedTestCases ifNil: [
 		cachedTestCases := OrderedCollection new.
@@ -33,17 +33,17 @@ GtRlProjectExamplesExplorer >> containedTestCases [
 		cachedTestCases ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GtRlProjectExamplesExplorer >> initializeForProject: aProject [
 	project := aProject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectExamplesExplorer >> name [
 	^ self project name
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlProjectExamplesExplorer >> printOn: aStream [
 	super printOn: aStream.
 	aStream 
@@ -52,7 +52,7 @@ GtRlProjectExamplesExplorer >> printOn: aStream [
 		nextPut: $)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectExamplesExplorer >> project [
 	^ project
 ]

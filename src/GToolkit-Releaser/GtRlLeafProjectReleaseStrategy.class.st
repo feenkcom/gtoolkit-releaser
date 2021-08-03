@@ -9,12 +9,12 @@ See {{gtMethod:GtRlLeafProjectReleaseStrategy>>#shouldCreateNewRelease}} for the
 
 "
 Class {
-	#name : #GtRlLeafProjectReleaseStrategy,
-	#superclass : #GtRlSemanticTagReleaseStrategy,
-	#category : #'GToolkit-Releaser'
+	#name : 'GtRlLeafProjectReleaseStrategy',
+	#superclass : 'GtRlSemanticTagReleaseStrategy',
+	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #assertions }
+{ #category : 'assertions' }
 GtRlLeafProjectReleaseStrategy >> assertCompatibleWithRepository: aRepository [
 	self 
 		assert: [ aRepository projects size == 1 ] 
@@ -26,7 +26,7 @@ GtRlLeafProjectReleaseStrategy >> assertCompatibleWithRepository: aRepository [
 	
 ]
 
-{ #category : #assertions }
+{ #category : 'assertions' }
 GtRlLeafProjectReleaseStrategy >> assertOnlyAllowedChanges [
 	| releaseCommit "sourceDiff" |
 	
@@ -37,12 +37,12 @@ GtRlLeafProjectReleaseStrategy >> assertOnlyAllowedChanges [
 	self assert: sourceDiff isEmpty."
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlLeafProjectReleaseStrategy >> description [
 	^ 'LeafRelease'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlLeafProjectReleaseStrategy >> findNewCommits [
 	|repoRelease releaseCommit result walk repo|
 	repoRelease := self  repositoryRelease.
@@ -69,14 +69,14 @@ GtRlLeafProjectReleaseStrategy >> findNewCommits [
 	
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GtRlLeafProjectReleaseStrategy >> initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration [
 	super initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration.
 	self
 		releaseBranchName: aRepositoryRelease icebergRepository branchName
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlLeafProjectReleaseStrategy >> shouldCreateNewRelease [
 	| latestVersionTag |
 	
@@ -96,7 +96,7 @@ GtRlLeafProjectReleaseStrategy >> shouldCreateNewRelease [
 	^ false
 ]
 
-{ #category : #'actions - building' }
+{ #category : 'actions - building' }
 GtRlLeafProjectReleaseStrategy >> updateReleaseActionsUsing: anUpdateWorkflow [
 	| commitAction |
 	self repositoryRelease resetReleaseActions.
