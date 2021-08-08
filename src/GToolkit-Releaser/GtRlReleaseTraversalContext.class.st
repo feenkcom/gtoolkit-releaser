@@ -8,15 +8,15 @@ An an implementation, I use a {{gtClass:Stack}} to maintain the current chain of
 
 "
 Class {
-	#name : 'GtRlReleaseTraversalContext',
-	#superclass : 'Object',
+	#name : #GtRlReleaseTraversalContext,
+	#superclass : #Object,
 	#instVars : [
 		'repositoriesChain'
 	],
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'utils' }
+{ #category : #utils }
 GtRlReleaseTraversalContext >> ensureNoRecursioErrorFor: aRepositoryRelease [
 	((self repositoriesChain includes: aRepositoryRelease) or: [
 		self repositoriesChain anySatisfy: [ :aVisitedRepositoryRelease |
@@ -25,30 +25,30 @@ GtRlReleaseTraversalContext >> ensureNoRecursioErrorFor: aRepositoryRelease [
 	 	self error: 'Circular dependency to repository: ', aRepositoryRelease printString ].
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 GtRlReleaseTraversalContext >> initialize [
 	super initialize.
 	repositoriesChain := Stack new.
 ]
 
-{ #category : 'utils' }
+{ #category : #utils }
 GtRlReleaseTraversalContext >> popRepository: aRepositoryRelease [
 	| removedRepository |
 	removedRepository := self repositoriesChain pop.
 	self assert: [ removedRepository == aRepositoryRelease ].
 ]
 
-{ #category : 'utils' }
+{ #category : #utils }
 GtRlReleaseTraversalContext >> pushRepository: aRepositoryRelease [
 	self repositoriesChain push: aRepositoryRelease.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseTraversalContext >> repositoriesChain [
 	^ repositoriesChain
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlReleaseTraversalContext >> withRecursionDetectionFor: aRepositoryRelease during: aBlock [
 	"Perform the given block and ensure the given repository release is not in the current chain of repositories.
 	Trigger a recursion error in case the given repository release is found in the current chain.

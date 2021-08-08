@@ -1,6 +1,6 @@
 Class {
-	#name : 'GtMetrics',
-	#superclass : 'Object',
+	#name : #GtMetrics,
+	#superclass : #Object,
 	#instVars : [
 		'basePharoLinesOfCode',
 		'gtLinesOfCode',
@@ -13,33 +13,33 @@ Class {
 	#classVars : [
 		'default'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtMetrics class >> default [
 	<gtExample>
 	^ default ifNil: [ default := GtMetrics new ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtMetrics class >> reset [
 	default := nil
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GtMetrics >> basePharoLinesOfCode [
 	^ basePharoLinesOfCode ifNil: [ basePharoLinesOfCode := self totalLinesOfCode - self gtLinesOfCode ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtMetrics >> famix3LinesOfCode [
 	^ famix3LinesOfCode ifNil: [ famix3LinesOfCode := (BaselineOfFamix3SmalltalkImporter version 
 	withDeepCollect: [ :each | each projects collect: #version ])
 		sum: [:each | each gtRPackages sum: #linesOfCode ] ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtMetrics >> gtBarChartFor: aView [
 	<gtView>
 	| theData projectsAndSizes maxLines aBarWidthScale barChart |
@@ -69,12 +69,12 @@ GtMetrics >> gtBarChartFor: aView [
 				with: theData ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GtMetrics >> gtLinesOfCode [
 	^ gtLinesOfCode ifNil: [ gtLinesOfCode := self gtMethods sumNumbers: [ :each | each linesOfCode ] ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtMetrics >> gtMapFor: aView [
 	<gtView>
 	^ aView explicit
@@ -164,12 +164,12 @@ value nodes do: [ :group |
 	]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GtMetrics >> gtMethods [
 	^ self methodsInProjects: self gtProjects
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtMetrics >> gtMetricsFor: aView [
 	<gtView>
 	^ aView columnedList
@@ -186,7 +186,7 @@ GtMetrics >> gtMetricsFor: aView [
 		column: 'Lines of code' text: #value
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GtMetrics >> gtProjects [
 	| projects |
 	projects := {BaselineOfGToolkit} flatCollect: [:project | 
@@ -197,7 +197,7 @@ GtMetrics >> gtProjects [
 	^ projects
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtMetrics >> gtProjectsFor: aView [
 	<gtView>
 	^ aView columnedList
@@ -210,7 +210,7 @@ GtMetrics >> gtProjectsFor: aView [
 		send: #value
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GtMetrics >> methodsInProjects: aCollection [
 	| mPackages packages |
 	mPackages := aCollection flatCollect: [:each | each packages ].
@@ -222,17 +222,17 @@ GtMetrics >> methodsInProjects: aCollection [
 		packages includes: each package ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GtMetrics >> pharoToReplaceLinesOfCode [
 	^ pharoToReplaceLinesOfCode ifNil: [ pharoToReplaceLinesOfCode := self pharoToReplaceMethods sumNumbers: [ :each | each linesOfCode ] ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GtMetrics >> pharoToReplaceMethods [
 	^ self methodsInProjects: self pharoToReplaceProjects
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtMetrics >> pharoToReplaceProjects [
 	| projects |
 	projects := {BaselineOfBasicTools . 
@@ -242,33 +242,34 @@ GtMetrics >> pharoToReplaceProjects [
 		BaselineOfPharoGlamour . 
 		BaselineOfPharoGT . 
 		BaselineOfQA . 
-		BaselineOfOSWindow. 
-		BaselineOfBlueInk} flatCollect: [:project | 
+		BaselineOfOSWindow.
+		BaselineOfSpec.
+		BaselineOfSpec2 } flatCollect: [:project | 
 			project version withDeepCollect: [ :each | 
 				each projects collect: #version ] as: Set ].
 	self assert: projects notEmpty.
 	self assert: (projects noneSatisfy: #isNil).
-	^ projects \ {BaselineOfTraits version . BaselineOfUnifiedFFI version . BaselineOfReflectivity version}
+	^ (projects \ {BaselineOfTraits version . BaselineOfUnifiedFFI version . BaselineOfReflectivity version}) \ self gtProjects
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtMetrics >> smaccParserPackages [
 	^ (BaselineOfSmaCC version gtRPackages select: [:each | 
 	({'SnaCC_Grammar_Parser' . 'SmaCC_Debugging_Support' . 'SmaCC_Rewrite' . 'SmaCC_Rewrite_Engine' . 'SmaCC_Rewrite_Engine_Tests'} includes: each name) not and: [
 		each classes anySatisfy: [:c | c inheritsFrom: SmaCCScanner]]])
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtMetrics >> smaccParsersLinesOfCode [
 	^ smaccParsersLinesOfCode ifNil: [ smaccParsersLinesOfCode := self smaccParserPackages sum: #linesOfCode]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtMetrics >> totalLinesOfCode [
 	^ totalLinesOfCode ifNil: [ totalLinesOfCode := (Smalltalk allClassesAndTraits flatCollect: #localMethods) sumNumbers: #linesOfCode ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtMetrics >> xmlSupportLinesOfCode [
 	^ xmlSupportLinesOfCode ifNil: [ xmlSupportLinesOfCode := (BaselineOfGToolkit4XMLSupport version withDeepCollect: [ :each | each projects collect: #version ])
 		sum: [:each | each gtRPackages sum: #linesOfCode ]. ]

@@ -14,8 +14,8 @@ By default I use a release strategy of type {{gtClass:GtRlDedicatedBranchRelease
 
 "
 Class {
-	#name : 'GtRlReleaseConfiguration',
-	#superclass : 'Object',
+	#name : #GtRlReleaseConfiguration,
+	#superclass : #Object,
 	#instVars : [
 		'defaultReleaseBranchName',
 		'customReleaseBranches',
@@ -30,93 +30,93 @@ Class {
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseConfiguration >> customReleaseBranches [
 	^ customReleaseBranches ifNil: [ 
 		customReleaseBranches := Dictionary new ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseConfiguration >> customReleaseStrategies [
 	^ customReleaseStrategies ifNil: [ 
 		customReleaseStrategies := Dictionary new ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseConfiguration >> customVersionComputations [
 	^ customVersionComputations ifNil: [ 
 		customVersionComputations := Dictionary new ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseConfiguration >> defaultReleaseBranchName [
 	^ defaultReleaseBranchName ifNil: [ 'release' ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseConfiguration >> defaultReleaseBranchName: aBranchName [
 	defaultReleaseBranchName := aBranchName
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseConfiguration >> defaultReleaseStrategy [
 	^ defaultReleaseStrategy ifNil: [
 		 GtRlDedicatedBranchReleaseStrategy new]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseConfiguration >> defaultReleaseStrategy: aDefaultReleaseStrategy [
 	defaultReleaseStrategy := aDefaultReleaseStrategy
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseConfiguration >> defaultShouldForceNewRelease [
 	^ false
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseConfiguration >> defaultVersionComputation [
 	^ defaultVersionComputation ifNil: [ 
 		GtRlPatchVersionComputation new ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseConfiguration >> defaultVersionComputation: aVersionComputation [
 	defaultVersionComputation := aVersionComputation
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseConfiguration >> defaultVersionNumber [
 	^ defaultVersionNumber ifNil: [ 
 		GtRlSemanticVersionNumber major:0 minor: 1 patch: 0 ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseConfiguration >> defaultVersionNumber: aVersionNumber [
 	defaultVersionNumber := aVersionNumber
 ]
 
-{ #category : 'logging' }
+{ #category : #logging }
 GtRlReleaseConfiguration >> emit [
 	^ GtRlReleaseConfigurationSignal emit: self.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseConfiguration >> enforcedVersion [
 	^ enforcedVersion
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseConfiguration >> enforcedVersion: version [
 	enforcedVersion := version
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseConfiguration >> forceNewRelease [
 	shouldForceNewRelease := true
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlReleaseConfiguration >> gtDefaultOptionsFor: aView [
 	<gtView>
 	^ aView columnedList
@@ -132,21 +132,21 @@ GtRlReleaseConfiguration >> gtDefaultOptionsFor: aView [
 		send: #value
 ]
 
-{ #category : 'options - accessing' }
+{ #category : #'options - accessing' }
 GtRlReleaseConfiguration >> releaseBranchForRepository: aRepository [
 	^ self customReleaseBranches 
 		at: aRepository id 
 		ifAbsent: [ self defaultReleaseBranchName ]
 ]
 
-{ #category : 'options - accessing' }
+{ #category : #'options - accessing' }
 GtRlReleaseConfiguration >> releaseStrategyForRepository: aRepository [
 	^ self customReleaseStrategies 
 		at: aRepository id 
 		ifAbsent: [ self defaultReleaseStrategy ]
 ]
 
-{ #category : 'options - accessing' }
+{ #category : #'options - accessing' }
 GtRlReleaseConfiguration >> releaseVersionComputationForRepository: aRepository [
 	| versionComputation |
 	versionComputation := self customVersionComputations 
@@ -156,27 +156,27 @@ GtRlReleaseConfiguration >> releaseVersionComputationForRepository: aRepository 
 	^ versionComputation
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlReleaseConfiguration >> setReleaseBranch: aBranchName forProjectId: aProjectId [
 	self customReleaseBranches 
 		at: aProjectId put: aBranchName
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlReleaseConfiguration >> setReleaseStrategy: aReleaseStrategy forProjectId: aProjectId [
 	(GtRlProjectReleaseStrategySignal project: aProjectId strategy: aReleaseStrategy) emit.
 	self customReleaseStrategies 
 		at: aProjectId put: aReleaseStrategy
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlReleaseConfiguration >> setReleaseStrategyOfType: aReleaseStrategy forProjecs: aListOfProjectIds [
 	aListOfProjectIds do: [ :aProjectId |
 		self setReleaseStrategy: aReleaseStrategy new forProjectId: aProjectId ]
 	
 ]
 
-{ #category : 'options - accessing' }
+{ #category : #'options - accessing' }
 GtRlReleaseConfiguration >> shouldForceNewRelease [
 	^ shouldForceNewRelease ifNil: [ false ]
 ]

@@ -1,6 +1,6 @@
-Extension { #name : 'IceLibgitRepository' }
+Extension { #name : #IceLibgitRepository }
 
-{ #category : '*GToolkit-Releaser' }
+{ #category : #'*GToolkit-Releaser' }
 IceLibgitRepository >> assertRepositoryNotModified: aMessage [
 	|changes|
 	changes := ((self workingCopy diffToReferenceCommit treeToShow) withDeep: #children collect: #asString)  asString.

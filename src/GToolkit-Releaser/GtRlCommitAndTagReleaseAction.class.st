@@ -7,12 +7,12 @@ See ${method:GtRlSemanticTagReleaseStrategy>>#commitAndTagRelease} for more impl
 
 "
 Class {
-	#name : 'GtRlCommitAndTagReleaseAction',
-	#superclass : 'GtRlRepositoryReleaseAction',
+	#name : #GtRlCommitAndTagReleaseAction,
+	#superclass : #GtRlRepositoryReleaseAction,
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlCommitAndTagReleaseAction >> description [
 	^ 'Commit changes on branch ',
 		'#',self repositoryRelease releaseStrategy releaseBranchName,
@@ -20,14 +20,14 @@ GtRlCommitAndTagReleaseAction >> description [
 		'''', self repositoryRelease versionString,''''
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlCommitAndTagReleaseAction >> descriptionDetails [
 	^ 
 		'#',self repositoryRelease releaseStrategy releaseBranchName,
 		' [', self repositoryRelease versionString,']'
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlCommitAndTagReleaseAction >> gtViewCommitMessageFor: aView [
 	<gtView>
 	^ aView textEditor
@@ -35,12 +35,12 @@ GtRlCommitAndTagReleaseAction >> gtViewCommitMessageFor: aView [
 		text: [ self releaseStrategy repositoryRelease commitMessageForRelease ]
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlCommitAndTagReleaseAction >> name [
 	^ 'Commit and tag release'
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlCommitAndTagReleaseAction >> performAction [
 	self releaseStrategy commitAndTagRelease
 ]

@@ -6,21 +6,21 @@ See {{gtMethod:GtRlProjectRelease>>#compileBaselineMethod}} for more implementat
 
 "
 Class {
-	#name : 'GtRlCompileBaselineReleaseAction',
-	#superclass : 'GtRlReleaseAction',
+	#name : #GtRlCompileBaselineReleaseAction,
+	#superclass : #GtRlReleaseAction,
 	#instVars : [
 		'projectRelease'
 	],
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 GtRlCompileBaselineReleaseAction class >> forProjectRelease: aProjectRelease [
 	^ self new
 		projectRelease: aProjectRelease
 ]
 
-{ #category : 'private - ui' }
+{ #category : #'private - ui' }
 GtRlCompileBaselineReleaseAction >> baselineCodeForCommit: aCommit [
 	| baselineName baselinePackageName icebergBaselinePackage mcPackage baselineDefinition |
 	baselineName := self projectRelease project baselineClass name.
@@ -38,17 +38,17 @@ GtRlCompileBaselineReleaseAction >> baselineCodeForCommit: aCommit [
 	^ baselineDefinition source
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlCompileBaselineReleaseAction >> description [
 	^ 'Compile baseline ', self projectRelease project baselineClass name
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlCompileBaselineReleaseAction >> descriptionDetails [
 	^ self projectRelease project baselineClass name
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlCompileBaselineReleaseAction >> gtGeneratedSourceFor: aView [
 	<gtView> 
 	^ self projectRelease 
@@ -56,7 +56,7 @@ GtRlCompileBaselineReleaseAction >> gtGeneratedSourceFor: aView [
 		ifNotNil: [ self projectRelease gtGeneratedSourceFor: aView ]
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlCompileBaselineReleaseAction >> gtViewBaselineSourceDiffFor: aView [
 	<gtView>
 	self projectRelease ifNil: [ ^ aView ].
@@ -69,7 +69,7 @@ GtRlCompileBaselineReleaseAction >> gtViewBaselineSourceDiffFor: aView [
 				to: (self projectRelease generateBaselineSource))) aptitude: GtDiffShadowAptitude ]
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlCompileBaselineReleaseAction >> gtViewPreviousVersionDiffFor: aView [
 	<gtView>
 	self projectRelease ifNil: [ ^ aView ].
@@ -87,27 +87,27 @@ GtRlCompileBaselineReleaseAction >> gtViewPreviousVersionDiffFor: aView [
 				to: (self projectRelease generateBaselineSource))) aptitude: GtDiffShadowAptitude ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlCompileBaselineReleaseAction >> name [ 	
 	^ 'Compile baseline'
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlCompileBaselineReleaseAction >> performAction [
 	self projectRelease compileBaselineMethod
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlCompileBaselineReleaseAction >> projectRelease [
 	^ projectRelease
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlCompileBaselineReleaseAction >> projectRelease: aProjectRelease [
 	projectRelease := aProjectRelease
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlCompileBaselineReleaseAction >> repositoryRelease [
 	^ self projectRelease repositoryRelease
 ]
