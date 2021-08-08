@@ -13,8 +13,8 @@ I offer the following configuration options:
 
 "
 Class {
-	#name : 'GtRlSemanticTagReleaseStrategy',
-	#superclass : 'GtRlReleaseStrategy',
+	#name : #GtRlSemanticTagReleaseStrategy,
+	#superclass : #GtRlReleaseStrategy,
 	#instVars : [
 		'releaseBranchName',
 		'nextVersionComputation',
@@ -24,13 +24,13 @@ Class {
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'assertions' }
+{ #category : #assertions }
 GtRlSemanticTagReleaseStrategy >> assertOnlyAllowedChanges [
 	"Only changes to the metadata file and to baseline methods between the main and release branches are allowed during a release."
 	self subclassResponsibility
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlSemanticTagReleaseStrategy >> commitAndTagRelease [
 	| iceRepository |
 	iceRepository := self repositoryRelease icebergRepository.
@@ -45,7 +45,7 @@ GtRlSemanticTagReleaseStrategy >> commitAndTagRelease [
 	self assertOnlyAllowedChanges 
 ]
 
-{ #category : 'private - actions' }
+{ #category : #'private - actions' }
 GtRlSemanticTagReleaseStrategy >> configureNewVersionRelease [
 	| nextVersionNumber "newCommits" |
 	
@@ -66,17 +66,17 @@ GtRlSemanticTagReleaseStrategy >> configureNewVersionRelease [
 	
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlSemanticTagReleaseStrategy >> enforcedVersion [
 	^ enforcedVersion
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlSemanticTagReleaseStrategy >> enforcedVersion: aVersion [
 	enforcedVersion := aVersion
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 GtRlSemanticTagReleaseStrategy >> initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration [
 	super initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration.
 	self
@@ -85,52 +85,52 @@ GtRlSemanticTagReleaseStrategy >> initializeFor: aRepositoryRelease fromConfigur
 		shouldForceNewRelease: aReleaseConfiguration shouldForceNewRelease
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlSemanticTagReleaseStrategy >> isPassiveReleaseStrategy [
 	^ false
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlSemanticTagReleaseStrategy >> nextVersionComputation [
 	^ nextVersionComputation
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlSemanticTagReleaseStrategy >> nextVersionComputation: aVersionComputation [
 	nextVersionComputation := aVersionComputation
 ]
 
-{ #category : 'accessing - dynamic' }
+{ #category : #'accessing - dynamic' }
 GtRlSemanticTagReleaseStrategy >> releaseBranch [
 	^ self repositoryRelease icebergRepository branchNamed: (self releaseBranchName) ifAbsent: nil
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlSemanticTagReleaseStrategy >> releaseBranchName [
 	^ releaseBranchName
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlSemanticTagReleaseStrategy >> releaseBranchName: aBranchName [
 	releaseBranchName := aBranchName
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlSemanticTagReleaseStrategy >> shouldCreateNewRelease [
 	self subclassResponsibility
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlSemanticTagReleaseStrategy >> shouldForceNewRelease [
 	^ shouldForceNewRelease
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlSemanticTagReleaseStrategy >> shouldForceNewRelease: aBoolean [
 	shouldForceNewRelease := aBoolean
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlSemanticTagReleaseStrategy >> updateFor: anUpdateWorkflow [
 	| latestVersionTag |
 	
@@ -149,7 +149,7 @@ GtRlSemanticTagReleaseStrategy >> updateFor: anUpdateWorkflow [
 		makePassiveRelease
 ]
 
-{ #category : 'actions - building' }
+{ #category : #'actions - building' }
 GtRlSemanticTagReleaseStrategy >> updatePostBuildActionsUsing: anUpdateWorkflow [
 	| pushAction |
 	self repositoryRelease isPassiveRelease ifTrue: [ ^ self ].

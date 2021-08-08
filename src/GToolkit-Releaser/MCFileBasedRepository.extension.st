@@ -1,6 +1,6 @@
-Extension { #name : 'MCFileBasedRepository' }
+Extension { #name : #MCFileBasedRepository }
 
-{ #category : '*GToolkit-Releaser' }
+{ #category : #'*GToolkit-Releaser' }
 MCFileBasedRepository >> basicStoreVersion: aVersion [
 	self
 		writeStreamForFileNamed: aVersion fileName

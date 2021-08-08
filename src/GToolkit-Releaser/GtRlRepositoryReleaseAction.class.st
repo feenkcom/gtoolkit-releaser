@@ -4,31 +4,31 @@ I model a release action executed on a repository release. I only work with rele
 
 "
 Class {
-	#name : 'GtRlRepositoryReleaseAction',
-	#superclass : 'GtRlReleaseAction',
+	#name : #GtRlRepositoryReleaseAction,
+	#superclass : #GtRlReleaseAction,
 	#instVars : [
 		'repositoryRelease'
 	],
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 GtRlRepositoryReleaseAction class >> forRepositoryRelease: aRepositoryRelease [
 	^ self new
 		repositoryRelease: aRepositoryRelease
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlRepositoryReleaseAction >> releaseStrategy [
 	^ self repositoryRelease releaseStrategy
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlRepositoryReleaseAction >> repositoryRelease [
 	^ repositoryRelease
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlRepositoryReleaseAction >> repositoryRelease: aRepositoryRelease [
 	self 
 		assert: [ aRepositoryRelease releaseStrategy isKindOf: GtRlSemanticTagReleaseStrategy ] 

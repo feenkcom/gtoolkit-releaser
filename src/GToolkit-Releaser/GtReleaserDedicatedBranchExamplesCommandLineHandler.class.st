@@ -1,18 +1,19 @@
 Class {
-	#name : 'GtReleaserDedicatedBranchExamplesCommandLineHandler',
-	#superclass : 'GtExamplesCommandLineHandler',
-	#category : 'GToolkit-Releaser'
+	#name : #GtReleaserDedicatedBranchExamplesCommandLineHandler,
+	#superclass : #GtExamplesCommandLineHandler,
+	#category : #'GToolkit-Releaser'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtReleaserDedicatedBranchExamplesCommandLineHandler class >> commandName [
 	^ 'dedicatedReleaseBranchExamples'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtReleaserDedicatedBranchExamplesCommandLineHandler >> packages [ 
-	|packages|
+	| packages |
+	
 	packages := GtRlReleaserExportWorkflow allExamplePackagesInDedicatedReleaseRepositories collect: [:p | p name].
-	"packages := packages \ { #'Brick-Examples'}."
-	^ packages
+	
+	^ packages difference: self packagesToSkip
 ]

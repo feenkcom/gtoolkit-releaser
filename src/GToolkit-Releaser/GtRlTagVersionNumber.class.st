@@ -8,33 +8,33 @@ More examples are provided by the class {{gtClass:GtRlTagVersionNumberExamples}}
 
 "
 Class {
-	#name : 'GtRlTagVersionNumber',
-	#superclass : 'GtRlVersionNumber',
+	#name : #GtRlTagVersionNumber,
+	#superclass : #GtRlVersionNumber,
 	#instVars : [
 		'tagName'
 	],
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'comparing' }
+{ #category : #comparing }
 GtRlTagVersionNumber >> = anObject [
 	self == anObject ifTrue: [ ^ true ].
 	self class = anObject class ifFalse: [ ^ false ].
 	^ self tagName = anObject tagName
 ]
 
-{ #category : 'comparing' }
+{ #category : #comparing }
 GtRlTagVersionNumber >> hash [
 	^ (self species hash
 		bitXor: self tagName hash)
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlTagVersionNumber >> tagName [
 	^ tagName
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlTagVersionNumber >> tagName: aTagName [
 	self assert: [ aTagName notNil ] description: 'The tag name cannot be null'.
 	self 
@@ -43,7 +43,7 @@ GtRlTagVersionNumber >> tagName: aTagName [
 	tagName := aTagName
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlTagVersionNumber >> versionString [
 	^ self tagName
 ]
