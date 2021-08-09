@@ -22,7 +22,8 @@ Class {
 { #category : 'api' }
 GtRlBaselinePrinterStream >> commonSpecDo: aBlock [
 
-	self indentedPut: 'spec for: #''common'' do: ['.
+	self indentedPut: ('{1} for: #''common'' do: [' 
+		format: { self specVariableName }).
 	self increaseIndentation.
 	aBlock value.
 	self newLine.
@@ -64,7 +65,7 @@ GtRlBaselinePrinterStream >> initialize [
 { #category : 'api' }
 GtRlBaselinePrinterStream >> methodHeader [
 	self stream  
-		nextPutAll: 'baseline: spec';
+		nextPutAll: ('baseline: {1}' format: { self specVariableName });
 		cr;
 		nextPutAll: '	';
 		nextPutAll: '<baseline>';
@@ -79,14 +80,17 @@ GtRlBaselinePrinterStream >> newLine [
 { #category : 'api' }
 GtRlBaselinePrinterStream >> packageFor: aPackageName withDependencies: aCollection [
 	self newLine.
-	self indentedPut: ('spec package: {1}' format: {aPackageName asString storeString}).
+	self indentedPut: ('{1} package: {2}' 
+		format: {self specVariableName. aPackageName asString storeString}).
 	aCollection ifEmpty: [
 		self stream nextPutAll: '.'.
 		^ self ].
 	self stream nextPutAll: ' with: [ '.
 	self newLine.
+	
 	self increaseIndentation.
-	self indentedPut: ('spec requires: {1} ].' format: {aCollection asArray storeString}).
+	self indentedPut: ('{1} requires: {2} ].' 
+		format: {self specVariableName. aCollection asArray storeString}).
 
 	self decreaseIndentation.
 ]
@@ -95,24 +99,32 @@ GtRlBaselinePrinterStream >> packageFor: aPackageName withDependencies: aCollect
 GtRlBaselinePrinterStream >> postLoadAction: aSymbol [
 	self 
 		newLine;
-		indentedPut:('spec postLoadDoIt: #''{1}''.' format: {aSymbol}).
+		indentedPut: ('{1} postLoadDoIt: #''{2}''.' 
+			format: {self specVariableName. aSymbol}).
 ]
 
 { #category : 'api' }
 GtRlBaselinePrinterStream >> preLoadAction: aSymbol [
 	self 
 		newLine;
-		indentedPut:('spec preLoadDoIt: #''{1}''.' format: {aSymbol}).
+		indentedPut:('{1} preLoadDoIt: #''{2}''.' 
+			format: {self specVariableName. aSymbol}).
 ]
 
 { #category : 'api' }
 GtRlBaselinePrinterStream >> projectDependencyFor: aProjectName withLoadSpec: aLoadSpecString [
 	self newLine.
-	self indentedPut: 'spec'. 
+	self indentedPut: self specVariableName. 
 	self newLine.
 	self indentedPut: ('	baseline: {1} with: [' format: {aProjectName storeString }).
 	self newLine.
-	self indentedPut: ('		spec repository: {1} ].' format: { aLoadSpecString storeString }).
+	self indentedPut: ('		{1} repository: {2} ].' 
+		format: {self specVariableName. aLoadSpecString storeString }).
+]
+
+{ #category : 'accessing' }
+GtRlBaselinePrinterStream >> specVariableName [
+	^ 'spec'
 ]
 
 { #category : 'accessing' }
