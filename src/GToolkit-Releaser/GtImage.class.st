@@ -11,7 +11,7 @@ Class {
 		'singleton',
 		'isSyncEnabled'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #clap }
@@ -30,6 +30,29 @@ GtImage class >> commandLine [
 						value;
 						exitSuccess ].
 			self instance summaryOn: stdout ]
+]
+
+{ #category : #accessing }
+GtImage class >> computeCurrentGToolkitVersion [
+	^ IceRepository registry 
+		detect: [ :anIceRepository | anIceRepository name = 'gtoolkit' ]
+		ifFound: [ :gtoolkitRepository |
+			| releaseTags |
+			releaseTags := (gtoolkitRepository tags 
+				select: #gtIsSemanticVersion
+				thenCollect: [ :anIceTag | 
+					anIceTag gtAsSemanticVersionNumber])
+				sorted: [ :a :b | a <= b ].
+
+			releaseTags
+				ifEmpty: [ GtRlSemanticVersionNumber major: 0 minor: 0 patch: 0 ]
+				ifNotEmpty: [ :theTags | theTags last ] ]
+		ifNone: [ NotFound signalFor: 'gtoolkit' in: IceRepository ]
+]
+
+{ #category : #accessing }
+GtImage class >> computeNextGToolkitVersion: aVersionComputation [	
+	^ aVersionComputation nextSemanticVersionFrom: self computeCurrentGToolkitVersion
 ]
 
 { #category : #configuration }
@@ -166,7 +189,7 @@ GtImage class >> timestamp: aTimestamp [
 
 { #category : #accessing }
 GtImage class >> version [
-	^ self instance
+	^ self instance version
 ]
 
 { #category : #accessing }
