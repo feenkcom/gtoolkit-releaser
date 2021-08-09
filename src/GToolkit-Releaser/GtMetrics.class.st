@@ -242,13 +242,14 @@ GtMetrics >> pharoToReplaceProjects [
 		BaselineOfPharoGlamour . 
 		BaselineOfPharoGT . 
 		BaselineOfQA . 
-		BaselineOfOSWindow. 
-		BaselineOfBlueInk} flatCollect: [:project | 
+		BaselineOfOSWindow.
+		BaselineOfSpec.
+		BaselineOfSpec2 } flatCollect: [:project | 
 			project version withDeepCollect: [ :each | 
 				each projects collect: #version ] as: Set ].
 	self assert: projects notEmpty.
 	self assert: (projects noneSatisfy: #isNil).
-	^ projects \ {BaselineOfTraits version . BaselineOfUnifiedFFI version . BaselineOfReflectivity version}
+	^ (projects \ {BaselineOfTraits version . BaselineOfUnifiedFFI version . BaselineOfReflectivity version}) \ self gtProjects
 ]
 
 { #category : 'accessing' }
