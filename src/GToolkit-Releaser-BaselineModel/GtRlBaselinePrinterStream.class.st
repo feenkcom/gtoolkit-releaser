@@ -75,7 +75,7 @@ GtRlBaselinePrinterStream >> packageFor: aPackageName withDependencies: aCollect
 	self stream nextPutAll: ' with: [ '.
 	self newLine.
 	self increaseIndentation.
-	self indentedPut: ('spec requires: {1} ]. ' format: {aCollection asArray storeString}).
+	self indentedPut: ('spec requires: {1} ].' format: {aCollection asArray storeString}).
 
 	self decreaseIndentation.
 ]
