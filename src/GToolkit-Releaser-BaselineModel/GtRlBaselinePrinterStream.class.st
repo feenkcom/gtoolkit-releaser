@@ -1,3 +1,14 @@
+"
+A stream for creating the source code of baseline methods.
+
+It provides an api to write various parts of a baseline, like:
+- {{gtMethod:GtRlBaselinePrinterStream>>preLoadAction:}} Writes a preload load action
+- {{gtMethod:GtRlBaselinePrinterStream>>postLoadAction:}} Writes a post load action
+- {{gtMethod:GtRlBaselinePrinterStream>>projectDependencyFor:withLoadSpec:}} Writes a dependency to another project
+- {{gtMethod:GtRlBaselinePrinterStream>>packageFor:withDependencies: }} Writes a package with a given list of dependencies
+
+
+"
 Class {
 	#name : 'GtRlBaselinePrinterStream',
 	#superclass : 'Object',
@@ -5,7 +16,7 @@ Class {
 		'indentationLevel',
 		'stream'
 	],
-	#category : 'GToolkit-Releaser-BaselineModel-Builder'
+	#category : 'GToolkit-Releaser-BaselineModel-Printer'
 }
 
 { #category : 'api' }
@@ -95,7 +106,7 @@ GtRlBaselinePrinterStream >> preLoadAction: aSymbol [
 ]
 
 { #category : 'api' }
-GtRlBaselinePrinterStream >> projectFor: aProjectName withLoadSpec: aLoadSpecString [
+GtRlBaselinePrinterStream >> projectDependencyFor: aProjectName withLoadSpec: aLoadSpecString [
 	self newLine.
 	self indentedPut: 'spec'. 
 	self newLine.

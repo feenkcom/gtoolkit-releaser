@@ -1,17 +1,111 @@
 Class {
-	#name : #GtRlDedicatedBranchRootReleaseExamples,
-	#superclass : #GtRlReleaserExamples,
-	#category : #'GToolkit-Releaser-Examples'
+	#name : 'GtRlDedicatedBranchRootReleaseExamples',
+	#superclass : 'GtRlReleaserExamples',
+	#category : 'GToolkit-Releaser-Examples'
 }
 
-{ #category : #assertions }
+{ #category : 'assertions' }
 GtRlDedicatedBranchRootReleaseExamples >> assertBaselineContentForProjectRelease: projectRelease [
 	self 
 		assert: (projectRelease project baselineClass>>#baseline:) sourceCode 
 		equals: projectRelease generateBaselineSource
 ]
 
-{ #category : #'examples - releases' }
+{ #category : 'examples - baseline printing' }
+GtRlDedicatedBranchRootReleaseExamples >> baselineCodeReleaseForFourRepositoriesWithNewCommit [
+	^ 'baseline: spec
+	<baseline>
+	spec for: #''common'' do: [
+		spec
+			baseline: ''RepositoryWithNoVersionA'' with: [
+				spec repository: ''github://example/RepositoryWithNoVersionA:v0.2.0/src'' ].
+		spec
+			baseline: ''RepositoryWithTagAndNoVersion'' with: [
+				spec repository: ''github://example/RepositoryWithTagAndNoVersion:v0.1.0/src'' ].
+		spec
+			baseline: ''ProjectWithReleasedVersionAndNoChanges'' with: [
+				spec repository: ''github://example/ProjectWithReleasedVersionAndNoChanges:v0.1.0/src'' ].
+	]'
+
+	
+]
+
+{ #category : 'examples - baseline printing' }
+GtRlDedicatedBranchRootReleaseExamples >> baselineCodeReleaseForFourRepositoriesWithNoVersionAndNoNewChanges [
+	^ 'baseline: spec
+	<baseline>
+	spec for: #''common'' do: [
+		spec
+			baseline: ''RepositoryWithNoVersionA'' with: [
+				spec repository: ''github://example/RepositoryWithNoVersionA:v0.1.0/src'' ].
+		spec
+			baseline: ''RepositoryWithTagAndNoVersion'' with: [
+				spec repository: ''github://example/RepositoryWithTagAndNoVersion:v0.1.0/src'' ].
+		spec
+			baseline: ''ProjectWithReleasedVersionAndNoChanges'' with: [
+				spec repository: ''github://example/ProjectWithReleasedVersionAndNoChanges:v0.1.0/src'' ].
+	]'
+
+	
+]
+
+{ #category : 'examples - baseline printing' }
+GtRlDedicatedBranchRootReleaseExamples >> baselineCodeReleaseWithHeadCommitChildRepositoryWithId: aCommidId [
+	^ 'baseline: spec
+	<baseline>
+	spec for: #''common'' do: [
+		spec
+			baseline: ''RepositoryWithNoVersionB'' with: [
+				spec repository: ''github://example/RepositoryWithNoVersionB:{1}/src'' ].
+	]' format: { aCommidId }
+	
+]
+
+{ #category : 'examples - baseline printing' }
+GtRlDedicatedBranchRootReleaseExamples >> printBaselineCodeReleaseForFourRepositoriesWithNewCommit [
+	<gtExample>
+	| projectRelease printer |
+	projectRelease := self releaseForFourRepositoriesWithNewCommit projectReleases first.
+	printer := GtRlProjectReleaseBaselinePrinter forProjectRelease: projectRelease.
+	
+	self 
+		assert: printer generateBaselineSource 
+		equals: self baselineCodeReleaseForFourRepositoriesWithNewCommit.
+		
+	^ printer
+]
+
+{ #category : 'examples - baseline printing' }
+GtRlDedicatedBranchRootReleaseExamples >> printBaselineCodeReleaseWithHeadCommitChildRepository [
+	<gtExample>
+	| projectRelease printer childRelease |
+	projectRelease := self releaseWithHeadCommitChildRepository projectReleases first.
+	printer := GtRlProjectReleaseBaselinePrinter forProjectRelease: projectRelease.
+	
+	childRelease := projectRelease childReleases first.
+	self 
+		assert: printer generateBaselineSource 
+		equals: (self 
+			baselineCodeReleaseWithHeadCommitChildRepositoryWithId: childRelease version commitId).
+	
+	^ printer
+]
+
+{ #category : 'examples - baseline printing' }
+GtRlDedicatedBranchRootReleaseExamples >> printBaselineCodereleaseForFourRepositoriesWithNoVersionAndNoNewChanges [
+	<gtExample>
+	| projectRelease printer |
+	projectRelease := self releaseForFourRepositoriesWithNoVersionAndNoNewChanges projectReleases first.
+	printer := GtRlProjectReleaseBaselinePrinter forProjectRelease: projectRelease.
+	
+	self 
+		assert: printer generateBaselineSource 
+		equals: self baselineCodeReleaseForFourRepositoriesWithNoVersionAndNoNewChanges.
+		
+	^ printer
+]
+
+{ #category : 'examples - releases' }
 GtRlDedicatedBranchRootReleaseExamples >> releaseForFourRepositoriesWithNewCommit [
 	<gtExample>
 	"I create a release for a repository having a released version and a dependency that has a new commit.
@@ -46,7 +140,7 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseForFourRepositoriesWithNewCommi
 	^ projectRelease repositoryRelease
 ]
 
-{ #category : #'examples - releases' }
+{ #category : 'examples - releases' }
 GtRlDedicatedBranchRootReleaseExamples >> releaseForFourRepositoriesWithNoVersionAndNoNewChanges [
 	<gtExample>
 	"I create a repository release for a repository multiple dependencies and a branch release strategy."
@@ -76,7 +170,7 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseForFourRepositoriesWithNoVersio
 	^ projectRelease repositoryRelease
 ]
 
-{ #category : #'examples - releases' }
+{ #category : 'examples - releases' }
 GtRlDedicatedBranchRootReleaseExamples >> releaseWithHeadCommitChildRepository [
 	<gtExample>
 	"I create a release for a repository with a dependency to a repository that uses a head commit release strategy."
@@ -95,7 +189,7 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseWithHeadCommitChildRepository [
 	^ projectRelease repositoryRelease
 ]
 
-{ #category : #'examples - releases' }
+{ #category : 'examples - releases' }
 GtRlDedicatedBranchRootReleaseExamples >> releaseWithHeadCommitChildRepositoryWithNewCommit [
 	<gtExample>
 	"I create a release for a repository with a dependency to a repository that uses a head commit release strategy and has new commit."
@@ -122,7 +216,7 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseWithHeadCommitChildRepositoryWi
 	^ projectRelease repositoryRelease
 ]
 
-{ #category : #'examples - releases' }
+{ #category : 'examples - releases' }
 GtRlDedicatedBranchRootReleaseExamples >> releaseWithHeadCommitChildRepositoryWithNoChange [
 	<gtExample>
 	"I create a release for a repository with a dependency to a repository that uses a head commit release strategy
@@ -144,7 +238,7 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseWithHeadCommitChildRepositoryWi
 	^ projectRelease repositoryRelease
 ]
 
-{ #category : #'examples - workflows' }
+{ #category : 'examples - workflows' }
 GtRlDedicatedBranchRootReleaseExamples >> releaseWorkflowForHeadCommitChild [
 	<gtExample>
 	| release exportWorkflow |
@@ -166,7 +260,7 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseWorkflowForHeadCommitChild [
 	^ exportWorkflow
 ]
 
-{ #category : #'examples - workflows' }
+{ #category : 'examples - workflows' }
 GtRlDedicatedBranchRootReleaseExamples >> releaseWorkflowForHeadCommitChildWithNewCommit [
 	<gtExample>
 	| release exportWorkflow |
@@ -188,7 +282,7 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseWorkflowForHeadCommitChildWithN
 	^ exportWorkflow
 ]
 
-{ #category : #'examples - workflows' }
+{ #category : 'examples - workflows' }
 GtRlDedicatedBranchRootReleaseExamples >> releaseWorkflowForInitialVersionInMultipleRepositories [
 	<gtExample>
 	| release exportWorkflow |
@@ -212,7 +306,7 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseWorkflowForInitialVersionInMult
 	^ exportWorkflow
 ]
 
-{ #category : #'examples - workflows' }
+{ #category : 'examples - workflows' }
 GtRlDedicatedBranchRootReleaseExamples >> releaseWorkflowForMultipleRepositoriesWithNewCommit [
 	<gtExample>
 	| release exportWorkflow |

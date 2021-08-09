@@ -1,10 +1,10 @@
 Class {
-	#name : #GtRlCommitIdVersionNumberExamples,
-	#superclass : #GtRlVersionNumberExamples,
-	#category : #'GToolkit-Releaser-Examples'
+	#name : 'GtRlCommitIdVersionNumberExamples',
+	#superclass : 'GtRlVersionNumberExamples',
+	#category : 'GToolkit-Releaser-Examples'
 }
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlCommitIdVersionNumberExamples >> commitIdVersionNumber [
 	<gtExample>
 	| commitId versionNumber |
@@ -21,7 +21,7 @@ GtRlCommitIdVersionNumberExamples >> commitIdVersionNumber [
 	
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlCommitIdVersionNumberExamples >> commitIdVersionNumberEqualityExample [
 	<gtExample>
 	| versionNumber anotherEqualVersion anotherNotEqualVersion |
@@ -40,7 +40,7 @@ GtRlCommitIdVersionNumberExamples >> commitIdVersionNumberEqualityExample [
 	
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlCommitIdVersionNumberExamples >> uninitializedCommitIdVersionNumber [
 	<gtExample>
 	| versionNumber |

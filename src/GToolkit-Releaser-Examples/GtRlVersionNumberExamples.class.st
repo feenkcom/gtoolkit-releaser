@@ -1,5 +1,5 @@
 Class {
-	#name : #GtRlVersionNumberExamples,
-	#superclass : #Object,
-	#category : #'GToolkit-Releaser-Examples'
+	#name : 'GtRlVersionNumberExamples',
+	#superclass : 'Object',
+	#category : 'GToolkit-Releaser-Examples'
 }

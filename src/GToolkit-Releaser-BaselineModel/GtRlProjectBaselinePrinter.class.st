@@ -1,11 +1,15 @@
+"
+A printer that generates the source code of a baseline for a {{gtClass:GtRlProject}} instance.
+
+It used the child projects defined with the project to specify baseline dependencies.
+"
 Class {
 	#name : 'GtRlProjectBaselinePrinter',
-	#superclass : 'Object',
+	#superclass : 'GtRlBaselinePrinter',
 	#instVars : [
-		'project',
-		'dependenciesByProjectName'
+		'project'
 	],
-	#category : 'GToolkit-Releaser-BaselineModel-Builder'
+	#category : 'GToolkit-Releaser-BaselineModel-Printer'
 }
 
 { #category : 'instance creation' }
@@ -14,51 +18,22 @@ GtRlProjectBaselinePrinter class >> forProject: aProject [
 		project: aProject
 ]
 
-{ #category : 'accessing' }
-GtRlProjectBaselinePrinter >> dependenciesByProjectName: aDictionary [
-	dependenciesByProjectName := aDictionary
+{ #category : 'baselines' }
+GtRlProjectBaselinePrinter >> baselineProject [
+	^ project
 ]
 
-{ #category : 'as yet unclassified' }
-GtRlProjectBaselinePrinter >> generateBaselineSource [
-	^ String streamContents: [ :aRawStream |
-		| baselineStream |
-		baselineStream := GtRlBaselinePrinterStream new
-			stream: aRawStream.
-		self generateBaselineSourceOn: baselineStream ]
+{ #category : 'api' }
+GtRlProjectBaselinePrinter >> generateProjectDependenciesOn: aStream [
+	project childProjects do: [ :aProject |
+		aStream 
+			projectDependencyFor: aProject name
+			withLoadSpec: aProject repository loadSpecificationString ].
 ]
 
-{ #category : 'as yet unclassified' }
-GtRlProjectBaselinePrinter >> generateBaselineSourceOn: aStream [
-	aStream 
-		methodHeader; 
-		commonSpecDo: [  
-			project preLoadAction ifNotNil: [ 
-				aStream preLoadAction: project preLoadAction ].
-			project postLoadAction ifNotNil: [
-				aStream postLoadAction: project postLoadAction ].
-				
-				project childProjects do: [ :aProject |
-					aStream 
-						projectFor: aProject name
-						withLoadSpec: aProject repository loadSpecificationString ].
-					
-				(project childProjects notEmpty and: [ project packages notEmpty ])
-					ifTrue: [ aStream newLine ].
-				
-				project packages do: [ :aPackage |
-					aStream 
-						packageFor: aPackage name
-						withDependencies: aPackage outgoingDependencyNames ] ]
-]
-
-{ #category : 'accessing' }
-GtRlProjectBaselinePrinter >> gtViewGeneratedBaselineFor: aView [
-	<gtView>
-	^ aView textEditor
-		title: 'Generated Baseline';
-		priority: 101;
-		text: [ self generateBaselineSource ]
+{ #category : 'testing' }
+GtRlProjectBaselinePrinter >> hasProjectDependencies [
+	^ project childProjects notEmpty
 ]
 
 { #category : 'accessing' }

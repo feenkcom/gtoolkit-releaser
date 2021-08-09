@@ -247,8 +247,11 @@ GtRlProjectBaselinePrinterExamples >> printSystemOneProject [
 { #category : 'examples - printing projects' }
 GtRlProjectBaselinePrinterExamples >> printSystemTwoProject [
 	<gtExample>
-	| project printer |
-	project := GtRlReleaserUsageExamples new systemTwoProject.
+	| projectBuilder project printer |
+	projectBuilder := GtRlDependenciesModelBuilder new.
+	project := projectBuilder 
+		buildProjectFromBaselineClass: BaselineOfGtRlBaselineExampleSystemTwo
+		withRepositoryDescription: 'github://example/SystemTwo/src'. 
 	printer := GtRlProjectBaselinePrinter forProject: project.
 	
 	self 
