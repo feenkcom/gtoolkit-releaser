@@ -21,7 +21,7 @@ GtRlProjectBaselinePrinterExamples >> baselineWithPackageWithPackageDependencies
 	<baseline>
 	spec for: #''common'' do: [
 		spec package: ''PackageA''.
-		spec package: ''PackageB'' with: [ 
+		spec package: ''PackageB'' with: [
 			spec requires: #(''PackageA'') ].
 	]'
 ]

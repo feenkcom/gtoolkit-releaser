@@ -15,11 +15,11 @@ BaselineOfGtRlBaselineExampleSystemFive >> baseline: spec [
 			baseline: 'GtRlBaselineExampleSystemFiveComponentB' with: [
 				spec repository: 'github://example/SystemFive/src' ].
 
-		spec package: 'PackageA' with: [ 
+		spec package: 'PackageA' with: [
 			spec requires: #('GtRlBaselineExampleSystemFiveComponentA') ].
-		spec package: 'PackageB' with: [ 
+		spec package: 'PackageB' with: [
 			spec requires: #('PackageA' 'GtRlBaselineExampleSystemFiveComponentB') ].
-		spec package: 'PackageC' with: [ 
+		spec package: 'PackageC' with: [
 			spec requires: #('GtRlBaselineExampleSystemFiveComponentB') ].
 	]
 ]

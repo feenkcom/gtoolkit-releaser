@@ -20,15 +20,29 @@ Class {
 }
 
 { #category : 'api' }
+GtRlBaselinePrinterStream >> baselineWithCommonSpecOn: aBlock [
+	self 
+		methodHeader; 
+		methodBodyDo: [  
+			self commonSpecDo: aBlock ]
+]
+
+{ #category : 'api' }
 GtRlBaselinePrinterStream >> commonSpecDo: aBlock [
 
 	self indentedPut: ('{1} for: #''common'' do: [' 
 		format: { self specVariableName }).
-	self increaseIndentation.
-	aBlock value.
-	self newLine.
-	self decreaseIndentation.
+	
+	self indentedDo: [
+		aBlock value.
+		self newLine ].
+	
 	self indentedPut: ']'.
+]
+
+{ #category : 'accessing' }
+GtRlBaselinePrinterStream >> contents [
+	^ stream contents
 ]
 
 { #category : 'actions' }
@@ -48,6 +62,13 @@ GtRlBaselinePrinterStream >> indentationLevel [
 ]
 
 { #category : 'actions' }
+GtRlBaselinePrinterStream >> indentedDo: aBlock [
+	self increaseIndentation.
+	aBlock value.
+	self decreaseIndentation.
+]
+
+{ #category : 'actions' }
 GtRlBaselinePrinterStream >> indentedPut: aString [
 	indentationLevel timesRepeat: [ 
 		self stream 
@@ -59,10 +80,16 @@ GtRlBaselinePrinterStream >> indentedPut: aString [
 { #category : 'initialization' }
 GtRlBaselinePrinterStream >> initialize [ 
 	super initialize.
-	indentationLevel := 1
+	indentationLevel := 0
 ]
 
-{ #category : 'api' }
+{ #category : 'actions' }
+GtRlBaselinePrinterStream >> methodBodyDo: aBlock [	
+	self indentedDo: [
+		aBlock value ]
+]
+
+{ #category : 'actions' }
 GtRlBaselinePrinterStream >> methodHeader [
 	self stream  
 		nextPutAll: ('baseline: {1}' format: { self specVariableName });
@@ -80,40 +107,63 @@ GtRlBaselinePrinterStream >> newLine [
 { #category : 'api' }
 GtRlBaselinePrinterStream >> packageFor: aPackageName withDependencies: aCollection [
 	self newLine.
+	self 
+		packageLineFor: aPackageName 
+		withDependencies: aCollection
+]
+
+{ #category : 'api' }
+GtRlBaselinePrinterStream >> packageLineFor: aPackageName withDependencies: aCollection [
 	self indentedPut: ('{1} package: {2}' 
 		format: {self specVariableName. aPackageName asString storeString}).
 	aCollection ifEmpty: [
 		self stream nextPutAll: '.'.
 		^ self ].
-	self stream nextPutAll: ' with: [ '.
+	
+	self stream nextPutAll: ' with: ['.
 	self newLine.
 	
-	self increaseIndentation.
-	self indentedPut: ('{1} requires: {2} ].' 
-		format: {self specVariableName. aCollection asArray storeString}).
-
-	self decreaseIndentation.
+	self indentedDo: [ 
+		self indentedPut: ('{1} requires: {2} ].' 
+			format: {self specVariableName. aCollection asArray storeString}) ].
 ]
 
 { #category : 'api' }
 GtRlBaselinePrinterStream >> postLoadAction: aSymbol [
+	self newLine.
+	self postLoadActionLine: aSymbol
+]
+
+{ #category : 'api' }
+GtRlBaselinePrinterStream >> postLoadActionLine: aSymbol [
 	self 
-		newLine;
 		indentedPut: ('{1} postLoadDoIt: #''{2}''.' 
 			format: {self specVariableName. aSymbol}).
 ]
 
 { #category : 'api' }
 GtRlBaselinePrinterStream >> preLoadAction: aSymbol [
+	self newLine.
+	self preLoadActionLine: aSymbol
+]
+
+{ #category : 'api' }
+GtRlBaselinePrinterStream >> preLoadActionLine: aSymbol [
 	self 
-		newLine;
-		indentedPut:('{1} preLoadDoIt: #''{2}''.' 
+		indentedPut: ('{1} preLoadDoIt: #''{2}''.' 
 			format: {self specVariableName. aSymbol}).
 ]
 
 { #category : 'api' }
 GtRlBaselinePrinterStream >> projectDependencyFor: aProjectName withLoadSpec: aLoadSpecString [
 	self newLine.
+	self 
+		projectLineDependencyFor: aProjectName 
+		withLoadSpec: aLoadSpecString
+]
+
+{ #category : 'api' }
+GtRlBaselinePrinterStream >> projectLineDependencyFor: aProjectName withLoadSpec: aLoadSpecString [
 	self indentedPut: self specVariableName. 
 	self newLine.
 	self indentedPut: ('	baseline: {1} with: [' format: {aProjectName storeString }).

@@ -30,19 +30,13 @@ GtRlBaselinePrinter >> generateBaselineSource [
 
 { #category : 'api' }
 GtRlBaselinePrinter >> generateBaselineSourceOn: aStream [
-	aStream 
-		methodHeader; 
-		commonSpecDo: [  
-			self baselineProject preLoadAction ifNotNil: [ 
-				aStream preLoadAction: self baselineProject preLoadAction ].
-			self baselineProject postLoadAction ifNotNil: [
-				aStream postLoadAction: self baselineProject postLoadAction ].
-				
-				self generateProjectDependenciesOn: aStream.
-				(self hasProjectDependencies and: [ 
-					self baselineProject  packages notEmpty ])
-						ifTrue: [ aStream newLine ].
-				self generatePackageDependenciesOn: aStream ]
+	aStream baselineWithCommonSpecOn: [  
+		self generatePreAndPostActionsOn: aStream.
+		self generateProjectDependenciesOn: aStream.
+		(self hasProjectDependencies and: [ 
+			self baselineProject  packages notEmpty ])
+				ifTrue: [ aStream newLine ].
+		self generatePackageDependenciesOn: aStream ]
 ]
 
 { #category : 'api' }
@@ -51,6 +45,14 @@ GtRlBaselinePrinter >> generatePackageDependenciesOn: aStream [
 		aStream 
 			packageFor: aPackage name
 			withDependencies: aPackage outgoingDependencyNames ]
+]
+
+{ #category : 'api' }
+GtRlBaselinePrinter >> generatePreAndPostActionsOn: aStream [
+	self baselineProject preLoadAction ifNotNil: [ 
+		aStream preLoadAction: self baselineProject preLoadAction ].
+	self baselineProject postLoadAction ifNotNil: [
+		aStream postLoadAction: self baselineProject postLoadAction ].
 ]
 
 { #category : 'api' }
