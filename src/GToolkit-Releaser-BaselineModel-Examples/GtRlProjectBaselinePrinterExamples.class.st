@@ -72,7 +72,7 @@ GtRlProjectBaselinePrinterExamples >> emptyBaselineCode [
 	]'
 ]
 
-{ #category : 'printing' }
+{ #category : 'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printEmptyProject [
 	<gtExample>
 	| project printer |
@@ -86,7 +86,7 @@ GtRlProjectBaselinePrinterExamples >> printEmptyProject [
 	^ printer
 ]
 
-{ #category : 'printing' }
+{ #category : 'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printProjectWithChildProject [
 	<gtExample>
 	| project printer |
@@ -100,7 +100,7 @@ GtRlProjectBaselinePrinterExamples >> printProjectWithChildProject [
 	^ printer
 ]
 
-{ #category : 'printing' }
+{ #category : 'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printProjectWithPackageWithPackageDependency [
 	<gtExample>
 	| project printer |
@@ -114,7 +114,7 @@ GtRlProjectBaselinePrinterExamples >> printProjectWithPackageWithPackageDependen
 	^ printer
 ]
 
-{ #category : 'printing' }
+{ #category : 'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printProjectWithPackages [
 	<gtExample>
 	| project printer |
@@ -128,7 +128,7 @@ GtRlProjectBaselinePrinterExamples >> printProjectWithPackages [
 	^ printer
 ]
 
-{ #category : 'printing' }
+{ #category : 'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printProjectWithPostLoadAction [
 	<gtExample>
 	| project printer |
@@ -142,7 +142,7 @@ GtRlProjectBaselinePrinterExamples >> printProjectWithPostLoadAction [
 	^ printer
 ]
 
-{ #category : 'printing' }
+{ #category : 'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printProjectWithPreAndPostLoadActions [
 	<gtExample>
 	| project printer |
@@ -156,7 +156,7 @@ GtRlProjectBaselinePrinterExamples >> printProjectWithPreAndPostLoadActions [
 	^ printer
 ]
 
-{ #category : 'printing' }
+{ #category : 'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printProjectWithPreLoadAction [
 	<gtExample>
 	| project printer |
@@ -166,6 +166,38 @@ GtRlProjectBaselinePrinterExamples >> printProjectWithPreLoadAction [
 	self 
 		assert: printer generateBaselineSource 
 		equals: self baselineWithPreLoadCode.
+	
+	^ printer
+]
+
+{ #category : 'example - printing projects' }
+GtRlProjectBaselinePrinterExamples >> printStandaloneProjectWithActions [
+	<gtExample>
+	| projectBuilder project printer |
+	
+	projectBuilder := GtRlDependenciesModelBuilder new.
+	project := projectBuilder 
+		buildProjectFromBaselineClass: BaselineOfGtRlBaselineExampleStandaloneWithActions
+		withRepositoryDescription: 'github://example/SystemFour/src'. 
+	printer := GtRlProjectBaselinePrinter forProject: project.
+	
+	self 
+		assert: printer generateBaselineSource 
+		equals: (BaselineOfGtRlBaselineExampleStandaloneWithActions >>#baseline:) sourceCode.
+	
+	^ printer
+]
+
+{ #category : 'example - printing projects' }
+GtRlProjectBaselinePrinterExamples >> printSystemFourProject [
+	<gtExample>
+	| project printer |
+	project := GtRlSystemFourGeneratedModelExamples new systemProject.
+	printer := GtRlProjectBaselinePrinter forProject: project.
+	
+	self 
+		assert: printer generateBaselineSource 
+		equals: (BaselineOfGtRlBaselineExampleSystemFourWithPackages >>#baseline:) sourceCode.
 	
 	^ printer
 ]

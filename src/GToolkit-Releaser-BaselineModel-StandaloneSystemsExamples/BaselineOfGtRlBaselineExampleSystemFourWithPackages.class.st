@@ -4,12 +4,12 @@ I am a baseline with dependencies between packages
 
 "
 Class {
-	#name : #BaselineOfGtRlBaselineExampleSystemFourWithPackages,
-	#superclass : #BaselineOf,
-	#category : #'GToolkit-Releaser-BaselineModel-StandaloneSystemsExamples'
+	#name : 'BaselineOfGtRlBaselineExampleSystemFourWithPackages',
+	#superclass : 'BaselineOf',
+	#category : 'GToolkit-Releaser-BaselineModel-StandaloneSystemsExamples'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfGtRlBaselineExampleSystemFourWithPackages >> baseline: spec [
 	<baseline>
 	spec for: #'common' do: [
@@ -21,5 +21,5 @@ BaselineOfGtRlBaselineExampleSystemFourWithPackages >> baseline: spec [
 			spec requires: #('PackageAMain') ].
 		spec package: 'PackageA-Test' with: [ 
 			spec requires: #('PackageA-Part1' 'PackageAMain') ].
-	].
+	]
 ]

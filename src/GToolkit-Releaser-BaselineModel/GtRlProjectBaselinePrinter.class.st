@@ -42,11 +42,11 @@ GtRlProjectBaselinePrinter >> generateBaselineSourceOn: aStream [
 					aStream 
 						projectFor: aProject name
 						withLoadSpec: aProject repository loadSpecificationString ].
-			
+				
 				project packages do: [ :aPackage |
 					aStream 
 						packageFor: aPackage name
-						withDependencies: aPackage outgoingDependencyNames ]	]
+						withDependencies: aPackage outgoingDependencyNames ] ]
 ]
 
 { #category : 'accessing' }
