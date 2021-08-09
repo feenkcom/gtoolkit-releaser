@@ -28,9 +28,25 @@ GtRlReleaserCommandLineHandler >> activate [
 		ifAbsent: [ GtRlPatchVersionComputation new ].
 
 	theWorkflowBuilder := [
+		| theWorkflow |
 		GtPharoCompletionStrategy unsubscribeFromSystem.
-		(GtRlReleaserExportWorkflow buildGToolkitReleaseWithVersionComputation: theVersionComputation)
-			executeReleaseActions.
+		theWorkflow := GtRlReleaserExportWorkflow buildGToolkitReleaseWithVersionComputation: theVersionComputation.
+		
+		self commandLine
+			optionAt: 'expected'
+			ifPresent: [ :anExpectedVersionString |
+				| anExpectedVersion anActualVersion |
+				
+				anExpectedVersion := GtRlSemanticVersionNumber readFromString: anExpectedVersionString.
+				anActualVersion := theWorkflow rootProjectRelease version.
+				
+				anExpectedVersion ~= anActualVersion
+					ifTrue: [ Error signal: ('Expected version {1} does not match the actual {2}'
+						format: {
+							anExpectedVersion versionString.
+							anActualVersion versionString }) ] ].
+		
+		theWorkflow executeReleaseActions.
 		GtPharoCompletionStrategy subscribeToSystem ].
 
 	(self hasOption: 'verbose')
