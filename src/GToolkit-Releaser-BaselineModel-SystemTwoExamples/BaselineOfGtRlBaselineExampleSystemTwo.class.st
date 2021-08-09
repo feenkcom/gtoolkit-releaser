@@ -9,7 +9,7 @@ The dependencies between baselines are shown in the figure below.
 Class {
 	#name : #BaselineOfGtRlBaselineExampleSystemTwo,
 	#superclass : #BaselineOf,
-	#category : #'GToolkit-Releaser-BaselineModel-SystemTwoExamples'
+	#category : 'GToolkit-Releaser-BaselineModel-SystemTwoExamples'
 }
 
 { #category : #accessing }
@@ -22,12 +22,14 @@ BaselineOfGtRlBaselineExampleSystemTwo class >> itself [
 BaselineOfGtRlBaselineExampleSystemTwo >> baseline: spec [
 	<baseline>
 	spec for: #'common' do: [
-		spec 
-			baseline: #GtRlBaselineExampleComponentA2 with: [
-				spec repository: 'github://example/SystemTwo/src' ];
-			baseline: #GtRlBaselineExampleComponentB2Main with: [
-				spec repository: 'github://example/SystemTwo/src' ];
-			baseline: #GtRlBaselineExampleComponentC2 with: [
+		spec
+			baseline: 'GtRlBaselineExampleComponentA2' with: [
 				spec repository: 'github://example/SystemTwo/src' ].
-	].
+		spec
+			baseline: 'GtRlBaselineExampleComponentB2Main' with: [
+				spec repository: 'github://example/SystemTwo/src' ].
+		spec
+			baseline: 'GtRlBaselineExampleComponentC2' with: [
+				spec repository: 'github://example/SystemTwo/src' ].
+	]
 ]

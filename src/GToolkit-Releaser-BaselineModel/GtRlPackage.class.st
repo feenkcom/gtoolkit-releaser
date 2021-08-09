@@ -17,7 +17,7 @@ Class {
 	#instVars : [
 		'outgoingDependencies'
 	],
-	#category : #'GToolkit-Releaser-BaselineModel-Model'
+	#category : 'GToolkit-Releaser-BaselineModel-Model'
 }
 
 { #category : #'instance creation' }
@@ -116,6 +116,12 @@ GtRlPackage >> outgoingDependenciesToPackages [
 GtRlPackage >> outgoingDependenciesToProjects [
 	^ self outgoingDependencies select: [ :aDependency |
 		aDependency targetNode isProjectReference ]
+]
+
+{ #category : #accessing }
+GtRlPackage >> outgoingDependencyNames [
+	^ self outgoingDependencies collect: [ :aPackageDependency |
+		 aPackageDependency targetNode name ]
 ]
 
 { #category : #accessing }

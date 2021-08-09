@@ -1,7 +1,7 @@
 Class {
 	#name : #GtRlProjectExamples,
 	#superclass : #Object,
-	#category : #'GToolkit-Releaser-BaselineModel-Examples'
+	#category : 'GToolkit-Releaser-BaselineModel-Examples'
 }
 
 { #category : #'examples - basic' }
@@ -30,6 +30,48 @@ GtRlProjectExamples >> projectWithBaselineVersion [
 	self assert: project childProjects isEmpty.
 	self assert: project parentProjects isEmpty.
 	self assert: project baselineClass isNil.
+	
+	^ project
+]
+
+{ #category : #'examples - basic' }
+GtRlProjectExamples >> projectWithChildProjectWithRepository [
+	<gtExample>
+	| project repository childProject childProjectReference |
+	project := self projectWithName.
+	repository := GtRlRepositoryExamples new repositoryWithGithubUrlNoVersion.
+	
+	childProject := GtRlProject new
+		name: 'ChildProject';
+		linkWithRepository: repository.
+	childProjectReference := GtRlProjectReference new
+		referencedProject: childProject.
+	project 
+		addProjectReference: childProjectReference.
+	
+	self assert: project packages size equals: 0.
+	self assert: project childProjects asArray equals: { childProject }.
+	self assert: childProject parentProjects asArray equals: { project }.
+	
+	^ project
+]
+
+{ #category : #'examples - basic' }
+GtRlProjectExamples >> projectWithChildProjectWithRepositoryAndPackages [
+	<gtExample>
+	| project packageA packageB |
+	project := self projectWithChildProjectWithRepository.
+	
+	packageA := GtRlPackage new
+		name: 'PackageA'.
+	packageB := GtRlPackage new
+		name: 'PackageB'.
+	project 
+		addPackage: packageA;
+		addPackage: packageB.
+		
+	self assert: project packages size equals: 2.
+	self assert: project childProjects size equals: 1.
 	
 	^ project
 ]
@@ -85,6 +127,32 @@ GtRlProjectExamples >> projectWithName [
 ]
 
 { #category : #'examples - basic' }
+GtRlProjectExamples >> projectWithPackageWithPackageDependency [
+	<gtExample>
+	| project packageA packageB |
+	project := self projectWithName.
+	packageA := GtRlPackage new
+		name: 'PackageA'.
+	packageB := GtRlPackage new
+		name: 'PackageB'.
+	
+	packageB addOutgoingDependency: (GtRlPackageDependency new 
+		sourceNode: packageB;
+		targetNode: packageA).
+		
+	project 
+		addPackage: packageA;
+		addPackage: packageB.
+		
+	self assert: project packages asArray equals: { packageA . packageB }.
+	self assert: project rootPackages asArray equals: { packageA . packageB }.
+	self assert: packageA parentProject equals: project.
+	self assert: packageB parentProject equals: project.
+	
+	^ project
+]
+
+{ #category : #'examples - basic' }
 GtRlProjectExamples >> projectWithPackages [
 	<gtExample>
 	| project packageA packageB |
@@ -117,6 +185,23 @@ GtRlProjectExamples >> projectWithPostLoadAction [
 	self assert: project hasPreLoadActionSpecified not.
 	self assert: project postLoadAction equals: #postloadAction:.
 	self assert: (BaselineOfGtRlBaselineExampleStandaloneWithActions includesSelector: #postloadAction:).
+	
+	^ project
+]
+
+{ #category : #'examples - basic' }
+GtRlProjectExamples >> projectWithPreAndPostLoadActions [
+	<gtExample>
+	| project |
+	project := self projectWithName.
+	project baselineClass: BaselineOfGtRlBaselineExampleStandaloneWithActions.
+	project preLoadAction: #preloadAction:.
+	project postLoadAction: #postloadAction:.
+	
+	self assert: project hasPostLoadActionSpecified.
+	self assert: project hasPreLoadActionSpecified.
+	self assert: project preLoadAction equals: #preloadAction:.
+	self assert: project postLoadAction equals: #postloadAction:.
 	
 	^ project
 ]
