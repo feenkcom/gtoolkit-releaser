@@ -1,6 +1,6 @@
 Class {
-	#name : #GtRlSystemOneGeneratedModelExamples,
-	#superclass : #Object,
+	#name : 'GtRlSystemOneGeneratedModelExamples',
+	#superclass : 'Object',
 	#instVars : [
 		'theSystemOneProject',
 		'theComponentAProject',
@@ -8,10 +8,10 @@ Class {
 		'theComponentCProject',
 		'theComponentDProject'
 	],
-	#category : #'GToolkit-Releaser-BaselineModel-Examples'
+	#category : 'GToolkit-Releaser-BaselineModel-Examples'
 }
 
-{ #category : #'examples - component A' }
+{ #category : 'examples - component A' }
 GtRlSystemOneGeneratedModelExamples >> componentAHasCorrectRepositoryName [
 	<gtExample>
 	| repositoryName project |
@@ -24,7 +24,7 @@ GtRlSystemOneGeneratedModelExamples >> componentAHasCorrectRepositoryName [
 	^ project
 ]
 
-{ #category : #'examples - component A' }
+{ #category : 'examples - component A' }
 GtRlSystemOneGeneratedModelExamples >> componentAHasNoChildren [
 	<gtExample>
 	| project |
@@ -39,7 +39,7 @@ GtRlSystemOneGeneratedModelExamples >> componentAHasNoChildren [
 	^ project
 ]
 
-{ #category : #'examples - component A' }
+{ #category : 'examples - component A' }
 GtRlSystemOneGeneratedModelExamples >> componentAHasNoPackages [
 	<gtExample>
 	| project |
@@ -50,7 +50,7 @@ GtRlSystemOneGeneratedModelExamples >> componentAHasNoPackages [
 	^ project
 ]
 
-{ #category : #'examples - component A' }
+{ #category : 'examples - component A' }
 GtRlSystemOneGeneratedModelExamples >> componentAHasNoPreAndPostLoadActions [
 	<gtExample>
 	| project |
@@ -62,7 +62,7 @@ GtRlSystemOneGeneratedModelExamples >> componentAHasNoPreAndPostLoadActions [
 	^ project
 ]
 
-{ #category : #'examples - component A' }
+{ #category : 'examples - component A' }
 GtRlSystemOneGeneratedModelExamples >> componentAHasSystemOneAsParent [
 	<gtExample>
 	| project |
@@ -74,7 +74,7 @@ GtRlSystemOneGeneratedModelExamples >> componentAHasSystemOneAsParent [
 	^ project
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlSystemOneGeneratedModelExamples >> componentAProject [
 	<gtExample>
 	| project component |
@@ -87,7 +87,7 @@ GtRlSystemOneGeneratedModelExamples >> componentAProject [
 		theComponentAProject := component ]
 ]
 
-{ #category : #'examples - component B' }
+{ #category : 'examples - component B' }
 GtRlSystemOneGeneratedModelExamples >> componentBHasCorrectRepositoryName [
 	<gtExample>
 	| repositoryName project |
@@ -99,7 +99,7 @@ GtRlSystemOneGeneratedModelExamples >> componentBHasCorrectRepositoryName [
 	^ project
 ]
 
-{ #category : #'examples - component B' }
+{ #category : 'examples - component B' }
 GtRlSystemOneGeneratedModelExamples >> componentBHasNoPackages [
 	<gtExample>
 	| project |
@@ -110,7 +110,7 @@ GtRlSystemOneGeneratedModelExamples >> componentBHasNoPackages [
 	^ project
 ]
 
-{ #category : #'examples - component B' }
+{ #category : 'examples - component B' }
 GtRlSystemOneGeneratedModelExamples >> componentBHasNoPreAndPostLoadActions [
 	<gtExample>
 	| project |
@@ -122,7 +122,7 @@ GtRlSystemOneGeneratedModelExamples >> componentBHasNoPreAndPostLoadActions [
 	^ project
 ]
 
-{ #category : #'examples - component B' }
+{ #category : 'examples - component B' }
 GtRlSystemOneGeneratedModelExamples >> componentBHasOneChild [
 	<gtExample>
 	| project |
@@ -135,7 +135,7 @@ GtRlSystemOneGeneratedModelExamples >> componentBHasOneChild [
 	^ project
 ]
 
-{ #category : #'examples - component B' }
+{ #category : 'examples - component B' }
 GtRlSystemOneGeneratedModelExamples >> componentBHasOneProjectReference [
 	<gtExample>
 	| project |
@@ -147,7 +147,7 @@ GtRlSystemOneGeneratedModelExamples >> componentBHasOneProjectReference [
 	^ project
 ]
 
-{ #category : #'examples - component B' }
+{ #category : 'examples - component B' }
 GtRlSystemOneGeneratedModelExamples >> componentBHasOneRepositoryForAllChildren [
 	<gtExample>
 	|  project |
@@ -158,7 +158,7 @@ GtRlSystemOneGeneratedModelExamples >> componentBHasOneRepositoryForAllChildren 
 	^ project
 ]
 
-{ #category : #'examples - component B' }
+{ #category : 'examples - component B' }
 GtRlSystemOneGeneratedModelExamples >> componentBHasSystemOneAsParent [
 	<gtExample>
 	| project |
@@ -170,7 +170,7 @@ GtRlSystemOneGeneratedModelExamples >> componentBHasSystemOneAsParent [
 	^ project
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlSystemOneGeneratedModelExamples >> componentBProject [
 	<gtExample>
 	| project component |
@@ -183,7 +183,7 @@ GtRlSystemOneGeneratedModelExamples >> componentBProject [
 		theComponentBProject := component ]
 ]
 
-{ #category : #'examples - component C' }
+{ #category : 'examples - component C' }
 GtRlSystemOneGeneratedModelExamples >> componentCHasCorrectRepositoryName [
 	<gtExample>
 	| repositoryName project |
@@ -196,7 +196,7 @@ GtRlSystemOneGeneratedModelExamples >> componentCHasCorrectRepositoryName [
 	^ project
 ]
 
-{ #category : #'examples - component C' }
+{ #category : 'examples - component C' }
 GtRlSystemOneGeneratedModelExamples >> componentCHasNoChildren [
 	<gtExample>
 	| project |
@@ -211,7 +211,7 @@ GtRlSystemOneGeneratedModelExamples >> componentCHasNoChildren [
 	^ project
 ]
 
-{ #category : #'examples - component C' }
+{ #category : 'examples - component C' }
 GtRlSystemOneGeneratedModelExamples >> componentCHasNoPackages [
 	<gtExample>
 	| project |
@@ -222,7 +222,7 @@ GtRlSystemOneGeneratedModelExamples >> componentCHasNoPackages [
 	^ project
 ]
 
-{ #category : #'examples - component C' }
+{ #category : 'examples - component C' }
 GtRlSystemOneGeneratedModelExamples >> componentCHasNoPreAndPostLoadActions [
 	<gtExample>
 	| project |
@@ -234,7 +234,7 @@ GtRlSystemOneGeneratedModelExamples >> componentCHasNoPreAndPostLoadActions [
 	^ project
 ]
 
-{ #category : #'examples - component C' }
+{ #category : 'examples - component C' }
 GtRlSystemOneGeneratedModelExamples >> componentCHasSystemOneAsParent [
 	<gtExample>
 	| project |
@@ -246,7 +246,7 @@ GtRlSystemOneGeneratedModelExamples >> componentCHasSystemOneAsParent [
 	^ project
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlSystemOneGeneratedModelExamples >> componentCProject [
 	<gtExample>
 	| project component |
@@ -259,7 +259,7 @@ GtRlSystemOneGeneratedModelExamples >> componentCProject [
 		theComponentCProject := component ]
 ]
 
-{ #category : #'examples - component D' }
+{ #category : 'examples - component D' }
 GtRlSystemOneGeneratedModelExamples >> componentDHasDistinctRepositoryForChild [
 	<gtExample>
 	|  project |
@@ -270,7 +270,7 @@ GtRlSystemOneGeneratedModelExamples >> componentDHasDistinctRepositoryForChild [
 	^ project
 ]
 
-{ #category : #'examples - component D' }
+{ #category : 'examples - component D' }
 GtRlSystemOneGeneratedModelExamples >> componentDHasNoPackages [
 	<gtExample>
 	| project |
@@ -281,7 +281,7 @@ GtRlSystemOneGeneratedModelExamples >> componentDHasNoPackages [
 	^ project
 ]
 
-{ #category : #'examples - component D' }
+{ #category : 'examples - component D' }
 GtRlSystemOneGeneratedModelExamples >> componentDHasNoPreAndPostLoadActions [
 	<gtExample>
 	| project |
@@ -293,7 +293,7 @@ GtRlSystemOneGeneratedModelExamples >> componentDHasNoPreAndPostLoadActions [
 	^ project
 ]
 
-{ #category : #'examples - component D' }
+{ #category : 'examples - component D' }
 GtRlSystemOneGeneratedModelExamples >> componentDHasOneChild [
 	<gtExample>
 	| project |
@@ -306,7 +306,7 @@ GtRlSystemOneGeneratedModelExamples >> componentDHasOneChild [
 	^ project
 ]
 
-{ #category : #'examples - component D' }
+{ #category : 'examples - component D' }
 GtRlSystemOneGeneratedModelExamples >> componentDHasOneProjectReference [
 	<gtExample>
 	| project |
@@ -321,7 +321,7 @@ GtRlSystemOneGeneratedModelExamples >> componentDHasOneProjectReference [
 	^ project
 ]
 
-{ #category : #'examples - component D' }
+{ #category : 'examples - component D' }
 GtRlSystemOneGeneratedModelExamples >> componentDHasSystemOneAsParent [
 	<gtExample>
 	| project |
@@ -333,7 +333,7 @@ GtRlSystemOneGeneratedModelExamples >> componentDHasSystemOneAsParent [
 	^ project
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlSystemOneGeneratedModelExamples >> componentDProject [
 	<gtExample>
 	| project component |
@@ -346,7 +346,7 @@ GtRlSystemOneGeneratedModelExamples >> componentDProject [
 		theComponentDProject := component ]
 ]
 
-{ #category : #'examples - systemOne' }
+{ #category : 'examples - systemOne' }
 GtRlSystemOneGeneratedModelExamples >> systemOneCorrectNumberOfChildProjects [
 	<gtExample>
 	| project |
@@ -361,7 +361,7 @@ GtRlSystemOneGeneratedModelExamples >> systemOneCorrectNumberOfChildProjects [
 	^ project
 ]
 
-{ #category : #'examples - systemOne' }
+{ #category : 'examples - systemOne' }
 GtRlSystemOneGeneratedModelExamples >> systemOneCorrectNumberOfParentProjects [
 	<gtExample>
 	| project |
@@ -372,7 +372,7 @@ GtRlSystemOneGeneratedModelExamples >> systemOneCorrectNumberOfParentProjects [
 	^ project
 ]
 
-{ #category : #'examples - systemOne' }
+{ #category : 'examples - systemOne' }
 GtRlSystemOneGeneratedModelExamples >> systemOneCorrectNumberOfProjectReferences [
 	<gtExample>
 	| project |
@@ -384,7 +384,7 @@ GtRlSystemOneGeneratedModelExamples >> systemOneCorrectNumberOfProjectReferences
 	^ project
 ]
 
-{ #category : #'examples - systemOne' }
+{ #category : 'examples - systemOne' }
 GtRlSystemOneGeneratedModelExamples >> systemOneCorrectRepositoryName [
 	<gtExample>
 	| repositoryName project |
@@ -396,7 +396,7 @@ GtRlSystemOneGeneratedModelExamples >> systemOneCorrectRepositoryName [
 	^ project
 ]
 
-{ #category : #'examples - systemOne' }
+{ #category : 'examples - systemOne' }
 GtRlSystemOneGeneratedModelExamples >> systemOneCorrectTotalNumberOfRepositories [
 	<gtExample>
 	| project |
@@ -407,7 +407,7 @@ GtRlSystemOneGeneratedModelExamples >> systemOneCorrectTotalNumberOfRepositories
 	^ project
 ]
 
-{ #category : #'examples - systemOne' }
+{ #category : 'examples - systemOne' }
 GtRlSystemOneGeneratedModelExamples >> systemOneHasNoPackages [
 	<gtExample>
 	| project |
@@ -418,7 +418,7 @@ GtRlSystemOneGeneratedModelExamples >> systemOneHasNoPackages [
 	^ project
 ]
 
-{ #category : #'examples - systemOne' }
+{ #category : 'examples - systemOne' }
 GtRlSystemOneGeneratedModelExamples >> systemOneHasNoPreAndPostLoadActions [
 	<gtExample>
 	| project |
@@ -430,7 +430,7 @@ GtRlSystemOneGeneratedModelExamples >> systemOneHasNoPreAndPostLoadActions [
 	^ project
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlSystemOneGeneratedModelExamples >> systemOneProject [
 	<gtExample>
 	| projectBuilder project repositoryName |

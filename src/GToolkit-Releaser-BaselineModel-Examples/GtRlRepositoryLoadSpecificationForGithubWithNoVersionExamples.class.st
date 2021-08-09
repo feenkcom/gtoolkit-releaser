@@ -1,10 +1,10 @@
 Class {
-	#name : #GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples,
-	#superclass : #GtRlRepositoryLoadSpecificationBasicExamples,
-	#category : #'GToolkit-Releaser-BaselineModel-Examples'
+	#name : 'GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples',
+	#superclass : 'GtRlRepositoryLoadSpecificationBasicExamples',
+	#category : 'GToolkit-Releaser-BaselineModel-Examples'
 }
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples >> loadSpecificationHasCorrectVersion [
 	<gtExample>
 	| loadSpecification |
@@ -16,7 +16,7 @@ GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples >> loadSpecificati
 	^ loadSpecification
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples >> loadSpecificationHasNames [
 	<gtExample>
 	| loadSpecification |
@@ -28,12 +28,12 @@ GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples >> loadSpecificati
 	^ loadSpecification
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples >> specificationId [
 	^ 'github://example/gtoolkit/src'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples >> specificationUrlString [
 	^ 'github://example/gtoolkit/src'
 ]

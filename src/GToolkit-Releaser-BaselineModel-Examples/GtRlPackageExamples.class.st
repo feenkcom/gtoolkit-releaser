@@ -1,10 +1,10 @@
 Class {
-	#name : #GtRlPackageExamples,
-	#superclass : #Object,
-	#category : #'GToolkit-Releaser-BaselineModel-Examples'
+	#name : 'GtRlPackageExamples',
+	#superclass : 'Object',
+	#category : 'GToolkit-Releaser-BaselineModel-Examples'
 }
 
-{ #category : #'examples - standalone package' }
+{ #category : 'examples - standalone package' }
 GtRlPackageExamples >> emptyPackageShouldHaveNoDependencies [
 	<gtExample>
 	| package |
@@ -17,7 +17,7 @@ GtRlPackageExamples >> emptyPackageShouldHaveNoDependencies [
 	^ package
 ]
 
-{ #category : #'examples - standalone package' }
+{ #category : 'examples - standalone package' }
 GtRlPackageExamples >> emptyPackageShouldHaveNoPackagedAndProjects [
 	<gtExample>
 	| package |
@@ -29,7 +29,7 @@ GtRlPackageExamples >> emptyPackageShouldHaveNoPackagedAndProjects [
 	^ package
 ]
 
-{ #category : #'examples - standalone package' }
+{ #category : 'examples - standalone package' }
 GtRlPackageExamples >> emptyPackageShouldHaveNoProject [
 	<gtExample>
 	| package |
@@ -39,7 +39,7 @@ GtRlPackageExamples >> emptyPackageShouldHaveNoProject [
 	^ package
 ]
 
-{ #category : #'examples - incoming' }
+{ #category : 'examples - incoming' }
 GtRlPackageExamples >> packageWithIncomingPackageDependencies [
 	<gtExample>
 	| package packageA packageB |
@@ -61,7 +61,7 @@ GtRlPackageExamples >> packageWithIncomingPackageDependencies [
 	^ package
 ]
 
-{ #category : #'examples - outgoing' }
+{ #category : 'examples - outgoing' }
 GtRlPackageExamples >> packageWithMixedOutgoingDependencies [
 	<gtExample>
 	| package projectA projectReferenceA packageA |
@@ -92,7 +92,7 @@ GtRlPackageExamples >> packageWithMixedOutgoingDependencies [
 	^ package
 ]
 
-{ #category : #'examples - outgoing' }
+{ #category : 'examples - outgoing' }
 GtRlPackageExamples >> packageWithMixedOutgoingDependenciesHasNoIncomingDependencies [
 	<gtExample>
 	| package |
@@ -105,7 +105,7 @@ GtRlPackageExamples >> packageWithMixedOutgoingDependenciesHasNoIncomingDependen
 	^ package
 ]
 
-{ #category : #'examples - outgoing' }
+{ #category : 'examples - outgoing' }
 GtRlPackageExamples >> packageWithMixedOutgoingUknownDependency [
 	<gtExample>
 	| package unknownNode |
@@ -123,7 +123,7 @@ GtRlPackageExamples >> packageWithMixedOutgoingUknownDependency [
 	^ package
 ]
 
-{ #category : #'examples - standalone package' }
+{ #category : 'examples - standalone package' }
 GtRlPackageExamples >> packageWithName [
 	<gtExample>
 	| package |
@@ -135,7 +135,7 @@ GtRlPackageExamples >> packageWithName [
 	^ package
 ]
 
-{ #category : #'examples - outgoing' }
+{ #category : 'examples - outgoing' }
 GtRlPackageExamples >> packageWithOutgoingPackageDependencies [
 	<gtExample>
 	| package packageA packageB |
@@ -159,7 +159,7 @@ GtRlPackageExamples >> packageWithOutgoingPackageDependencies [
 	^ package
 ]
 
-{ #category : #'examples - outgoing' }
+{ #category : 'examples - outgoing' }
 GtRlPackageExamples >> packageWithOutgoingPackageDependenciesHasNoIncomingDependencies [
 	<gtExample>
 	| package |
@@ -171,7 +171,7 @@ GtRlPackageExamples >> packageWithOutgoingPackageDependenciesHasNoIncomingDepend
 	^ package
 ]
 
-{ #category : #'examples - outgoing' }
+{ #category : 'examples - outgoing' }
 GtRlPackageExamples >> packageWithOutgoingPackageDependenciesHasNoProjectDependencies [
 	<gtExample>
 	| package |
@@ -182,7 +182,7 @@ GtRlPackageExamples >> packageWithOutgoingPackageDependenciesHasNoProjectDepende
 	^ package
 ]
 
-{ #category : #'examples - outgoing' }
+{ #category : 'examples - outgoing' }
 GtRlPackageExamples >> packageWithOutgoingProjectDependencies [
 	<gtExample>
 	| package projectA projectB projectReferenceA projectReferenceB |
@@ -211,7 +211,7 @@ GtRlPackageExamples >> packageWithOutgoingProjectDependencies [
 	^ package
 ]
 
-{ #category : #'examples - outgoing' }
+{ #category : 'examples - outgoing' }
 GtRlPackageExamples >> packageWithOutgoingProjectDependenciesHasNoDependentPackages [
 	<gtExample>
 	| package  |
@@ -222,7 +222,7 @@ GtRlPackageExamples >> packageWithOutgoingProjectDependenciesHasNoDependentPacka
 	^ package
 ]
 
-{ #category : #'examples - outgoing' }
+{ #category : 'examples - outgoing' }
 GtRlPackageExamples >> packageWithOutgoingProjectDependenciesHasNoIncomingDependencies [
 	<gtExample>
 	| package  |
@@ -234,7 +234,7 @@ GtRlPackageExamples >> packageWithOutgoingProjectDependenciesHasNoIncomingDepend
 	^ package
 ]
 
-{ #category : #'examples - outgoing' }
+{ #category : 'examples - outgoing' }
 GtRlPackageExamples >> packageWithOutgoingProjectDependenciesHasNoRequiedPackages [
 	<gtExample>
 	| package  |
@@ -245,7 +245,7 @@ GtRlPackageExamples >> packageWithOutgoingProjectDependenciesHasNoRequiedPackage
 	^ package
 ]
 
-{ #category : #'examples - standalone package' }
+{ #category : 'examples - standalone package' }
 GtRlPackageExamples >> packageWithProjectWithoutProjectLink [
 	<gtExample>
 	| package project |
@@ -260,7 +260,7 @@ GtRlPackageExamples >> packageWithProjectWithoutProjectLink [
 	^ package
 ]
 
-{ #category : #'examples - outgoing' }
+{ #category : 'examples - outgoing' }
 GtRlPackageExamples >> packageWithUnknownOutgoingDependency [
 	<gtExample>
 	| package unknownNode |
@@ -278,7 +278,7 @@ GtRlPackageExamples >> packageWithUnknownOutgoingDependency [
 	^ package
 ]
 
-{ #category : #'examples - outgoing' }
+{ #category : 'examples - outgoing' }
 GtRlPackageExamples >> packageWithUnknownOutgoingDependencyHasNoProjectsOrPackages [
 	<gtExample>
 	| package |
@@ -292,7 +292,7 @@ GtRlPackageExamples >> packageWithUnknownOutgoingDependencyHasNoProjectsOrPackag
 	^ package
 ]
 
-{ #category : #'examples - standalone package' }
+{ #category : 'examples - standalone package' }
 GtRlPackageExamples >> packageWithinProjectWihoutRepository [
 	<gtExample>
 	| package project |
@@ -308,7 +308,7 @@ GtRlPackageExamples >> packageWithinProjectWihoutRepository [
 	^ package
 ]
 
-{ #category : #'examples - standalone package' }
+{ #category : 'examples - standalone package' }
 GtRlPackageExamples >> packageWithinProjectWithRepository [
 	<gtExample>
 	| package project repository |

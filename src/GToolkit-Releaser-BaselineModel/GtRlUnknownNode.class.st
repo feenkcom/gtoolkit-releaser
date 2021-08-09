@@ -4,18 +4,18 @@ I model an unknown node encountered in baseline that does not corespond to a pac
 
 "
 Class {
-	#name : #GtRlUnknownNode,
-	#superclass : #GtRlNode,
-	#category : #'GToolkit-Releaser-BaselineModel-Model'
+	#name : 'GtRlUnknownNode',
+	#superclass : 'GtRlNode',
+	#category : 'GToolkit-Releaser-BaselineModel-Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 GtRlUnknownNode class >> withName: projectName [
 	^ self new
 		name: projectName
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlUnknownNode >> isUnknownNode [
 	^ true
 ]

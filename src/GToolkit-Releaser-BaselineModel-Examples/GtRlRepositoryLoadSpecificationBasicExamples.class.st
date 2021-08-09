@@ -1,15 +1,15 @@
 Class {
-	#name : #GtRlRepositoryLoadSpecificationBasicExamples,
-	#superclass : #Object,
-	#category : #'GToolkit-Releaser-BaselineModel-Examples'
+	#name : 'GtRlRepositoryLoadSpecificationBasicExamples',
+	#superclass : 'Object',
+	#category : 'GToolkit-Releaser-BaselineModel-Examples'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlRepositoryLoadSpecificationBasicExamples class >> isAbstract [ 	
 	^ self name = GtRlRepositoryLoadSpecificationBasicExamples name
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecification [
 	<gtExample>
 	| loadSpecification |
@@ -22,7 +22,7 @@ GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecification [
 	^ loadSpecification
 ]
 
-{ #category : #'examples - comparison' }
+{ #category : 'examples - comparison' }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationEqualsSameInstance [
 	<gtExample>
 	| loadSpecification |
@@ -33,7 +33,7 @@ GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationEqualsSameInsta
 	^ loadSpecification
 ]
 
-{ #category : #'examples - comparison' }
+{ #category : 'examples - comparison' }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationEqualsSelf [
 	<gtExample>
 	| loadSpecification |
@@ -44,7 +44,7 @@ GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationEqualsSelf [
 	^ loadSpecification
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHasCorrectId [
 	<gtExample>
 	| loadSpecification |
@@ -55,7 +55,7 @@ GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHasCorrectId [
 	^ loadSpecification
 ]
 
-{ #category : #'examples - comparison' }
+{ #category : 'examples - comparison' }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHashEqualsBetweenSameInstance [
 	<gtExample>
 	| loadSpecification |
@@ -66,7 +66,7 @@ GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHashEqualsBetwe
 	^ loadSpecification
 ]
 
-{ #category : #'examples - comparison' }
+{ #category : 'examples - comparison' }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHashNotEqualUrlHash [
 	<gtExample>
 	| loadSpecification |
@@ -78,12 +78,12 @@ GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHashNotEqualUrl
 	^ loadSpecification
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryLoadSpecificationBasicExamples >> specificationId [
 	^ self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryLoadSpecificationBasicExamples >> specificationUrlString [
 	^ self subclassResponsibility
 ]

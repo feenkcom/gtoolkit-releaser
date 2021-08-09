@@ -11,23 +11,23 @@ I can be linked to an {{gtClass:IceRepository}} that provides the concrete repos
 
 "
 Class {
-	#name : #GtRlRepository,
-	#superclass : #Object,
+	#name : 'GtRlRepository',
+	#superclass : 'Object',
 	#instVars : [
 		'loadSpecification',
 		'projects',
 		'icebergRepository'
 	],
-	#category : #'GToolkit-Releaser-BaselineModel-Model'
+	#category : 'GToolkit-Releaser-BaselineModel-Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 GtRlRepository class >> fromUrlString: aString [
 	^ self new
 		loadSpecification: (GtRlRepositoryLoadSpecification fromUrlString: aString)
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 GtRlRepository >> = anotherObject [
 	self == anotherObject
 		ifTrue: [ ^ true ].
@@ -36,12 +36,12 @@ GtRlRepository >> = anotherObject [
 	^ self loadSpecification = anotherObject loadSpecification
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepository >> addProject: aFkRlProject [
 	projects add: aFkRlProject 
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : 'accessing - dynamic' }
 GtRlRepository >> childRepositories [ 
 	^ (self projects flatCollect: [ :aProject | 
 		aProject childProjects collect: #repository ]) removeDuplicates
@@ -50,7 +50,7 @@ GtRlRepository >> childRepositories [
 
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlRepository >> gtBranchesFor: aView [
 	<gtView>
 	^ aView list
@@ -59,7 +59,7 @@ GtRlRepository >> gtBranchesFor: aView [
 		itemText: #gtSummaryDescription
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlRepository >> gtProjectsFor: aView [
 	<gtView>
 	^ aView list 
@@ -67,7 +67,7 @@ GtRlRepository >> gtProjectsFor: aView [
 		items: [ self projects ]
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlRepository >> gtRepoDependenciesFor: aView [
 	<gtView> 
 	^ aView mondrian 
@@ -104,7 +104,7 @@ GtRlRepository >> gtRepoDependenciesFor: aView [
 			mondrian layout custom: (GtGradHorizontalDominanceCenteredTreeLayout new levelDistance: 50; nodeDistance: 10)]
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlRepository >> gtRepoMapFor: aView [
 	<gtView> 
 	^ aView mondrian 
@@ -165,7 +165,7 @@ GtRlRepository >> gtRepoMapFor: aView [
 			mondrian layout custom: (GtGradWestHierarchicalLayout new)]
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlRepository >> gtTagsFor: aView [
 	<gtView>
 	^ aView list
@@ -175,18 +175,18 @@ GtRlRepository >> gtTagsFor: aView [
 				[ :anIceTag | anIceTag name , ' [' , (anIceTag commit id first: 7) , ']' ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlRepository >> hasVersion [
 	^ self loadSpecification hasVersion
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 GtRlRepository >> hash [ 
 	^ self class hash 
 		bitXor: self loadSpecification hash
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : 'accessing - dynamic' }
 GtRlRepository >> icebergRepository [
 	"I act like a cache for the iceberg repository associated with this repository."
 	^ icebergRepository ifNil: [
@@ -194,60 +194,60 @@ GtRlRepository >> icebergRepository [
 			anIceRepo name asLowercase = self repositoryName asLowercase ] ]
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : 'accessing - dynamic' }
 GtRlRepository >> icebergRepository: aIcebergRepository [
 	icebergRepository := aIcebergRepository
 ]
 
-{ #category : #deprecated }
+{ #category : 'deprecated' }
 GtRlRepository >> id [ 	
 	^ self loadSpecificationId
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GtRlRepository >> initialize [ 
 	super initialize.
 	projects := OrderedCollection new.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlRepository >> isLeaf [
 	^ self childRepositories isEmpty
 ]
 
-{ #category : #'accessing - load specification' }
+{ #category : 'accessing - load specification' }
 GtRlRepository >> loadSpecification [
 	^ loadSpecification
 ]
 
-{ #category : #'accessing - load specification' }
+{ #category : 'accessing - load specification' }
 GtRlRepository >> loadSpecification: aRepositoryLoadSpecification [
 	self assert: [ aRepositoryLoadSpecification notNil ].
 	
 	loadSpecification := aRepositoryLoadSpecification
 ]
 
-{ #category : #'accessing - load specification' }
+{ #category : 'accessing - load specification' }
 GtRlRepository >> loadSpecificationId [
 	^ self loadSpecification specificationId
 ]
 
-{ #category : #'accessing - load specification' }
+{ #category : 'accessing - load specification' }
 GtRlRepository >> loadSpecificationString [
 	^ self loadSpecification specificationString
 ]
 
-{ #category : #'accessing - load specification' }
+{ #category : 'accessing - load specification' }
 GtRlRepository >> loadSpecificationUrl [
 	^ self loadSpecification specificationUrl
 ]
 
-{ #category : #'accessing - load specification' }
+{ #category : 'accessing - load specification' }
 GtRlRepository >> nameSegment [
 	^ self loadSpecification nameSegment
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : 'accessing - dynamic' }
 GtRlRepository >> parentRepositories [ 
 	^ (projects flatCollect: [ :aProject | 
 		aProject parentProjects collect: #repository]) asSet
@@ -256,7 +256,7 @@ GtRlRepository >> parentRepositories [
 	
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlRepository >> printOn: aStream [
 	super printOn: aStream.
 	aStream 
@@ -265,42 +265,42 @@ GtRlRepository >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
-{ #category : #'accessing - load specification' }
+{ #category : 'accessing - load specification' }
 GtRlRepository >> projectName [
 	^ self loadSpecification projectName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepository >> projects [ 
 	^ projects
 ]
 
-{ #category : #'accessing - load specification' }
+{ #category : 'accessing - load specification' }
 GtRlRepository >> repositoryName [
 	^ self loadSpecification repositoryName
 ]
 
-{ #category : #deprecated }
+{ #category : 'deprecated' }
 GtRlRepository >> url [
 	^ self loadSpecificationUrl
 ]
 
-{ #category : #deprecated }
+{ #category : 'deprecated' }
 GtRlRepository >> urlString [
 	^ self loadSpecificationString
 ]
 
-{ #category : #'accessing - load specification' }
+{ #category : 'accessing - load specification' }
 GtRlRepository >> urlWithVersion: aVersionString [
 	^ self loadSpecification urlWithVersion: aVersionString
 ]
 
-{ #category : #'accessing - load specification' }
+{ #category : 'accessing - load specification' }
 GtRlRepository >> versionString [
 	^ self loadSpecification versionString
 ]
 
-{ #category : #'accessing - load specification' }
+{ #category : 'accessing - load specification' }
 GtRlRepository >> versionStringOrNil [
 	^ self loadSpecification versionStringOrNil
 ]

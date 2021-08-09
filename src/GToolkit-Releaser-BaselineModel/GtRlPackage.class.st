@@ -12,21 +12,21 @@ I do not have an explicit repository. I am placed in the same repository as the 
 
 "
 Class {
-	#name : #GtRlPackage,
-	#superclass : #GtRlNode,
+	#name : 'GtRlPackage',
+	#superclass : 'GtRlNode',
 	#instVars : [
 		'outgoingDependencies'
 	],
-	#category : #'GToolkit-Releaser-BaselineModel-Model'
+	#category : 'GToolkit-Releaser-BaselineModel-Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 GtRlPackage class >> withName: aPackageName [
 	^ self new
 		name: aPackageName
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 GtRlPackage >> addOutgoingDependency: aDependency [
 	self assert: [ aDependency notNil ].
 	self 
@@ -36,12 +36,12 @@ GtRlPackage >> addOutgoingDependency: aDependency [
 	self outgoingDependencies add: aDependency
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 GtRlPackage >> asRPackage [
 	[^ self name asPackage] on: NotFound do:[ ^ nil ]
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlPackage >> gtViewOutgoingDependenciesListFor: aView [
 	<gtView>
 	^ aView list
@@ -50,7 +50,7 @@ GtRlPackage >> gtViewOutgoingDependenciesListFor: aView [
 		items: [ self outgoingDependencies ]
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlPackage >> gtViewRequiredPackagesListFor: aView [
 	<gtView>
 	^ aView list
@@ -60,7 +60,7 @@ GtRlPackage >> gtViewRequiredPackagesListFor: aView [
 		itemText: #name
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlPackage >> gtViewRequiredProjectReferencesListFor: aView [
 	<gtView>
 	^ aView list
@@ -70,7 +70,7 @@ GtRlPackage >> gtViewRequiredProjectReferencesListFor: aView [
 		itemText: #name
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlPackage >> gtViewRequiredProjectsListFor: aView [
 	<gtView>
 	^ aView list
@@ -80,69 +80,75 @@ GtRlPackage >> gtViewRequiredProjectsListFor: aView [
 		itemText: #name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlPackage >> icebergPackage [
 	^ self icebergRepository workingCopy packageNamed: self name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlPackage >> icebergRepository [
 	^ self parentProject repository icebergRepository
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GtRlPackage >> initialize [ 	
 	super initialize.
 	outgoingDependencies := OrderedCollection new.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlPackage >> isPackageNode [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlPackage >> outgoingDependencies [
 	^ outgoingDependencies
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : 'accessing - dynamic' }
 GtRlPackage >> outgoingDependenciesToPackages [
 	^ self outgoingDependencies select: [ :aDependency |
 		aDependency targetNode isPackageNode ]
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : 'accessing - dynamic' }
 GtRlPackage >> outgoingDependenciesToProjects [
 	^ self outgoingDependencies select: [ :aDependency |
 		aDependency targetNode isProjectReference ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
+GtRlPackage >> outgoingDependencyNames [
+	^ self outgoingDependencies collect: [ :aPackageDependency |
+		 aPackageDependency targetNode name ]
+]
+
+{ #category : 'accessing' }
 GtRlPackage >> repository [
 	^ self parentProject ifNotNil: [ :aProject | 
 		aProject repository ]
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : 'accessing - dynamic' }
 GtRlPackage >> requiredNodes [
 	^ self outgoingDependencies collect: [ :aDependency |
 		aDependency targetNode ]
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : 'accessing - dynamic' }
 GtRlPackage >> requiredPackages [
 	^ self outgoingDependenciesToPackages collect: [ :aDependency |
 		aDependency targetNode ]
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : 'accessing - dynamic' }
 GtRlPackage >> requiredProjectReferences [
 	^ self outgoingDependenciesToProjects collect: [ :aDependency |
 		aDependency targetNode ]
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : 'accessing - dynamic' }
 GtRlPackage >> requiredProjects [
 	^ self requiredProjectReferences collect: [ :aProjectReference |
 		aProjectReference referencedProject ]
