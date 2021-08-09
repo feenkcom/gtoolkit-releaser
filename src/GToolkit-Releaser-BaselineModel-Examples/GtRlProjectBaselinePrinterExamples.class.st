@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : 'accessing - code' }
+GtRlProjectBaselinePrinterExamples >> baselineWithChildProject [
+	^ 'baseline: spec
+	<baseline>
+	spec for: #''common'' do: [
+		spec
+			baseline: ''ChildProject'' with: [
+				spec repository: ''github://example/gtoolkit/src'' ].
+	]'
+]
+
+{ #category : 'accessing - code' }
 GtRlProjectBaselinePrinterExamples >> baselineWithPackageWithPackageDependenciesCode [
 	^ 'baseline: spec
 	<baseline>
@@ -71,6 +82,20 @@ GtRlProjectBaselinePrinterExamples >> printEmptyProject [
 	self 
 		assert: printer generateBaselineSource 
 		equals: self emptyBaselineCode.
+	
+	^ printer
+]
+
+{ #category : 'printing' }
+GtRlProjectBaselinePrinterExamples >> printProjectWithChildProject [
+	<gtExample>
+	| project printer |
+	project := GtRlProjectExamples new projectWithChildProjectWithRepository.
+	printer := GtRlProjectBaselinePrinter forProject: project.
+	
+	self 
+		assert: printer generateBaselineSource 
+		equals: self baselineWithChildProject.
 	
 	^ printer
 ]

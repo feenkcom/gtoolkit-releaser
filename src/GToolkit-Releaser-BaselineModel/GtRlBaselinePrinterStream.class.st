@@ -94,6 +94,16 @@ GtRlBaselinePrinterStream >> preLoadAction: aSymbol [
 		indentedPut:('spec preLoadDoIt: #''{1}''.' format: {aSymbol}).
 ]
 
+{ #category : 'api' }
+GtRlBaselinePrinterStream >> projectFor: aProjectName withLoadSpec: aLoadSpecString [
+	self newLine.
+	self indentedPut: 'spec'. 
+	self newLine.
+	self indentedPut: ('	baseline: {1} with: [' format: {aProjectName storeString }).
+	self newLine.
+	self indentedPut: ('		spec repository: {1} ].' format: { aLoadSpecString storeString }).
+]
+
 { #category : 'accessing' }
 GtRlBaselinePrinterStream >> stream [
 

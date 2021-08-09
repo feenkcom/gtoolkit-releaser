@@ -37,11 +37,11 @@ GtRlProjectBaselinePrinter >> generateBaselineSourceOn: aStream [
 				aStream preLoadAction: project preLoadAction ].
 			project postLoadAction ifNotNil: [
 				aStream postLoadAction: project postLoadAction ].
-			
-				"project packages do: [ :aPackage |
+				
+				project childProjects do: [ :aProject |
 					aStream 
-						packageFor: aPackage name
-						withDependencies: aPackage outgoingDependencyNames ]."
+						projectFor: aProject name
+						withLoadSpec: aProject repository loadSpecificationString ].
 			
 				project packages do: [ :aPackage |
 					aStream 
