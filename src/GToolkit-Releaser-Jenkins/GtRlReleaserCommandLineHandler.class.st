@@ -28,8 +28,10 @@ GtRlReleaserCommandLineHandler >> activate [
 		ifAbsent: [ GtRlPatchVersionComputation new ].
 
 	theWorkflowBuilder := [
-			(GtRlReleaserExportWorkflow buildGToolkitReleaseWithVersionComputation: theVersionComputation)
-		executeReleaseActions ].
+		GtPharoCompletionStrategy unsubscribeFromSystem.
+		(GtRlReleaserExportWorkflow buildGToolkitReleaseWithVersionComputation: theVersionComputation)
+			executeReleaseActions.
+		GtPharoCompletionStrategy subscribeToSystem ].
 
 	(self hasOption: 'verbose')
 		ifTrue: [ TranscriptLogger runDuring: theWorkflowBuilder ]
