@@ -42,11 +42,23 @@ GtRlProjectBaselinePrinter >> generateBaselineSourceOn: aStream [
 					aStream 
 						projectFor: aProject name
 						withLoadSpec: aProject repository loadSpecificationString ].
+					
+				(project childProjects notEmpty and: [ project packages notEmpty ])
+					ifTrue: [ aStream newLine ].
 				
 				project packages do: [ :aPackage |
 					aStream 
 						packageFor: aPackage name
 						withDependencies: aPackage outgoingDependencyNames ] ]
+]
+
+{ #category : 'accessing' }
+GtRlProjectBaselinePrinter >> gtViewGeneratedBaselineFor: aView [
+	<gtView>
+	^ aView textEditor
+		title: 'Generated Baseline';
+		priority: 101;
+		text: [ self generateBaselineSource ]
 ]
 
 { #category : 'accessing' }

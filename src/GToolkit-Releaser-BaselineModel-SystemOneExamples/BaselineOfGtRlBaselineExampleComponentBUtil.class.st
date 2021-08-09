@@ -1,10 +1,10 @@
 Class {
-	#name : #BaselineOfGtRlBaselineExampleComponentBUtil,
-	#superclass : #BaselineOf,
-	#category : #'GToolkit-Releaser-BaselineModel-SystemOneExamples'
+	#name : 'BaselineOfGtRlBaselineExampleComponentBUtil',
+	#superclass : 'BaselineOf',
+	#category : 'GToolkit-Releaser-BaselineModel-SystemOneExamples'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfGtRlBaselineExampleComponentBUtil >> baseline: spec [
 	<baseline>
 	spec for: #'common' do: [
