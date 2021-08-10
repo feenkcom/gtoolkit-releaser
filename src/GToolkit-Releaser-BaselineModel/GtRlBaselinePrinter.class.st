@@ -73,3 +73,12 @@ GtRlBaselinePrinter >> gtViewGeneratedBaselineFor: aView [
 GtRlBaselinePrinter >> hasProjectDependencies [
 	self subclassResponsibility 
 ]
+
+{ #category : 'accessing' }
+GtRlBaselinePrinter >> printOn: aStream [
+	super printOn: aStream.
+	aStream
+		nextPutAll: ' (';
+		nextPutAll: self baselineProject name;
+		nextPutAll: ')'
+]

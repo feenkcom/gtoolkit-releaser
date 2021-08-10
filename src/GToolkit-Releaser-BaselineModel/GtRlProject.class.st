@@ -88,6 +88,11 @@ GtRlProject >> baselineClass: aBaselineClass [
 	baselineClass := aBaselineClass
 ]
 
+{ #category : 'baselines' }
+GtRlProject >> baselineGenerator [
+	^ GtRlMetacelloProjectBaselineGenerator forProject: self
+]
+
 { #category : 'accessing' }
 GtRlProject >> baselineVersion [
 	^ baselineVersion
@@ -122,14 +127,6 @@ GtRlProject >> childProjects [
 		aProjectReference referencedProject ]
 ]
 
-{ #category : 'actions' }
-GtRlProject >> compileBaselineWithProjectDependencies: projectDependenciesMap [
-	| toolbox |
-	toolbox := self toolboxForBaselineWithProjectDependencies: projectDependenciesMap.
-	
-	^ GtPharoCodeModifier current critical: [ toolbox commitBaselineOfMethod ]
-]
-
 { #category : 'traversing' }
 GtRlProject >> containedRPackagesDo: aBloc [
 	self packages do: [ :aReleaserPackage |
@@ -137,13 +134,6 @@ GtRlProject >> containedRPackagesDo: aBloc [
 			packageNamed: aReleaserPackage name 
 			ifAbsent: [nil]) ifNotNil: [ :aRPackage | 
 				aBloc value: aRPackage ] ]
-]
-
-{ #category : 'actions' }
-GtRlProject >> generateSourceWithProjectDependencies: projectDependenciesMap [
-	| toolbox |
-	toolbox := self toolboxForBaselineWithProjectDependencies: projectDependenciesMap.
-	^ toolbox methodSpec methodSource
 ]
 
 { #category : 'ui' }
@@ -362,38 +352,6 @@ GtRlProject >> rootPackages [
 	"Return the list of packages on which other packages do not depend upon."
 	^ self packages select: [ :aPackage |
 		aPackage dependentPackages isEmpty ].
-]
-
-{ #category : 'private' }
-GtRlProject >> toolboxForBaselineWithProjectDependencies: projectDependenciesMap [
-	| projectNames toolbox |
-	projectNames := projectDependenciesMap collect: #key.
-
-   toolbox := (self metacelloToolbox 
-	 baselineNamed: self baselineClass name)
-    createBaselineOfMethod: 'baseline:' inCategory: 'baseline';
-	addBaselineOfSection: #'common'
-		requiredProjects: projectNames
-	   packages: (self packages collect: #name)
-	   dependencies: (self packages collect: [ :aPackage | 
-			aPackage name -> (aPackage requiredNodes collect: #name) ])
-	   includes: #()
-	   files: #()
-	   repositories: projectDependenciesMap
-	   preLoadDoIts: #()
-	   postLoadDoIts: #()
-	   supplyingAnswers: #()
-	   groups: #()
-	   versionSpecsDo: [ :versionSpec | ].
-	
-	self assert: [ toolbox methodSpec methodSections size = 1] description: 'Only one section per method is supported'.
-	self assert: [ toolbox methodSpec methodSections first attributes = #(#common) ] description: 'Only #common section is supported'.
-	self preLoadAction ifNotNil: [ 
-		toolbox methodSpec methodSections first versionSpec preLoadDoIt: self preLoadAction ].
-	 self postLoadAction ifNotNil: [
-		toolbox methodSpec methodSections first versionSpec postLoadDoIt: self postLoadAction ].
-	
-	^ toolbox
 ]
 
 { #category : 'traversing' }

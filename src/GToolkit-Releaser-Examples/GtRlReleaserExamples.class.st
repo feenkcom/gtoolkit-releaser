@@ -279,7 +279,7 @@ GtRlReleaserExamples >> projectStructureWithThreeDependencies [
 			'RepositoryWithTagAndNoVersion' 
 			'ProjectWithReleasedVersionAndNoChanges' ).
 	
-	"Fix current issuues caused by projects not being loaded in the image"
+	"Fix current issues caused by projects not being loaded in the image"
 	project metacelloToolbox: GtRlMetacelloToolBoxWithSpecs new.
 	project childProjects do: [ :aProject |
 		project metacelloToolbox addSpecForBaselineClass: aProject baselineClass ].

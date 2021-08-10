@@ -6,7 +6,7 @@ I am a {{gtClass:MetacelloToolBox}} that only uses the given repository for a ba
 Class {
 	#name : 'GtRlMetacelloToolBox',
 	#superclass : 'MetacelloToolBox',
-	#category : 'GToolkit-Releaser-BaselineModel-Model'
+	#category : 'GToolkit-Releaser-BaselineModel-Metacello'
 }
 
 { #category : 'spec creation' }

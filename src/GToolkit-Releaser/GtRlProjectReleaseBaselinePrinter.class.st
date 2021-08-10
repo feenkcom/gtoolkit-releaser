@@ -38,15 +38,6 @@ GtRlProjectReleaseBaselinePrinter >> hasProjectDependencies [
 ]
 
 { #category : 'accessing' }
-GtRlProjectReleaseBaselinePrinter >> printOn: aStream [
-	super printOn: aStream.
-	aStream
-		nextPutAll: ' (';
-		nextPutAll: self baselineProject name;
-		nextPutAll: ')'
-]
-
-{ #category : 'accessing' }
 GtRlProjectReleaseBaselinePrinter >> projectRelease: aProjectRelease [
 	projectRelease := aProjectRelease
 ]

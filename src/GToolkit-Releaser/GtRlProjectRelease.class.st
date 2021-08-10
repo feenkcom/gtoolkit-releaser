@@ -37,9 +37,9 @@ GtRlProjectRelease >> addChildRelease: aProjectRelease [
 ]
 
 { #category : 'accessing - dynamic' }
-GtRlProjectRelease >> childProjectsWithRepositoryURL [
-	^ self childReleases collect: [ :aRelease |
-		aRelease project name -> {aRelease repositoryRelease urlWithReleaseVersion asString} ]
+GtRlProjectRelease >> baselineGenerator [
+	^ self project baselineGenerator releaseBaselineGenerator 
+		projectRelease: self
 ]
 
 { #category : 'accessing' }
@@ -50,16 +50,12 @@ GtRlProjectRelease >> childReleases [
 
 { #category : 'actions' }
 GtRlProjectRelease >> compileBaselineMethod [
-	| childProjectsWithRepositoryURL |
-	childProjectsWithRepositoryURL := self childProjectsWithRepositoryURL.
- 	^ self project compileBaselineWithProjectDependencies: childProjectsWithRepositoryURL
+ 	^ self baselineGenerator compileBaselineMethod
 ]
 
 { #category : 'actions' }
 GtRlProjectRelease >> generateBaselineSource [
-	| childProjectsWithRepositoryURL |
-	childProjectsWithRepositoryURL := self childProjectsWithRepositoryURL.
- 	^ self project generateSourceWithProjectDependencies: childProjectsWithRepositoryURL
+ 	^ self baselineGenerator generateBaselineSource
 ]
 
 { #category : 'ui' }
