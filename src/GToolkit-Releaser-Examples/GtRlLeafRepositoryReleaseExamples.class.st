@@ -1,7 +1,7 @@
 Class {
 	#name : #GtRlLeafRepositoryReleaseExamples,
 	#superclass : #GtRlReleaserExamples,
-	#category : #'GToolkit-Releaser-Examples'
+	#category : 'GToolkit-Releaser-Examples'
 }
 
 { #category : #assertions }
@@ -141,6 +141,14 @@ GtRlLeafRepositoryReleaseExamples >> dedicatedBranchReleaseStrategy [
 	^ releaseStrategy
 ]
 
+{ #category : #'examples - baseline printing' }
+GtRlLeafRepositoryReleaseExamples >> emptyBaselineCode [
+	^ 'baseline: spec
+	<baseline>
+	spec for: #''common'' do: [
+	]'
+]
+
 { #category : #'examples - strategies' }
 GtRlLeafRepositoryReleaseExamples >> headCommitReleaseStrategy [
 	<gtExample>
@@ -165,6 +173,20 @@ GtRlLeafRepositoryReleaseExamples >> loadedTagReleaseStrategy [
 	self assert: releaseStrategy description equals: 'LoadedTag'.
 	
 	^ releaseStrategy
+]
+
+{ #category : #'examples - baseline printing' }
+GtRlLeafRepositoryReleaseExamples >> printBaselineCodeReleaseForFourRepositoriesWithNewCommit [
+	<gtExample>
+	| projectRelease printer |
+	projectRelease := self releaseWithBranchStrategyOnNoVersionRepo projectReleases first.
+	printer := GtRlProjectReleaseBaselinePrinter forProjectRelease: projectRelease.
+	
+	self 
+		assert: printer generateBaselineSource 
+		equals: self emptyBaselineCode.
+		
+	^ printer
 ]
 
 { #category : #'examples - configs' }

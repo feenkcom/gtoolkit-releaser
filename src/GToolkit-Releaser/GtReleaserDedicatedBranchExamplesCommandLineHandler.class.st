@@ -11,8 +11,9 @@ GtReleaserDedicatedBranchExamplesCommandLineHandler class >> commandName [
 
 { #category : #accessing }
 GtReleaserDedicatedBranchExamplesCommandLineHandler >> packages [ 
-	|packages|
+	| packages |
+	
 	packages := GtRlReleaserExportWorkflow allExamplePackagesInDedicatedReleaseRepositories collect: [:p | p name].
-	"packages := packages \ { #'Brick-Examples'}."
-	^ packages
+	
+	^ packages difference: self packagesToSkip
 ]

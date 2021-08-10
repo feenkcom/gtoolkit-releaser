@@ -6,7 +6,7 @@ I am a baseline that has pre and post actions
 Class {
 	#name : #BaselineOfGtRlBaselineExampleStandaloneWithActions,
 	#superclass : #BaselineOf,
-	#category : #'GToolkit-Releaser-BaselineModel-StandaloneSystemsExamples'
+	#category : 'GToolkit-Releaser-BaselineModel-StandaloneSystemsExamples'
 }
 
 { #category : #baselines }
@@ -15,7 +15,7 @@ BaselineOfGtRlBaselineExampleStandaloneWithActions >> baseline: spec [
 	spec for: #'common' do: [
 		spec preLoadDoIt: #'preloadAction:'.
 		spec postLoadDoIt: #'postloadAction:'.
-	].
+	]
 ]
 
 { #category : #baselines }

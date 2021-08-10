@@ -16,16 +16,49 @@ GtRlReleaserCommandLineHandler class >> description [
 
 { #category : #activation }
 GtRlReleaserCommandLineHandler >> activate [
+	| theWorkflowBuilder theVersionComputation |
+	
 	self activateHelp
 		ifTrue: [  ^ self ].
-	self arguments size > 1 ifTrue: 
-		[ self inform: 'Releaser has only one argument: the new version it should use. E.g.: v0.4.2'].
-	TranscriptLogger runDuring: [ 
-		self arguments isEmpty 
-			ifTrue: [ GtRlReleaserExportWorkflow performGToolkitRelease ]
-			ifFalse:[ | semanticVersion w | semanticVersion := (self argumentAt:1) asGtRlSemanticVersionNumber.
-				w := GtRlReleaserExportWorkflow buildGToolkitRelease: semanticVersion.
-				w executeReleaseActions. ].
-	].
-	Smalltalk snapshot: true andQuit: true.
+	
+	theVersionComputation := self commandLine
+		optionAt: 'strategy'
+		ifPresent: [ :aStrategyName |
+			GtRlSemanticVersionComputation named: aStrategyName ]
+		ifAbsent: [ GtRlPatchVersionComputation new ].
+
+	theWorkflowBuilder := [
+		| theWorkflow |
+		GtPharoCompletionStrategy unsubscribeFromSystem.
+		theWorkflow := GtRlReleaserExportWorkflow buildGToolkitReleaseWithVersionComputation: theVersionComputation.
+		
+		self commandLine
+			optionAt: 'expected'
+			ifPresent: [ :anExpectedVersionString |
+				| anExpectedVersion anActualVersion |
+				
+				anExpectedVersion := GtRlSemanticVersionNumber readFromString: anExpectedVersionString.
+				anActualVersion := theWorkflow rootProjectRelease version.
+				
+				anExpectedVersion ~= anActualVersion
+					ifTrue: [ Error signal: ('Expected version {1} does not match the actual {2}'
+						format: {
+							anExpectedVersion versionString.
+							anActualVersion versionString }) ] ].
+		
+		theWorkflow executeReleaseActions.
+		GtPharoCompletionStrategy subscribeToSystem ].
+
+	(self hasOption: 'verbose')
+		ifTrue: [ TranscriptLogger runDuring: theWorkflowBuilder ]
+		ifFalse: theWorkflowBuilder.
+
+	(self hasOption: 'save')
+		ifTrue: [ 
+			^ Smalltalk 
+				snapshot: true 
+				andQuit: (self hasOption: 'no-quit') not ].
+
+	(self hasOption: 'no-quit')
+		ifFalse: [ self quit ]
 ]
