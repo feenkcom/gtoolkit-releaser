@@ -14,7 +14,6 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'name',
-		'baselineVersion',
 		'baselineClass',
 		'repository',
 		'parentProjects',
@@ -22,7 +21,7 @@ Class {
 		'packages',
 		'preLoadAction',
 		'postLoadAction',
-		'metacelloToolbox'
+		'properties'
 	],
 	#category : 'GToolkit-Releaser-BaselineModel-Model'
 }
@@ -93,16 +92,20 @@ GtRlProject >> baselineGenerator [
 	^ GtRlMetacelloProjectBaselineGenerator forProject: self
 ]
 
-{ #category : 'accessing' }
+{ #category : 'accessing - metacello' }
 GtRlProject >> baselineVersion [
-	^ baselineVersion
+	^ self 
+		propertyAt: #baselineVersion
 ]
 
-{ #category : 'accessing' }
+{ #category : 'accessing - metacello' }
 GtRlProject >> baselineVersion: aMetacelloVersion [
 	self assert: [ aMetacelloVersion name = 'baseline' ].
 	self assert: [ aMetacelloVersion versionNumber versionString = 'baseline' ].
-	baselineVersion := aMetacelloVersion.
+	
+	self 
+		propertyAt: #metacbaselineVersionelloToolbox 
+		put: aMetacelloVersion.
 	
 	aMetacelloVersion spec preLoadDoIt ifNotNil: [ :aPreLoadSpec |
 		self 
@@ -263,15 +266,19 @@ GtRlProject >> linkWithRepository: aRepository [
 	aRepository addProject: self
 ]
 
-{ #category : 'accessing' }
+{ #category : 'accessing - metacello' }
 GtRlProject >> metacelloToolbox [
-	^ metacelloToolbox ifNil: [ GtRlMetacelloToolBox new ]
+	^ self 
+		propertyAt: #metacelloToolbox 
+		ifAbsent: [ GtRlMetacelloToolBox new ]
 ]
 
-{ #category : 'accessing' }
+{ #category : 'accessing - metacello' }
 GtRlProject >> metacelloToolbox: aMetacelloToolbox [
 	"This only exists to make tests work without loading the baseline for tests packages."
-	metacelloToolbox := aMetacelloToolbox
+	self 
+		propertyAt: #metacelloToolbox 
+		put: aMetacelloToolbox
 ]
 
 { #category : 'accessing' }
@@ -335,6 +342,33 @@ GtRlProject >> printOn: aStream [
 { #category : 'accessing' }
 GtRlProject >> projectReferences [
 	^ projectReferences
+]
+
+{ #category : 'accessing - properties' }
+GtRlProject >> properties [
+	^ properties ifNil: [ 
+		properties := Dictionary new ]
+]
+
+{ #category : 'accessing - properties' }
+GtRlProject >> propertyAt: aKey [
+	"Answer the property value associated with aKey."
+	
+	^ self propertyAt: aKey ifAbsent: [ self error: 'Property not found' ].
+]
+
+{ #category : 'accessing - properties' }
+GtRlProject >> propertyAt: propertyName ifAbsent: aBlock [
+	^ self properties
+		at: propertyName
+		ifAbsent: aBlock
+]
+
+{ #category : 'accessing - properties' }
+GtRlProject >> propertyAt: propertyName put: propValue [
+	^ self properties
+		at: propertyName
+		ifAbsentPut: propValue
 ]
 
 { #category : 'accessing' }
