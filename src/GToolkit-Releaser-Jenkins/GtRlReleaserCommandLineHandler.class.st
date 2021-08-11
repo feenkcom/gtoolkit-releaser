@@ -20,6 +20,8 @@ GtRlReleaserCommandLineHandler >> activate [
 	
 	self activateHelp
 		ifTrue: [  ^ self ].
+		
+	self assignSshKeys.
 	
 	theVersionComputation := self commandLine
 		optionAt: 'strategy'
@@ -61,4 +63,31 @@ GtRlReleaserCommandLineHandler >> activate [
 
 	(self hasOption: 'no-quit')
 		ifFalse: [ self quit ]
+]
+
+{ #category : #accessing }
+GtRlReleaserCommandLineHandler >> assignSshKeys [
+	| privateKey publicKey |
+	
+	privateKey := self
+		optionAt: 'private-key'
+		ifPresent: [ :aKeyPath | aKeyPath trim trimBoth: [ :char | #($' $") includes: char ] ]
+		ifAbsent: nil.
+	
+	publicKey := self
+		optionAt: 'public-key'
+		ifPresent: [ :aKeyPath | aKeyPath trim trimBoth: [ :char | #($' $") includes: char ] ]
+		ifAbsent: nil.
+	
+	((privateKey isNil and: [ publicKey notNil ])
+		or: [ privateKey notNil and: [ publicKey isNil ] ])
+			ifTrue: [ Error signal: 'Must specify both private and public key' ].
+	
+	(privateKey isNil and: [ publicKey isNil ])
+		ifTrue: [ ^ self ].
+	
+	IceCredentialsProvider useCustomSsh: true.
+	IceCredentialsProvider sshCredentials
+		publicKey: publicKey;
+		privateKey: privateKey
 ]
