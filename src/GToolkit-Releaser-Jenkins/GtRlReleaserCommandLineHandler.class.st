@@ -1,31 +1,93 @@
 Class {
-	#name : #GtRlReleaserCommandLineHandler,
-	#superclass : #CommandLineHandler,
-	#category : #'GToolkit-Releaser-Jenkins'
+	#name : 'GtRlReleaserCommandLineHandler',
+	#superclass : 'CommandLineHandler',
+	#category : 'GToolkit-Releaser-Jenkins'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlReleaserCommandLineHandler class >> commandName [
 	^ 'releasegtoolkit'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlReleaserCommandLineHandler class >> description [
 	^ 'GtRlReleaserCommand line utility'
 ]
 
-{ #category : #activation }
+{ #category : 'activation' }
 GtRlReleaserCommandLineHandler >> activate [
+	| theWorkflowBuilder theVersionComputation |
+	
 	self activateHelp
 		ifTrue: [  ^ self ].
-	self arguments size > 1 ifTrue: 
-		[ self inform: 'Releaser has only one argument: the new version it should use. E.g.: v0.4.2'].
-	TranscriptLogger runDuring: [ 
-		self arguments isEmpty 
-			ifTrue: [ GtRlReleaserExportWorkflow performGToolkitRelease ]
-			ifFalse:[ | semanticVersion w | semanticVersion := (self argumentAt:1) asGtRlSemanticVersionNumber.
-				w := GtRlReleaserExportWorkflow buildGToolkitRelease: semanticVersion.
-				w executeReleaseActions. ].
-	].
-	Smalltalk snapshot: true andQuit: true.
+		
+	self assignSshKeys.
+	
+	theVersionComputation := self commandLine
+		optionAt: 'strategy'
+		ifPresent: [ :aStrategyName |
+			GtRlSemanticVersionComputation named: aStrategyName ]
+		ifAbsent: [ GtRlPatchVersionComputation new ].
+
+	theWorkflowBuilder := [
+		| theWorkflow |
+		GtPharoCompletionStrategy unsubscribeFromSystem.
+		theWorkflow := GtRlReleaserExportWorkflow buildGToolkitReleaseWithVersionComputation: theVersionComputation.
+		
+		self commandLine
+			optionAt: 'expected'
+			ifPresent: [ :anExpectedVersionString |
+				| anExpectedVersion anActualVersion |
+				
+				anExpectedVersion := GtRlSemanticVersionNumber readFromString: anExpectedVersionString.
+				anActualVersion := theWorkflow rootProjectRelease version.
+				
+				anExpectedVersion ~= anActualVersion
+					ifTrue: [ Error signal: ('Expected version {1} does not match the actual {2}'
+						format: {
+							anExpectedVersion versionString.
+							anActualVersion versionString }) ] ].
+		
+		theWorkflow executeReleaseActions.
+		GtPharoCompletionStrategy subscribeToSystem ].
+
+	(self hasOption: 'verbose')
+		ifTrue: [ TranscriptLogger runDuring: theWorkflowBuilder ]
+		ifFalse: theWorkflowBuilder.
+
+	(self hasOption: 'save')
+		ifTrue: [ 
+			^ Smalltalk 
+				snapshot: true 
+				andQuit: (self hasOption: 'no-quit') not ].
+
+	(self hasOption: 'no-quit')
+		ifFalse: [ self quit ]
+]
+
+{ #category : 'accessing' }
+GtRlReleaserCommandLineHandler >> assignSshKeys [
+	| privateKey publicKey |
+	
+	privateKey := self
+		optionAt: 'private-key'
+		ifPresent: [ :aKeyPath | aKeyPath trim trimBoth: [ :char | #($' $") includes: char ] ]
+		ifAbsent: nil.
+	
+	publicKey := self
+		optionAt: 'public-key'
+		ifPresent: [ :aKeyPath | aKeyPath trim trimBoth: [ :char | #($' $") includes: char ] ]
+		ifAbsent: nil.
+	
+	((privateKey isNil and: [ publicKey notNil ])
+		or: [ privateKey notNil and: [ publicKey isNil ] ])
+			ifTrue: [ Error signal: 'Must specify both private and public key' ].
+	
+	(privateKey isNil and: [ publicKey isNil ])
+		ifTrue: [ ^ self ].
+	
+	IceCredentialsProvider useCustomSsh: true.
+	IceCredentialsProvider sshCredentials
+		publicKey: publicKey;
+		privateKey: privateKey
 ]

@@ -16,6 +16,19 @@ Class {
 }
 
 { #category : 'accessing' }
+GtRlSemanticVersionComputation class >> named: aStrategyName [
+	| availableVersionComputations |
+	
+	availableVersionComputations := {
+		#patch -> GtRlPatchVersionComputation new.
+		#minor -> GtRlMinorVersionComputation new.
+		#major -> GtRlMajorVersionComputation new.
+	} asDictionary.
+	
+	^ availableVersionComputations at: aStrategyName asLowercase asSymbol
+]
+
+{ #category : 'accessing' }
 GtRlSemanticVersionComputation >> defaultVersionNumber [
 	^ defaultVersionNumber
 ]

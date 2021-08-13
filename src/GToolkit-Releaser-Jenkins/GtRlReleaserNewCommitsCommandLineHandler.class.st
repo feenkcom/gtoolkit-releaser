@@ -1,20 +1,20 @@
 Class {
-	#name : #GtRlReleaserNewCommitsCommandLineHandler,
-	#superclass : #CommandLineHandler,
-	#category : #'GToolkit-Releaser-Jenkins'
+	#name : 'GtRlReleaserNewCommitsCommandLineHandler',
+	#superclass : 'CommandLineHandler',
+	#category : 'GToolkit-Releaser-Jenkins'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlReleaserNewCommitsCommandLineHandler class >> commandName [
 	^ 'printNewCommits'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlReleaserNewCommitsCommandLineHandler class >> description [
 	^ 'GtRlReleaserCommand new commits printer'
 ]
 
-{ #category : #activation }
+{ #category : 'activation' }
 GtRlReleaserNewCommitsCommandLineHandler >> activate [
 	self activateHelp
 		ifTrue: [  ^ self ].

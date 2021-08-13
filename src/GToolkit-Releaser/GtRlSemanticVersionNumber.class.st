@@ -52,7 +52,7 @@ GtRlSemanticVersionNumber class >> matchesString: aString [
 { #category : 'converting' }
 GtRlSemanticVersionNumber class >> readFromString: aString [
 	| tokens |
-	tokens := aString allButFirst findTokens: '.'. 
+	tokens := (aString trimBoth trimLeft: [:char | char = $v]) findTokens: '.'.
 	^ self 
 		major: tokens first asInteger
 		minor: tokens second asInteger

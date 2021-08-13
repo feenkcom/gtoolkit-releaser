@@ -86,30 +86,38 @@ GtRlReleaserExportWorkflow class >> attemtToFixDirtyPackagesFor: repo [
 
 { #category : 'releasing' }
 GtRlReleaserExportWorkflow class >> buildGToolkitRelease [
-	| releaseConfiguration workflow | 
-	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
-	releaseConfiguration emit.
-	workflow := GtRlReleaserExportWorkflow 
-		forBaseline: BaselineOfGToolkit 
-		fromRepository: 'github://feenkcom/gtoolkit:main/src'
-		withConfiguration: releaseConfiguration.
-	^ workflow
+	^ self buildGToolkitReleaseWithConfiguration: GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration
 ]
 
 { #category : 'releasing' }
 GtRlReleaserExportWorkflow class >> buildGToolkitRelease: version [
-	| releaseConfiguration workflow |
-	TranscriptLogger runDuring: [  
-		releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
-		releaseConfiguration enforcedVersion: version.
-		releaseConfiguration forceNewRelease.
-		releaseConfiguration emit.
-		workflow := GtRlReleaserExportWorkflow 
-			forBaseline: BaselineOfGToolkit 
-			fromRepository: 'github://feenkcom/gtoolkit:main/src'
-			withConfiguration: releaseConfiguration.
-	].
+	| releaseConfiguration |
+	
+	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
+	releaseConfiguration enforcedVersion: version.
+	releaseConfiguration forceNewRelease.
+	^ self buildGToolkitReleaseWithConfiguration: releaseConfiguration
+]
+
+{ #category : 'releasing' }
+GtRlReleaserExportWorkflow class >> buildGToolkitReleaseWithConfiguration: aReleaseConfiguration [
+	| workflow |
+
+	aReleaseConfiguration emit.
+	workflow := GtRlReleaserExportWorkflow 
+		forBaseline: BaselineOfGToolkit 
+		fromRepository: 'github://feenkcom/gtoolkit:main/src'
+		withConfiguration: aReleaseConfiguration.
 	^ workflow
+]
+
+{ #category : 'releasing' }
+GtRlReleaserExportWorkflow class >> buildGToolkitReleaseWithVersionComputation: aVersionComputation [
+	| releaseConfiguration |
+	
+	releaseConfiguration := GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration.
+	releaseConfiguration defaultVersionComputation: aVersionComputation.
+	^ self buildGToolkitReleaseWithConfiguration: releaseConfiguration
 ]
 
 { #category : 'instance creation' }
