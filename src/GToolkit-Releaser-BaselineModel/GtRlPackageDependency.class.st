@@ -6,8 +6,8 @@ The source node of the dependency is the package. The target is another type of 
 
 "
 Class {
-	#name : #GtRlPackageDependency,
-	#superclass : #Object,
+	#name : 'GtRlPackageDependency',
+	#superclass : 'Object',
 	#instVars : [
 		'sourceNode',
 		'targetNode'
@@ -15,7 +15,7 @@ Class {
 	#category : 'GToolkit-Releaser-BaselineModel-Model'
 }
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlPackageDependency >> printOn: aStream [
 	super printOn: aStream.
 	aStream 
@@ -26,22 +26,22 @@ GtRlPackageDependency >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlPackageDependency >> sourceNode [
 	^ sourceNode
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlPackageDependency >> sourceNode: anObject [
 	sourceNode := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlPackageDependency >> targetNode [
 	^ targetNode
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlPackageDependency >> targetNode: anObject [
 	targetNode := anObject
 ]

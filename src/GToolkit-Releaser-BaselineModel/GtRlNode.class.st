@@ -6,8 +6,8 @@ I hold a list of incomming dependencies that indicate what other nodes in the ba
 
 "
 Class {
-	#name : #GtRlNode,
-	#superclass : #Object,
+	#name : 'GtRlNode',
+	#superclass : 'Object',
 	#instVars : [
 		'name',
 		'parentProject',
@@ -16,7 +16,7 @@ Class {
 	#category : 'GToolkit-Releaser-BaselineModel-Model'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 GtRlNode >> addIncomingDependency: aDependency [
 	self assert: [ aDependency notNil ].
 	self 
@@ -26,13 +26,13 @@ GtRlNode >> addIncomingDependency: aDependency [
 	self incomingDependencies add: aDependency
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : 'accessing - dynamic' }
 GtRlNode >> dependentPackages [
 	^ self incomingDependenciesFromPackages collect: [ :aDependency |
 		aDependency sourceNode ]
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlNode >> gtViewDependentPackagesListFor: aView [
 	<gtView>
 	^ aView list
@@ -42,7 +42,7 @@ GtRlNode >> gtViewDependentPackagesListFor: aView [
 		itemText: #name
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlNode >> gtViewIncomingDependenciesListFor: aView [
 	<gtView>
 	^ aView list
@@ -51,44 +51,44 @@ GtRlNode >> gtViewIncomingDependenciesListFor: aView [
 		items: [ self incomingDependencies ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlNode >> incomingDependencies [
 	^ incomingDependencies
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : 'accessing - dynamic' }
 GtRlNode >> incomingDependenciesFromPackages [
 	^ self incomingDependencies select: [ :aDependency |
 		aDependency sourceNode isPackageNode ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GtRlNode >> initialize [
 	super initialize.
 	incomingDependencies := OrderedCollection new.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlNode >> isPackageNode [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlNode >> isProjectReference [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlNode >> isUnknownNode [
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlNode >> name [
 	^ name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlNode >> name: aString [
 	self assert: [ aString notNil ].
 	self 
@@ -98,12 +98,12 @@ GtRlNode >> name: aString [
 	name := aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlNode >> parentProject [
 	^ parentProject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlNode >> parentProject: aProject [
 	self assert: [ aProject notNil ].
 	self 
@@ -113,7 +113,7 @@ GtRlNode >> parentProject: aProject [
 	parentProject := aProject
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlNode >> printOn: aStream [
 	super printOn: aStream.
 	aStream 

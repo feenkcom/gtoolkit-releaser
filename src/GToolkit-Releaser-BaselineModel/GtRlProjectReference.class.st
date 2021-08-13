@@ -6,31 +6,31 @@ I directly hold the referenced project, so it should be resolved before.
 
 "
 Class {
-	#name : #GtRlProjectReference,
-	#superclass : #GtRlNode,
+	#name : 'GtRlProjectReference',
+	#superclass : 'GtRlNode',
 	#instVars : [
 		'referencedProject'
 	],
 	#category : 'GToolkit-Releaser-BaselineModel-Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 GtRlProjectReference class >> forReferencedProject: aProject [
 	^ self new
 		referencedProject: aProject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlProjectReference >> isProjectReference [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectReference >> referencedProject [
 	^ referencedProject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectReference >> referencedProject: aProject [
 	self assert: [ aProject notNil ].
 	self 

@@ -6,21 +6,21 @@ I rely on a url to model the location. I follow the same conventions as Metacell
 
 "
 Class {
-	#name : #GtRlRepositoryLoadSpecification,
-	#superclass : #Object,
+	#name : 'GtRlRepositoryLoadSpecification',
+	#superclass : 'Object',
 	#instVars : [
 		'specificationUrl'
 	],
 	#category : 'GToolkit-Releaser-BaselineModel-Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 GtRlRepositoryLoadSpecification class >> fromUrlString: aString [
 	^ self new
 		specificationUrl: (ZnUrl fromString: aString)
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 GtRlRepositoryLoadSpecification >> = anotherObject [
 	self == anotherObject
 		ifTrue: [ ^ true ].
@@ -29,18 +29,18 @@ GtRlRepositoryLoadSpecification >> = anotherObject [
 	^ self specificationString asSymbol == anotherObject specificationString asSymbol
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlRepositoryLoadSpecification >> hasVersion [
 	^ self specificationUrl segments first includes: $:
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 GtRlRepositoryLoadSpecification >> hash [ 
 	^ self class hash 
 		bitXor: self specificationUrl hash
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryLoadSpecification >> nameSegment [
 	| size segmentIndex |
 	size := self specificationUrl segments size. 
@@ -49,7 +49,7 @@ GtRlRepositoryLoadSpecification >> nameSegment [
 	^ self specificationUrl segments at: segmentIndex.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryLoadSpecification >> projectName [
 	| firstSegment |
 	firstSegment := self specificationUrl segments first.
@@ -58,7 +58,7 @@ GtRlRepositoryLoadSpecification >> projectName [
 		ifFalse: [ firstSegment ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryLoadSpecification >> repositoryName [
 	| nameSegment |
 	nameSegment := self nameSegment.
@@ -67,7 +67,7 @@ GtRlRepositoryLoadSpecification >> repositoryName [
 		ifFalse: [ nameSegment ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryLoadSpecification >> specificationId [ 	
 	| urlCopy |
 	urlCopy := self specificationUrl copy.
@@ -79,24 +79,24 @@ GtRlRepositoryLoadSpecification >> specificationId [
 	^ urlCopy asString.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryLoadSpecification >> specificationString [
 	^ self specificationUrl asString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryLoadSpecification >> specificationUrl [
 	^ specificationUrl
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryLoadSpecification >> specificationUrl: aZnUrl [
 	self assert: [ aZnUrl notNil ].
 	
 	specificationUrl := aZnUrl
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryLoadSpecification >> urlWithVersion: aVersionString [
 	| currentUrl |
 	currentUrl := self specificationUrl copy.
@@ -104,7 +104,7 @@ GtRlRepositoryLoadSpecification >> urlWithVersion: aVersionString [
 	^ currentUrl
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryLoadSpecification >> versionString [
 	| nameSegment |
 	nameSegment := self nameSegment.
@@ -113,7 +113,7 @@ GtRlRepositoryLoadSpecification >> versionString [
 		ifFalse: [ Error signal: 'The repository does not have a version number.' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryLoadSpecification >> versionStringOrNil [
 	^ self hasVersion 
 		ifTrue: [ self versionString ] 

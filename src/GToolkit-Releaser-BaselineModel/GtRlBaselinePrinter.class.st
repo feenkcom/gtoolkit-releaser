@@ -9,17 +9,17 @@ The writting of the actual baseline code is done using a {{gtClass:GtRlBaselineP
 Subclasses define the project model that provides information about dependencies.
 "
 Class {
-	#name : #GtRlBaselinePrinter,
-	#superclass : #Object,
+	#name : 'GtRlBaselinePrinter',
+	#superclass : 'Object',
 	#category : 'GToolkit-Releaser-BaselineModel-Printer'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlBaselinePrinter >> baselineProject [
 	self subclassResponsibility 
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 GtRlBaselinePrinter >> generateBaselineSource [
 	^ String streamContents: [ :aRawStream |
 		| baselineStream |
@@ -28,7 +28,7 @@ GtRlBaselinePrinter >> generateBaselineSource [
 		self generateBaselineSourceOn: baselineStream ]
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 GtRlBaselinePrinter >> generateBaselineSourceOn: aStream [
 	aStream baselineWithCommonSpecOn: [  
 		self generatePreAndPostActionsOn: aStream.
@@ -39,7 +39,7 @@ GtRlBaselinePrinter >> generateBaselineSourceOn: aStream [
 		self generatePackageDependenciesOn: aStream ]
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 GtRlBaselinePrinter >> generatePackageDependenciesOn: aStream [
 	self baselineProject packages do: [ :aPackage |
 		aStream 
@@ -47,7 +47,7 @@ GtRlBaselinePrinter >> generatePackageDependenciesOn: aStream [
 			withDependencies: aPackage outgoingDependencyNames ]
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 GtRlBaselinePrinter >> generatePreAndPostActionsOn: aStream [
 	self baselineProject preLoadAction ifNotNil: [ 
 		aStream preLoadAction: self baselineProject preLoadAction ].
@@ -55,12 +55,12 @@ GtRlBaselinePrinter >> generatePreAndPostActionsOn: aStream [
 		aStream postLoadAction: self baselineProject postLoadAction ].
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 GtRlBaselinePrinter >> generateProjectDependenciesOn: aStream [
 	self subclassResponsibility 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlBaselinePrinter >> gtViewGeneratedBaselineFor: aView [
 	<gtView>
 	^ aView textEditor
@@ -69,12 +69,12 @@ GtRlBaselinePrinter >> gtViewGeneratedBaselineFor: aView [
 		text: [ self generateBaselineSource ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlBaselinePrinter >> hasProjectDependencies [
 	self subclassResponsibility 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlBaselinePrinter >> printOn: aStream [
 	super printOn: aStream.
 	aStream
