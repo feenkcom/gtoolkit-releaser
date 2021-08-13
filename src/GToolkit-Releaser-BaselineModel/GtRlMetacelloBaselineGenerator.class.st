@@ -1,27 +1,27 @@
 Class {
-	#name : 'GtRlMetacelloBaselineGenerator',
-	#superclass : 'Object',
+	#name : #GtRlMetacelloBaselineGenerator,
+	#superclass : #Object,
 	#category : 'GToolkit-Releaser-BaselineModel-Metacello'
 }
 
-{ #category : 'baselines' }
+{ #category : #baselines }
 GtRlMetacelloBaselineGenerator >> baselineProject [
 	self subclassResponsibility 
 ]
 
-{ #category : 'accessing - dynamic' }
+{ #category : #'accessing - dynamic' }
 GtRlMetacelloBaselineGenerator >> childProjectsWithRepositoryURL [
 	self subclassResponsibility
 ]
 
-{ #category : 'compiling' }
+{ #category : #compiling }
 GtRlMetacelloBaselineGenerator >> compileBaselineMethod [
 	| childProjectsWithRepositoryURL |
 	childProjectsWithRepositoryURL := self childProjectsWithRepositoryURL.
  	^ self compileBaselineWithProjectDependencies: childProjectsWithRepositoryURL
 ]
 
-{ #category : 'compiling' }
+{ #category : #compiling }
 GtRlMetacelloBaselineGenerator >> compileBaselineWithProjectDependencies: projectDependenciesMap [
 	| toolbox |
 	toolbox := self toolboxForBaselineWithProjectDependencies: projectDependenciesMap.
@@ -29,21 +29,21 @@ GtRlMetacelloBaselineGenerator >> compileBaselineWithProjectDependencies: projec
 	^ GtPharoCodeModifier current critical: [ toolbox commitBaselineOfMethod ]
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 GtRlMetacelloBaselineGenerator >> generateBaselineSource [
 	| childProjectsWithRepositoryURL |
 	childProjectsWithRepositoryURL := self childProjectsWithRepositoryURL.
  	^ self generateBaselineSourceWithProjectDependencies: childProjectsWithRepositoryURL
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 GtRlMetacelloBaselineGenerator >> generateBaselineSourceWithProjectDependencies: projectDependenciesMap [
 	| toolbox |
 	toolbox := self toolboxForBaselineWithProjectDependencies: projectDependenciesMap.
 	^ toolbox methodSpec methodSource
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 GtRlMetacelloBaselineGenerator >> toolboxForBaselineWithProjectDependencies: projectDependenciesMap [
 	| projectNames toolbox |
 	projectNames := projectDependenciesMap collect: #key.
