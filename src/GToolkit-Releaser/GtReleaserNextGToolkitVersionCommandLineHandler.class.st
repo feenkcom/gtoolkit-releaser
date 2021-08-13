@@ -1,20 +1,20 @@
 Class {
-	#name : 'GtReleaserNextGToolkitVersionCommandLineHandler',
-	#superclass : 'CommandLineHandler',
+	#name : #GtReleaserNextGToolkitVersionCommandLineHandler,
+	#superclass : #CommandLineHandler,
 	#category : 'GToolkit-Releaser-GToolkit-Releaser'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtReleaserNextGToolkitVersionCommandLineHandler class >> commandName [
 	^ 'nextgtoolkitversion'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtReleaserNextGToolkitVersionCommandLineHandler class >> description [
 	^ 'A command to compute the next version of gtoolkit using releaser'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtReleaserNextGToolkitVersionCommandLineHandler >> activate [
 	| theVersionComputation theNextVersion |
 	

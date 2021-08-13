@@ -11,12 +11,12 @@ See {{gtMethod:GtRlBaselineTagReleaseStrategy>>#assertCompatibleWithRepository:}
 
 "
 Class {
-	#name : 'GtRlBaselineTagReleaseStrategy',
-	#superclass : 'GtRlReleaseStrategy',
+	#name : #GtRlBaselineTagReleaseStrategy,
+	#superclass : #GtRlReleaseStrategy,
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'assertions' }
+{ #category : #assertions }
 GtRlBaselineTagReleaseStrategy >> assertCompatibleWithRepository: aRepository [
 	self 
 		assert: [ aRepository hasVersion ]
@@ -33,18 +33,18 @@ GtRlBaselineTagReleaseStrategy >> assertCompatibleWithRepository: aRepository [
 		description: 'The current version loaded in the image should be a tag present in the head commit.'.
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlBaselineTagReleaseStrategy >> description [
 	^ 'BaselineTag'
 ]
 
-{ #category : 'accessing - dynamic' }
+{ #category : #'accessing - dynamic' }
 GtRlBaselineTagReleaseStrategy >> loadedTagVersionNumber [
 	^ GtRlTagVersionNumber new 
 		tagName: self repositoryRelease repository versionString
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlBaselineTagReleaseStrategy >> updateFor: anUpdateWorkflow [
 	self 
 		assert: [ self repositoryRelease withAllChildRepositoryReleases allSatisfy: [ :aRelease |

@@ -13,8 +13,8 @@ I have as main attributes:
 
 "
 Class {
-	#name : 'GtRlProjectRelease',
-	#superclass : 'GtRlRelease',
+	#name : #GtRlProjectRelease,
+	#superclass : #GtRlRelease,
 	#instVars : [
 		'project',
 		'repositoryRelease',
@@ -24,41 +24,41 @@ Class {
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 GtRlProjectRelease class >> forProject: aProject [
 	^ self new
 		project: aProject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectRelease >> addChildRelease: aProjectRelease [
 	aProjectRelease parentReleases add: self.
 	self childReleases add: aProjectRelease.
 ]
 
-{ #category : 'accessing - dynamic' }
+{ #category : #'accessing - dynamic' }
 GtRlProjectRelease >> baselineGenerator [
 	^ self project baselineGenerator releaseBaselineGenerator 
 		projectRelease: self
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectRelease >> childReleases [
 	^ childReleases ifNil: [ 
 		childReleases := OrderedCollection new ]
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlProjectRelease >> compileBaselineMethod [
  	^ self baselineGenerator compileBaselineMethod
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlProjectRelease >> generateBaselineSource [
  	^ self baselineGenerator generateBaselineSource
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlProjectRelease >> gtGeneratedSourceFor: aView [
 	<gtView> 
 	^ aView textEditor
@@ -69,7 +69,7 @@ GtRlProjectRelease >> gtGeneratedSourceFor: aView [
 		priority: 15
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlProjectRelease >> gtProjectMapFor: aView [
 	<gtView>
 	^ aView mondrian
@@ -99,7 +99,7 @@ GtRlProjectRelease >> gtProjectMapFor: aView [
 			mondrian layout custom: GtGradWestHierarchicalLayout new ]
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlProjectRelease >> gtRepoMapFor: aView [
 	<gtView>
 	^ self repositoryRelease 
@@ -107,28 +107,28 @@ GtRlProjectRelease >> gtRepoMapFor: aView [
 		ifNotNil: [ :aRepositoryRelease | aRepositoryRelease gtRepoMapFor: aView ]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlProjectRelease >> isLeaf [
 	^ self project isLeaf
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectRelease >> name [
 	^ self project name.
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlProjectRelease >> nodeName [
 	^ project name
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectRelease >> parentReleases [
 	^ parentReleases ifNil: [ 
 		parentReleases := OrderedCollection new ]
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlProjectRelease >> printOn: aStream [
 	super printOn: aStream.
 	aStream nextPutAll: '('.
@@ -138,32 +138,32 @@ GtRlProjectRelease >> printOn: aStream [
 	aStream nextPutAll: ')'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectRelease >> project [
 	^ project
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectRelease >> project: aProject [
 	project := aProject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectRelease >> repositoryRelease [
 	^ repositoryRelease
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectRelease >> repositoryRelease: aRepositoryRelease [
 	repositoryRelease := aRepositoryRelease
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectRelease >> version [
 	^ self repositoryRelease version
 ]
 
-{ #category : 'traversing' }
+{ #category : #traversing }
 GtRlProjectRelease >> withAllChildProjectReleases [
 	^ self withDeepCollect: #childReleases
 ]

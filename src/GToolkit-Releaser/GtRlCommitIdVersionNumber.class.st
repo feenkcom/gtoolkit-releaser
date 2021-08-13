@@ -8,27 +8,27 @@ More examples are provided by the class {{gtClass:GtRlCommitIdVersionNumberExamp
 
 "
 Class {
-	#name : 'GtRlCommitIdVersionNumber',
-	#superclass : 'GtRlVersionNumber',
+	#name : #GtRlCommitIdVersionNumber,
+	#superclass : #GtRlVersionNumber,
 	#instVars : [
 		'commitId'
 	],
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'comparing' }
+{ #category : #comparing }
 GtRlCommitIdVersionNumber >> = anObject [
 	self == anObject ifTrue: [ ^ true ].
 	self class = anObject class ifFalse: [ ^ false ].
 	^ self commitId = anObject commitId
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlCommitIdVersionNumber >> commitId [ 
 	^ commitId 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlCommitIdVersionNumber >> commitId: aCommitId [
 	self assert: [ aCommitId notNil ] description: 'The commit id cannot be null'.
 	self 
@@ -37,7 +37,7 @@ GtRlCommitIdVersionNumber >> commitId: aCommitId [
 	commitId := aCommitId 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlCommitIdVersionNumber >> description [ 
 	^ self versionString 
 		ifNil: [ nil ] 
@@ -45,13 +45,13 @@ GtRlCommitIdVersionNumber >> description [
 	
 ]
 
-{ #category : 'comparing' }
+{ #category : #comparing }
 GtRlCommitIdVersionNumber >> hash [
 	^ (self species hash
 		bitXor: self commitId hash)
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlCommitIdVersionNumber >> versionString [
 	^ self commitId
 ]

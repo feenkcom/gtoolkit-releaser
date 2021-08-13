@@ -1,20 +1,20 @@
 Class {
-	#name : 'GtReleaserBumpGToolkitVersionCommandLineHandler',
-	#superclass : 'CommandLineHandler',
+	#name : #GtReleaserBumpGToolkitVersionCommandLineHandler,
+	#superclass : #CommandLineHandler,
 	#category : 'GToolkit-Releaser-GToolkit-Releaser'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtReleaserBumpGToolkitVersionCommandLineHandler class >> commandName [
 	^ 'bumpgtoolkitversion'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtReleaserBumpGToolkitVersionCommandLineHandler class >> description [
 	^ 'A command to bump the version of gtoolkit using releaser'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtReleaserBumpGToolkitVersionCommandLineHandler >> activate [
 	| theVersionComputation theWorkflowBuilder theWorkflow theVersion |
 	

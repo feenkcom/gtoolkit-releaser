@@ -11,8 +11,8 @@ I also use the given {{gtClass:GtRlReleaseConfiguration}} instance to initialize
 
 "
 Class {
-	#name : 'GtRlReleaseStructureBuilder',
-	#superclass : 'Object',
+	#name : #GtRlReleaseStructureBuilder,
+	#superclass : #Object,
 	#instVars : [
 		'configuration',
 		'projectReleasesMap',
@@ -21,13 +21,13 @@ Class {
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 GtRlReleaseStructureBuilder class >> forConfiguration: aReleaseConfiguration [
 	^ self new
 		configuration: aReleaseConfiguration
 ]
 
-{ #category : 'building' }
+{ #category : #building }
 GtRlReleaseStructureBuilder >> buildStructureForProject: aProject [
 	| projectRelease repositoryRelease |
 	projectRelease := GtRlProjectRelease forProject: aProject.
@@ -39,17 +39,17 @@ GtRlReleaseStructureBuilder >> buildStructureForProject: aProject [
 	^ projectRelease
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseStructureBuilder >> configuration [
 	^ configuration
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseStructureBuilder >> configuration: aReleaseConfiguration [
 	configuration := aReleaseConfiguration
 ]
 
-{ #category : 'private - building' }
+{ #category : #'private - building' }
 GtRlReleaseStructureBuilder >> createChildrenForProjectRelease: projectRelease [.
 	projectRelease project childProjects do: [ :aChildProject |
 		| childProjectRelease |
@@ -59,7 +59,7 @@ GtRlReleaseStructureBuilder >> createChildrenForProjectRelease: projectRelease [
 		projectRelease addChildRelease: childProjectRelease ]
 ]
 
-{ #category : 'private - building' }
+{ #category : #'private - building' }
 GtRlReleaseStructureBuilder >> ensureRepositoryReleaseFor: aRepository [
 	^ self repositoryReleasesMap at: aRepository ifAbsentPut: [ 
 		| repositoryRelease releaseStrategy |
@@ -71,13 +71,13 @@ GtRlReleaseStructureBuilder >> ensureRepositoryReleaseFor: aRepository [
 		repositoryRelease ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseStructureBuilder >> projectReleasesMap [
 	^ projectReleasesMap ifNil: [ 
 		projectReleasesMap := Dictionary new ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseStructureBuilder >> repositoryReleasesMap [
 	^ repositoryReleasesMap ifNil: [ 
 		repositoryReleasesMap := Dictionary new ]

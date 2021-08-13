@@ -1,10 +1,10 @@
 Class {
-	#name : 'GtRlLoadedTagReleaseStrategy',
-	#superclass : 'GtRlReleaseStrategy',
+	#name : #GtRlLoadedTagReleaseStrategy,
+	#superclass : #GtRlReleaseStrategy,
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'assertions' }
+{ #category : #assertions }
 GtRlLoadedTagReleaseStrategy >> assertCompatibleWithRepository: aRepository [
 	"We only require that the current loaded version of the project has a tag, 
 	that we will use when generating a release for this repository. The project can
@@ -20,18 +20,18 @@ GtRlLoadedTagReleaseStrategy >> assertCompatibleWithRepository: aRepository [
 		description: 'The current loaded commit should just have a single tag'.
 ]
 
-{ #category : 'accessing - dynamic' }
+{ #category : #'accessing - dynamic' }
 GtRlLoadedTagReleaseStrategy >> currentTagVersionNumber [
 	^ GtRlTagVersionNumber new 
 		tagName: self repositoryRelease icebergRepository headCommit tags first name
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlLoadedTagReleaseStrategy >> description [
 	^ 'LoadedTag'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlLoadedTagReleaseStrategy >> updateFor: anUpdateWorkflow [
 
 	self flag: 'Add assertions to check that all the subprojects '.

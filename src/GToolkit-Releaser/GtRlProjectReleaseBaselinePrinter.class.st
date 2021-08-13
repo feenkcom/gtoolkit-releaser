@@ -5,26 +5,26 @@ It used the child releases defined with the project release to specify baseline 
 The rest of the information, like packages, is taken from the project associated with the project release.
 "
 Class {
-	#name : 'GtRlProjectReleaseBaselinePrinter',
-	#superclass : 'GtRlBaselinePrinter',
+	#name : #GtRlProjectReleaseBaselinePrinter,
+	#superclass : #GtRlBaselinePrinter,
 	#instVars : [
 		'projectRelease'
 	],
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 GtRlProjectReleaseBaselinePrinter class >> forProjectRelease: aProjectReleasee [
 	^ self new
 		projectRelease: aProjectReleasee
 ]
 
-{ #category : 'baselines' }
+{ #category : #baselines }
 GtRlProjectReleaseBaselinePrinter >> baselineProject [
 	^ projectRelease project
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 GtRlProjectReleaseBaselinePrinter >> generateProjectDependenciesOn: aStream [
 	projectRelease childReleases do: [ :aProjectRelease |
 		aStream 
@@ -32,12 +32,12 @@ GtRlProjectReleaseBaselinePrinter >> generateProjectDependenciesOn: aStream [
 			withLoadSpec: aProjectRelease repositoryRelease urlWithReleaseVersion asString ].
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlProjectReleaseBaselinePrinter >> hasProjectDependencies [
 	^ projectRelease childReleases notEmpty
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectReleaseBaselinePrinter >> projectRelease: aProjectRelease [
 	projectRelease := aProjectRelease
 ]
