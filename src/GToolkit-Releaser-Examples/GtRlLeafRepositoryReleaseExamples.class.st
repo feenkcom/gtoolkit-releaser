@@ -180,7 +180,7 @@ GtRlLeafRepositoryReleaseExamples >> printBaselineCodeReleaseForFourRepositories
 	<gtExample>
 	| projectRelease printer |
 	projectRelease := self releaseWithBranchStrategyOnNoVersionRepo projectReleases first.
-	printer := GtRlProjectReleaseBaselinePrinter forProjectRelease: projectRelease.
+	printer := GtRlProjectReleaseBaselineGenerator forProjectRelease: projectRelease.
 	
 	self 
 		assert: printer generateBaselineSource 

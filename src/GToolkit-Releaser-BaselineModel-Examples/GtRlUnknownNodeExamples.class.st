@@ -1,10 +1,10 @@
 Class {
-	#name : #GtRlUnknownNodeExamples,
-	#superclass : #Object,
-	#category : #'GToolkit-Releaser-BaselineModel-Examples'
+	#name : 'GtRlUnknownNodeExamples',
+	#superclass : 'Object',
+	#category : 'GToolkit-Releaser-BaselineModel-Examples'
 }
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlUnknownNodeExamples >> unknowNode [
 	<gtExample>
 	| node |
@@ -19,7 +19,7 @@ GtRlUnknownNodeExamples >> unknowNode [
 	^ node
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlUnknownNodeExamples >> unknowNodeWithIncommingDependency [
 	<gtExample>
 	| unknownNode package |

@@ -1,10 +1,10 @@
 Class {
-	#name : #GtRlRepositoryLoadSpecificationForGithubWithTagExamples,
-	#superclass : #GtRlRepositoryLoadSpecificationBasicExamples,
-	#category : #'GToolkit-Releaser-BaselineModel-Examples'
+	#name : 'GtRlRepositoryLoadSpecificationForGithubWithTagExamples',
+	#superclass : 'GtRlRepositoryLoadSpecificationBasicExamples',
+	#category : 'GToolkit-Releaser-BaselineModel-Examples'
 }
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlRepositoryLoadSpecificationForGithubWithTagExamples >> loadSpecificationHasCorrectVersion [
 	<gtExample>
 	| loadSpecification |
@@ -17,7 +17,7 @@ GtRlRepositoryLoadSpecificationForGithubWithTagExamples >> loadSpecificationHasC
 	^ loadSpecification
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlRepositoryLoadSpecificationForGithubWithTagExamples >> loadSpecificationHasNames [
 	<gtExample>
 	| loadSpecification |
@@ -29,12 +29,12 @@ GtRlRepositoryLoadSpecificationForGithubWithTagExamples >> loadSpecificationHasN
 	^ loadSpecification
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryLoadSpecificationForGithubWithTagExamples >> specificationId [
 	^ 'github://example/gtoolkit/src'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryLoadSpecificationForGithubWithTagExamples >> specificationUrlString [
 	^ 'github://example/gtoolkit:v0.2.1/src'
 ]

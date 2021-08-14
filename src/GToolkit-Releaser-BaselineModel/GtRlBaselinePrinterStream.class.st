@@ -16,7 +16,7 @@ Class {
 		'indentationLevel',
 		'stream'
 	],
-	#category : 'GToolkit-Releaser-BaselineModel-Printer'
+	#category : 'GToolkit-Releaser-BaselineModel-Generator'
 }
 
 { #category : 'api' }

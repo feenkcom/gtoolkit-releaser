@@ -1,6 +1,6 @@
 Class {
-	#name : #GtRlSystemOneModelExamples,
-	#superclass : #Object,
+	#name : 'GtRlSystemOneModelExamples',
+	#superclass : 'Object',
 	#instVars : [
 		'projectComponentA',
 		'projectComponentBUtil',
@@ -14,10 +14,10 @@ Class {
 		'repositoryComponentDModuleA',
 		'projectComponentBMain'
 	],
-	#category : #'GToolkit-Releaser-BaselineModel-Examples'
+	#category : 'GToolkit-Releaser-BaselineModel-Examples'
 }
 
-{ #category : #assertions }
+{ #category : 'assertions' }
 GtRlSystemOneModelExamples >> assertBaseline: aBaselineClass forProject: aProject [
 
 	self assert: aProject name equals: (aBaselineClass name withoutPrefix: 'BaselineOf').
@@ -25,7 +25,7 @@ GtRlSystemOneModelExamples >> assertBaseline: aBaselineClass forProject: aProjec
 	self assert: aProject baselineVersion equals: aBaselineClass project version.
 ]
 
-{ #category : #assertions }
+{ #category : 'assertions' }
 GtRlSystemOneModelExamples >> assertStandaloneRepository: aRepository [
 	self assert: aRepository isLeaf.
 	self assert: aRepository projects isEmpty.
@@ -34,7 +34,7 @@ GtRlSystemOneModelExamples >> assertStandaloneRepository: aRepository [
 	
 ]
 
-{ #category : #'examples - projects' }
+{ #category : 'examples - projects' }
 GtRlSystemOneModelExamples >> projectComponentA [
 	<gtExample>
 	^ projectComponentA ifNil: [
@@ -54,7 +54,7 @@ GtRlSystemOneModelExamples >> projectComponentA [
 		projectComponentA := project ]
 ]
 
-{ #category : #'examples - projects' }
+{ #category : 'examples - projects' }
 GtRlSystemOneModelExamples >> projectComponentBMain [
 	<gtExample>
 	^ projectComponentBMain ifNil: [ 
@@ -79,7 +79,7 @@ GtRlSystemOneModelExamples >> projectComponentBMain [
 		projectComponentBMain := projectBMain ]
 ]
 
-{ #category : #'examples - projects' }
+{ #category : 'examples - projects' }
 GtRlSystemOneModelExamples >> projectComponentBUtil [
 	<gtExample>
 	^ projectComponentBUtil ifNil: [
@@ -98,7 +98,7 @@ GtRlSystemOneModelExamples >> projectComponentBUtil [
 		projectComponentBUtil := project ]
 ]
 
-{ #category : #'examples - projects' }
+{ #category : 'examples - projects' }
 GtRlSystemOneModelExamples >> projectComponentC [
 	<gtExample>
 	^ projectComponentC ifNil: [ | project repository |
@@ -117,7 +117,7 @@ GtRlSystemOneModelExamples >> projectComponentC [
 		projectComponentC := project ]
 ]
 
-{ #category : #'examples - projects' }
+{ #category : 'examples - projects' }
 GtRlSystemOneModelExamples >> projectComponentD [
 	<gtExample>
 	^ projectComponentD ifNil: [
@@ -143,7 +143,7 @@ GtRlSystemOneModelExamples >> projectComponentD [
 		projectComponentD := projectD ]
 ]
 
-{ #category : #'examples - projects' }
+{ #category : 'examples - projects' }
 GtRlSystemOneModelExamples >> projectComponentDModuleA [
 	<gtExample>
 	^ projectComponentDModuleA ifNil: [ 
@@ -163,7 +163,7 @@ GtRlSystemOneModelExamples >> projectComponentDModuleA [
 		projectComponentDModuleA := project ]
 ]
 
-{ #category : #'examples - projects' }
+{ #category : 'examples - projects' }
 GtRlSystemOneModelExamples >> projectSystem [
 	<gtExample>
 	| projectSystem componentA componentB componentC componentD componentAReference componentBReference componentCReference componentDReference repository |
@@ -193,7 +193,7 @@ GtRlSystemOneModelExamples >> projectSystem [
 	^ projectSystem
 ]
 
-{ #category : #'examples - repositories' }
+{ #category : 'examples - repositories' }
 GtRlSystemOneModelExamples >> repositoryComponentA [
 	<gtExample>
 	^ repositoryComponentA ifNil: [
@@ -205,7 +205,7 @@ GtRlSystemOneModelExamples >> repositoryComponentA [
 		repositoryComponentA ]
 ]
 
-{ #category : #'examples - repositories' }
+{ #category : 'examples - repositories' }
 GtRlSystemOneModelExamples >> repositoryComponentB [
 	<gtExample>
 	^ repositoryComponentB ifNil: [ 
@@ -217,7 +217,7 @@ GtRlSystemOneModelExamples >> repositoryComponentB [
 		repositoryComponentB ]
 ]
 
-{ #category : #'examples - repositories' }
+{ #category : 'examples - repositories' }
 GtRlSystemOneModelExamples >> repositoryComponentC [
 	<gtExample>
 	^ repositoryComponentC ifNil: [ 
@@ -229,7 +229,7 @@ GtRlSystemOneModelExamples >> repositoryComponentC [
 		repositoryComponentC ]
 ]
 
-{ #category : #'examples - repositories' }
+{ #category : 'examples - repositories' }
 GtRlSystemOneModelExamples >> repositoryComponentD [
 	<gtExample>
 	^ repositoryComponentD ifNil: [
@@ -241,7 +241,7 @@ GtRlSystemOneModelExamples >> repositoryComponentD [
 		repositoryComponentD ]
 ]
 
-{ #category : #'examples - repositories' }
+{ #category : 'examples - repositories' }
 GtRlSystemOneModelExamples >> repositoryComponentDModuleA [
 	<gtExample>
 	^ repositoryComponentDModuleA ifNil: [ 
@@ -253,7 +253,7 @@ GtRlSystemOneModelExamples >> repositoryComponentDModuleA [
 		repositoryComponentDModuleA ]
 ]
 
-{ #category : #'examples - repositories' }
+{ #category : 'examples - repositories' }
 GtRlSystemOneModelExamples >> repositorySystem [
 	<gtExample>
 	| repository |
@@ -265,7 +265,7 @@ GtRlSystemOneModelExamples >> repositorySystem [
 	^ repository
 ]
 
-{ #category : #'examples - systemOne' }
+{ #category : 'examples - systemOne' }
 GtRlSystemOneModelExamples >> systemOneCorrectNumberOfChildProjects [
 	<gtExample>
 	| project |
@@ -280,7 +280,7 @@ GtRlSystemOneModelExamples >> systemOneCorrectNumberOfChildProjects [
 	^ project
 ]
 
-{ #category : #'examples - systemOne' }
+{ #category : 'examples - systemOne' }
 GtRlSystemOneModelExamples >> systemOneCorrectNumberOfProjectReferences [
 	<gtExample>
 	| project |

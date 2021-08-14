@@ -1,6 +1,6 @@
 Class {
-	#name : #GtRlSystemFiveGeneratedModelExamples,
-	#superclass : #Object,
+	#name : 'GtRlSystemFiveGeneratedModelExamples',
+	#superclass : 'Object',
 	#instVars : [
 		'theSystemProject',
 		'thePackageANode',
@@ -9,10 +9,10 @@ Class {
 		'theReferenceComponentBNode',
 		'thePackageCNode'
 	],
-	#category : #'GToolkit-Releaser-BaselineModel-Examples'
+	#category : 'GToolkit-Releaser-BaselineModel-Examples'
 }
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlSystemFiveGeneratedModelExamples >> componentAReferenceAHasProjectDependencies [
 	<gtExample>
 	| projectReference |
@@ -26,7 +26,7 @@ GtRlSystemFiveGeneratedModelExamples >> componentAReferenceAHasProjectDependenci
 	^ projectReference
 ]
 
-{ #category : #'examples - nodes' }
+{ #category : 'examples - nodes' }
 GtRlSystemFiveGeneratedModelExamples >> componentAReferenceNode [
 	<gtExample>
 	| project projectReference |
@@ -40,7 +40,7 @@ GtRlSystemFiveGeneratedModelExamples >> componentAReferenceNode [
 		theReferenceComponentANode := projectReference ]
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlSystemFiveGeneratedModelExamples >> componentBReferenceAHasProjectDependencies [
 	<gtExample>
 	| projectReference |
@@ -56,7 +56,7 @@ GtRlSystemFiveGeneratedModelExamples >> componentBReferenceAHasProjectDependenci
 	^ projectReference
 ]
 
-{ #category : #'examples - nodes' }
+{ #category : 'examples - nodes' }
 GtRlSystemFiveGeneratedModelExamples >> componentBReferenceNode [
 	<gtExample>
 	| project projectReference |
@@ -70,7 +70,7 @@ GtRlSystemFiveGeneratedModelExamples >> componentBReferenceNode [
 		theReferenceComponentBNode := projectReference ]
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlSystemFiveGeneratedModelExamples >> packageAHasProjectDependencies [
 	<gtExample>
 	| package |
@@ -86,7 +86,7 @@ GtRlSystemFiveGeneratedModelExamples >> packageAHasProjectDependencies [
 	^ package
 ]
 
-{ #category : #'examples - nodes' }
+{ #category : 'examples - nodes' }
 GtRlSystemFiveGeneratedModelExamples >> packageANode [
 	<gtExample>
 	| project package |
@@ -100,7 +100,7 @@ GtRlSystemFiveGeneratedModelExamples >> packageANode [
 		thePackageANode := package ]
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlSystemFiveGeneratedModelExamples >> packageBHasProjectDependencies [
 	<gtExample>
 	| package |
@@ -116,7 +116,7 @@ GtRlSystemFiveGeneratedModelExamples >> packageBHasProjectDependencies [
 	^ package
 ]
 
-{ #category : #'examples - nodes' }
+{ #category : 'examples - nodes' }
 GtRlSystemFiveGeneratedModelExamples >> packageBNode [
 	<gtExample>
 	| project package |
@@ -130,7 +130,7 @@ GtRlSystemFiveGeneratedModelExamples >> packageBNode [
 		thePackageBNode := package ]
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlSystemFiveGeneratedModelExamples >> packageCHasProjectDependencies [
 	<gtExample>
 	| package |
@@ -146,7 +146,7 @@ GtRlSystemFiveGeneratedModelExamples >> packageCHasProjectDependencies [
 	^ package
 ]
 
-{ #category : #'examples - nodes' }
+{ #category : 'examples - nodes' }
 GtRlSystemFiveGeneratedModelExamples >> packageCNode [
 	<gtExample>
 	| project package |
@@ -160,7 +160,7 @@ GtRlSystemFiveGeneratedModelExamples >> packageCNode [
 		thePackageCNode := package ]
 ]
 
-{ #category : #'examples - nodes' }
+{ #category : 'examples - nodes' }
 GtRlSystemFiveGeneratedModelExamples >> systemProject [
 	<gtExample>
 	| projectBuilder project repositoryName |
@@ -176,7 +176,7 @@ GtRlSystemFiveGeneratedModelExamples >> systemProject [
 		theSystemProject := project ]
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlSystemFiveGeneratedModelExamples >> systemProjectHasTwoRootPackagess [
 	<gtExample>
 	| system rootPackages |

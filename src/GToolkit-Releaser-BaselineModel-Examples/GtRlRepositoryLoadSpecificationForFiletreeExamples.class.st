@@ -1,10 +1,10 @@
 Class {
-	#name : #GtRlRepositoryLoadSpecificationForFiletreeExamples,
-	#superclass : #GtRlRepositoryLoadSpecificationBasicExamples,
-	#category : #'GToolkit-Releaser-BaselineModel-Examples'
+	#name : 'GtRlRepositoryLoadSpecificationForFiletreeExamples',
+	#superclass : 'GtRlRepositoryLoadSpecificationBasicExamples',
+	#category : 'GToolkit-Releaser-BaselineModel-Examples'
 }
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlRepositoryLoadSpecificationForFiletreeExamples >> loadSpecificationHasCorrectVersion [
 	<gtExample>
 	| loadSpecification |
@@ -16,12 +16,12 @@ GtRlRepositoryLoadSpecificationForFiletreeExamples >> loadSpecificationHasCorrec
 	^ loadSpecification
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryLoadSpecificationForFiletreeExamples >> specificationId [
 	^ 'filetree:///Users/example/Documents/temp/repo'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryLoadSpecificationForFiletreeExamples >> specificationUrlString [
 	^ 'filetree:///Users/example/Documents/temp/repo'
 ]

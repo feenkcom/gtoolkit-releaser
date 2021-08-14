@@ -1,16 +1,16 @@
 Class {
-	#name : #GtRlSystemFourGeneratedModelExamples,
-	#superclass : #Object,
+	#name : 'GtRlSystemFourGeneratedModelExamples',
+	#superclass : 'Object',
 	#instVars : [
 		'theSystemProject',
 		'thePackageAMainNode',
 		'thePackageAPart1Node',
 		'thePackageTestNode'
 	],
-	#category : #'GToolkit-Releaser-BaselineModel-Examples'
+	#category : 'GToolkit-Releaser-BaselineModel-Examples'
 }
 
-{ #category : #'examples - packages' }
+{ #category : 'examples - packages' }
 GtRlSystemFourGeneratedModelExamples >> packageAMainHasDependentPackages [
 	<gtExample>
 	| package |
@@ -24,7 +24,7 @@ GtRlSystemFourGeneratedModelExamples >> packageAMainHasDependentPackages [
 	^ package
 ]
 
-{ #category : #'examples - packages' }
+{ #category : 'examples - packages' }
 GtRlSystemFourGeneratedModelExamples >> packageAMainHasNoRequiredDependencies [
 	<gtExample>
 	| package |
@@ -38,7 +38,7 @@ GtRlSystemFourGeneratedModelExamples >> packageAMainHasNoRequiredDependencies [
 	^ package
 ]
 
-{ #category : #'examples - nodes' }
+{ #category : 'examples - nodes' }
 GtRlSystemFourGeneratedModelExamples >> packageAMainNode [
 	<gtExample>
 	| project package |
@@ -52,7 +52,7 @@ GtRlSystemFourGeneratedModelExamples >> packageAMainNode [
 		thePackageAMainNode := package ]
 ]
 
-{ #category : #'examples - packages' }
+{ #category : 'examples - packages' }
 GtRlSystemFourGeneratedModelExamples >> packageAPart1HasBothDependencies [
 	<gtExample>
 	| package |
@@ -68,7 +68,7 @@ GtRlSystemFourGeneratedModelExamples >> packageAPart1HasBothDependencies [
 	^ package
 ]
 
-{ #category : #'examples - packages' }
+{ #category : 'examples - packages' }
 GtRlSystemFourGeneratedModelExamples >> packageAPart1HasCorrectParent [
 	<gtExample>
 	| package |
@@ -79,7 +79,7 @@ GtRlSystemFourGeneratedModelExamples >> packageAPart1HasCorrectParent [
 	^ package
 ]
 
-{ #category : #'examples - nodes' }
+{ #category : 'examples - nodes' }
 GtRlSystemFourGeneratedModelExamples >> packageAPart1Node [
 	<gtExample>
 	| project package |
@@ -93,7 +93,7 @@ GtRlSystemFourGeneratedModelExamples >> packageAPart1Node [
 		thePackageAPart1Node := package ]
 ]
 
-{ #category : #'examples - nodes' }
+{ #category : 'examples - nodes' }
 GtRlSystemFourGeneratedModelExamples >> packageATestNode [
 	<gtExample>
 	| project package |
@@ -107,7 +107,7 @@ GtRlSystemFourGeneratedModelExamples >> packageATestNode [
 		thePackageTestNode := package ]
 ]
 
-{ #category : #'examples - system' }
+{ #category : 'examples - system' }
 GtRlSystemFourGeneratedModelExamples >> systemHasCorrectPackages [
 	<gtExample>
 	| project |
@@ -125,7 +125,7 @@ GtRlSystemFourGeneratedModelExamples >> systemHasCorrectPackages [
 	^ project
 ]
 
-{ #category : #'examples - system' }
+{ #category : 'examples - system' }
 GtRlSystemFourGeneratedModelExamples >> systemHasNoProjectDependencoes [
 	<gtExample>
 	| project |
@@ -138,7 +138,7 @@ GtRlSystemFourGeneratedModelExamples >> systemHasNoProjectDependencoes [
 	^ project
 ]
 
-{ #category : #'examples - nodes' }
+{ #category : 'examples - nodes' }
 GtRlSystemFourGeneratedModelExamples >> systemProject [
 	<gtExample>
 	| projectBuilder project repositoryName |

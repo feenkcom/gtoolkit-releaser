@@ -5,8 +5,8 @@ It used the child releases defined with the project release to specify baseline 
 The rest of the information, like packages, is taken from the project associated with the project release.
 "
 Class {
-	#name : 'GtRlProjectReleaseBaselinePrinter',
-	#superclass : 'GtRlBaselinePrinter',
+	#name : 'GtRlProjectReleaseBaselineGenerator',
+	#superclass : 'GtRlBaselineGenerator',
 	#instVars : [
 		'projectRelease'
 	],
@@ -14,18 +14,18 @@ Class {
 }
 
 { #category : 'instance creation' }
-GtRlProjectReleaseBaselinePrinter class >> forProjectRelease: aProjectReleasee [
+GtRlProjectReleaseBaselineGenerator class >> forProjectRelease: aProjectReleasee [
 	^ self new
 		projectRelease: aProjectReleasee
 ]
 
 { #category : 'baselines' }
-GtRlProjectReleaseBaselinePrinter >> baselineProject [
+GtRlProjectReleaseBaselineGenerator >> baselineProject [
 	^ projectRelease project
 ]
 
 { #category : 'api' }
-GtRlProjectReleaseBaselinePrinter >> generateProjectDependenciesOn: aStream [
+GtRlProjectReleaseBaselineGenerator >> generateProjectDependenciesOn: aStream [
 	projectRelease childReleases do: [ :aProjectRelease |
 		aStream 
 			projectDependencyFor: aProjectRelease name
@@ -33,11 +33,11 @@ GtRlProjectReleaseBaselinePrinter >> generateProjectDependenciesOn: aStream [
 ]
 
 { #category : 'testing' }
-GtRlProjectReleaseBaselinePrinter >> hasProjectDependencies [
+GtRlProjectReleaseBaselineGenerator >> hasProjectDependencies [
 	^ projectRelease childReleases notEmpty
 ]
 
 { #category : 'accessing' }
-GtRlProjectReleaseBaselinePrinter >> projectRelease: aProjectRelease [
+GtRlProjectReleaseBaselineGenerator >> projectRelease: aProjectRelease [
 	projectRelease := aProjectRelease
 ]
