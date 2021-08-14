@@ -15,8 +15,24 @@ Class {
 }
 
 { #category : 'accessing' }
+GtRlBaselineGenerator >> baselineCategory [
+	^ 'baseline'
+]
+
+{ #category : 'accessing' }
 GtRlBaselineGenerator >> baselineProject [
 	self subclassResponsibility 
+]
+
+{ #category : 'compiling' }
+GtRlBaselineGenerator >> compileBaselineMethod [
+	| baselineSource compilationResult |
+	baselineSource := self generateBaselineSource.
+	GtPharoCodeModifier current critical: [  
+		compilationResult := self baselineProject baselineClass
+			compile: baselineSource
+			classified: self baselineCategory ].
+	compilationResult ifNil: [ self error: 'Error compiling the method' ]
 ]
 
 { #category : 'api' }
