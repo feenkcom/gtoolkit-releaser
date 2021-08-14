@@ -8,36 +8,36 @@ A relevant detail is that I keep track of the order attribute that should be ass
 
 "
 Class {
-	#name : #GtRlReleaseUpdateWorkflow,
-	#superclass : #Object,
+	#name : 'GtRlReleaseUpdateWorkflow',
+	#superclass : 'Object',
 	#instVars : [
 		'actionOrder'
 	],
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GtRlReleaseUpdateWorkflow >> initialize [
 	super initialize.
 	actionOrder := 0
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : 'accessing - dynamic' }
 GtRlReleaseUpdateWorkflow >> nextActionOrder [
 	^ actionOrder := actionOrder + 1
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : 'accessing - dynamic' }
 GtRlReleaseUpdateWorkflow >> repositoriesInReleaseOrderFor: aRepositoryRelease [
 	^ GtRlReleaseOrderTraversal new releaseOrderFor: aRepositoryRelease
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 GtRlReleaseUpdateWorkflow >> updateProject: aRootProjectRelease [
 	self updateRepository: aRootProjectRelease repositoryRelease
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 GtRlReleaseUpdateWorkflow >> updateRepository: aRootRepositoryRelease [
 	| repositories |
 	repositories := self repositoriesInReleaseOrderFor: aRootRepositoryRelease.

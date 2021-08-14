@@ -1,11 +1,11 @@
 Class {
-	#name : 'GtRlBaselinePrinterStreamExamples',
+	#name : 'GtRlBaselinePrinterGeneratorExamples',
 	#superclass : 'Object',
 	#category : 'GToolkit-Releaser-BaselineModel-Examples'
 }
 
 { #category : 'examples - basic api' }
-GtRlBaselinePrinterStreamExamples >> baselineWithCommonSpecExample [
+GtRlBaselinePrinterGeneratorExamples >> baselineWithCommonSpecExample [
 	<gtExample>
 	| writer |
 	writer := self basicWriterWithStream.
@@ -22,7 +22,7 @@ GtRlBaselinePrinterStreamExamples >> baselineWithCommonSpecExample [
 ]
 
 { #category : 'examples - composition' }
-GtRlBaselinePrinterStreamExamples >> baselineWithContentExample [
+GtRlBaselinePrinterGeneratorExamples >> baselineWithContentExample [
 	<gtExample>
 	| writer |
 	writer := self basicWriterWithStream.
@@ -58,13 +58,13 @@ GtRlBaselinePrinterStreamExamples >> baselineWithContentExample [
 ]
 
 { #category : 'accessing' }
-GtRlBaselinePrinterStreamExamples >> basicWriterWithStream [
+GtRlBaselinePrinterGeneratorExamples >> basicWriterWithStream [
 	^ GtRlBaselinePrinterStream new
 		stream: String new writeStream.
 ]
 
 { #category : 'examples - basic api' }
-GtRlBaselinePrinterStreamExamples >> commonSpecExample [
+GtRlBaselinePrinterGeneratorExamples >> commonSpecExample [
 	<gtExample>
 	| writer |
 	writer := self basicWriterWithStream.
@@ -79,7 +79,7 @@ GtRlBaselinePrinterStreamExamples >> commonSpecExample [
 ]
 
 { #category : 'examples - basic api' }
-GtRlBaselinePrinterStreamExamples >> methodHeaderExample [
+GtRlBaselinePrinterGeneratorExamples >> methodHeaderExample [
 	<gtExample>
 	| writer |
 	writer := self basicWriterWithStream.
@@ -94,7 +94,7 @@ GtRlBaselinePrinterStreamExamples >> methodHeaderExample [
 ]
 
 { #category : 'examples - basic api' }
-GtRlBaselinePrinterStreamExamples >> packageWithDependenciesExample [
+GtRlBaselinePrinterGeneratorExamples >> packageWithDependenciesExample [
 	<gtExample>
 	| writer |
 	writer := self basicWriterWithStream.
@@ -109,7 +109,7 @@ GtRlBaselinePrinterStreamExamples >> packageWithDependenciesExample [
 ]
 
 { #category : 'examples - basic api' }
-GtRlBaselinePrinterStreamExamples >> packageWithNoDependenciesExample [
+GtRlBaselinePrinterGeneratorExamples >> packageWithNoDependenciesExample [
 	<gtExample>
 	| writer |
 	writer := self basicWriterWithStream.
@@ -123,7 +123,7 @@ GtRlBaselinePrinterStreamExamples >> packageWithNoDependenciesExample [
 ]
 
 { #category : 'examples - basic api' }
-GtRlBaselinePrinterStreamExamples >> postLoadActionExample [
+GtRlBaselinePrinterGeneratorExamples >> postLoadActionExample [
 	<gtExample>
 	| writer |
 	writer := self basicWriterWithStream.
@@ -138,7 +138,7 @@ spec postLoadDoIt: #''methodSelector:''.'.
 ]
 
 { #category : 'examples - basic api' }
-GtRlBaselinePrinterStreamExamples >> postLoadActionLineExample [
+GtRlBaselinePrinterGeneratorExamples >> postLoadActionLineExample [
 	<gtExample>
 	| writer |
 	writer := self basicWriterWithStream.
@@ -152,7 +152,7 @@ GtRlBaselinePrinterStreamExamples >> postLoadActionLineExample [
 ]
 
 { #category : 'examples - basic api' }
-GtRlBaselinePrinterStreamExamples >> preLoadActionExample [
+GtRlBaselinePrinterGeneratorExamples >> preLoadActionExample [
 	<gtExample>
 	| writer |
 	writer := self basicWriterWithStream.
@@ -167,7 +167,7 @@ spec preLoadDoIt: #''methodSelector:''.'.
 ]
 
 { #category : 'examples - basic api' }
-GtRlBaselinePrinterStreamExamples >> preLoadActionLineExample [
+GtRlBaselinePrinterGeneratorExamples >> preLoadActionLineExample [
 	<gtExample>
 	| writer |
 	writer := self basicWriterWithStream.
@@ -181,7 +181,7 @@ GtRlBaselinePrinterStreamExamples >> preLoadActionLineExample [
 ]
 
 { #category : 'examples - basic api' }
-GtRlBaselinePrinterStreamExamples >> projectDependencyExample [
+GtRlBaselinePrinterGeneratorExamples >> projectDependencyExample [
 	<gtExample>
 	| writer |
 	writer := self basicWriterWithStream.

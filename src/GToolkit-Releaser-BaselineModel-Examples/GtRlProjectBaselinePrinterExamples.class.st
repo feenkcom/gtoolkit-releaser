@@ -77,7 +77,7 @@ GtRlProjectBaselinePrinterExamples >> printEmptyProject [
 	<gtExample>
 	| project printer |
 	project := GtRlProjectExamples new projectWithName.
-	printer := GtRlProjectBaselinePrinter forProject: project.
+	printer := GtRlProjectBaselineGenerator forProject: project.
 	
 	self 
 		assert: printer generateBaselineSource 
@@ -91,7 +91,7 @@ GtRlProjectBaselinePrinterExamples >> printProjectWithChildProject [
 	<gtExample>
 	| project printer |
 	project := GtRlProjectExamples new projectWithChildProjectWithRepository.
-	printer := GtRlProjectBaselinePrinter forProject: project.
+	printer := GtRlProjectBaselineGenerator forProject: project.
 	
 	self 
 		assert: printer generateBaselineSource 
@@ -105,7 +105,7 @@ GtRlProjectBaselinePrinterExamples >> printProjectWithPackageWithPackageDependen
 	<gtExample>
 	| project printer |
 	project := GtRlProjectExamples new projectWithPackageWithPackageDependency.
-	printer := GtRlProjectBaselinePrinter forProject: project.
+	printer := GtRlProjectBaselineGenerator forProject: project.
 	
 	self 
 		assert: printer generateBaselineSource 
@@ -119,7 +119,7 @@ GtRlProjectBaselinePrinterExamples >> printProjectWithPackages [
 	<gtExample>
 	| project printer |
 	project := GtRlProjectExamples new projectWithPackages.
-	printer := GtRlProjectBaselinePrinter forProject: project.
+	printer := GtRlProjectBaselineGenerator forProject: project.
 	
 	self 
 		assert: printer generateBaselineSource 
@@ -133,7 +133,7 @@ GtRlProjectBaselinePrinterExamples >> printProjectWithPostLoadAction [
 	<gtExample>
 	| project printer |
 	project := GtRlProjectExamples new projectWithPostLoadAction.
-	printer := GtRlProjectBaselinePrinter forProject: project.
+	printer := GtRlProjectBaselineGenerator forProject: project.
 	
 	self 
 		assert: printer generateBaselineSource 
@@ -147,7 +147,7 @@ GtRlProjectBaselinePrinterExamples >> printProjectWithPreAndPostLoadActions [
 	<gtExample>
 	| project printer |
 	project := GtRlProjectExamples new projectWithPreAndPostLoadActions.
-	printer := GtRlProjectBaselinePrinter forProject: project.
+	printer := GtRlProjectBaselineGenerator forProject: project.
 	
 	self 
 		assert: printer generateBaselineSource 
@@ -161,7 +161,7 @@ GtRlProjectBaselinePrinterExamples >> printProjectWithPreLoadAction [
 	<gtExample>
 	| project printer |
 	project := GtRlProjectExamples new projectWithPreLoadAction.
-	printer := GtRlProjectBaselinePrinter forProject: project.
+	printer := GtRlProjectBaselineGenerator forProject: project.
 	
 	self 
 		assert: printer generateBaselineSource 
@@ -179,7 +179,7 @@ GtRlProjectBaselinePrinterExamples >> printStandaloneProjectWithActions [
 	project := projectBuilder 
 		buildProjectFromBaselineClass: BaselineOfGtRlBaselineExampleStandaloneWithActions
 		withRepositoryDescription: 'github://example/SystemFour/src'. 
-	printer := GtRlProjectBaselinePrinter forProject: project.
+	printer := GtRlProjectBaselineGenerator forProject: project.
 	
 	self 
 		assert: printer generateBaselineSource 
@@ -193,7 +193,7 @@ GtRlProjectBaselinePrinterExamples >> printSystemFiveProject [
 	<gtExample>
 	| project printer |
 	project := GtRlSystemFiveGeneratedModelExamples new systemProject.
-	printer := GtRlProjectBaselinePrinter forProject: project.
+	printer := GtRlProjectBaselineGenerator forProject: project.
 	
 	self 
 		assert: printer generateBaselineSource 
@@ -207,7 +207,7 @@ GtRlProjectBaselinePrinterExamples >> printSystemFourProject [
 	<gtExample>
 	| project printer |
 	project := GtRlSystemFourGeneratedModelExamples new systemProject.
-	printer := GtRlProjectBaselinePrinter forProject: project.
+	printer := GtRlProjectBaselineGenerator forProject: project.
 	
 	self 
 		assert: printer generateBaselineSource 
@@ -221,7 +221,7 @@ GtRlProjectBaselinePrinterExamples >> printSystemOneManualProject [
 	<gtExample>
 	| project printer |
 	project := GtRlSystemOneModelExamples new projectSystem.
-	printer := GtRlProjectBaselinePrinter forProject: project.
+	printer := GtRlProjectBaselineGenerator forProject: project.
 	
 	self 
 		assert: printer generateBaselineSource 
@@ -235,7 +235,7 @@ GtRlProjectBaselinePrinterExamples >> printSystemOneProject [
 	<gtExample>
 	| project printer |
 	project := GtRlSystemOneGeneratedModelExamples new systemOneProject.
-	printer := GtRlProjectBaselinePrinter forProject: project.
+	printer := GtRlProjectBaselineGenerator forProject: project.
 	
 	self 
 		assert: printer generateBaselineSource 
@@ -252,7 +252,7 @@ GtRlProjectBaselinePrinterExamples >> printSystemTwoProject [
 	project := projectBuilder 
 		buildProjectFromBaselineClass: BaselineOfGtRlBaselineExampleSystemTwo
 		withRepositoryDescription: 'github://example/SystemTwo/src'. 
-	printer := GtRlProjectBaselinePrinter forProject: project.
+	printer := GtRlProjectBaselineGenerator forProject: project.
 	
 	self 
 		assert: printer generateBaselineSource 

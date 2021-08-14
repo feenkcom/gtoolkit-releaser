@@ -1,6 +1,6 @@
-Extension { #name : #GtRlMetacelloProjectBaselineGenerator }
+Extension { #name : 'GtRlMetacelloProjectBaselineGenerator' }
 
-{ #category : #'*GToolkit-Releaser' }
+{ #category : '*GToolkit-Releaser' }
 GtRlMetacelloProjectBaselineGenerator >> releaseBaselineGenerator [
 	^ GtRlMetacelloProjectReleaseBaselineGenerator new
 ]

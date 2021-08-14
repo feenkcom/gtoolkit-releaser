@@ -29,7 +29,7 @@ GtRlProjectReleaseBaselinePrinterExamples >> printSystemOneManualProjectRelease 
 	<gtExample>
 	| projectRelease printer |
 	projectRelease := GtRlSystemOneReleaseExamples new projectReleaseSystem.
-	printer := GtRlProjectReleaseBaselinePrinter forProjectRelease: projectRelease.
+	printer := GtRlProjectReleaseBaselineGenerator forProjectRelease: projectRelease.
 	
 	self 
 		assert: printer generateBaselineSource 

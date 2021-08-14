@@ -12,8 +12,8 @@ More examples are provided by the class {{gtClass:GtRlSemanticVersionNumberExamp
 
 "
 Class {
-	#name : #GtRlSemanticVersionNumber,
-	#superclass : #GtRlVersionNumber,
+	#name : 'GtRlSemanticVersionNumber',
+	#superclass : 'GtRlVersionNumber',
 	#instVars : [
 		'major',
 		'minor',
@@ -23,20 +23,20 @@ Class {
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlSemanticVersionNumber class >> canCreateFromString: aString [
 	^ (GtRlDevSemanticVersionNumber matchesString: aString)
 		or: [ GtRlSemanticVersionNumber matchesString: aString ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 GtRlSemanticVersionNumber class >> createFromString: aString [
 	^ (aString beginsWith: GtRlDevSemanticVersionNumber devVersionIdentifier) 
 		ifTrue: [ GtRlDevSemanticVersionNumber readFromString: aString ]
 		ifFalse: [ GtRlSemanticVersionNumber readFromString: aString ].
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 GtRlSemanticVersionNumber class >> major: majorNumber minor: minorNumber patch: patchNumber [
 	^ self new 
 		initializeMajor: majorNumber
@@ -44,12 +44,12 @@ GtRlSemanticVersionNumber class >> major: majorNumber minor: minorNumber patch: 
 		patch: patchNumber
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlSemanticVersionNumber class >> matchesString: aString [
 	^ aString matchesRegex: self versionNumberRegexString
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 GtRlSemanticVersionNumber class >> readFromString: aString [
 	| tokens |
 	tokens := (aString trimBoth trimLeft: [:char | char = $v]) findTokens: '.'.
@@ -59,12 +59,12 @@ GtRlSemanticVersionNumber class >> readFromString: aString [
 		patch: tokens third asInteger. 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlSemanticVersionNumber class >> versionNumberRegexString [
 	^ 'v[0-9]+\.[0-9]+\.[0-9]+'
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 GtRlSemanticVersionNumber >> < aSemanticVersionNumber [
 	self major < aSemanticVersionNumber major ifTrue: [ ^ true ].
 		self major = aSemanticVersionNumber major ifTrue: [ 
@@ -74,13 +74,13 @@ GtRlSemanticVersionNumber >> < aSemanticVersionNumber [
 	^ false.
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 GtRlSemanticVersionNumber >> <= aSemanticVersionNumber [
 	"Answer whether the receiver is less than or equal to the given version number."
 	^ (self > aSemanticVersionNumber) not
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 GtRlSemanticVersionNumber >> = anObject [
 	self == anObject ifTrue: [ ^ true ].
 	self class = anObject class ifFalse: [ ^ false ].
@@ -89,21 +89,21 @@ GtRlSemanticVersionNumber >> = anObject [
 			self patch = anObject patch ] ]
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 GtRlSemanticVersionNumber >> > aSemanticVersionNumber [ 
 	"Answer whether the receiver is greater than the argument."
 
 	^aSemanticVersionNumber < self
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 GtRlSemanticVersionNumber >> >= aSemanticVersionNumber [ 
 	"Answer whether the receiver is greater than or equal to the argument."
 
 	^ aSemanticVersionNumber <= self
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 GtRlSemanticVersionNumber >> asDevSemanticVersion [
 	^ GtRlDevSemanticVersionNumber 
 		major: self major 
@@ -111,11 +111,11 @@ GtRlSemanticVersionNumber >> asDevSemanticVersion [
 		patch: self patch
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 GtRlSemanticVersionNumber >> asDictionary [ 
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 GtRlSemanticVersionNumber >> hash [
 	^ ((self species hash
 		bitXor: self major hash)
@@ -123,7 +123,7 @@ GtRlSemanticVersionNumber >> hash [
 		bitXor: self patch hash
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GtRlSemanticVersionNumber >> initializeMajor: aMajorNumber minor: aMinorNumber patch: aPatchNumber [
 	self 
 		assert: [ aMajorNumber notNil and: [ aMinorNumber notNil and: [ aPatchNumber notNil ] ] ]
@@ -139,38 +139,38 @@ GtRlSemanticVersionNumber >> initializeMajor: aMajorNumber minor: aMinorNumber p
 	patch := aPatchNumber.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlSemanticVersionNumber >> isSemanticVersion [
 
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlSemanticVersionNumber >> major [
 	^ major
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlSemanticVersionNumber >> minor [
 	^ minor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlSemanticVersionNumber >> patch [
 	^ patch 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlSemanticVersionNumber >> tag [
 	^ iceTag
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlSemanticVersionNumber >> tag: anIceTag [
 	iceTag := anIceTag 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlSemanticVersionNumber >> versionString [
 	^ 'v', self major printString, '.', self minor printString, '.', self patch printString 
 ]

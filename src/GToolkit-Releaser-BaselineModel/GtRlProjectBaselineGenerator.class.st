@@ -4,27 +4,27 @@ A printer that generates the source code of a baseline for a {{gtClass:GtRlProje
 It used the child projects defined with the project to specify baseline dependencies.
 "
 Class {
-	#name : 'GtRlProjectBaselinePrinter',
-	#superclass : 'GtRlBaselinePrinter',
+	#name : 'GtRlProjectBaselineGenerator',
+	#superclass : 'GtRlBaselineGenerator',
 	#instVars : [
 		'project'
 	],
-	#category : 'GToolkit-Releaser-BaselineModel-Printer'
+	#category : 'GToolkit-Releaser-BaselineModel-Generator'
 }
 
 { #category : 'instance creation' }
-GtRlProjectBaselinePrinter class >> forProject: aProject [
+GtRlProjectBaselineGenerator class >> forProject: aProject [
 	^ self new
 		project: aProject
 ]
 
 { #category : 'baselines' }
-GtRlProjectBaselinePrinter >> baselineProject [
+GtRlProjectBaselineGenerator >> baselineProject [
 	^ project
 ]
 
 { #category : 'api' }
-GtRlProjectBaselinePrinter >> generateProjectDependenciesOn: aStream [
+GtRlProjectBaselineGenerator >> generateProjectDependenciesOn: aStream [
 	project childProjects do: [ :aProject |
 		aStream 
 			projectDependencyFor: aProject name
@@ -32,11 +32,11 @@ GtRlProjectBaselinePrinter >> generateProjectDependenciesOn: aStream [
 ]
 
 { #category : 'testing' }
-GtRlProjectBaselinePrinter >> hasProjectDependencies [
+GtRlProjectBaselineGenerator >> hasProjectDependencies [
 	^ project childProjects notEmpty
 ]
 
 { #category : 'accessing' }
-GtRlProjectBaselinePrinter >> project: aProject [
+GtRlProjectBaselineGenerator >> project: aProject [
 	project := aProject
 ]

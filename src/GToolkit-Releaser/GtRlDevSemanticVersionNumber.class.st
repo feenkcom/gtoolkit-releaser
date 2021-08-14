@@ -1,21 +1,21 @@
 Class {
-	#name : #GtRlDevSemanticVersionNumber,
-	#superclass : #GtRlSemanticVersionNumber,
+	#name : 'GtRlDevSemanticVersionNumber',
+	#superclass : 'GtRlSemanticVersionNumber',
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #accesing }
+{ #category : 'accesing' }
 GtRlDevSemanticVersionNumber class >> devVersionIdentifier [
 	^ 'DEV '
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlDevSemanticVersionNumber class >> matchesString: aString [
 	^ aString 
 		matchesRegex: self devVersionIdentifier, self versionNumberRegexString
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 GtRlDevSemanticVersionNumber class >> readFromString: aString [
 	| versionString tokens |
 	versionString := aString copyFrom: self devVersionIdentifier size + 1 to: aString size.
@@ -26,12 +26,12 @@ GtRlDevSemanticVersionNumber class >> readFromString: aString [
 		patch: tokens third asInteger. 
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 GtRlDevSemanticVersionNumber >> asDevSemanticVersion [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlDevSemanticVersionNumber >> versionString [
 	^ self class devVersionIdentifier, super versionString
 ]

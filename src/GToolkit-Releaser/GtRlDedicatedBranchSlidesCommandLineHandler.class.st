@@ -1,26 +1,26 @@
 Class {
-	#name : #GtRlDedicatedBranchSlidesCommandLineHandler,
-	#superclass : #GtReleaserDedicatedBranchExamplesCommandLineHandler,
+	#name : 'GtRlDedicatedBranchSlidesCommandLineHandler',
+	#superclass : 'GtReleaserDedicatedBranchExamplesCommandLineHandler',
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlDedicatedBranchSlidesCommandLineHandler class >> commandName [
 	^ 'dedicatedReleaseBranchSlides'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlDedicatedBranchSlidesCommandLineHandler class >> description [
 	^ 'A command line runner for slides'.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlDedicatedBranchSlidesCommandLineHandler >> exampleReport [
 	(self hasOption: 'junit-xml-output') ifTrue: [ ^ GtSlidesHudsonReport ].
 	^ self error: 'only works for now for junit for now'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlDedicatedBranchSlidesCommandLineHandler >> packages [ 
 	| packages |
 	

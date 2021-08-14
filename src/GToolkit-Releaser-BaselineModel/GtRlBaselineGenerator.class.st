@@ -9,18 +9,18 @@ The writting of the actual baseline code is done using a {{gtClass:GtRlBaselineP
 Subclasses define the project model that provides information about dependencies.
 "
 Class {
-	#name : 'GtRlBaselinePrinter',
+	#name : 'GtRlBaselineGenerator',
 	#superclass : 'Object',
-	#category : 'GToolkit-Releaser-BaselineModel-Printer'
+	#category : 'GToolkit-Releaser-BaselineModel-Generator'
 }
 
 { #category : 'accessing' }
-GtRlBaselinePrinter >> baselineProject [
+GtRlBaselineGenerator >> baselineProject [
 	self subclassResponsibility 
 ]
 
 { #category : 'api' }
-GtRlBaselinePrinter >> generateBaselineSource [
+GtRlBaselineGenerator >> generateBaselineSource [
 	^ String streamContents: [ :aRawStream |
 		| baselineStream |
 		baselineStream := GtRlBaselinePrinterStream new
@@ -29,7 +29,7 @@ GtRlBaselinePrinter >> generateBaselineSource [
 ]
 
 { #category : 'api' }
-GtRlBaselinePrinter >> generateBaselineSourceOn: aStream [
+GtRlBaselineGenerator >> generateBaselineSourceOn: aStream [
 	aStream baselineWithCommonSpecOn: [  
 		self generatePreAndPostActionsOn: aStream.
 		self generateProjectDependenciesOn: aStream.
@@ -40,7 +40,7 @@ GtRlBaselinePrinter >> generateBaselineSourceOn: aStream [
 ]
 
 { #category : 'api' }
-GtRlBaselinePrinter >> generatePackageDependenciesOn: aStream [
+GtRlBaselineGenerator >> generatePackageDependenciesOn: aStream [
 	self baselineProject packages do: [ :aPackage |
 		aStream 
 			packageFor: aPackage name
@@ -48,7 +48,7 @@ GtRlBaselinePrinter >> generatePackageDependenciesOn: aStream [
 ]
 
 { #category : 'api' }
-GtRlBaselinePrinter >> generatePreAndPostActionsOn: aStream [
+GtRlBaselineGenerator >> generatePreAndPostActionsOn: aStream [
 	self baselineProject preLoadAction ifNotNil: [ 
 		aStream preLoadAction: self baselineProject preLoadAction ].
 	self baselineProject postLoadAction ifNotNil: [
@@ -56,12 +56,12 @@ GtRlBaselinePrinter >> generatePreAndPostActionsOn: aStream [
 ]
 
 { #category : 'api' }
-GtRlBaselinePrinter >> generateProjectDependenciesOn: aStream [
+GtRlBaselineGenerator >> generateProjectDependenciesOn: aStream [
 	self subclassResponsibility 
 ]
 
 { #category : 'accessing' }
-GtRlBaselinePrinter >> gtViewGeneratedBaselineFor: aView [
+GtRlBaselineGenerator >> gtViewGeneratedBaselineFor: aView [
 	<gtView>
 	^ aView textEditor
 		title: 'Generated Baseline';
@@ -70,12 +70,12 @@ GtRlBaselinePrinter >> gtViewGeneratedBaselineFor: aView [
 ]
 
 { #category : 'testing' }
-GtRlBaselinePrinter >> hasProjectDependencies [
+GtRlBaselineGenerator >> hasProjectDependencies [
 	self subclassResponsibility 
 ]
 
 { #category : 'accessing' }
-GtRlBaselinePrinter >> printOn: aStream [
+GtRlBaselineGenerator >> printOn: aStream [
 	super printOn: aStream.
 	aStream
 		nextPutAll: ' (';

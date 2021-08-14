@@ -16,35 +16,35 @@ Some of my subclasses include:
 
 "
 Class {
-	#name : #GtRlReleaseStrategy,
-	#superclass : #Object,
+	#name : 'GtRlReleaseStrategy',
+	#superclass : 'Object',
 	#instVars : [
 		'repositoryRelease'
 	],
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #assertions }
+{ #category : 'assertions' }
 GtRlReleaseStrategy >> assertCompatibleWithRepository: aRepository [
 	"I assert if the given repository can be handled by the strategy."
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlReleaseStrategy >> description [
 	self subclassResponsibility
 ]
 
-{ #category : #'actions - building' }
+{ #category : 'actions - building' }
 GtRlReleaseStrategy >> findNewCommits [
 	^ nil.
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlReleaseStrategy >> gtCommitsAncestryFor: aView [
 	^ aView
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GtRlReleaseStrategy >> initializeFor: aRepositoryRelease fromConfiguration: aBuildConfiguration [
 	self assertCompatibleWithRepository: aRepositoryRelease repository. 
 	
@@ -52,37 +52,37 @@ GtRlReleaseStrategy >> initializeFor: aRepositoryRelease fromConfiguration: aBui
 	aRepositoryRelease releaseStrategy: self.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlReleaseStrategy >> isNullReleaseStrategy [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlReleaseStrategy >> isPassiveReleaseStrategy [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlReleaseStrategy >> repositoryRelease [
 	^ repositoryRelease
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlReleaseStrategy >> repositoryRelease: aRepositoryRelease [
 	repositoryRelease := aRepositoryRelease
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlReleaseStrategy >> updateFor: anUpdateWorkflow [
 	self subclassResponsibility
 ]
 
-{ #category : #'actions - building' }
+{ #category : 'actions - building' }
 GtRlReleaseStrategy >> updatePostBuildActionsUsing: anUpdateWorkflow [
 	"By default do nothing. Subclasses should implement this to create actions."
 ]
 
-{ #category : #'actions - building' }
+{ #category : 'actions - building' }
 GtRlReleaseStrategy >> updateReleaseActionsUsing: anUpdateWorkflow [
 	"By default do nothing. Subclasses should implement this to create actions."
 ]

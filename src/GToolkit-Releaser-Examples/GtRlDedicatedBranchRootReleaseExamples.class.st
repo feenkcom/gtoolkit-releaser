@@ -66,7 +66,7 @@ GtRlDedicatedBranchRootReleaseExamples >> printBaselineCodeReleaseForFourReposit
 	<gtExample>
 	| projectRelease printer |
 	projectRelease := self releaseForFourRepositoriesWithNewCommit projectReleases first.
-	printer := GtRlProjectReleaseBaselinePrinter forProjectRelease: projectRelease.
+	printer := GtRlProjectReleaseBaselineGenerator forProjectRelease: projectRelease.
 	
 	self 
 		assert: printer generateBaselineSource 
@@ -80,7 +80,7 @@ GtRlDedicatedBranchRootReleaseExamples >> printBaselineCodeReleaseWithHeadCommit
 	<gtExample>
 	| projectRelease printer childRelease |
 	projectRelease := self releaseWithHeadCommitChildRepository projectReleases first.
-	printer := GtRlProjectReleaseBaselinePrinter forProjectRelease: projectRelease.
+	printer := GtRlProjectReleaseBaselineGenerator forProjectRelease: projectRelease.
 	
 	childRelease := projectRelease childReleases first.
 	self 
@@ -96,7 +96,7 @@ GtRlDedicatedBranchRootReleaseExamples >> printBaselineCodereleaseForFourReposit
 	<gtExample>
 	| projectRelease printer |
 	projectRelease := self releaseForFourRepositoriesWithNoVersionAndNoNewChanges projectReleases first.
-	printer := GtRlProjectReleaseBaselinePrinter forProjectRelease: projectRelease.
+	printer := GtRlProjectReleaseBaselineGenerator forProjectRelease: projectRelease.
 	
 	self 
 		assert: printer generateBaselineSource 

@@ -1,6 +1,6 @@
 Class {
-	#name : #GtRlNewCommits,
-	#superclass : #Object,
+	#name : 'GtRlNewCommits',
+	#superclass : 'Object',
 	#instVars : [
 		'repository',
 		'newCommits'
@@ -8,32 +8,32 @@ Class {
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlNewCommits >> addCommit: aCommit [
 	newCommits add: aCommit.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlNewCommits >> initialize [
 	newCommits := OrderedCollection new.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlNewCommits >> newCommits [
 	^ newCommits
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlNewCommits >> newCommits: anObject [
 	newCommits := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlNewCommits >> repository [
 	^ repository
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlNewCommits >> repository: anObject [
 	repository := anObject
 ]
