@@ -1,9 +1,9 @@
 Trait {
-	#name : #TGtRlReleaseBuildAssertions,
-	#category : #'GToolkit-Releaser-Examples'
+	#name : 'TGtRlReleaseBuildAssertions',
+	#category : 'GToolkit-Releaser-Examples'
 }
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 TGtRlReleaseBuildAssertions >> assertReleaseActions: aRelease equalTypes: expectedActionTypesWithOrder [
 	| obtainedActions |
 	obtainedActions := aRelease releaseActions actions.
@@ -15,7 +15,7 @@ TGtRlReleaseBuildAssertions >> assertReleaseActions: aRelease equalTypes: expect
 		self assert: obtainedAction order equals: actionData value ].
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 TGtRlReleaseBuildAssertions >> assertReleaseWithBranchStrategy: projectRelease withNewVersion: aVersion withActionsNoCompileStartingAt: firstActionsOrder pushAt: pushOrder [
 	
 	self assert: projectRelease releaseActions isEmpty. 
@@ -33,7 +33,7 @@ TGtRlReleaseBuildAssertions >> assertReleaseWithBranchStrategy: projectRelease w
 		andNewVersion: aVersion.
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 TGtRlReleaseBuildAssertions >> assertReleaseWithBranchStrategy: projectRelease withNewVersion: aVersion withActionsStartingAt: firstActionsOrder pushAt: pushOrder [
 	
 	self assertReleaseActions: projectRelease equalTypes: { 
@@ -52,7 +52,7 @@ TGtRlReleaseBuildAssertions >> assertReleaseWithBranchStrategy: projectRelease w
 		andNewVersion: aVersion.
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 TGtRlReleaseBuildAssertions >> assertReleaseWithBranchStrategy: projectRelease withNewVersion: aVersion withCompileAndNoPushActionsStartingAt: firstActionsOrder [
 	
 	self assertReleaseActions: projectRelease equalTypes: { 
@@ -70,7 +70,7 @@ TGtRlReleaseBuildAssertions >> assertReleaseWithBranchStrategy: projectRelease w
 		andNewVersion: aVersion.
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 TGtRlReleaseBuildAssertions >> assertReleaseWithBranchStrategy: projectRelease withNewVersion: aVersion withoutCompileAndNoPushActionsStartingAt: firstActionsOrder [
 	
 	self assert: projectRelease releaseActions isEmpty. 
@@ -87,7 +87,7 @@ TGtRlReleaseBuildAssertions >> assertReleaseWithBranchStrategy: projectRelease w
 		andNewVersion: aVersion.
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 TGtRlReleaseBuildAssertions >> assertRepositoryReleaseActions: aRelease withOrders: actionsOrders [
 	self assert: actionsOrders size equals: 3.
 	self 
@@ -98,7 +98,7 @@ TGtRlReleaseBuildAssertions >> assertRepositoryReleaseActions: aRelease withOrde
 			GtRlCommitAndTagReleaseAction -> actionsOrders third }.
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 TGtRlReleaseBuildAssertions >> assertRepositoryReleaseWithBranchStrategy: repositoryRelease andExistingVersion: aVersion [
 	self assert: repositoryRelease releaseStrategy shouldCreateNewRelease not.
 	self assert: repositoryRelease isPassiveRelease.
@@ -106,7 +106,7 @@ TGtRlReleaseBuildAssertions >> assertRepositoryReleaseWithBranchStrategy: reposi
 	self assert: repositoryRelease releaseActions isEmpty.
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 TGtRlReleaseBuildAssertions >> assertRepositoryReleaseWithBranchStrategy: repositoryRelease andNewVersion: aVersion [
 	self assert: repositoryRelease releaseStrategy shouldCreateNewRelease.
 	self assert: repositoryRelease isPassiveRelease not.

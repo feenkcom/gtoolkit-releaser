@@ -1,12 +1,12 @@
 Class {
-	#name : #GtRlReleaserUsageExamples,
-	#superclass : #Object,
+	#name : 'GtRlReleaserUsageExamples',
+	#superclass : 'Object',
 	#traits : 'TGtRlReleaseBuildAssertions',
 	#classTraits : 'TGtRlReleaseBuildAssertions classTrait',
-	#category : #'GToolkit-Releaser-Examples'
+	#category : 'GToolkit-Releaser-Examples'
 }
 
-{ #category : #assertions }
+{ #category : 'assertions' }
 GtRlReleaserUsageExamples >> assertInitialReleasesInAllReleasesInSystemOneFor: aRootRelease [
 
 	self 
@@ -41,7 +41,7 @@ GtRlReleaserUsageExamples >> assertInitialReleasesInAllReleasesInSystemOneFor: a
 		pushAt: 25.
 ]
 
-{ #category : #'examples - configs' }
+{ #category : 'examples - configs' }
 GtRlReleaserUsageExamples >> basicReleaseConfiguration [
 	<gtExample>
 	| configuration |
@@ -49,7 +49,7 @@ GtRlReleaserUsageExamples >> basicReleaseConfiguration [
 	^ configuration
 ]
 
-{ #category : #'examples - workflows' }
+{ #category : 'examples - workflows' }
 GtRlReleaserUsageExamples >> executedReleaseWorkflowNoVersionAndDefaultConfigurationExampleScriptNoTest [
 	<gtExample>
 	<noTest>
@@ -64,7 +64,7 @@ GtRlReleaserUsageExamples >> executedReleaseWorkflowNoVersionAndDefaultConfigura
 	^ releaseExporter
 ]
 
-{ #category : #'examples - workflows' }
+{ #category : 'examples - workflows' }
 GtRlReleaserUsageExamples >> executedReleaseWorkflowNoVersionAndDefaultConfigurationFullScriptNoTest [
 	<gtExample>
 	<noTest>
@@ -93,7 +93,7 @@ GtRlReleaserUsageExamples >> executedReleaseWorkflowNoVersionAndDefaultConfigura
 	
 ]
 
-{ #category : #'examples - workflows' }
+{ #category : 'examples - workflows' }
 GtRlReleaserUsageExamples >> executedReleaseWorkflowNoVersionRepoAndDefaultConfigurationNoTest [
 	<gtExample> 
 	<noTest>	
@@ -106,7 +106,7 @@ GtRlReleaserUsageExamples >> executedReleaseWorkflowNoVersionRepoAndDefaultConfi
 	^ releaseExporter
 ]
 
-{ #category : #'examples - releases' }
+{ #category : 'examples - releases' }
 GtRlReleaserUsageExamples >> releaseWithNoVersionAndDefaultConfiguration [
 	<gtExample> 
 	| project release releaseBuilder |
@@ -118,7 +118,7 @@ GtRlReleaserUsageExamples >> releaseWithNoVersionAndDefaultConfiguration [
 	^ release
 ]
 
-{ #category : #'examples - releases' }
+{ #category : 'examples - releases' }
 GtRlReleaserUsageExamples >> releaseWithNoVersionAndDefaultConfigurationNoTest [
 	<gtExample> 
 	<noTest>	
@@ -130,7 +130,7 @@ GtRlReleaserUsageExamples >> releaseWithNoVersionAndDefaultConfigurationNoTest [
 	^ release
 ]
 
-{ #category : #'examples - workflows' }
+{ #category : 'examples - workflows' }
 GtRlReleaserUsageExamples >> releaseWorkflowNoVersionRepoAndDefaultConfiguration [
 	<gtExample> 
 	| release releaseExporter |
@@ -142,7 +142,7 @@ GtRlReleaserUsageExamples >> releaseWorkflowNoVersionRepoAndDefaultConfiguration
 	
 ]
 
-{ #category : #'examples - releases' }
+{ #category : 'examples - releases' }
 GtRlReleaserUsageExamples >> repositoryReleaseComponentAWithNoVersionAndDefaultConfiguration [
 	<gtExample> 
 	| release | 
@@ -151,7 +151,7 @@ GtRlReleaserUsageExamples >> repositoryReleaseComponentAWithNoVersionAndDefaultC
 		aRelease repository projectName = 'ComponentA' ]
 ]
 
-{ #category : #'examples - releases' }
+{ #category : 'examples - releases' }
 GtRlReleaserUsageExamples >> repositoryReleaseWithNoVersionAndDefaultConfiguration [
 	<gtExample> 
 	| release | 
@@ -159,7 +159,7 @@ GtRlReleaserUsageExamples >> repositoryReleaseWithNoVersionAndDefaultConfigurati
 	^ release repositoryRelease
 ]
 
-{ #category : #util }
+{ #category : 'util' }
 GtRlReleaserUsageExamples >> setIcebergRepositoriesWithNoVersionFor: project [
 	project withAllRepositories do: [ :aReposiory |
 		aReposiory icebergRepository: (GtRlIceMinimalRepository new
@@ -176,7 +176,7 @@ GtRlReleaserUsageExamples >> setIcebergRepositoriesWithNoVersionFor: project [
 			aProject metacelloToolbox addSpecForBaselineClass: anotherProject baselineClass ] ].
 ]
 
-{ #category : #'examples - actions' }
+{ #category : 'examples - actions' }
 GtRlReleaserUsageExamples >> systemOneCompileBaselineReleaseAction [
 	<gtExample>
 	| projectRelease compileBaselineAction |
@@ -189,7 +189,7 @@ GtRlReleaserUsageExamples >> systemOneCompileBaselineReleaseAction [
 	^ compileBaselineAction
 ]
 
-{ #category : #'examples - actions' }
+{ #category : 'examples - actions' }
 GtRlReleaserUsageExamples >> systemOneExportMetadataReleaseAction [
 	<gtExample>
 	| repositoryRelease exportMetadataAction |
@@ -202,7 +202,7 @@ GtRlReleaserUsageExamples >> systemOneExportMetadataReleaseAction [
 	^ exportMetadataAction
 ]
 
-{ #category : #'examples - projects' }
+{ #category : 'examples - projects' }
 GtRlReleaserUsageExamples >> systemOneProject [
 	<gtExample>
 	| projectBuilder project |
@@ -213,7 +213,7 @@ GtRlReleaserUsageExamples >> systemOneProject [
 	^ project
 ]
 
-{ #category : #'examples - projects' }
+{ #category : 'examples - projects' }
 GtRlReleaserUsageExamples >> systemOneProjectWithNoVersions [
 	<gtExample>
 	| project |
@@ -223,7 +223,7 @@ GtRlReleaserUsageExamples >> systemOneProjectWithNoVersions [
 	^ project
 ]
 
-{ #category : #'examples - actions' }
+{ #category : 'examples - actions' }
 GtRlReleaserUsageExamples >> systemOnePushReleaseAction [
 	<gtExample>
 	| repositoryRelease pushAction |
@@ -236,7 +236,7 @@ GtRlReleaserUsageExamples >> systemOnePushReleaseAction [
 	^ pushAction
 ]
 
-{ #category : #'examples - projects' }
+{ #category : 'examples - projects' }
 GtRlReleaserUsageExamples >> systemThreeProject [
 	<gtExample>
 	| projectBuilder project |
@@ -247,7 +247,7 @@ GtRlReleaserUsageExamples >> systemThreeProject [
 	^ project
 ]
 
-{ #category : #'examples - projects' }
+{ #category : 'examples - projects' }
 GtRlReleaserUsageExamples >> systemTwoProject [
 	<gtExample>
 	| projectBuilder project |

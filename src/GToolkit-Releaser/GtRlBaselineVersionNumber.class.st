@@ -1,31 +1,31 @@
 Class {
-	#name : #GtRlBaselineVersionNumber,
-	#superclass : #GtRlVersionNumber,
+	#name : 'GtRlBaselineVersionNumber',
+	#superclass : 'GtRlVersionNumber',
 	#instVars : [
 		'versionString'
 	],
-	#category : #'GToolkit-Releaser'
+	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 GtRlBaselineVersionNumber >> = anObject [
 	self == anObject ifTrue: [ ^ true ].
 	self class = anObject class ifFalse: [ ^ false ].
 	^ self versionString = anObject versionString
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 GtRlBaselineVersionNumber >> hash [
 	^ (self species hash
 		bitXor: versionString hash)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlBaselineVersionNumber >> versionString [
 	^ versionString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlBaselineVersionNumber >> versionString: aVersionString [
 	self assert: [ aVersionString notNil ].
 	self 

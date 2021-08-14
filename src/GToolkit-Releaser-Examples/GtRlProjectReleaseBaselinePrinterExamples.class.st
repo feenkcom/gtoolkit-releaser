@@ -1,10 +1,10 @@
 Class {
-	#name : #GtRlProjectReleaseBaselinePrinterExamples,
-	#superclass : #Object,
+	#name : 'GtRlProjectReleaseBaselinePrinterExamples',
+	#superclass : 'Object',
 	#category : 'GToolkit-Releaser-Examples'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 GtRlProjectReleaseBaselinePrinterExamples >> baselineForSystemOneManualProjectRelease [
 	^ 'baseline: spec
 	<baseline>
@@ -24,7 +24,7 @@ GtRlProjectReleaseBaselinePrinterExamples >> baselineForSystemOneManualProjectRe
 	]'
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlProjectReleaseBaselinePrinterExamples >> printSystemOneManualProjectRelease [
 	<gtExample>
 	| projectRelease printer |

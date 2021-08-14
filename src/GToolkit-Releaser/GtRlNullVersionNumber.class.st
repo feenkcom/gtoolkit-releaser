@@ -9,35 +9,35 @@ A null version number is equal to any other null version number.
 
 "
 Class {
-	#name : #GtRlNullVersionNumber,
-	#superclass : #GtRlVersionNumber,
-	#category : #'GToolkit-Releaser'
+	#name : 'GtRlNullVersionNumber',
+	#superclass : 'GtRlVersionNumber',
+	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #versions }
+{ #category : 'versions' }
 GtRlNullVersionNumber class >> versionString [
 	^ 'unknown'
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 GtRlNullVersionNumber >> = anObject [
 	self == anObject ifTrue: [ ^ true ].
 	self class = anObject class ifFalse: [ ^ false ].
 	^ true
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 GtRlNullVersionNumber >> hash [ 
 
 	^ self class hash
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlNullVersionNumber >> isNullVersion [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlNullVersionNumber >> versionString [
 	^ self class versionString
 ]

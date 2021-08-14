@@ -1,10 +1,10 @@
 Class {
-	#name : #GtRlNullVersionNumberExamples,
-	#superclass : #GtRlVersionNumberExamples,
-	#category : #'GToolkit-Releaser-Examples'
+	#name : 'GtRlNullVersionNumberExamples',
+	#superclass : 'GtRlVersionNumberExamples',
+	#category : 'GToolkit-Releaser-Examples'
 }
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlNullVersionNumberExamples >> nullVersionNumber [
 	<gtExample>
 	| versionNumber |
@@ -17,7 +17,7 @@ GtRlNullVersionNumberExamples >> nullVersionNumber [
 	^ versionNumber
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlNullVersionNumberExamples >> nullVersionNumberEqualityExample [
 	<gtExample>
 	| versionNumber |

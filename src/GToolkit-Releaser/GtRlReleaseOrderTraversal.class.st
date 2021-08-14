@@ -8,21 +8,21 @@ I assume that the release has no cycles between repositories. I use {{gtClass:Gt
 
 "
 Class {
-	#name : #GtRlReleaseOrderTraversal,
-	#superclass : #Object,
+	#name : 'GtRlReleaseOrderTraversal',
+	#superclass : 'Object',
 	#instVars : [
 		'traversalContext'
 	],
-	#category : #'GToolkit-Releaser'
+	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GtRlReleaseOrderTraversal >> initialize [
 	super initialize.
 	traversalContext := GtRlReleaseTraversalContext new.
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlReleaseOrderTraversal >> releaseOrderFor: aRepositoryRelease [ 
 	| releasesInReleaseOrder |
 	releasesInReleaseOrder := OrderedCollection new.
@@ -30,7 +30,7 @@ GtRlReleaseOrderTraversal >> releaseOrderFor: aRepositoryRelease [
 	^ releasesInReleaseOrder
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 GtRlReleaseOrderTraversal >> releaseOrderFor: aRepositoryRelease in: currentReleases [
 	"I traverse first the children recursively, and only after all the children are traversed, 
 	I add the current release to the list if needed. The release is added to the list only if 

@@ -1,12 +1,12 @@
 Class {
-	#name : #GtRlReleaseTraversalContextExamples,
-	#superclass : #Object,
+	#name : 'GtRlReleaseTraversalContextExamples',
+	#superclass : 'Object',
 	#traits : 'TAssertable',
 	#classTraits : 'TAssertable classTrait',
-	#category : #'GToolkit-Releaser-Examples'
+	#category : 'GToolkit-Releaser-Examples'
 }
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlReleaseTraversalContextExamples >> emptyTraversalContext [
 	<gtExample>
 	| traversalContext |
@@ -15,7 +15,7 @@ GtRlReleaseTraversalContextExamples >> emptyTraversalContext [
 	^ traversalContext
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlReleaseTraversalContextExamples >> noRecursionErrorIsTriggerInSecondStep [
 	<gtExample>
 	| traversalContext objectOne objectTwo |
@@ -34,7 +34,7 @@ GtRlReleaseTraversalContextExamples >> noRecursionErrorIsTriggerInSecondStep [
 	^ traversalContext
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlReleaseTraversalContextExamples >> recursionErrorIsTriggerInSecondStep [
 	<gtExample>
 	| traversalContext objectOne objectTwo |
@@ -53,7 +53,7 @@ GtRlReleaseTraversalContextExamples >> recursionErrorIsTriggerInSecondStep [
 	^ traversalContext
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlReleaseTraversalContextExamples >> recursionErrorIsTriggerInThirdStep [
 	<gtExample>
 	| traversalContext objectOne objectTwo objectThree |

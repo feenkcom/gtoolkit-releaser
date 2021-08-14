@@ -1,10 +1,10 @@
 Class {
-	#name : #GtRlTagVersionNumberExamples,
-	#superclass : #GtRlVersionNumberExamples,
-	#category : #'GToolkit-Releaser-Examples'
+	#name : 'GtRlTagVersionNumberExamples',
+	#superclass : 'GtRlVersionNumberExamples',
+	#category : 'GToolkit-Releaser-Examples'
 }
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlTagVersionNumberExamples >> tagVersionNumber [
 	<gtExample>
 	| tagName versionNumber |
@@ -21,7 +21,7 @@ GtRlTagVersionNumberExamples >> tagVersionNumber [
 	
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlTagVersionNumberExamples >> tagVersionNumberEqualityExamples [
 	<gtExample>
 	| tagName versionNumber anotherEqualVersion anotherNotEqualVersion |
@@ -41,7 +41,7 @@ GtRlTagVersionNumberExamples >> tagVersionNumberEqualityExamples [
 	
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 GtRlTagVersionNumberExamples >> uninitializedTagVersionNumber [
 	<gtExample>
 	| versionNumber |

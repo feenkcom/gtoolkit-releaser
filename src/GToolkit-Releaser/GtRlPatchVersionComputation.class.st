@@ -6,12 +6,12 @@ I increment the patch number of a semantic version. I leave the other parts of t
 
 "
 Class {
-	#name : #GtRlPatchVersionComputation,
-	#superclass : #GtRlSemanticVersionComputation,
-	#category : #'GToolkit-Releaser'
+	#name : 'GtRlPatchVersionComputation',
+	#superclass : 'GtRlSemanticVersionComputation',
+	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlPatchVersionComputation >> nextSemanticVersionFrom: aSemanticVersion [
 	^ GtRlSemanticVersionNumber 
 		major: aSemanticVersion major

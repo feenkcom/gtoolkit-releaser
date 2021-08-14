@@ -4,12 +4,12 @@ I am a {{gtClass:MetacelloToolBox}} that only uses the given repository for a ba
 
 "
 Class {
-	#name : #GtRlMetacelloToolBox,
-	#superclass : #MetacelloToolBox,
-	#category : #'GToolkit-Releaser-BaselineModel-Model'
+	#name : 'GtRlMetacelloToolBox',
+	#superclass : 'MetacelloToolBox',
+	#category : 'GToolkit-Releaser-BaselineModel-Metacello'
 }
 
-{ #category : #'spec creation' }
+{ #category : 'spec creation' }
 GtRlMetacelloToolBox >> createProjectReferenceSpec: projectBaseName [
   | projectSpec |
   projectSpec := (Metacello image

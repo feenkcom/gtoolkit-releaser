@@ -10,11 +10,10 @@ I have as main attributes:
 
 "
 Class {
-	#name : #GtRlProject,
-	#superclass : #Object,
+	#name : 'GtRlProject',
+	#superclass : 'Object',
 	#instVars : [
 		'name',
-		'baselineVersion',
 		'baselineClass',
 		'repository',
 		'parentProjects',
@@ -22,18 +21,18 @@ Class {
 		'packages',
 		'preLoadAction',
 		'postLoadAction',
-		'metacelloToolbox'
+		'properties'
 	],
-	#category : #'GToolkit-Releaser-BaselineModel-Model'
+	#category : 'GToolkit-Releaser-BaselineModel-Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 GtRlProject class >> withName: projectName [
 	^ self new
 		name: projectName
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 GtRlProject >> addPackage: aPackage [
 	self assert: [ aPackage notNil ].
 	
@@ -41,13 +40,13 @@ GtRlProject >> addPackage: aPackage [
 	self packages add: aPackage.
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 GtRlProject >> addPackages: aCollection [
 	aCollection do: [ :aPackage |
 		self addPackage: aPackage ]
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 GtRlProject >> addProjectReference: aProjectReference [
 	self assert: [ aProjectReference notNil ].
 	self assert: [ aProjectReference referencedProject notNil ].
@@ -57,13 +56,13 @@ GtRlProject >> addProjectReference: aProjectReference [
 	aProjectReference referencedProject basicAddParentProject: self.
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 GtRlProject >> addProjectReferences: aCollection [
 	aCollection do: [ :aProjectReference | 
 		self addProjectReference: aProjectReference ]
 ]
 
-{ #category : #traversing }
+{ #category : 'traversing' }
 GtRlProject >> allPPackages [
 	^ self 
 		withDeep: #childProjects 
@@ -71,33 +70,43 @@ GtRlProject >> allPPackages [
 			aProject packages collect: [ :aRlPackage | aRlPackage asRPackage ] ]
 ]
 
-{ #category : #traversing }
+{ #category : 'traversing' }
 GtRlProject >> allProjectReferences [
 	^ self
 		withDeep: [ :aProject | aProject childProjects ] 
 		flatCollect: [ :aProject | aProject projectReferences ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProject >> baselineClass [
 	^ baselineClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProject >> baselineClass: aBaselineClass [
 	baselineClass := aBaselineClass
 ]
 
-{ #category : #accessing }
-GtRlProject >> baselineVersion [
-	^ baselineVersion
+{ #category : 'baselines' }
+GtRlProject >> baselineGenerator [
+	^ GtRlMetacelloProjectBaselineGenerator forProject: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing - metacello' }
+GtRlProject >> baselineVersion [
+	^ self 
+		propertyAt: #baselineVersion 
+		ifAbsent: [ nil ]
+]
+
+{ #category : 'accessing - metacello' }
 GtRlProject >> baselineVersion: aMetacelloVersion [
 	self assert: [ aMetacelloVersion name = 'baseline' ].
 	self assert: [ aMetacelloVersion versionNumber versionString = 'baseline' ].
-	baselineVersion := aMetacelloVersion.
+	
+	self 
+		propertyAt: #baselineVersion 
+		put: aMetacelloVersion.
 	
 	aMetacelloVersion spec preLoadDoIt ifNotNil: [ :aPreLoadSpec |
 		self 
@@ -111,26 +120,18 @@ GtRlProject >> baselineVersion: aMetacelloVersion [
 		self postLoadAction: aPostLoadSpec value ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 GtRlProject >> basicAddParentProject: aParentProject [
 	self parentProjects add: aParentProject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProject >> childProjects [
 	^ self projectReferences collect: [ :aProjectReference |
 		aProjectReference referencedProject ]
 ]
 
-{ #category : #actions }
-GtRlProject >> compileBaselineWithProjectDependencies: projectDependenciesMap [
-	| toolbox |
-	toolbox := self toolboxForBaselineWithProjectDependencies: projectDependenciesMap.
-	
-	^ GtPharoCodeModifier current critical: [ toolbox commitBaselineOfMethod ]
-]
-
-{ #category : #traversing }
+{ #category : 'traversing' }
 GtRlProject >> containedRPackagesDo: aBloc [
 	self packages do: [ :aReleaserPackage |
 		(RPackageOrganizer default 
@@ -139,14 +140,7 @@ GtRlProject >> containedRPackagesDo: aBloc [
 				aBloc value: aRPackage ] ]
 ]
 
-{ #category : #actions }
-GtRlProject >> generateSourceWithProjectDependencies: projectDependenciesMap [
-	| toolbox |
-	toolbox := self toolboxForBaselineWithProjectDependencies: projectDependenciesMap.
-	^ toolbox methodSpec methodSource
-]
-
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlProject >> gtChildProjectsFor: aView [
 	<gtView>
 	^ aView list
@@ -156,7 +150,7 @@ GtRlProject >> gtChildProjectsFor: aView [
 		priority: 46
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlProject >> gtMCProjectMapFor: aView [
 	<gtView>
 	^ self baselineVersion 
@@ -167,7 +161,7 @@ GtRlProject >> gtMCProjectMapFor: aView [
 				priority: 70 ]
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlProject >> gtParentProjectsFor: aView [
 	<gtView>
 	^ aView list
@@ -177,7 +171,7 @@ GtRlProject >> gtParentProjectsFor: aView [
 		priority: 45
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlProject >> gtProjectMapFor: aView [
 	<gtView>
 	^ aView mondrian
@@ -201,7 +195,7 @@ GtRlProject >> gtProjectMapFor: aView [
 			mondrian layout custom: (GtGradWestHierarchicalLayout new) ]
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlProject >> gtProjectReferencesFor: aView [
 	<gtView>
 	^ aView list
@@ -212,7 +206,7 @@ GtRlProject >> gtProjectReferencesFor: aView [
 		priority: 55
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlProject >> gtRepoMapFor: aView [
 	<gtView> 
 	^ self repository 
@@ -222,7 +216,7 @@ GtRlProject >> gtRepoMapFor: aView [
 				priority: 60 ]
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlProject >> gtSourceFor: aView [
 	<gtView> 
 	self baselineVersion ifNil: [ ^ aView empty ].
@@ -233,7 +227,7 @@ GtRlProject >> gtSourceFor: aView [
 		priority: 55
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlProject >> gtViewRepositoriesListFor: aView [
 	<gtView>
 	^ aView list
@@ -243,17 +237,17 @@ GtRlProject >> gtViewRepositoriesListFor: aView [
 		priority: 60
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlProject >> hasPostLoadActionSpecified [
 	^ self postLoadAction notNil
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlProject >> hasPreLoadActionSpecified [
 	^ self preLoadAction notNil
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GtRlProject >> initialize [ 
 	super initialize.
 	packages := OrderedCollection new.
@@ -261,50 +255,54 @@ GtRlProject >> initialize [
 	projectReferences := OrderedCollection new.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlProject >> isLeaf [
 	^ self childProjects isEmpty
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlProject >> linkWithRepository: aRepository [
 	self repository: aRepository.
 	(GtRlProjectLinkWithRepositorySignal project: self repository: aRepository) emit.
 	aRepository addProject: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing - metacello' }
 GtRlProject >> metacelloToolbox [
-	^ metacelloToolbox ifNil: [ GtRlMetacelloToolBox new ]
+	^ self 
+		propertyAt: #metacelloToolbox 
+		ifAbsent: [ GtRlMetacelloToolBox new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing - metacello' }
 GtRlProject >> metacelloToolbox: aMetacelloToolbox [
 	"This only exists to make tests work without loading the baseline for tests packages."
-	metacelloToolbox := aMetacelloToolbox
+	self 
+		propertyAt: #metacelloToolbox 
+		put: aMetacelloToolbox
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProject >> name [ 	
 	^ name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProject >> name: aString [
 	name := aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProject >> packages [
 	^ packages
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProject >> parentProjects [
 	^ parentProjects
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProject >> postLoadAction [
 	"Return the action for executing after the project was loaded.
 	${example:GtRlProjectExamples>>#projectWithPostLoadAction}$
@@ -312,28 +310,28 @@ GtRlProject >> postLoadAction [
 	^ postLoadAction
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProject >> postLoadAction: aSymbol [
 	"Set a selector existing in the baseline class that will be executed after the project is loaded.
 	${example:GtRlProjectExamples>>#projectWithPostLoadAction}$"
 	postLoadAction := aSymbol
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProject >> preLoadAction [
 	"Return the action for executing before the project is loaded.
 	${example:GtRlProjectExamples>>#projectWithPreLoadAction}$"
 	^ preLoadAction
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProject >> preLoadAction: aSymbol [
 	"Set a selector existing in the baseline class that will be executed after the project is loaded.
 	${example:GtRlProjectExamples>>#projectWithPreLoadAction}$"
 	preLoadAction := aSymbol
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlProject >> printOn: aStream [
 	super printOn: aStream.
 	aStream 
@@ -342,66 +340,61 @@ GtRlProject >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProject >> projectReferences [
 	^ projectReferences
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing - properties' }
+GtRlProject >> properties [
+	^ properties ifNil: [ 
+		properties := Dictionary new ]
+]
+
+{ #category : 'accessing - properties' }
+GtRlProject >> propertyAt: aKey [
+	"Answer the property value associated with aKey."
+	
+	^ self propertyAt: aKey ifAbsent: [ self error: 'Property not found' ].
+]
+
+{ #category : 'accessing - properties' }
+GtRlProject >> propertyAt: propertyName ifAbsent: aBlock [
+	^ self properties
+		at: propertyName
+		ifAbsent: aBlock
+]
+
+{ #category : 'accessing - properties' }
+GtRlProject >> propertyAt: propertyName put: propValue [
+	^ self properties
+		at: propertyName
+		ifAbsentPut: propValue
+]
+
+{ #category : 'accessing' }
 GtRlProject >> repository [
 	^ repository
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProject >> repository: aRepository [
 	repository := aRepository 
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : 'accessing - dynamic' }
 GtRlProject >> rootPackages [
 	"Return the list of packages on which other packages do not depend upon."
 	^ self packages select: [ :aPackage |
 		aPackage dependentPackages isEmpty ].
 ]
 
-{ #category : #private }
-GtRlProject >> toolboxForBaselineWithProjectDependencies: projectDependenciesMap [
-	| projectNames toolbox |
-	projectNames := projectDependenciesMap collect: #key.
-
-   toolbox := (self metacelloToolbox 
-	 baselineNamed: self baselineClass name)
-    createBaselineOfMethod: 'baseline:' inCategory: 'baseline';
-	addBaselineOfSection: #'common'
-		requiredProjects: projectNames
-	   packages: (self packages collect: #name)
-	   dependencies: (self packages collect: [ :aPackage | 
-			aPackage name -> (aPackage requiredNodes collect: #name) ])
-	   includes: #()
-	   files: #()
-	   repositories: projectDependenciesMap
-	   preLoadDoIts: #()
-	   postLoadDoIts: #()
-	   supplyingAnswers: #()
-	   groups: #()
-	   versionSpecsDo: [ :versionSpec | ].
-	
-	self assert: [ toolbox methodSpec methodSections size = 1] description: 'Only one section per method is supported'.
-	self assert: [ toolbox methodSpec methodSections first attributes = #(#common) ] description: 'Only #common section is supported'.
-	self preLoadAction ifNotNil: [ 
-		toolbox methodSpec methodSections first versionSpec preLoadDoIt: self preLoadAction ].
-	 self postLoadAction ifNotNil: [
-		toolbox methodSpec methodSections first versionSpec postLoadDoIt: self postLoadAction ].
-	
-	^ toolbox
-]
-
-{ #category : #traversing }
+{ #category : 'traversing' }
 GtRlProject >> withAllChildProjects [
 	^ self withDeepCollect: #childProjects
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : 'accessing - dynamic' }
 GtRlProject >> withAllRepositories [
 	"Return all repositores that can be reached from the this project, 
 	including the repository holding this project."

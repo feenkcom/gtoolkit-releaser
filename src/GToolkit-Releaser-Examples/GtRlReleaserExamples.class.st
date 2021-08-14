@@ -1,15 +1,15 @@
 Class {
-	#name : #GtRlReleaserExamples,
-	#superclass : #Object,
+	#name : 'GtRlReleaserExamples',
+	#superclass : 'Object',
 	#traits : 'TGtRlReleaseBuildAssertions',
 	#classTraits : 'TGtRlReleaseBuildAssertions classTrait',
 	#instVars : [
 		'repositories'
 	],
-	#category : #'GToolkit-Releaser-Examples'
+	#category : 'GToolkit-Releaser-Examples'
 }
 
-{ #category : #'creation projects' }
+{ #category : 'creation projects' }
 GtRlReleaserExamples >> addNewMethodNamed: methodSelector toProject: targetProject [
 
 	GtPharoCodeModifier current critical: [
@@ -19,13 +19,13 @@ GtRlReleaserExamples >> addNewMethodNamed: methodSelector toProject: targetProje
 		targetProject baselineClass package addMethod: targetProject baselineClass >> methodSelector ]
 ]
 
-{ #category : #assertions }
+{ #category : 'assertions' }
 GtRlReleaserExamples >> assertExecutedActions: releaseActions [
 	releaseActions do: [ :aReleaseAction |
 		self assert: aReleaseAction isExecuted  ]
 ]
 
-{ #category : #assertions }
+{ #category : 'assertions' }
 GtRlReleaserExamples >> assertNewReleaseTagOnReleaseBranchFor: icebergRepository named: aString [
 	| headCommitTags |
 	headCommitTags := icebergRepository head commit tags.
@@ -35,12 +35,12 @@ GtRlReleaserExamples >> assertNewReleaseTagOnReleaseBranchFor: icebergRepository
 	self assert: headCommitTags first name equals: aString.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 GtRlReleaserExamples >> baselineClassForProjectName: projectName [
 	^ Smalltalk classNamed: ('BaselineOf', projectName)
 ]
 
-{ #category : #'creation projects' }
+{ #category : 'creation projects' }
 GtRlReleaserExamples >> commiNewMethodNamed: methodSelector onMasterToProject: targetProject [
 	| icebergRepository |
 	icebergRepository := targetProject repository icebergRepository.
@@ -55,14 +55,14 @@ GtRlReleaserExamples >> commiNewMethodNamed: methodSelector onMasterToProject: t
 		commitWithMessage: 'added method named', methodSelector.
 ]
 
-{ #category : #'creation baselines' }
+{ #category : 'creation baselines' }
 GtRlReleaserExamples >> createBaselineForProjectNamed: projectName [
 	^ self 
 		createBaselineForProjectNamed: projectName 
 		withDependencies: #()
 ]
 
-{ #category : #'creation baselines' }
+{ #category : 'creation baselines' }
 GtRlReleaserExamples >> createBaselineForProjectNamed: projectName withDependencies: baselineDependencies [
 	| methodSourceCode dependenciesCode baselineClass baselinePackage | 
 	baselinePackage := RPackage named: 'BaselineOf', projectName.
@@ -97,7 +97,7 @@ dependenciesCode,'
 	^ baselineClass
 ]
 
-{ #category : #'creation repositories' }
+{ #category : 'creation repositories' }
 GtRlReleaserExamples >> createBasicIcebergRepositoryWithName: repositoryName [
 	| repository reposioryFolder |
 	
@@ -126,7 +126,7 @@ GtRlReleaserExamples >> createBasicIcebergRepositoryWithName: repositoryName [
 	^ repository
 ]
 
-{ #category : #'creation repositories' }
+{ #category : 'creation repositories' }
 GtRlReleaserExamples >> createIcebergRepositoryNamed: projectName withProjectDependencies: projectDependencies [
 	| repository baselineClass |
 	
@@ -146,12 +146,12 @@ GtRlReleaserExamples >> createIcebergRepositoryNamed: projectName withProjectDep
 	^ repository
 ]
 
-{ #category : #'creation repositories' }
+{ #category : 'creation repositories' }
 GtRlReleaserExamples >> createIcebergRepositoryWithEmptyBaselineNamed: projectName [
 	^ self createIcebergRepositoryNamed: projectName withProjectDependencies: #()
 ]
 
-{ #category : #'creation projects' }
+{ #category : 'creation projects' }
 GtRlReleaserExamples >> createSingleProjectWithName: projectName [
 	| icebergRepository repository project |
 	
@@ -163,7 +163,7 @@ GtRlReleaserExamples >> createSingleProjectWithName: projectName [
 	^ project
 ]
 
-{ #category : #'examples - configs' }
+{ #category : 'examples - configs' }
 GtRlReleaserExamples >> defaultReleaseConfiguration [
 	<gtExample>
 	| releaseConfiguration |
@@ -178,7 +178,7 @@ GtRlReleaserExamples >> defaultReleaseConfiguration [
 	^ releaseConfiguration
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 GtRlReleaserExamples >> instantiateAndInitializeProjectWithName: projectName [
 	| baselineClass |
 	baselineClass := Smalltalk classNamed: ('BaselineOf', projectName).
@@ -188,7 +188,7 @@ GtRlReleaserExamples >> instantiateAndInitializeProjectWithName: projectName [
 		baselineClass: baselineClass
 ]
 
-{ #category : #'examples - projects' }
+{ #category : 'examples - projects' }
 GtRlReleaserExamples >> projectAWithNoVersion [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
@@ -205,7 +205,7 @@ GtRlReleaserExamples >> projectAWithNoVersion [
 	^ project
 ]
 
-{ #category : #'examples - projects' }
+{ #category : 'examples - projects' }
 GtRlReleaserExamples >> projectBWithNoVersion [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
@@ -222,7 +222,7 @@ GtRlReleaserExamples >> projectBWithNoVersion [
 	^ project
 ]
 
-{ #category : #'examples - projects' }
+{ #category : 'examples - projects' }
 GtRlReleaserExamples >> projectStructureWithOneChildDependency [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
@@ -251,7 +251,7 @@ GtRlReleaserExamples >> projectStructureWithOneChildDependency [
 	^ rootProject
 ]
 
-{ #category : #'examples - projects' }
+{ #category : 'examples - projects' }
 GtRlReleaserExamples >> projectStructureWithThreeDependencies [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
@@ -279,7 +279,7 @@ GtRlReleaserExamples >> projectStructureWithThreeDependencies [
 			'RepositoryWithTagAndNoVersion' 
 			'ProjectWithReleasedVersionAndNoChanges' ).
 	
-	"Fix current issuues caused by projects not being loaded in the image"
+	"Fix current issues caused by projects not being loaded in the image"
 	project metacelloToolbox: GtRlMetacelloToolBoxWithSpecs new.
 	project childProjects do: [ :aProject |
 		project metacelloToolbox addSpecForBaselineClass: aProject baselineClass ].
@@ -287,7 +287,7 @@ GtRlReleaserExamples >> projectStructureWithThreeDependencies [
 	^ project
 ]
 
-{ #category : #'examples - projects' }
+{ #category : 'examples - projects' }
 GtRlReleaserExamples >> projectWithOneReleasedVersionAndChanges [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
@@ -314,7 +314,7 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndChanges [
 	^ project
 ]
 
-{ #category : #'examples - projects' }
+{ #category : 'examples - projects' }
 GtRlReleaserExamples >> projectWithOneReleasedVersionAndNewCommit [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
@@ -337,7 +337,7 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndNewCommit [
 	^ project
 ]
 
-{ #category : #'examples - projects' }
+{ #category : 'examples - projects' }
 GtRlReleaserExamples >> projectWithOneReleasedVersionAndNoChanges [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
@@ -357,7 +357,7 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndNoChanges [
 	^ project
 ]
 
-{ #category : #'examples - projects' }
+{ #category : 'examples - projects' }
 GtRlReleaserExamples >> projectWithTagAndNoVersion [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
@@ -374,7 +374,7 @@ GtRlReleaserExamples >> projectWithTagAndNoVersion [
 	^ project
 ]
 
-{ #category : #'examples - configs' }
+{ #category : 'examples - configs' }
 GtRlReleaserExamples >> releaseConfigurationForcingRelease [
 	<gtExample>
 	| releaseConfiguration |
@@ -386,7 +386,7 @@ GtRlReleaserExamples >> releaseConfigurationForcingRelease [
 	^ releaseConfiguration
 ]
 
-{ #category : #'examples - configs' }
+{ #category : 'examples - configs' }
 GtRlReleaserExamples >> releaseConfigurationWithHeadCommitStrategyForChild [
 	<gtExample>
 	| releaseConfiguration |
@@ -397,12 +397,12 @@ GtRlReleaserExamples >> releaseConfigurationWithHeadCommitStrategyForChild [
 	^ releaseConfiguration
 ]
 
-{ #category : #'creation projects' }
+{ #category : 'creation projects' }
 GtRlReleaserExamples >> releaseNewVersionForProject: project [
 	^ self releaseNewVersionForProject: project usingConfig: self defaultReleaseConfiguration
 ]
 
-{ #category : #'creation projects' }
+{ #category : 'creation projects' }
 GtRlReleaserExamples >> releaseNewVersionForProject: project usingConfig: aReleaseConfiguration [
 	| releaseWorkflow |
 	releaseWorkflow := GtRlReleaserExportWorkflow 
@@ -410,7 +410,7 @@ GtRlReleaserExamples >> releaseNewVersionForProject: project usingConfig: aRelea
 	releaseWorkflow executeReleaseActions.
 ]
 
-{ #category : #'setUp-tearDown' }
+{ #category : 'setUp-tearDown' }
 GtRlReleaserExamples >> removeRepositoriesAndCode [
 	self repositories do: [ :anIcebergRepository |
 		IceRepository registry 
@@ -427,13 +427,13 @@ GtRlReleaserExamples >> removeRepositoriesAndCode [
 	self repositories removeAll.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlReleaserExamples >> repositories [ 
 	^ repositories ifNil: [ 
 		repositories := IdentityDictionary new ]
 ]
 
-{ #category : #'creation projects' }
+{ #category : 'creation projects' }
 GtRlReleaserExamples >> switchAllToMasterForProject: project [
 	(project repository withDeepCollect: #childRepositories) do: [ :aRepository |
 		self assert: (aRepository icebergRepository hasLocalBranchNamed: 'master').
@@ -442,7 +442,7 @@ GtRlReleaserExamples >> switchAllToMasterForProject: project [
 			(aRepository icebergRepository branchNamed: 'master') checkout ] ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 GtRlReleaserExamples >> urlStringForProjectNamed: projectName [
 	^ 'github://example/', projectName, '/src'
 ]

@@ -4,27 +4,27 @@ I provide a null strategy to indicate that a release has no strategy. I mark a r
 
 "
 Class {
-	#name : #GtRlNullReleaseStrategy,
-	#superclass : #GtRlReleaseStrategy,
-	#category : #'GToolkit-Releaser'
+	#name : 'GtRlNullReleaseStrategy',
+	#superclass : 'GtRlReleaseStrategy',
+	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlNullReleaseStrategy >> description [
 	^ 'null'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlNullReleaseStrategy >> isNullReleaseStrategy [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlNullReleaseStrategy >> nullVersionNumber [
 	^ GtRlNullVersionNumber new
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlNullReleaseStrategy >> updateFor: anUpdateWorkflow [
 	(GtRlRepositoryPassiveReleaseVersionSignal repositoryRelease: self repositoryRelease version: self nullVersionNumber) emit.
 	self repositoryRelease

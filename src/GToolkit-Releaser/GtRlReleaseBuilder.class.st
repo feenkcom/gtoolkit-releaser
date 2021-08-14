@@ -9,21 +9,21 @@ To create the release I use two other classes:
 
 "
 Class {
-	#name : #GtRlReleaseBuilder,
-	#superclass : #Object,
+	#name : 'GtRlReleaseBuilder',
+	#superclass : 'Object',
 	#instVars : [
 		'configuration'
 	],
-	#category : #'GToolkit-Releaser'
+	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 GtRlReleaseBuilder class >> forConfiguration: aReleaseConfiguration [
 	^ self new
 		configuration: aReleaseConfiguration
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 GtRlReleaseBuilder >> buildReleaseForProject: aProject [
 	| projectRelease |
 	projectRelease := self structureBuilder buildStructureForProject: aProject.
@@ -32,22 +32,22 @@ GtRlReleaseBuilder >> buildReleaseForProject: aProject [
 	^ projectRelease 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlReleaseBuilder >> configuration [
 	^ configuration
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlReleaseBuilder >> configuration: aReleaseConfiguration [
 	configuration := aReleaseConfiguration
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : 'accessing - dynamic' }
 GtRlReleaseBuilder >> structureBuilder [
 	^ GtRlReleaseStructureBuilder forConfiguration: self configuration
 ]
 
-{ #category : #'accessing - dynamic' }
+{ #category : 'accessing - dynamic' }
 GtRlReleaseBuilder >> updateWorkflow [
 	^ GtRlReleaseUpdateWorkflow new
 ]

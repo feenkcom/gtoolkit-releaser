@@ -1,15 +1,15 @@
 Class {
-	#name : #GtReleaserDedicatedBranchExamplesCommandLineHandler,
-	#superclass : #GtExamplesCommandLineHandler,
-	#category : #'GToolkit-Releaser'
+	#name : 'GtReleaserDedicatedBranchExamplesCommandLineHandler',
+	#superclass : 'GtExamplesCommandLineHandler',
+	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtReleaserDedicatedBranchExamplesCommandLineHandler class >> commandName [
 	^ 'dedicatedReleaseBranchExamples'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtReleaserDedicatedBranchExamplesCommandLineHandler >> packages [ 
 	| packages |
 	

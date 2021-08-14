@@ -10,8 +10,8 @@ It provides an api to write various parts of a baseline, like:
 
 "
 Class {
-	#name : #GtRlBaselinePrinterStream,
-	#superclass : #Object,
+	#name : 'GtRlBaselinePrinterStream',
+	#superclass : 'Object',
 	#instVars : [
 		'indentationLevel',
 		'stream'
@@ -19,7 +19,7 @@ Class {
 	#category : 'GToolkit-Releaser-BaselineModel-Printer'
 }
 
-{ #category : #api }
+{ #category : 'api' }
 GtRlBaselinePrinterStream >> baselineWithCommonSpecOn: aBlock [
 	self 
 		methodHeader; 
@@ -27,7 +27,7 @@ GtRlBaselinePrinterStream >> baselineWithCommonSpecOn: aBlock [
 			self commonSpecDo: aBlock ]
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 GtRlBaselinePrinterStream >> commonSpecDo: aBlock [
 
 	self indentedPut: ('{1} for: #''common'' do: [' 
@@ -40,35 +40,35 @@ GtRlBaselinePrinterStream >> commonSpecDo: aBlock [
 	self indentedPut: ']'.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlBaselinePrinterStream >> contents [
 	^ stream contents
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlBaselinePrinterStream >> decreaseIndentation [
 	indentationLevel := indentationLevel - 1
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlBaselinePrinterStream >> increaseIndentation [
 	indentationLevel := indentationLevel + 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlBaselinePrinterStream >> indentationLevel [
 
 	^ indentationLevel
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlBaselinePrinterStream >> indentedDo: aBlock [
 	self increaseIndentation.
 	aBlock value.
 	self decreaseIndentation.
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlBaselinePrinterStream >> indentedPut: aString [
 	indentationLevel timesRepeat: [ 
 		self stream 
@@ -77,19 +77,19 @@ GtRlBaselinePrinterStream >> indentedPut: aString [
 		nextPutAll: aString
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GtRlBaselinePrinterStream >> initialize [ 
 	super initialize.
 	indentationLevel := 0
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlBaselinePrinterStream >> methodBodyDo: aBlock [	
 	self indentedDo: [
 		aBlock value ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlBaselinePrinterStream >> methodHeader [
 	self stream  
 		nextPutAll: ('baseline: {1}' format: { self specVariableName });
@@ -99,12 +99,12 @@ GtRlBaselinePrinterStream >> methodHeader [
 		cr.
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlBaselinePrinterStream >> newLine [
 	self stream cr.
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 GtRlBaselinePrinterStream >> packageFor: aPackageName withDependencies: aCollection [
 	self newLine.
 	self 
@@ -112,7 +112,7 @@ GtRlBaselinePrinterStream >> packageFor: aPackageName withDependencies: aCollect
 		withDependencies: aCollection
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 GtRlBaselinePrinterStream >> packageLineFor: aPackageName withDependencies: aCollection [
 	self indentedPut: ('{1} package: {2}' 
 		format: {self specVariableName. aPackageName asString storeString}).
@@ -128,33 +128,33 @@ GtRlBaselinePrinterStream >> packageLineFor: aPackageName withDependencies: aCol
 			format: {self specVariableName. aCollection asArray storeString}) ].
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 GtRlBaselinePrinterStream >> postLoadAction: aSymbol [
 	self newLine.
 	self postLoadActionLine: aSymbol
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 GtRlBaselinePrinterStream >> postLoadActionLine: aSymbol [
 	self 
 		indentedPut: ('{1} postLoadDoIt: #''{2}''.' 
 			format: {self specVariableName. aSymbol}).
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 GtRlBaselinePrinterStream >> preLoadAction: aSymbol [
 	self newLine.
 	self preLoadActionLine: aSymbol
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 GtRlBaselinePrinterStream >> preLoadActionLine: aSymbol [
 	self 
 		indentedPut: ('{1} preLoadDoIt: #''{2}''.' 
 			format: {self specVariableName. aSymbol}).
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 GtRlBaselinePrinterStream >> projectDependencyFor: aProjectName withLoadSpec: aLoadSpecString [
 	self newLine.
 	self 
@@ -162,7 +162,7 @@ GtRlBaselinePrinterStream >> projectDependencyFor: aProjectName withLoadSpec: aL
 		withLoadSpec: aLoadSpecString
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 GtRlBaselinePrinterStream >> projectLineDependencyFor: aProjectName withLoadSpec: aLoadSpecString [
 	self indentedPut: self specVariableName. 
 	self newLine.
@@ -172,18 +172,18 @@ GtRlBaselinePrinterStream >> projectLineDependencyFor: aProjectName withLoadSpec
 		format: {self specVariableName. aLoadSpecString storeString }).
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlBaselinePrinterStream >> specVariableName [
 	^ 'spec'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlBaselinePrinterStream >> stream [
 
 	^ stream
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlBaselinePrinterStream >> stream: anObject [
 
 	stream := anObject

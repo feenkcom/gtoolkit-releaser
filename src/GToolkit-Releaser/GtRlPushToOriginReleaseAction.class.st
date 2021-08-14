@@ -4,28 +4,28 @@ I execute a push to the remote branch associated with the local release branch. 
 
 "
 Class {
-	#name : #GtRlPushToOriginReleaseAction,
-	#superclass : #GtRlRepositoryReleaseAction,
-	#category : #'GToolkit-Releaser'
+	#name : 'GtRlPushToOriginReleaseAction',
+	#superclass : 'GtRlRepositoryReleaseAction',
+	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlPushToOriginReleaseAction >> description [
 	^ 'Push to origin release branch ',
 		'#', self repositoryRelease releaseStrategy releaseBranchName
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlPushToOriginReleaseAction >> descriptionDetails [
 	^ 'Push ', '#', self repositoryRelease releaseStrategy releaseBranchName
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlPushToOriginReleaseAction >> name [ 
 	^ 'Push to origin'
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlPushToOriginReleaseAction >> performAction [
 	| branch remote |
 	branch := self repositoryRelease icebergRepository branch.

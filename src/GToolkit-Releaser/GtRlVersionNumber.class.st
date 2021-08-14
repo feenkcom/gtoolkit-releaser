@@ -7,28 +7,28 @@ All my subclasses should provide immutable versions numbers. Once created a vers
 
 "
 Class {
-	#name : #GtRlVersionNumber,
-	#superclass : #Object,
-	#category : #'GToolkit-Releaser'
+	#name : 'GtRlVersionNumber',
+	#superclass : 'Object',
+	#category : 'GToolkit-Releaser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlVersionNumber >> description [ 
 	^ self versionString
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlVersionNumber >> isNullVersion [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 GtRlVersionNumber >> isSemanticVersion [
 
 	^ false
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlVersionNumber >> printOn: aStream [
 	super printOn: aStream.
 	aStream 
@@ -37,7 +37,7 @@ GtRlVersionNumber >> printOn: aStream [
 		nextPut: $)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlVersionNumber >> versionString [
 	self subclassResponsibility
 ]

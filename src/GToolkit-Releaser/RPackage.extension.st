@@ -1,6 +1,6 @@
-Extension { #name : #RPackage }
+Extension { #name : 'RPackage' }
 
-{ #category : #'*GToolkit-Releaser' }
+{ #category : '*GToolkit-Releaser' }
 RPackage >> gtDependencyTreeFor: aView [
 	<gtView>
 	^ aView columnedList
