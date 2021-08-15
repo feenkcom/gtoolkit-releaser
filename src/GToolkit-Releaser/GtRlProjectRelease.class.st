@@ -25,6 +25,15 @@ Class {
 }
 
 { #category : 'instance creation' }
+GtRlProjectRelease class >> forBaseline: aBaselineClass fromRepository: aRepositoryUrl withConfiguration: aReleaseConfiguration [
+	| releaseBuilder project |
+	project := aBaselineClass gtRlProjectWithRepository: aRepositoryUrl.
+	releaseBuilder := GtRlReleaseBuilder new
+		configuration: aReleaseConfiguration. 
+	^ releaseBuilder buildReleaseForProject: project.
+]
+
+{ #category : 'instance creation' }
 GtRlProjectRelease class >> forProject: aProject [
 	^ self new
 		project: aProject
