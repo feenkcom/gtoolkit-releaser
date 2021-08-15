@@ -171,6 +171,7 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://juliendelplanque/Python3Generator/repository'.
 		'github://feenkcom/mustache/repository'.
 		'github://feenkcom/Containers-PropertyEnvironment'.
+		'github://feenkcom/pillar/src'.
 		'github://feenkcom/Chrysal/src'.
 		'github://feenkcom/XMLParser/src'.
 		'github://feenkcom/XMLWriter/src'.

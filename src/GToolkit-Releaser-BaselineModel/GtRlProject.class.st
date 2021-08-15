@@ -89,7 +89,7 @@ GtRlProject >> baselineClass: aBaselineClass [
 
 { #category : 'baselines' }
 GtRlProject >> baselineGenerator [
-	^ GtRlMetacelloProjectBaselineGenerator forProject: self
+	^ GtRlProjectBaselineGenerator forProject: self
 ]
 
 { #category : 'accessing - metacello' }
