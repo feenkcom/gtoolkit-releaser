@@ -62,6 +62,21 @@ GtRlDedicatedBranchRootReleaseExamples >> baselineCodeReleaseWithHeadCommitChild
 ]
 
 { #category : 'examples - baseline printing' }
+GtRlDedicatedBranchRootReleaseExamples >> baselineMetacelloCodeReleaseForFourRepositoriesWithNewCommit [
+	^ 'baseline: spec
+	<baseline>
+	spec for: #''common'' do: [
+		spec 
+			baseline: ''RepositoryWithNoVersionA'' with: [
+				spec repository: ''github://example/RepositoryWithNoVersionA:v0.2.0/src'' ];
+			baseline: ''RepositoryWithTagAndNoVersion'' with: [
+				spec repository: ''github://example/RepositoryWithTagAndNoVersion:v0.1.0/src'' ];
+			baseline: ''ProjectWithReleasedVersionAndNoChanges'' with: [
+				spec repository: ''github://example/ProjectWithReleasedVersionAndNoChanges:v0.1.0/src'' ]. ].
+'
+]
+
+{ #category : 'examples - baseline printing' }
 GtRlDedicatedBranchRootReleaseExamples >> printBaselineCodeReleaseForFourRepositoriesWithNewCommit [
 	<gtExample>
 	| projectRelease printer |
@@ -101,6 +116,20 @@ GtRlDedicatedBranchRootReleaseExamples >> printBaselineCodereleaseForFourReposit
 	self 
 		assert: printer generateBaselineSource 
 		equals: self baselineCodeReleaseForFourRepositoriesWithNoVersionAndNoNewChanges.
+		
+	^ printer
+]
+
+{ #category : 'examples - baseline printing' }
+GtRlDedicatedBranchRootReleaseExamples >> printMetacelloBaselineCodeReleaseForFourRepositoriesWithNewCommit [
+	<gtExample>
+	| projectRelease printer |
+	projectRelease := self releaseForFourRepositoriesWithNewCommit projectReleases first.
+	printer := GtRlMetacelloProjectReleaseBaselineGenerator forProjectRelease: projectRelease.
+	
+	self 
+		assert: printer generateBaselineSource 
+		equals: self baselineMetacelloCodeReleaseForFourRepositoriesWithNewCommit.
 		
 	^ printer
 ]
