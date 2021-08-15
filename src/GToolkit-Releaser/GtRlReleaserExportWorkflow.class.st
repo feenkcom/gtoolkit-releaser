@@ -105,7 +105,7 @@ GtRlReleaserExportWorkflow class >> buildGToolkitReleaseWithConfiguration: aRele
 
 	aReleaseConfiguration emit.
 	workflow := GtRlReleaserExportWorkflow 
-		forBaseline: BaselineOfGToolkit 
+		forBaseline: BaselineOfGToolkitForPharo9 
 		fromRepository: 'github://feenkcom/gtoolkit:main/src'
 		withConfiguration: aReleaseConfiguration.
 	^ workflow
