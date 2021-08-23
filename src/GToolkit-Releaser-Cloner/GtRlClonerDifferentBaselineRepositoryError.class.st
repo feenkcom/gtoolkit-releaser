@@ -1,13 +1,13 @@
 Class {
-	#name : #GtRlClonerDifferentBaselineRepositoryError,
-	#superclass : #GtRlClonerBaselineError,
+	#name : 'GtRlClonerDifferentBaselineRepositoryError',
+	#superclass : 'GtRlClonerBaselineError',
 	#instVars : [
 		'loadedProject'
 	],
-	#category : #'GToolkit-Releaser-Cloner-Errors'
+	#category : 'GToolkit-Releaser-Cloner-Errors'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlClonerDifferentBaselineRepositoryError >> defaultMessageText [
 	^ 'Different repository location for baseline of project {1} detected! The baseline was already loaded from {2}, and a new load attempt from {3} was attempted. Update the baselines to only use one repository location.' format: { 
 		self baselineName.
@@ -15,17 +15,17 @@ GtRlClonerDifferentBaselineRepositoryError >> defaultMessageText [
 		self repositoryLocation  }
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlClonerDifferentBaselineRepositoryError >> loadedProject [
 	^ loadedProject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlClonerDifferentBaselineRepositoryError >> loadedProject: anObject [
 	loadedProject := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlClonerDifferentBaselineRepositoryError >> loadedRepositoryLocation [
 	^ self loadedProject repository urlString
 ]

@@ -1,5 +1,5 @@
 Class {
-	#name : #GtRlClonerBaselineLoadEvent,
-	#superclass : #GtRlClonerBaselineEvent,
-	#category : #'GToolkit-Releaser-Cloner-Logging'
+	#name : 'GtRlClonerBaselineLoadEvent',
+	#superclass : 'GtRlClonerBaselineEvent',
+	#category : 'GToolkit-Releaser-Cloner-Logging'
 }

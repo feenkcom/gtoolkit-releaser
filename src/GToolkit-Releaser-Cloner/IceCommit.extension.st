@@ -1,6 +1,6 @@
-Extension { #name : #IceCommit }
+Extension { #name : 'IceCommit' }
 
-{ #category : #'*GToolkit-Releaser-Cloner' }
+{ #category : '*GToolkit-Releaser-Cloner' }
 IceCommit >> gtClonerVersionDescription [
 	
 	self tags

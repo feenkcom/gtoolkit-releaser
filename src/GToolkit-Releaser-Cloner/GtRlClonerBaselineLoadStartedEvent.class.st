@@ -1,10 +1,10 @@
 Class {
-	#name : #GtRlClonerBaselineLoadStartedEvent,
-	#superclass : #GtRlClonerBaselineLoadEvent,
-	#category : #'GToolkit-Releaser-Cloner-Logging'
+	#name : 'GtRlClonerBaselineLoadStartedEvent',
+	#superclass : 'GtRlClonerBaselineLoadEvent',
+	#category : 'GToolkit-Releaser-Cloner-Logging'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlClonerBaselineLoadStartedEvent >> eventName [
 	^ 'Load Started'
 ]

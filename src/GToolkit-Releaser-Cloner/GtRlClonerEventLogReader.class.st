@@ -1,19 +1,19 @@
 Class {
-	#name : #GtRlClonerEventLogReader,
-	#superclass : #Object,
+	#name : 'GtRlClonerEventLogReader',
+	#superclass : 'Object',
 	#instVars : [
 		'events'
 	],
-	#category : #'GToolkit-Releaser-Cloner-Logging'
+	#category : 'GToolkit-Releaser-Cloner-Logging'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 GtRlClonerEventLogReader class >> readFrom: aStream [
 	^ self new
 		readFrom: aStream
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GtRlClonerEventLogReader >> readEventFromLine: aLine [
 	| timestampString eventClassName parts eventClass event |
 	
@@ -32,7 +32,7 @@ GtRlClonerEventLogReader >> readEventFromLine: aLine [
 	^ event
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GtRlClonerEventLogReader >> readFrom: aStream [
 	| newEvents |
 	newEvents := GtRlClonerEventsGroup new.
