@@ -1,15 +1,15 @@
 Class {
-	#name : #GtRlClonerBaselineEventsGroup,
-	#superclass : #Object,
+	#name : 'GtRlClonerBaselineEventsGroup',
+	#superclass : 'Object',
 	#instVars : [
 		'baselineName',
 		'events',
 		'subgroups'
 	],
-	#category : #'GToolkit-Releaser-Cloner-Logging'
+	#category : 'GToolkit-Releaser-Cloner-Logging'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 GtRlClonerBaselineEventsGroup class >> fromEvents: aCollection [
 	| latestGroup groupsStack |
 	
@@ -37,32 +37,32 @@ GtRlClonerBaselineEventsGroup class >> fromEvents: aCollection [
 	^ latestGroup
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 GtRlClonerBaselineEventsGroup >> addEvent: anEvent [
 	self events add: anEvent
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 GtRlClonerBaselineEventsGroup >> addSubgroup: aGroup [
 	self subgroups add: aGroup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlClonerBaselineEventsGroup >> baselineName [
 	^ baselineName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlClonerBaselineEventsGroup >> baselineName: anObject [
 	baselineName := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlClonerBaselineEventsGroup >> events [
 	^ events
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlClonerBaselineEventsGroup >> gtViewAllEventsFor: aView [
 	<gtView>
 	^ aView forward
@@ -73,7 +73,7 @@ GtRlClonerBaselineEventsGroup >> gtViewAllEventsFor: aView [
 	 	view: #gtItemsFor:
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlClonerBaselineEventsGroup >> gtViewLocalEventsFor: aView [
 	<gtView>
 	^ aView forward
@@ -83,7 +83,7 @@ GtRlClonerBaselineEventsGroup >> gtViewLocalEventsFor: aView [
 	 	view: #gtItemsFor:
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlClonerBaselineEventsGroup >> gtViewSubgroupsFor: aView [
 	<gtView>
 	^ aView tree
@@ -93,14 +93,14 @@ GtRlClonerBaselineEventsGroup >> gtViewSubgroupsFor: aView [
 		itemText: #baselineName
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GtRlClonerBaselineEventsGroup >> initialize [ 
 	super initialize.
 	events := GtRlClonerEventsGroup new. 
 	subgroups := OrderedCollection new. 
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlClonerBaselineEventsGroup >> printOn: stream [
 	super printOn: stream.
 	stream 
@@ -109,7 +109,7 @@ GtRlClonerBaselineEventsGroup >> printOn: stream [
 		nextPutAll: ')'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlClonerBaselineEventsGroup >> subgroups [
 	^ subgroups
 ]

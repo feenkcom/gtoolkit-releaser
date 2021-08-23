@@ -1,14 +1,14 @@
 Class {
-	#name : #GtRlClonerBaselineEvent,
-	#superclass : #BeaconSignal,
+	#name : 'GtRlClonerBaselineEvent',
+	#superclass : 'BeaconSignal',
 	#instVars : [
 		'baselineName',
 		'repositoryUrlString'
 	],
-	#category : #'GToolkit-Releaser-Cloner-Logging'
+	#category : 'GToolkit-Releaser-Cloner-Logging'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 GtRlClonerBaselineEvent >> asDictionary [
 	^ super asDictionary 
 		at: #baselineName put: self baselineName;
@@ -16,22 +16,22 @@ GtRlClonerBaselineEvent >> asDictionary [
 		yourself.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlClonerBaselineEvent >> baselineName [
 	^ baselineName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlClonerBaselineEvent >> baselineName: anObject [
 	baselineName := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlClonerBaselineEvent >> eventName [
 	^ 'Baseline Event'
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlClonerBaselineEvent >> printOneLineContentsOn: stream [
 	stream 
 		nextPut: $|; space;
@@ -45,12 +45,12 @@ GtRlClonerBaselineEvent >> printOneLineContentsOn: stream [
 		
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlClonerBaselineEvent >> repositoryUrlString [
 	^ repositoryUrlString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlClonerBaselineEvent >> repositoryUrlString: anObject [
 	repositoryUrlString := anObject
 ]

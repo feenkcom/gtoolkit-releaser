@@ -1,10 +1,10 @@
 Class {
-	#name : #GtRlLocalDependenciesModelBuilder,
-	#superclass : #GtRlDependenciesModelBuilder,
-	#category : #'GToolkit-Releaser-Cloner-Core'
+	#name : 'GtRlLocalDependenciesModelBuilder',
+	#superclass : 'GtRlDependenciesModelBuilder',
+	#category : 'GToolkit-Releaser-Cloner-Core'
 }
 
-{ #category : #building }
+{ #category : 'building' }
 GtRlLocalDependenciesModelBuilder >> buildProjectFromMetacelloSpec: aMetacelloProjectSpec [
 	| newProject |
 	self assert: [ aMetacelloProjectSpec project versions size = 1 ].
@@ -25,7 +25,7 @@ GtRlLocalDependenciesModelBuilder >> buildProjectFromMetacelloSpec: aMetacelloPr
 	^ newProject
 ]
 
-{ #category : #'private - building' }
+{ #category : 'private - building' }
 GtRlLocalDependenciesModelBuilder >> instantiateProjectFromMetacelloSpec: aBaselineProjectSpec [
 	| repositoriesSpec |
 	repositoriesSpec := aBaselineProjectSpec repositories.
@@ -35,7 +35,7 @@ GtRlLocalDependenciesModelBuilder >> instantiateProjectFromMetacelloSpec: aBasel
 		linkWithRepository: (self ensureRepositoriesFor: repositoriesSpec map values first description) 
 ]
 
-{ #category : #dependencies }
+{ #category : 'dependencies' }
 GtRlLocalDependenciesModelBuilder >> updateProjectDependenciesFor: currentProject fromMCVersion: aMetacelloVersion [
 	| projectReferences |
 	projectReferences := (aMetacelloVersion projects 

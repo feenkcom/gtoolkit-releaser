@@ -1,6 +1,6 @@
-Extension { #name : #IceBranch }
+Extension { #name : 'IceBranch' }
 
-{ #category : #'*GToolkit-Releaser-Cloner' }
+{ #category : '*GToolkit-Releaser-Cloner' }
 IceBranch >> gtClonerVersionDescription [
 	
 	^ self description

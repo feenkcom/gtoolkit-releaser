@@ -1,10 +1,10 @@
 Class {
-	#name : #GtRlClonerBaselineSkipLoadEvent,
-	#superclass : #GtRlClonerBaselineLoadEvent,
-	#category : #'GToolkit-Releaser-Cloner-Logging'
+	#name : 'GtRlClonerBaselineSkipLoadEvent',
+	#superclass : 'GtRlClonerBaselineLoadEvent',
+	#category : 'GToolkit-Releaser-Cloner-Logging'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlClonerBaselineSkipLoadEvent >> eventName [
 	^ 'Skip Load'
 ]
