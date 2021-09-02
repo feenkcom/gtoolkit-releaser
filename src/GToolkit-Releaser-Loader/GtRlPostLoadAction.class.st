@@ -1,15 +1,15 @@
 Class {
-	#name : #GtRlPostLoadAction,
-	#superclass : #GtRlPrePostLoadAction,
-	#category : #'GToolkit-Releaser-Loader'
+	#name : 'GtRlPostLoadAction',
+	#superclass : 'GtRlPrePostLoadAction',
+	#category : 'GToolkit-Releaser-Loader'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlPostLoadAction >> actionSelector [
 	^ self loadDirective project postLoadAction
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlPostLoadAction >> name [
 	^ 'Evaluate post-load action'
 ]

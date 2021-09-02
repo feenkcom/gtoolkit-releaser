@@ -127,8 +127,8 @@ GtRlReleaseConfiguration >> gtDefaultOptionsFor: aView [
 			'Version number' -> self defaultVersionNumber.
 			'Version computation' -> self defaultVersionComputation.
 			'Force release' -> self defaultShouldForceNewRelease } ];
-		column: 'Option' item: #key;
-		column: 'Default value' item: #value;
+		column: 'Option' text: #key;
+		column: 'Default value' text: #value;
 		send: #value
 ]
 

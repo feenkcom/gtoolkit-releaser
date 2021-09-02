@@ -1,10 +1,10 @@
 Class {
-	#name : #GtRlLoadDirectivesOrderTraversal,
-	#superclass : #Object,
-	#category : #'GToolkit-Releaser-Loader'
+	#name : 'GtRlLoadDirectivesOrderTraversal',
+	#superclass : 'Object',
+	#category : 'GToolkit-Releaser-Loader'
 }
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlLoadDirectivesOrderTraversal >> loadOrderFor: aProject [
 	| projectsInLoadOrder |
 	projectsInLoadOrder := OrderedCollection new.
@@ -12,7 +12,7 @@ GtRlLoadDirectivesOrderTraversal >> loadOrderFor: aProject [
 	^ projectsInLoadOrder
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 GtRlLoadDirectivesOrderTraversal >> loadOrderFor: aProject in: currentProjects [
 	"I traverse first the children recursively, and only after all the children are traversed, 
 	I add the current project to the list if needed. The project is added to the list only if 

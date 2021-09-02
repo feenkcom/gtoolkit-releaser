@@ -1,13 +1,13 @@
 Class {
-	#name : #GtRlReleaseConfigurationSignal,
-	#superclass : #GtReleaserSignal,
+	#name : 'GtRlReleaseConfigurationSignal',
+	#superclass : 'GtReleaserSignal',
 	#instVars : [
 		'configuration'
 	],
-	#category : #'GToolkit-Releaser-Logging'
+	#category : 'GToolkit-Releaser-Logging'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 GtRlReleaseConfigurationSignal class >> emit: aReleaseConfiguration [
 	"comment stating purpose of message"
 	^ self new 
@@ -15,12 +15,12 @@ GtRlReleaseConfigurationSignal class >> emit: aReleaseConfiguration [
 		emit.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlReleaseConfigurationSignal >> configuration: aReleaseConfiguration [
 	configuration := aReleaseConfiguration 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlReleaseConfigurationSignal >> printOneLineContentsOn: stream [
 	stream nextPutAll: configuration defaultReleaseBranchName; nextPutAll:' '; nextPutAll:configuration defaultReleaseStrategy class name; nextPutAll:' '; nextPutAll: configuration defaultVersionComputation class name 
 ]

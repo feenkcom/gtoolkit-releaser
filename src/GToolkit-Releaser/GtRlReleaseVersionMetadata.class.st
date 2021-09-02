@@ -43,8 +43,8 @@ GtRlReleaseVersionMetadata >> gtRepositoryVersionsFor: aView [
 	^ aView columnedList
 		title: 'Repositories' translated;
 		items: [ self repositoryData associations ];
-		column: 'Repository' item: [ :assoc | assoc key ];
-		column: 'Version' item: [ :assoc | assoc value ]
+		column: 'Repository' text: [ :assoc | assoc key ];
+		column: 'Version' text: [ :assoc | assoc value ]
 ]
 
 { #category : 'testing' }

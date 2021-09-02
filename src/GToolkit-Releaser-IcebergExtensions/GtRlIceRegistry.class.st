@@ -38,10 +38,10 @@ GtRlIceRegistry >> gtRepositoriesListFor: aView [
 	^ aView columnedList
 		title: 'Repositories' translated;
 		items: [ self repositoryModels ];
-		column: 'Name' item: [ :aRepositoryModel | 
+		column: 'Name' text: [ :aRepositoryModel | 
 			self fromTextToRopedText: aRepositoryModel descriptionWithDecoration ];
-		column: 'Branch' item: [ :aRepositoryModel | aRepositoryModel branchName ];
-		column: 'Status' item: [ :aRepositoryModel | 
+		column: 'Branch' text: [ :aRepositoryModel | aRepositoryModel branchName ];
+		column: 'Status' text: [ :aRepositoryModel | 
 			self fromTextToRopedText: aRepositoryModel status ];
 		send: [ :aRepositoryModel | aRepositoryModel entity ];
 		actionStencil: [ :aTab | 

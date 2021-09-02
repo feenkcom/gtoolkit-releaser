@@ -1,68 +1,68 @@
 Class {
-	#name : #GtRlProjectsLoadWorkflow,
-	#superclass : #Object,
+	#name : 'GtRlProjectsLoadWorkflow',
+	#superclass : 'Object',
 	#instVars : [
 		'rootLoadDirective',
 		'loadActions',
 		'visitedLoadDirectives'
 	],
-	#category : #'GToolkit-Releaser-Loader'
+	#category : 'GToolkit-Releaser-Loader'
 }
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlProjectsLoadWorkflow >> executeLoadActions [
 	self loadActions do: [ :aLoadAction |
 		aLoadAction execute ]
 ]
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 GtRlProjectsLoadWorkflow >> format: aString for: anAction [
 	^ anAction isExecuted
 		ifTrue: [ aString asRopedText foreground: Color gray ] 
 		ifFalse: [ aString ]
 ]
 
-{ #category : #'gt-extensions' }
+{ #category : 'gt-extensions' }
 GtRlProjectsLoadWorkflow >> gtLoadActionsFor: aView [
 	<gtView>
 	^ aView columnedList
 		title: 'Load actions' translated;
 		priority: 50;
 		items: [ self loadActions ifNil: [ #() ] ];
-		column: 'Action' item: [ :anAction | 
+		column: 'Action' text: [ :anAction | 
 			self format: anAction name for: anAction ];
-		column: 'Details' item: [ :anAction | 
+		column: 'Details' text: [ :anAction | 
 			self format: anAction descriptionDetails for: anAction ];
-		column: 'Project' item: [ :anAction | 
+		column: 'Project' text: [ :anAction | 
 			self 
 				format: anAction loadDirective projectName
 				for: anAction ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectsLoadWorkflow >> loadActions [
 	^ loadActions
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectsLoadWorkflow >> rootLoadDirective [
 	^ rootLoadDirective
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectsLoadWorkflow >> rootLoadDirective: aLoadDirective [
 	rootLoadDirective := aLoadDirective.
 	self updateLoadActions
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 GtRlProjectsLoadWorkflow >> updateLoadActions [
 	loadActions := OrderedCollection new.
 	visitedLoadDirectives := Set new.
 	self updateLoadActionsFor: self rootLoadDirective
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 GtRlProjectsLoadWorkflow >> updateLoadActionsFor: aLoadDirective [
 	(visitedLoadDirectives includes: aLoadDirective) ifTrue: [ ^ self ].
 	visitedLoadDirectives add: aLoadDirective.

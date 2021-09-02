@@ -80,12 +80,12 @@ GtRlReleaseActionsGroup >> gtReleaseActionsFor: aView [
 		title: 'Release actions' translated;
 		priority: 50;
 		items: [ self actions ifNil: [ #() ] ];
-		column: 'Order' item: [ :anAction | anAction order ] width: 50;
-		column: 'Repository' item: [ :anAction | 
+		column: 'Order' text: [ :anAction | anAction order ] width: 50;
+		column: 'Repository' text: [ :anAction | 
 			self format: anAction repositoryRelease repository id for: anAction ];
-		column: 'Action' item: [ :anAction | 
+		column: 'Action' text: [ :anAction | 
 			self format: anAction name for: anAction ];
-		column: 'Details' item: [ :anAction | 
+		column: 'Details' text: [ :anAction | 
 			self format: anAction descriptionDetails for: anAction ];
 		actionButtonLabel: 'Execute' action: [ 
 			self executeUnexecutedActions ]

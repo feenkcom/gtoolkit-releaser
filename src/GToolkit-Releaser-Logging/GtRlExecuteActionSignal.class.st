@@ -1,10 +1,10 @@
 Class {
-	#name : #GtRlExecuteActionSignal,
-	#superclass : #GtRlActionSignal,
-	#category : #'GToolkit-Releaser-Logging'
+	#name : 'GtRlExecuteActionSignal',
+	#superclass : 'GtRlActionSignal',
+	#category : 'GToolkit-Releaser-Logging'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlExecuteActionSignal >> printOneLineContentsOn: stream [
 	stream nextPutAll: action order printString; 
 		nextPutAll: ' Executed action: '; 

@@ -1,19 +1,19 @@
 Class {
-	#name : #ReleaserLogger,
-	#superclass : #MemoryLogger,
-	#category : #'GToolkit-Releaser-Logging'
+	#name : 'ReleaserLogger',
+	#superclass : 'MemoryLogger',
+	#category : 'GToolkit-Releaser-Logging'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ReleaserLogger >> gtReleaserRecordingsFor: aView [
 	<gtView>
 	^ aView columnedList
 		title: 'Releaser Recordings' translated;
 		priority: 50;
 		items: [ self recordings reverse ];
-		column: 'Type' translated item: [ :each | each name ];
+		column: 'Type' translated text: [ :each | each name ];
 		column: 'Contents' translated 
-			item: [ :each | String streamContents: [ :s | each printOneLineContentsOn: s ] ]
+			text: [ :each | String streamContents: [ :s | each printOneLineContentsOn: s ] ]
 			width: 600;
-		column: 'Timestamp' translated item: [ :each | each timestamp asString ]
+		column: 'Timestamp' translated text: [ :each | each timestamp asString ]
 ]
