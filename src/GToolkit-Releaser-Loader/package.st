@@ -1,1 +1,1 @@
-Package { #name : #'GToolkit-Releaser-Loader' }
+Package { #name : 'GToolkit-Releaser-Loader' }

@@ -239,11 +239,11 @@ GtRlReleaserExportWorkflow >> gtRepositoryReleasesListFor: aView [
 	^ aView columnedList
 		title: 'Releases' translated;
 		items: [ self repositoriesReleasesInReleaseOrder ];
-		column: 'Repository' item: [ :aRepositoryRelease | 
+		column: 'Repository' text: [ :aRepositoryRelease | 
 			aRepositoryRelease decorateText: aRepositoryRelease repository id ];
-		column: 'Version' item: [ :aRepositoryRelease | 
+		column: 'Version' text: [ :aRepositoryRelease | 
 			aRepositoryRelease decorateText: aRepositoryRelease version description ];
-		column: 'Release strategy' item: [ :aRepositoryRelease | 
+		column: 'Release strategy' text: [ :aRepositoryRelease | 
 			aRepositoryRelease decorateText: aRepositoryRelease releaseStrategy description ]
 ]
 

@@ -1,1 +1,1 @@
-Package { #name : #'GToolkit-Releaser-IcebergExtensions' }
+Package { #name : 'GToolkit-Releaser-IcebergExtensions' }

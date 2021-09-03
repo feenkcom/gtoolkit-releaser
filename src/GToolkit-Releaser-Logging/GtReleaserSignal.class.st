@@ -1,5 +1,5 @@
 Class {
-	#name : #GtReleaserSignal,
-	#superclass : #BeaconSignal,
-	#category : #'GToolkit-Releaser-Logging'
+	#name : 'GtReleaserSignal',
+	#superclass : 'BeaconSignal',
+	#category : 'GToolkit-Releaser-Logging'
 }

@@ -1,6 +1,6 @@
 Class {
-	#name : #GtRlProjectLoadDirective,
-	#superclass : #Object,
+	#name : 'GtRlProjectLoadDirective',
+	#superclass : 'Object',
 	#instVars : [
 		'project',
 		'parentLoadDirectives',
@@ -10,42 +10,42 @@ Class {
 		'postLoadAction',
 		'packageLoadActions'
 	],
-	#category : #'GToolkit-Releaser-Loader'
+	#category : 'GToolkit-Releaser-Loader'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 GtRlProjectLoadDirective class >> forProject: aProject [ 
 	^ self new
 		initializeForProject: aProject
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 GtRlProjectLoadDirective >> addChildLoadDirective: aLoadDirective [
 	aLoadDirective parentLoadDirectives add: self.
 	self childLoadDirectives add: aLoadDirective
 	
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 GtRlProjectLoadDirective >> addIgnoredChildLoadDirective: aLoadDirective [
 	self ignoredChildLoadDirectives add: aLoadDirective
 	
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 GtRlProjectLoadDirective >> addPackageAction: aPackageAction [
 	self assert: [ aPackageAction notNil ].
 	
 	self packageLoadActions add: aPackageAction
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectLoadDirective >> childLoadDirectives [
 	^ childLoadDirectives ifNil: [ 
 		childLoadDirectives := OrderedCollection new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectLoadDirective >> gtFullLoadDirectivesMapFor: aView [
 	<gtView>
 	^ aView mondrian
@@ -86,7 +86,7 @@ GtRlProjectLoadDirective >> gtFullLoadDirectivesMapFor: aView [
 			mondrian layout custom: (GtGradWestHierarchicalLayout new) ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectLoadDirective >> gtLoadDirectivesMapFor: aView [
 	<gtView>
 	^ aView mondrian
@@ -114,7 +114,7 @@ GtRlProjectLoadDirective >> gtLoadDirectivesMapFor: aView [
 			mondrian layout custom: (GtGradWestHierarchicalLayout new) ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectLoadDirective >> gtProjectWithDirectivesMapFor: aView [
 	<gtView>
 	^ aView mondrian
@@ -155,7 +155,7 @@ GtRlProjectLoadDirective >> gtProjectWithDirectivesMapFor: aView [
 			mondrian layout custom: (GtGradWestHierarchicalLayout new) ]
 ]
 
-{ #category : #'gt-extensions' }
+{ #category : 'gt-extensions' }
 GtRlProjectLoadDirective >> gtViewBaselineCodeFor: aView [
 	<gtView>
 	^ aView forward 
@@ -165,7 +165,7 @@ GtRlProjectLoadDirective >> gtViewBaselineCodeFor: aView [
 		view: #gtSourceFor: 
 ]
 
-{ #category : #'gt-extensions' }
+{ #category : 'gt-extensions' }
 GtRlProjectLoadDirective >> gtViewChildLoadDirectivesFor: aView [
 	<gtView>
 	^ aView list 
@@ -174,7 +174,7 @@ GtRlProjectLoadDirective >> gtViewChildLoadDirectivesFor: aView [
 		items: [ self childLoadDirectives ]
 ]
 
-{ #category : #'gt-extensions' }
+{ #category : 'gt-extensions' }
 GtRlProjectLoadDirective >> gtViewLocalLoadActionsFor: aView [
 	<gtView>
 	^ aView list 
@@ -183,7 +183,7 @@ GtRlProjectLoadDirective >> gtViewLocalLoadActionsFor: aView [
 		items: [ self loadActions ]
 ]
 
-{ #category : #'gt-extensions' }
+{ #category : 'gt-extensions' }
 GtRlProjectLoadDirective >> gtViewPackagesFor: aView [
 	<gtView>
 	^ aView list 
@@ -192,7 +192,7 @@ GtRlProjectLoadDirective >> gtViewPackagesFor: aView [
 		items: [ self packagesInLoadOrder ]
 ]
 
-{ #category : #'gt-extensions' }
+{ #category : 'gt-extensions' }
 GtRlProjectLoadDirective >> gtViewParentLoadDirectivesFor: aView [
 	<gtView>
 	^ aView list 
@@ -201,13 +201,13 @@ GtRlProjectLoadDirective >> gtViewParentLoadDirectivesFor: aView [
 		items: [ self parentLoadDirectives ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectLoadDirective >> ignoredChildLoadDirectives [
 	^ ignoredChildLoadDirectives ifNil: [ 
 		ignoredChildLoadDirectives := OrderedCollection new ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 GtRlProjectLoadDirective >> initializeForProject: aProject [
 	self assert: [ aProject notNil and: [ project isNil ] ].
 	
@@ -215,7 +215,7 @@ GtRlProjectLoadDirective >> initializeForProject: aProject [
 	self initializeLoadActions.
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 GtRlProjectLoadDirective >> initializeLoadActions [
 	self assert: [ self preLoadAction isNil ].
 	self assert: [ self postLoadAction isNil ].
@@ -234,7 +234,7 @@ GtRlProjectLoadDirective >> initializeLoadActions [
 			loadDirective: self) ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectLoadDirective >> loadActions [
 	| loadActions |
 	loadActions := OrderedCollection new.
@@ -247,35 +247,35 @@ GtRlProjectLoadDirective >> loadActions [
 	^ loadActions
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectLoadDirective >> packageLoadActions [
 	^ packageLoadActions ifNil: [ 
 		packageLoadActions := OrderedCollection new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectLoadDirective >> packagesInLoadOrder [
 	^ GtRlPackagesLoadOrderTraversal new 
 		packagesLoadOrderFor: self project
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectLoadDirective >> parentLoadDirectives [
 	^ parentLoadDirectives ifNil: [ 
 		parentLoadDirectives := OrderedCollection new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectLoadDirective >> postLoadAction [
 	^ postLoadAction
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectLoadDirective >> preLoadAction [
 	^ preLoadAction
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 GtRlProjectLoadDirective >> printOn: aStream [
 	super printOn: aStream.
 	aStream nextPutAll: '('.
@@ -283,22 +283,22 @@ GtRlProjectLoadDirective >> printOn: aStream [
 	aStream nextPutAll: ')'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectLoadDirective >> project [
 	^ project
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectLoadDirective >> projectName [
 	^ self project name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectLoadDirective >> withAllChildIgnoredLoadDirectived [
 	^ self withDeepCollect: #ignoredChildLoadDirectives
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlProjectLoadDirective >> withAllChildLoadDirectived [
 	^ self withDeepCollect: #childLoadDirectives
 ]

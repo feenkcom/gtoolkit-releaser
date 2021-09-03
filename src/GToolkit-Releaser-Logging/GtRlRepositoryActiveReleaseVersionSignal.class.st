@@ -1,21 +1,21 @@
 Class {
-	#name : #GtRlRepositoryActiveReleaseVersionSignal,
-	#superclass : #GtReleaserSignal,
+	#name : 'GtRlRepositoryActiveReleaseVersionSignal',
+	#superclass : 'GtReleaserSignal',
 	#instVars : [
 		'repositoryRelease',
 		'version'
 	],
-	#category : #'GToolkit-Releaser-Logging'
+	#category : 'GToolkit-Releaser-Logging'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 GtRlRepositoryActiveReleaseVersionSignal class >> repositoryRelease: aRepositoryRelease version: aVersion [
 	^ self new
 	repositoryRelease: aRepositoryRelease;
 	version: aVersion.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryActiveReleaseVersionSignal >> printOneLineContentsOn: stream [
 	(version versionString) printOn: stream. 
 	stream nextPutAll: ' '. 
@@ -23,22 +23,22 @@ GtRlRepositoryActiveReleaseVersionSignal >> printOneLineContentsOn: stream [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryActiveReleaseVersionSignal >> repositoryRelease [
 	^ repositoryRelease
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryActiveReleaseVersionSignal >> repositoryRelease: anObject [
 	repositoryRelease := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryActiveReleaseVersionSignal >> version [
 	^ version
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlRepositoryActiveReleaseVersionSignal >> version: anObject [
 	version := anObject
 ]

@@ -1,10 +1,10 @@
 Class {
-	#name : #GtRlGToolkitRepositoriesExplorer,
-	#superclass : #GtRlSystemRepositoriesExplorer,
+	#name : 'GtRlGToolkitRepositoriesExplorer',
+	#superclass : 'GtRlSystemRepositoriesExplorer',
 	#category : 'GToolkit-Releaser-IcebergExtensions'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRlGToolkitRepositoriesExplorer class >> buildForGToolkitProject [
 	| projectBuilder project |
 	projectBuilder := GtRlDependenciesModelBuilder new.
@@ -14,7 +14,7 @@ GtRlGToolkitRepositoriesExplorer class >> buildForGToolkitProject [
 	^ self forProject: project
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlGToolkitRepositoriesExplorer >> gtViewAllImageRepositoriesFor: aView [
 	<gtView>
 	^ (GtRlIceRegistry forAllIcebergRepositories gtRepositoriesListFor: aView)
@@ -22,7 +22,7 @@ GtRlGToolkitRepositoriesExplorer >> gtViewAllImageRepositoriesFor: aView [
 		priority: 25
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlGToolkitRepositoriesExplorer >> gtViewGToolkitRepositoriesFor: aView [
 	<gtView>
 	| gtoolitRegistry |
@@ -34,7 +34,7 @@ GtRlGToolkitRepositoriesExplorer >> gtViewGToolkitRepositoriesFor: aView [
 			priority: 5
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlGToolkitRepositoriesExplorer >> gtViewGraphicalStackRepositoriesFor: aView [
 	<gtView>
 	| graphicalRegistry |
@@ -47,7 +47,7 @@ GtRlGToolkitRepositoriesExplorer >> gtViewGraphicalStackRepositoriesFor: aView [
 			priority: 10
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtRlGToolkitRepositoriesExplorer >> gtViewSystemRepositoriesFor: aView [
 	<gtView>
 	^ (super gtViewSystemRepositoriesFor: aView)

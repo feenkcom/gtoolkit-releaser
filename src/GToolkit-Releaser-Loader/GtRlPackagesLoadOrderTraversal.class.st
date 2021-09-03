@@ -1,10 +1,10 @@
 Class {
-	#name : #GtRlPackagesLoadOrderTraversal,
-	#superclass : #Object,
-	#category : #'GToolkit-Releaser-Loader'
+	#name : 'GtRlPackagesLoadOrderTraversal',
+	#superclass : 'Object',
+	#category : 'GToolkit-Releaser-Loader'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 GtRlPackagesLoadOrderTraversal >> loadOrderFor: aPackage in: currentPackages [
 	"I traverse first the required packages recursively, and only after all the requirements are traversed, 
 	I add the current package to the list if needed. The package is added to the list only if 
@@ -16,7 +16,7 @@ GtRlPackagesLoadOrderTraversal >> loadOrderFor: aPackage in: currentPackages [
 		currentPackages add: aPackage ].
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 GtRlPackagesLoadOrderTraversal >> packagesLoadOrderFor: aProject [
 	| packagesInLoadOrder |
 	packagesInLoadOrder := OrderedCollection new.
