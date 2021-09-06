@@ -75,15 +75,26 @@ GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChangesBetween: aSourceCo
 	
 	releaserChanges do: [ :aChange | NonInteractiveTranscript stdout show: aChange ].
 	
-	self assert: (releaserChanges allSatisfy: [ :aNode |
-		aNode key = GtRlReleaseVersionMetadata fileName or: [ 
-			aNode key = 'baseline:' ] ]) description: 'releaserChanges allSatisfy'.
+	self
+		assert: [ (releaserChanges allSatisfy: [ :aNode |
+			aNode key = GtRlReleaseVersionMetadata fileName or: [ 
+				aNode key = GtRlExportReleaserVersionAction fileName or: [ 
+					aNode key = 'baseline:' ] ]  ]) ]
+		description: [ 'releaserChanges allSatisfy' ].
+	
 	releaserChanges 
 		select: [ :aNode | aNode key = 'baseline:' ] 
 		thenDo: [ :aNode | self assertBaselineMethodNodeFor: aNode ].
+
 	metadataChanges := releaserChanges 
-		select: [ :aNode | aNode key = GtRlReleaseVersionMetadata fileName ].
-	self assert: metadataChanges size <= 1 description: 'metadataChanges size <= 1'.
+		select: [ :aNode |
+			(aNode key = GtRlReleaseVersionMetadata fileName)
+				or: [ aNode key = GtRlExportReleaserVersionAction fileName ] ].
+
+	self
+		assert: [ metadataChanges size <= 2 ]
+		description: [ 'metadataChanges size <= 2' ].
+
 	metadataChanges do: [ :aNode |
 		self assert: (aNode value definition isFileDefinition) description: '(aNode value definition isFileDefinition)' ]
 ]
@@ -93,6 +104,19 @@ GtRlDedicatedBranchReleaseStrategy >> description [
 	^ 'Branch ', (self releaseBranchName 
 		ifNil: [ '<missing>' ]
 		ifNotNil: [ :branchName | '#', branchName  ])
+]
+
+{ #category : 'actions - building' }
+GtRlDedicatedBranchReleaseStrategy >> ensureExportReleaserVersionAction: anUpdateWorkflow [
+	| commitAction |
+
+	self repositoryRelease repositoryName = 'gtoolkit'
+		ifFalse: [ ^ self ].
+		
+	commitAction := GtRlExportReleaserVersionAction new
+		repositoryRelease: self repositoryRelease;
+	 	order: anUpdateWorkflow nextActionOrder.
+	self repositoryRelease addReleaseAction: commitAction.
 ]
 
 { #category : 'testing' }
@@ -281,6 +305,8 @@ GtRlDedicatedBranchReleaseStrategy >> updateReleaseActionsUsing: anUpdateWorkflo
 		repositoryRelease: self repositoryRelease;
 	 	order: anUpdateWorkflow nextActionOrder.
 	self repositoryRelease addReleaseAction: metadataAction.
+	
+	self ensureExportReleaserVersionAction: anUpdateWorkflow.
 		
 	commitAction := GtRlCommitAndTagReleaseAction new
 		repositoryRelease: self repositoryRelease;

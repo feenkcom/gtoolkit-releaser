@@ -120,10 +120,14 @@ GtRlRepositoryRelease >> description [
 { #category : 'ui' }
 GtRlRepositoryRelease >> gtBaselineVersionMetadataFor: aView [
 	<gtView>
-	^ aView textEditor
+
+	^ aView forward
 		title: 'Version data' translated;
 		priority: 55;
-		text: [ STON toJsonStringPretty: self versionsMetadata ]
+		object: [
+			GtRlReleaseVersionMetadata new
+				repositories: self versionsMetadata ];
+		view: #gtBaselineVersionMetadataFor:
 ]
 
 { #category : 'ui' }
@@ -548,6 +552,11 @@ GtRlRepositoryRelease >> repository: aRepository [
 	repository := aRepository
 ]
 
+{ #category : 'accessing' }
+GtRlRepositoryRelease >> repositoryName [
+	^ self repository repositoryName
+]
+
 { #category : 'actions' }
 GtRlRepositoryRelease >> resetReleaseActions [
 	super resetReleaseActions.
@@ -587,10 +596,9 @@ GtRlRepositoryRelease >> versionString [
 
 { #category : 'accessing - dynamic' }
 GtRlRepositoryRelease >> versionsMetadata [
-	| repositoriesByVersion |
-	repositoriesByVersion := (self childRepositoryReleases collect: [ :aRepositoryRelease |
-		aRepositoryRelease repository id -> aRepositoryRelease versionString ]) asDictionary.
-	^ {'repositories' -> repositoriesByVersion } asDictionary
+	^ (self childRepositoryReleases
+		collect: [ :aRepositoryRelease | aRepositoryRelease repository id -> aRepositoryRelease versionString ])
+			asDictionary
 ]
 
 { #category : 'traversing' }
