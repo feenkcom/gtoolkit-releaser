@@ -552,6 +552,11 @@ GtRlRepositoryRelease >> repository: aRepository [
 	repository := aRepository
 ]
 
+{ #category : 'accessing' }
+GtRlRepositoryRelease >> repositoryName [
+	^ self repository repositoryName
+]
+
 { #category : 'actions' }
 GtRlRepositoryRelease >> resetReleaseActions [
 	super resetReleaseActions.

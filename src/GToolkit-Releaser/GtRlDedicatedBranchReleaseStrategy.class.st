@@ -95,6 +95,19 @@ GtRlDedicatedBranchReleaseStrategy >> description [
 		ifNotNil: [ :branchName | '#', branchName  ])
 ]
 
+{ #category : 'actions - building' }
+GtRlDedicatedBranchReleaseStrategy >> ensureExportReleaserVersionAction: anUpdateWorkflow [
+	| commitAction |
+
+	self repositoryRelease repositoryName = 'gtoolkit'
+		ifFalse: [ ^ self ].
+		
+	commitAction := GtRlExportReleaserVersionAction new
+		repositoryRelease: self repositoryRelease;
+	 	order: anUpdateWorkflow nextActionOrder.
+	self repositoryRelease addReleaseAction: commitAction.
+]
+
 { #category : 'testing' }
 GtRlDedicatedBranchReleaseStrategy >> findNewCommits [
 	|repoRelease releaseCommit lastMergedCommit result walk repo masterCommit|
@@ -281,6 +294,8 @@ GtRlDedicatedBranchReleaseStrategy >> updateReleaseActionsUsing: anUpdateWorkflo
 		repositoryRelease: self repositoryRelease;
 	 	order: anUpdateWorkflow nextActionOrder.
 	self repositoryRelease addReleaseAction: metadataAction.
+	
+	self ensureExportReleaserVersionAction: anUpdateWorkflow.
 		
 	commitAction := GtRlCommitAndTagReleaseAction new
 		repositoryRelease: self repositoryRelease;
