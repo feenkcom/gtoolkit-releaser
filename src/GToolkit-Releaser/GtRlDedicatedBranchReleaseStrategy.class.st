@@ -78,7 +78,8 @@ GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChangesBetween: aSourceCo
 	self
 		assert: [ (releaserChanges allSatisfy: [ :aNode |
 			aNode key = GtRlReleaseVersionMetadata fileName or: [ 
-				aNode key = 'baseline:' ] ]) ]
+				aNode key = GtRlExportReleaserVersionAction fileName or: [ 
+					aNode key = 'baseline:' ] ]  ]) ]
 		description: [ 'releaserChanges allSatisfy' ].
 	
 	releaserChanges 
