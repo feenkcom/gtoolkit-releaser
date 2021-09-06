@@ -7,6 +7,11 @@ Class {
 	#category : 'GToolkit-Releaser'
 }
 
+{ #category : 'accessing' }
+GtRlExportReleaserVersionAction class >> fileName [
+	^ 'gtoolkit-releaser.version'
+]
+
 { #category : 'printing' }
 GtRlExportReleaserVersionAction >> description [
 	^ self descriptionDetails
@@ -31,7 +36,7 @@ GtRlExportReleaserVersionAction >> performAction [
 		releaserVersionDo: [ :aReleaserVersion |
 			| fileName versionsFile |
 			
-			fileName := 'gtoolkit-releaser.version'.
+			fileName := self class fileName.
 	
 			versionsFile := self repositoryRelease icebergRepository repositoryDirectory / fileName.	
 			versionsFile 
