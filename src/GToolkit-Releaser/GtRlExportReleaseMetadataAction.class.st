@@ -24,10 +24,14 @@ GtRlExportReleaseMetadataAction >> descriptionDetails [
 { #category : 'ui' }
 GtRlExportReleaseMetadataAction >> gtBaselineVersionMetadataFor: aView [
 	<gtView>
-	^ aView textEditor
+	
+	^ aView forward
 		title: 'Version data' translated;
 		priority: 20;
-		text: [ STON toJsonStringPretty: self repositoryRelease versionsMetadata ]
+		object: [
+			GtRlReleaseVersionMetadata new
+				repositories: self repositoryRelease versionsMetadata ];
+		view: #gtBaselineVersionMetadataFor:
 ]
 
 { #category : 'ui' }
@@ -40,12 +44,16 @@ GtRlExportReleaseMetadataAction >> gtViewPreviousMetadataDiffFor: aView [
 		title: 'Diff previous metadata' translated;
 		priority: 45;
 		stencil: [ :anEditor | 
-			| latestTag  metadataCode |
+			| latestTag previousMetadataJson releaseMetadata |
 			latestTag := self repositoryRelease latestSemanticVersionTag.
-			metadataCode := self metadataForCommit: latestTag commit.
+			
+			previousMetadataJson := self metadataForCommit: latestTag commit.
+			releaseMetadata := GtRlReleaseVersionMetadata new
+				repositories: self repositoryRelease versionsMetadata.
+			
 			(GtDiffElement on: (TextDiffBuilder 
-				from: (metadataCode ifNil: [ '' ])
-				to: (STON toJsonStringPretty: self repositoryRelease versionsMetadata))) aptitude: GtDiffShadowAptitude ]
+				from: (previousMetadataJson ifNil: [ '' ])
+				to: releaseMetadata asJSONForExport)) aptitude: GtDiffShadowAptitude ]
 ]
 
 { #category : 'baselines' }
@@ -53,7 +61,7 @@ GtRlExportReleaseMetadataAction >> metadataForCommit: aCommit [
 	| metadataFile |
 	metadataFile := aCommit fileSystem children 
 		detect: [ :e | e isFile and: [ 
-			e basename = '.baseline-metadata.ston' ] ]
+			e basename = GtRlReleaseVersionMetadata fileName ] ]
 		ifNone: [ ^ nil ].
 	^ metadataFile contents
 ]
@@ -65,16 +73,18 @@ GtRlExportReleaseMetadataAction >> name [
 
 { #category : 'actions' }
 GtRlExportReleaseMetadataAction >> performAction [
-	| versionsFile fileName |
-	fileName := GtRlReleaseVersionMetadata fileName.
-	versionsFile := self repositoryRelease icebergRepository repositoryDirectory / fileName.	
+	| versionsFile metadata |
+	
+	metadata := GtRlReleaseVersionMetadata new
+		repositories: self repositoryRelease versionsMetadata.
+
+	versionsFile := self repositoryRelease icebergRepository repositoryDirectory / metadata fileName.	
 	versionsFile 
 		ensureDelete;
-		writeStreamDo: [ :aStream |
-			aStream nextPutAll: (STON toJsonStringPretty: self repositoryRelease versionsMetadata) ].
+		writeStreamDo: [ :aStream | aStream nextPutAll: metadata asJSONForExport ].
 	
 	"Manually add the versions file to the git index to be included in the next commit."
-	self repositoryRelease icebergRepository addFileToIndex: fileName asFileReference.
+	self repositoryRelease icebergRepository addFileToIndex: metadata fileName asFileReference.
 ]
 
 { #category : 'actions' }

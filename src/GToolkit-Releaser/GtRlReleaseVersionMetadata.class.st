@@ -27,6 +27,11 @@ GtRlReleaseVersionMetadata class >> fromCommit: anIceCommmit [
 		data: (STON fromString: (anIceCommmit fileSystem / self fileName) contents)
 ]
 
+{ #category : 'converting' }
+GtRlReleaseVersionMetadata >> asJSONForExport [
+	^ STON toJsonStringPretty: data
+]
+
 { #category : 'accessing' }
 GtRlReleaseVersionMetadata >> data [
 	^ data
@@ -35,6 +40,20 @@ GtRlReleaseVersionMetadata >> data [
 { #category : 'accessing' }
 GtRlReleaseVersionMetadata >> data: aDictionary [
 	data := aDictionary
+]
+
+{ #category : 'accessing' }
+GtRlReleaseVersionMetadata >> fileName [
+	^ self class fileName
+]
+
+{ #category : 'ui' }
+GtRlReleaseVersionMetadata >> gtBaselineVersionMetadataFor: aView [
+	<gtView>
+	^ aView textEditor
+		title: 'Version data' translated;
+		priority: 20;
+		text: [ self asJSONForExport ]
 ]
 
 { #category : 'ui' }
@@ -52,10 +71,22 @@ GtRlReleaseVersionMetadata >> hasVersionForRelease: aRepositoryRelease [
 	^ self repositoryData includesKey: aRepositoryRelease repository id
 ]
 
+{ #category : 'initialization' }
+GtRlReleaseVersionMetadata >> initialize [
+	super initialize.
+	
+	data := Dictionary new
+]
+
 { #category : 'testing' }
 GtRlReleaseVersionMetadata >> matchesVersionForRelease: aRelease [
 	^ (self hasVersionForRelease: aRelease) and: [ 
 		aRelease versionString = (self versionForRelease: aRelease) ]
+]
+
+{ #category : 'accessing' }
+GtRlReleaseVersionMetadata >> repositories: aCollectionOfRepositoriesWithVersions [
+	data at: 'repositories' put: aCollectionOfRepositoriesWithVersions
 ]
 
 { #category : 'accessing' }
