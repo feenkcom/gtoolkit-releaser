@@ -4,8 +4,7 @@ Class {
 	#instVars : [
 		'version',
 		'timestamp',
-		'lastOpenedVersion',
-		'isLepiterEnabled'
+		'lastOpenedVersion'
 	],
 	#classInstVars : [
 		'singleton',
@@ -105,11 +104,6 @@ GtImage class >> instance [
 	^ singleton
 ]
 
-{ #category : 'accessing' }
-GtImage class >> isLepiterEnabled [ 
-	^ self instance isLepiterEnabled 
-]
-
 { #category : 'private - instance creation' }
 GtImage class >> isSyncEnabled [
 	^ isSyncEnabled ifNil: [ false ]
@@ -157,7 +151,6 @@ GtImage class >> saveJsonFor: aValue into: aWriteStream [
 
 { #category : 'configuration' }
 GtImage class >> setupLepiterIntegration [
-	self instance enableLepiter.
 	GtPlaygroundStencil playgroundClassName: LePlayground name.
 	GtInspector embeddedPlaygroundName: LeInspectorPlaygroundElement name.
 ]
@@ -219,11 +212,6 @@ GtImage >> commitInfoOn: aStream [
 			<< ': ';
 			<< each value;
 			cr ].
-]
-
-{ #category : 'accessing' }
-GtImage >> enableLepiter [
-	isLepiterEnabled := true.
 ]
 
 { #category : 'ui' }
@@ -309,11 +297,6 @@ GtImage >> imageInfoOn: aStream [
 	aStream 
 		<< SystemVersion current asString;
 		cr.
-]
-
-{ #category : 'accessing' }
-GtImage >> isLepiterEnabled [
-	^ isLepiterEnabled ifNil: [ false ]
 ]
 
 { #category : 'accessing' }
