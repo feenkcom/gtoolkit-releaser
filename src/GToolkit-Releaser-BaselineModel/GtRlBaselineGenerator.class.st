@@ -1,7 +1,7 @@
 "
 A generic printer that generates the source code of a baseline.
 
-The main API method for generating the source code is {{gtMethod:GtRlBaselinePrinter>>generateBaselineSource}}.
+The main API method for generating the source code is {{gtMethod:GtRlBaselineGenerator>>generateBaselineSource}}.
 
 It adds to the baseline the pre and post actions, together with all package and project dependencies.
 The writting of the actual baseline code is done using a {{gtClass:GtRlBaselinePrinterStream}} stream.
