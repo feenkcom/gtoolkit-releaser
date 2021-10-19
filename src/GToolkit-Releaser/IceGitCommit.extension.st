@@ -1,6 +1,6 @@
-Extension { #name : 'IceGitCommit' }
+Extension { #name : #IceGitCommit }
 
-{ #category : '*GToolkit-Releaser' }
+{ #category : #'*GToolkit-Releaser' }
 IceGitCommit >> ensureCreateTag: aString [ 
 	self repository handleLibgitError: [
 		(self repositoryHandle tags) detect: [ :tag | tag = aString ] ifNone:[

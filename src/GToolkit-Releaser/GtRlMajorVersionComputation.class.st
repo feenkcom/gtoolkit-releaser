@@ -9,12 +9,12 @@ If the symbolic version number on which I am applied has a patch or a minor numb
 
 "
 Class {
-	#name : 'GtRlMajorVersionComputation',
-	#superclass : 'GtRlSemanticVersionComputation',
+	#name : #GtRlMajorVersionComputation,
+	#superclass : #GtRlSemanticVersionComputation,
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlMajorVersionComputation >> nextSemanticVersionFrom: aSemanticVersion [
 	^ GtRlSemanticVersionNumber 
 		major: aSemanticVersion major + 1

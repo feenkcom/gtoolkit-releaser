@@ -13,15 +13,15 @@ See {{gtMethod:GtRlDedicatedBranchReleaseStrategy>>#shouldCreateNewRelease}} for
 
 "
 Class {
-	#name : 'GtRlDedicatedBranchReleaseStrategy',
-	#superclass : 'GtRlSemanticTagReleaseStrategy',
+	#name : #GtRlDedicatedBranchReleaseStrategy,
+	#superclass : #GtRlSemanticTagReleaseStrategy,
 	#instVars : [
 		'referenceBranchName'
 	],
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'assertions' }
+{ #category : #assertions }
 GtRlDedicatedBranchReleaseStrategy >> assertBaselineMethodNodeFor: aNode [
 	self assert: aNode value definition isMethodDefinition.
 	self assert: aNode value isModification.
@@ -31,7 +31,7 @@ GtRlDedicatedBranchReleaseStrategy >> assertBaselineMethodNodeFor: aNode [
 	self assert: (aNode parent value definition name matchesRegex: 'BaselineOf.+').
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlDedicatedBranchReleaseStrategy >> assertNotModified: icebergRepository [
 	icebergRepository isModified
 		ifTrue:
@@ -48,7 +48,7 @@ GtRlDedicatedBranchReleaseStrategy >> assertNotModified: icebergRepository [
 			'There should be no changes in the repository after loading.'
 ]
 
-{ #category : 'assertions' }
+{ #category : #assertions }
 GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChanges [
 	| referenceCommit releaseCommit |
 	
@@ -58,7 +58,7 @@ GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChanges [
 	self assertOnlyAllowedChangesBetween: referenceCommit and: releaseCommit.
 ]
 
-{ #category : 'assertions' }
+{ #category : #assertions }
 GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChangesBetween: aSourceCommit and: aTargetCommit [
 	| commonAncestor sourceDiff targetDiff releaserChanges metadataChanges |
 	commonAncestor := (aSourceCommit commonAncestorWith: aTargetCommit).
@@ -99,14 +99,14 @@ GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChangesBetween: aSourceCo
 		self assert: (aNode value definition isFileDefinition) description: '(aNode value definition isFileDefinition)' ]
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlDedicatedBranchReleaseStrategy >> description [
 	^ 'Branch ', (self releaseBranchName 
 		ifNil: [ '<missing>' ]
 		ifNotNil: [ :branchName | '#', branchName  ])
 ]
 
-{ #category : 'actions - building' }
+{ #category : #'actions - building' }
 GtRlDedicatedBranchReleaseStrategy >> ensureExportReleaserVersionAction: anUpdateWorkflow [
 	| commitAction |
 
@@ -119,7 +119,7 @@ GtRlDedicatedBranchReleaseStrategy >> ensureExportReleaserVersionAction: anUpdat
 	self repositoryRelease addReleaseAction: commitAction.
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlDedicatedBranchReleaseStrategy >> findNewCommits [
 	|repoRelease releaseCommit lastMergedCommit result walk repo masterCommit|
 	repoRelease := self  repositoryRelease.
@@ -171,7 +171,7 @@ GtRlDedicatedBranchReleaseStrategy >> findNewCommits [
 	
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlDedicatedBranchReleaseStrategy >> gtCommitsAncestryFor: aView [
 	<gtView>
 	self repositoryRelease ifNil: [ ^ aView ].
@@ -210,7 +210,7 @@ GtRlDedicatedBranchReleaseStrategy >> gtCommitsAncestryFor: aView [
 			view layout dominanceTree]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 GtRlDedicatedBranchReleaseStrategy >> initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration [
 	super initializeFor: aRepositoryRelease fromConfiguration: aReleaseConfiguration.
 	self
@@ -218,14 +218,14 @@ GtRlDedicatedBranchReleaseStrategy >> initializeFor: aRepositoryRelease fromConf
 		releaseBranchName: (aReleaseConfiguration releaseBranchForRepository: aRepositoryRelease repository)
 ]
 
-{ #category : 'private - testing' }
+{ #category : #'private - testing' }
 GtRlDedicatedBranchReleaseStrategy >> isReferenceBranchMergedIn: anIceCommit [
 	| latestRefenceBranchCommit |
 	latestRefenceBranchCommit := self referenceBranch commit.
 	^ anIceCommit isParentOf: latestRefenceBranchCommit
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlDedicatedBranchReleaseStrategy >> mergeToReleaseBranch [
 	| icebergRepository |
 	"Attemp here to make the repository clean. Sometimes repository are marked as dirty even if
@@ -243,22 +243,22 @@ GtRlDedicatedBranchReleaseStrategy >> mergeToReleaseBranch [
 	self assertOnlyAllowedChanges
 ]
 
-{ #category : 'accessing - dynamic' }
+{ #category : #'accessing - dynamic' }
 GtRlDedicatedBranchReleaseStrategy >> referenceBranch [
 	^ self repositoryRelease icebergRepository branchNamed: self referenceBranchName 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlDedicatedBranchReleaseStrategy >> referenceBranchName [
 	^ referenceBranchName
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlDedicatedBranchReleaseStrategy >> referenceBranchName: aBranchName [
 	referenceBranchName := aBranchName
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlDedicatedBranchReleaseStrategy >> shouldCreateNewRelease [
 	| latestVersionTag releaseMetadata|
 	
@@ -283,7 +283,7 @@ GtRlDedicatedBranchReleaseStrategy >> shouldCreateNewRelease [
 	^ false
 ]
 
-{ #category : 'actions - building' }
+{ #category : #'actions - building' }
 GtRlDedicatedBranchReleaseStrategy >> updateReleaseActionsUsing: anUpdateWorkflow [
 	| mergeAction commitAction metadataAction |
 	self repositoryRelease resetReleaseActions.

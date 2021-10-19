@@ -6,22 +6,22 @@ See {{gtClass:GtRlReleaseVersionMetadata}} for more details about what metadata 
 
 "
 Class {
-	#name : 'GtRlExportReleaseMetadataAction',
-	#superclass : 'GtRlRepositoryReleaseAction',
+	#name : #GtRlExportReleaseMetadataAction,
+	#superclass : #GtRlRepositoryReleaseAction,
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlExportReleaseMetadataAction >> description [
 	^ self descriptionDetails
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlExportReleaseMetadataAction >> descriptionDetails [
 	^ 'Export ', GtRlReleaseVersionMetadata fileName
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlExportReleaseMetadataAction >> gtBaselineVersionMetadataFor: aView [
 	<gtView>
 	
@@ -34,7 +34,7 @@ GtRlExportReleaseMetadataAction >> gtBaselineVersionMetadataFor: aView [
 		view: #gtBaselineVersionMetadataFor:
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlExportReleaseMetadataAction >> gtViewPreviousMetadataDiffFor: aView [
 	<gtView>
 	self repositoryRelease ifNil: [ ^ aView ].
@@ -56,7 +56,7 @@ GtRlExportReleaseMetadataAction >> gtViewPreviousMetadataDiffFor: aView [
 				to: releaseMetadata asJSONForExport)) aptitude: GtDiffShadowAptitude ]
 ]
 
-{ #category : 'baselines' }
+{ #category : #baselines }
 GtRlExportReleaseMetadataAction >> metadataForCommit: aCommit [
 	| metadataFile |
 	metadataFile := aCommit fileSystem children 
@@ -66,12 +66,12 @@ GtRlExportReleaseMetadataAction >> metadataForCommit: aCommit [
 	^ metadataFile contents
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlExportReleaseMetadataAction >> name [
 	^ 'Export release metadata'
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlExportReleaseMetadataAction >> performAction [
 	| versionsFile metadata |
 	
@@ -87,7 +87,7 @@ GtRlExportReleaseMetadataAction >> performAction [
 	self repositoryRelease icebergRepository addFileToIndex: metadata fileName asFileReference.
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlExportReleaseMetadataAction >> repositoriesDependenciesByVersion [
 	^ (self repositoryRelease childRepositoryReleases collect: [ :aRepositoryRelease |
 		aRepositoryRelease repository id -> aRepositoryRelease versionString ]) asDictionary.

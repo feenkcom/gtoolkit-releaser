@@ -8,46 +8,46 @@ By default the baseline of a version contains all dependency information needed 
 
 "
 Class {
-	#name : 'GtRlReleaseVersionMetadata',
-	#superclass : 'Object',
+	#name : #GtRlReleaseVersionMetadata,
+	#superclass : #Object,
 	#instVars : [
 		'data'
 	],
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseVersionMetadata class >> fileName [ 
 	^ '.baseline-metadata.ston'
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 GtRlReleaseVersionMetadata class >> fromCommit: anIceCommmit [
 	^ self new
 		data: (STON fromString: (anIceCommmit fileSystem / self fileName) contents)
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 GtRlReleaseVersionMetadata >> asJSONForExport [
 	^ STON toJsonStringPretty: data
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseVersionMetadata >> data [
 	^ data
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseVersionMetadata >> data: aDictionary [
 	data := aDictionary
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseVersionMetadata >> fileName [
 	^ self class fileName
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlReleaseVersionMetadata >> gtBaselineVersionMetadataFor: aView [
 	<gtView>
 	^ aView textEditor
@@ -56,7 +56,7 @@ GtRlReleaseVersionMetadata >> gtBaselineVersionMetadataFor: aView [
 		text: [ self asJSONForExport ]
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlReleaseVersionMetadata >> gtRepositoryVersionsFor: aView [
 	<gtView>
 	^ aView columnedList
@@ -66,35 +66,35 @@ GtRlReleaseVersionMetadata >> gtRepositoryVersionsFor: aView [
 		column: 'Version' text: [ :assoc | assoc value ]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlReleaseVersionMetadata >> hasVersionForRelease: aRepositoryRelease [
 	^ self repositoryData includesKey: aRepositoryRelease repository id
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 GtRlReleaseVersionMetadata >> initialize [
 	super initialize.
 	
 	data := Dictionary new
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlReleaseVersionMetadata >> matchesVersionForRelease: aRelease [
 	^ (self hasVersionForRelease: aRelease) and: [ 
 		aRelease versionString = (self versionForRelease: aRelease) ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseVersionMetadata >> repositories: aCollectionOfRepositoriesWithVersions [
 	data at: 'repositories' put: aCollectionOfRepositoriesWithVersions
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseVersionMetadata >> repositoryData [
 	^ self data at: 'repositories' ifAbsent: [ Dictionary new ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaseVersionMetadata >> versionForRelease: aRepositoryRelease [
 	^ self repositoryData at: aRepositoryRelease repository id
 ]
