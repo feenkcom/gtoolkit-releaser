@@ -12,8 +12,8 @@ I rely on the order attribute of release actions to determing the order in which
 
 "
 Class {
-	#name : 'GtRlReleaserExportWorkflow',
-	#superclass : 'Object',
+	#name : #GtRlReleaserExportWorkflow,
+	#superclass : #Object,
 	#instVars : [
 		'rootProjectRelease',
 		'releaseActions'
@@ -21,12 +21,12 @@ Class {
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaserExportWorkflow class >> allExamplePackagesInDedicatedReleaseRepositories [
 	^ (self allPackagesInDedicatedReleaseRepositories collect: #asRPackage) select:[:p | p gtExamplesAllContained size > 0]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaserExportWorkflow class >> allPackagesInDedicatedReleaseRepositories [
 	| repoReleases ourRepos targetProjectReleases allPackages projectBuilder project |
 	projectBuilder := GtRlDependenciesModelBuilder new.
@@ -41,7 +41,7 @@ GtRlReleaserExportWorkflow class >> allPackagesInDedicatedReleaseRepositories [
 	^ allPackages
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaserExportWorkflow class >> allSlidesPackagesInDedicatedReleaseRepositories [
 	| relevantPackages |
 	NonInteractiveTranscript stdout
@@ -61,7 +61,7 @@ GtRlReleaserExportWorkflow class >> allSlidesPackagesInDedicatedReleaseRepositor
 					aRPackage gtSlideBuildersAllContained isNotEmpty ] ]
 ]
 
-{ #category : 'releasing' }
+{ #category : #releasing }
 GtRlReleaserExportWorkflow class >> attemtToFixDirtyPackagesFor: repo [
 	"Aim to only recalculate the dirty flag for packages that are marked as dirty.
 	We skip packages that are not marked as dirty."
@@ -84,12 +84,12 @@ GtRlReleaserExportWorkflow class >> attemtToFixDirtyPackagesFor: repo [
 		each beDirty: (diff includesPackageNamed: each name) ].
 ]
 
-{ #category : 'releasing' }
+{ #category : #releasing }
 GtRlReleaserExportWorkflow class >> buildGToolkitRelease [
 	^ self buildGToolkitReleaseWithConfiguration: GtRlReleaserExportWorkflow gtoolkitReleaseConfiguration
 ]
 
-{ #category : 'releasing' }
+{ #category : #releasing }
 GtRlReleaserExportWorkflow class >> buildGToolkitRelease: version [
 	| releaseConfiguration |
 	
@@ -99,7 +99,7 @@ GtRlReleaserExportWorkflow class >> buildGToolkitRelease: version [
 	^ self buildGToolkitReleaseWithConfiguration: releaseConfiguration
 ]
 
-{ #category : 'releasing' }
+{ #category : #releasing }
 GtRlReleaserExportWorkflow class >> buildGToolkitReleaseWithConfiguration: aReleaseConfiguration [
 	| workflow |
 
@@ -111,7 +111,7 @@ GtRlReleaserExportWorkflow class >> buildGToolkitReleaseWithConfiguration: aRele
 	^ workflow
 ]
 
-{ #category : 'releasing' }
+{ #category : #releasing }
 GtRlReleaserExportWorkflow class >> buildGToolkitReleaseWithVersionComputation: aVersionComputation [
 	| releaseConfiguration |
 	
@@ -120,7 +120,7 @@ GtRlReleaserExportWorkflow class >> buildGToolkitReleaseWithVersionComputation: 
 	^ self buildGToolkitReleaseWithConfiguration: releaseConfiguration
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 GtRlReleaserExportWorkflow class >> forBaseline: aBaselineClass fromRepository: aRepositoryUrl withConfiguration: aReleaseConfiguration [
 	| projectBuilder releaseBuilder project release |
 	projectBuilder := GtRlDependenciesModelBuilder new.
@@ -135,7 +135,7 @@ GtRlReleaserExportWorkflow class >> forBaseline: aBaselineClass fromRepository: 
 		rootProjectRelease: release
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 GtRlReleaserExportWorkflow class >> forProject: aProject withConfiguration: aReleaseConfiguration [
 	| releaseBuilder release |
 	releaseBuilder := GtRlReleaseBuilder new
@@ -145,7 +145,7 @@ GtRlReleaserExportWorkflow class >> forProject: aProject withConfiguration: aRel
 		rootProjectRelease: release
 ]
 
-{ #category : 'releasing' }
+{ #category : #releasing }
 GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 	^ GtRlReleaseConfiguration new
 	defaultVersionNumber: (GtRlSemanticVersionNumber major:0 minor: 6 patch: 0);
@@ -175,19 +175,17 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://feenkcom/Chrysal/src'.
 		'github://feenkcom/XMLParser/src'.
 		'github://feenkcom/XMLWriter/src'.
-		'github://feenkcom/XPath/src'.
-		'github://feenkcom/zinc/repository'.
-		'github://feenkcom/zodiac/repository' }
+		'github://feenkcom/XPath/src' }
 ]
 
-{ #category : 'releasing' }
+{ #category : #releasing }
 GtRlReleaserExportWorkflow class >> performDryRunGToolkitRelease [
 	| workflow |
 	workflow := self buildGToolkitRelease.
 	^ workflow releaseCreationActions execute.
 ]
 
-{ #category : 'releasing' }
+{ #category : #releasing }
 GtRlReleaserExportWorkflow class >> performGToolkitRelease [
 	| workflow |
 	workflow := self buildGToolkitRelease.
@@ -195,7 +193,7 @@ GtRlReleaserExportWorkflow class >> performGToolkitRelease [
 	^ workflow
 ]
 
-{ #category : 'releasing' }
+{ #category : #releasing }
 GtRlReleaserExportWorkflow class >> switchAllRepositoriesBackToMasterBranch [
 	((IceRepository registry select: [ :repo | (LGitRepository on: repo location) 
 		repositoryReference isNotNil ]) 
@@ -207,7 +205,7 @@ GtRlReleaserExportWorkflow class >> switchAllRepositoriesBackToMasterBranch [
 			select: [ :repo | repo head name = 'master' ]) do: [ :repo | repo branch hasUpstream ifTrue: [self attemtToFixDirtyPackagesFor: repo. repo isModified ifFalse:[repo pull] ]].
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlReleaserExportWorkflow >> executeReleaseActions [
 	self releaseCreationActions execute.
 	self releasePostCreationActions execute.
@@ -215,7 +213,7 @@ GtRlReleaserExportWorkflow >> executeReleaseActions [
 	
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlReleaserExportWorkflow >> gtProjectMapFor: aView [
 	<gtView>
 	^ self rootProjectRelease 
@@ -224,7 +222,7 @@ GtRlReleaserExportWorkflow >> gtProjectMapFor: aView [
 			rootProjectRelease gtProjectMapFor: aView ]
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlReleaserExportWorkflow >> gtRepoMapFor: aView [
 	<gtView>
 	^ self rootProjectRelease 
@@ -233,7 +231,7 @@ GtRlReleaserExportWorkflow >> gtRepoMapFor: aView [
 			rootProjectRelease repositoryRelease gtRepoMapFor: aView ]
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlReleaserExportWorkflow >> gtRepositoryReleasesListFor: aView [
 	<gtView>
 	^ aView columnedList
@@ -247,7 +245,7 @@ GtRlReleaserExportWorkflow >> gtRepositoryReleasesListFor: aView [
 			aRepositoryRelease decorateText: aRepositoryRelease releaseStrategy description ]
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlReleaserExportWorkflow >> gtViewPostCreationActionsFor: aView [
 	<gtView>
 	^ (self releasePostCreationActions gtReleaseActionsFor: aView)
@@ -255,7 +253,7 @@ GtRlReleaserExportWorkflow >> gtViewPostCreationActionsFor: aView [
 		priority: 55
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlReleaserExportWorkflow >> gtViewReleaseCreationActionsFor: aView [
 	<gtView>
 	^ (self releaseCreationActions gtReleaseActionsFor: aView)
@@ -263,7 +261,7 @@ GtRlReleaserExportWorkflow >> gtViewReleaseCreationActionsFor: aView [
 		priority: 50
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaserExportWorkflow >> printNewCommitsToFile [
 	|repoRelease newCommits flattenedCommits writeStream i commitCounter fileCommitCounter|
 	commitCounter := 0.
@@ -313,38 +311,38 @@ GtRlReleaserExportWorkflow >> printNewCommitsToFile [
 	].
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaserExportWorkflow >> releaseActions [
 	^ releaseActions
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaserExportWorkflow >> releaseCreationActions [
 	^ self releaseActions reject: [ :action | action class = GtRlPushToOriginReleaseAction ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaserExportWorkflow >> releasePostCreationActions [
 	^ self releaseActions select: [ :action | action class = GtRlPushToOriginReleaseAction ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaserExportWorkflow >> repositoriesReleasesInReleaseOrder [
 	^ GtRlReleaseOrderTraversal new releaseOrderFor: self rootProjectRelease repositoryRelease
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaserExportWorkflow >> rootProjectRelease [
 	^ rootProjectRelease
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaserExportWorkflow >> rootProjectRelease: aProjectRelease [
 	rootProjectRelease := aProjectRelease.
 	self updateReleaseActions.
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 GtRlReleaserExportWorkflow >> updateReleaseActions [
 	releaseActions := GtRlReleaseActionsGroup new.
 	self rootProjectRelease repositoryRelease 

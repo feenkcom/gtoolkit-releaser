@@ -1,6 +1,6 @@
-Extension { #name : 'BaselineOf' }
+Extension { #name : #BaselineOf }
 
-{ #category : '*GToolkit-Releaser' }
+{ #category : #'*GToolkit-Releaser' }
 BaselineOf class >> gtRlProjectReleaseWithRepository: aRepositoryUrl withConfiguration: aReleaseConfiguration [
 	| releaseBuilder project |
 	project := self gtRlProjectWithRepository: aRepositoryUrl.

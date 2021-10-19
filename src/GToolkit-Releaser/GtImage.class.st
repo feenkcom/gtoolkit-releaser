@@ -1,6 +1,6 @@
 Class {
-	#name : 'GtImage',
-	#superclass : 'Object',
+	#name : #GtImage,
+	#superclass : #Object,
 	#instVars : [
 		'version',
 		'timestamp',
@@ -13,7 +13,7 @@ Class {
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'clap' }
+{ #category : #clap }
 GtImage class >> commandLine [
 	<commandline>
 
@@ -31,7 +31,7 @@ GtImage class >> commandLine [
 			self instance summaryOn: stdout ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtImage class >> computeCurrentGToolkitVersion [
 	^ IceRepository registry 
 		detect: [ :anIceRepository | anIceRepository name = 'gtoolkit' ]
@@ -49,24 +49,24 @@ GtImage class >> computeCurrentGToolkitVersion [
 		ifNone: [ NotFound signalFor: 'gtoolkit' in: IceRepository ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtImage class >> computeNextGToolkitVersion: aVersionComputation [	
 	^ aVersionComputation nextSemanticVersionFrom: self computeCurrentGToolkitVersion
 ]
 
-{ #category : 'configuration' }
+{ #category : #configuration }
 GtImage class >> defaultPreferencesFolder [
 	^ FileLocator preferences / 'pharo'
 ]
 
-{ #category : 'load and saving' }
+{ #category : #'load and saving' }
 GtImage class >> ensureLastOpenVersionPreferences [
 	"In case there is no data for the last opened version we store the current version."
 	self lastOpenVersionPreferences exists ifFalse: [ 
 		self storeLastOpenedVersion ]
 ]
 
-{ #category : 'class initialization' }
+{ #category : #'class initialization' }
 GtImage class >> initialize [
 	SessionManager default
 		register: (ClassSessionHandler forClassNamed: self name)
@@ -75,7 +75,7 @@ GtImage class >> initialize [
 	
 ]
 
-{ #category : 'system startup' }
+{ #category : #'system startup' }
 GtImage class >> initializeLastOpenedVersion [
 	| lastOpenedVersion |
 	
@@ -93,7 +93,7 @@ GtImage class >> initializeLastOpenedVersion [
 		ifTrue: [ self storeLastOpenedVersion ].
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtImage class >> instance [ 
 	<gtExample>
 	singleton ifNil: [ 
@@ -104,22 +104,22 @@ GtImage class >> instance [
 	^ singleton
 ]
 
-{ #category : 'private - instance creation' }
+{ #category : #'private - instance creation' }
 GtImage class >> isSyncEnabled [
 	^ isSyncEnabled ifNil: [ false ]
 ]
 
-{ #category : 'private - instance creation' }
+{ #category : #'private - instance creation' }
 GtImage class >> isSyncEnabled: aBoolean [
 	isSyncEnabled := aBoolean
 ]
 
-{ #category : 'configuration' }
+{ #category : #configuration }
 GtImage class >> lastOpenVersionPreferences [
 	^ self defaultPreferencesFolder / 'com.glamoroustoolkit.last-opened-version.v1.ston'
 ]
 
-{ #category : 'load and saving' }
+{ #category : #'load and saving' }
 GtImage class >> loadLastOpenedVersion [
 	| rawData versionString |
 	rawData := self lastOpenVersionPreferences readStreamDo: [ :aReadStream | 
@@ -137,32 +137,32 @@ GtImage class >> loadLastOpenedVersion [
 		ifFalse: [ GtRlNullVersionNumber new ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtImage class >> reset [
 	singleton := nil
 ]
 
-{ #category : 'load and saving' }
+{ #category : #'load and saving' }
 GtImage class >> saveJsonFor: aValue into: aWriteStream [
 	STONJSON 
 		put: aValue 
 		onStreamPretty: (ZnCharacterWriteStream on: aWriteStream encoding: 'utf8')
 ]
 
-{ #category : 'configuration' }
+{ #category : #configuration }
 GtImage class >> setupLepiterIntegration [
 	GtPlaygroundStencil playgroundClassName: LePlayground name.
 	GtInspector embeddedPlaygroundName: LeInspectorPlaygroundElement name.
 ]
 
-{ #category : 'system startup' }
+{ #category : #'system startup' }
 GtImage class >> startUp: resuming [
 	resuming
 		ifFalse: [ ^ self ].
 	self initializeLastOpenedVersion.
 ]
 
-{ #category : 'load and saving' }
+{ #category : #'load and saving' }
 GtImage class >> storeLastOpenedVersion [
 	self defaultPreferencesFolder ensureCreateDirectory.
 	self lastOpenVersionPreferences
@@ -175,22 +175,22 @@ GtImage class >> storeLastOpenedVersion [
 	
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtImage class >> timestamp: aTimestamp [
 	self instance timestamp: aTimestamp
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtImage class >> version [
 	^ self instance version
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtImage class >> version: aVersion [
 	self instance version: aVersion
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 GtImage >> commitInfo [
 	"Answer information about the current commitish for each repository"
 
@@ -202,7 +202,7 @@ GtImage >> commitInfo [
 					stream nextPut: repository name -> repository headCommit id ] ]
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 GtImage >> commitInfoOn: aStream [
 	"Write the repository commit numbers on a stream"
 
@@ -214,7 +214,7 @@ GtImage >> commitInfoOn: aStream [
 			cr ].
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtImage >> gtCommitInfoFor: aView [
 	<gtView>
 	
@@ -226,7 +226,7 @@ GtImage >> gtCommitInfoFor: aView [
 		column: 'Commit' translated text: [ :each | each value asString ].
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtImage >> gtImageInfoFor: aView [
 	<gtView>
 
@@ -237,7 +237,7 @@ GtImage >> gtImageInfoFor: aView [
 		text: [ (String streamContents: [ :s | self imageInfoOn: s]) asRopedText ]
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtImage >> gtOSInfoFor: aView [
 	<gtView>
 
@@ -251,7 +251,7 @@ GtImage >> gtOSInfoFor: aView [
 		text: [ info asRopedText ]
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtImage >> gtPreferencesFilesFor: aView [
 	<gtView >
 	^ self class defaultPreferencesFolder exists 
@@ -261,7 +261,7 @@ GtImage >> gtPreferencesFilesFor: aView [
 		ifFalse: [ aView empty ]
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtImage >> gtPreviewFor: aView [
 	<gtView>
 	^ aView columnedList
@@ -280,7 +280,7 @@ GtImage >> gtPreviewFor: aView [
 		send: #value
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtImage >> gtVmInfoFor: aView [
 	<gtView>
 
@@ -291,7 +291,7 @@ GtImage >> gtVmInfoFor: aView [
 		text: [ (String streamContents: [ :s | self vmInfoOn: s]) asRopedText ]
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 GtImage >> imageInfoOn: aStream [
 
 	aStream 
@@ -299,17 +299,17 @@ GtImage >> imageInfoOn: aStream [
 		cr.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtImage >> lastOpenedVersion [
 	^ lastOpenedVersion. 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtImage >> lastOpenedVersion: anObject [
 	lastOpenedVersion := anObject
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 GtImage >> osInfoOn: aStream [
 	"Write information about the host operating system, if available"
 	| osInfoFile |
@@ -321,7 +321,7 @@ GtImage >> osInfoOn: aStream [
 			cr ].
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 GtImage >> shouldReportRepository: aRepository [
 
 	^ aRepository remotes
@@ -333,7 +333,7 @@ GtImage >> shouldReportRepository: aRepository [
 		ifNone: [ false ].
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtImage >> summary [ 
 	"Answer a string with all image information"
 
@@ -341,7 +341,7 @@ GtImage >> summary [
 		self summaryOn: stream ]
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 GtImage >> summaryOn: stream [
 	"Answer a string with all image information"
 
@@ -367,7 +367,7 @@ GtImage >> summaryOn: stream [
 	stream cr.
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 GtImage >> systemInfoOn: aStream [
 
 	self commitInfoOn: aStream.
@@ -378,27 +378,27 @@ GtImage >> systemInfoOn: aStream [
 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtImage >> timestamp [
 	^ timestamp
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtImage >> timestamp: anObject [
 	timestamp := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtImage >> version [
 	^ version
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtImage >> version: anObject [
 	version := anObject
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 GtImage >> vmInfoOn: aStream [
 
 	aStream

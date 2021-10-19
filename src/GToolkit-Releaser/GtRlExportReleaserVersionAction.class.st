@@ -2,32 +2,32 @@
 I export the version of the releaser used to create a release of the glamorous toolkit. The action should only be added as an action to the gtoolkit repository.
 "
 Class {
-	#name : 'GtRlExportReleaserVersionAction',
-	#superclass : 'GtRlRepositoryReleaseAction',
+	#name : #GtRlExportReleaserVersionAction,
+	#superclass : #GtRlRepositoryReleaseAction,
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlExportReleaserVersionAction class >> fileName [
 	^ 'gtoolkit-releaser.version'
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlExportReleaserVersionAction >> description [
 	^ self descriptionDetails
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlExportReleaserVersionAction >> descriptionDetails [
 	^ self name
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlExportReleaserVersionAction >> name [ 
 	^ 'Export releaser version' 
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlExportReleaserVersionAction >> performAction [	
 	self repositoryRelease repositoryName = 'gtoolkit'
 		ifFalse: [ ^ self ].
@@ -48,7 +48,7 @@ GtRlExportReleaserVersionAction >> performAction [
 		ifNone: [ ^ self ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlExportReleaserVersionAction >> releaserVersionDo: ifFoundBlock ifNone: ifNoneBlock [
 	^ self repositoryRelease withAllChildRepositoryReleases
 		detect: [ :eachRelease | eachRelease repositoryName = 'gtoolkit-releaser' ]

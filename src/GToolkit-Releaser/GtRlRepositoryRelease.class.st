@@ -17,8 +17,8 @@ I contain the actions that need to be performed at the repository level, like co
 
 "
 Class {
-	#name : 'GtRlRepositoryRelease',
-	#superclass : 'GtRlRelease',
+	#name : #GtRlRepositoryRelease,
+	#superclass : #GtRlRelease,
 	#instVars : [
 		'version',
 		'isPassiveRelease',
@@ -32,19 +32,19 @@ Class {
 	#category : 'GToolkit-Releaser'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 GtRlRepositoryRelease class >> forRepository: aRepository [
 	^ self new
 		repository: aRepository
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlRepositoryRelease >> addProjectRelease: aProjectRelease [
 	aProjectRelease repositoryRelease: self.
 	^ self projectReleases add: aProjectRelease
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlRepositoryRelease >> allReleaseActions [
 	| allActions |
 	allActions := self projectReleases 
@@ -53,7 +53,7 @@ GtRlRepositoryRelease >> allReleaseActions [
 	^ allActions sortedByOrder
 ]
 
-{ #category : 'accessing - dynamic' }
+{ #category : #'accessing - dynamic' }
 GtRlRepositoryRelease >> childRepositoryReleases [
 	^ (self projectReleases flatCollect: [ :aProjectRelease | 
 		aProjectRelease childReleases collect: #repositoryRelease ]) removeDuplicates
@@ -61,7 +61,7 @@ GtRlRepositoryRelease >> childRepositoryReleases [
 			yourself
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlRepositoryRelease >> commitAndTagRelease [
 	| iceRepository diff |
 	iceRepository := self icebergRepository.
@@ -73,7 +73,7 @@ GtRlRepositoryRelease >> commitAndTagRelease [
 	iceRepository branch commit ensureCreateTag: self versionString.
 ]
 
-{ #category : 'accessing - dynamic' }
+{ #category : #'accessing - dynamic' }
 GtRlRepositoryRelease >> commitMessageForRelease [
 	| localRootProjects |
 	
@@ -101,14 +101,14 @@ GtRlRepositoryRelease >> commitMessageForRelease [
 						nextPutAll: commits  ] ] ] ]
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlRepositoryRelease >> decorateText: aStringOrText [
 	^ self isPassiveRelease
 		ifTrue: [ aStringOrText asRopedText foreground: Color gray ] 
 		ifFalse: [ aStringOrText asRopedText]
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlRepositoryRelease >> description [
 	^ String streamContents: [ :stream |
 		stream 
@@ -117,7 +117,7 @@ GtRlRepositoryRelease >> description [
 			nextPutAll: self releaseDetailsDescription ]
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlRepositoryRelease >> gtBaselineVersionMetadataFor: aView [
 	<gtView>
 
@@ -130,7 +130,7 @@ GtRlRepositoryRelease >> gtBaselineVersionMetadataFor: aView [
 		view: #gtBaselineVersionMetadataFor:
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlRepositoryRelease >> gtBranchesFor: aView [
 	<gtView>
 	^ self repository 
@@ -138,7 +138,7 @@ GtRlRepositoryRelease >> gtBranchesFor: aView [
 		ifNotNil: [ :aRepository | aRepository gtBranchesFor: aView ]
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlRepositoryRelease >> gtCommitsAncestryFor: aView [
 	<gtView>
 	^ self releaseStrategy 
@@ -148,7 +148,7 @@ GtRlRepositoryRelease >> gtCommitsAncestryFor: aView [
 				priority: 45 ]
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlRepositoryRelease >> gtProjectsFor: aView [
 	<gtView>
 	^ aView list 
@@ -157,7 +157,7 @@ GtRlRepositoryRelease >> gtProjectsFor: aView [
 		items: [ self projectReleases ]
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlRepositoryRelease >> gtReleaseActionsFor: aView [
 	<gtView>
 	| allActions |
@@ -167,7 +167,7 @@ GtRlRepositoryRelease >> gtReleaseActionsFor: aView [
 	^ allActions sortedByOrder gtReleaseActionsFor: aView
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlRepositoryRelease >> gtReleaseTagsFor: aView [
 	<gtView>
 	^ aView list
@@ -177,7 +177,7 @@ GtRlRepositoryRelease >> gtReleaseTagsFor: aView [
 			anIceTag name , ' [' , (anIceTag commit id first: 7) , ']' ]
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlRepositoryRelease >> gtRepoMapFor: aView [
 	<gtView> 
 	^ aView mondrian 
@@ -266,7 +266,7 @@ GtRlRepositoryRelease >> gtRepoMapFor: aView [
 			mondrian layout custom: (GtGradWestHierarchicalLayout new)]
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlRepositoryRelease >> gtRepositoryMapFor: aView [
 	<gtView> 
 	^ aView explicit
@@ -342,19 +342,19 @@ GtRlRepositoryRelease >> gtRepositoryMapFor: aView [
 			gtconnector asPannableElement ]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlRepositoryRelease >> hasRemoteOrigin [
 	^ self icebergRepository remotes 
 		anySatisfy: [ :iceRemote | iceRemote name = #origin ]
 		
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlRepositoryRelease >> icebergRepository [
 	^ self repository icebergRepository
 ]
 
-{ #category : 'initialize' }
+{ #category : #initialize }
 GtRlRepositoryRelease >> initialize [
 	super initialize.
 	isRoot := false.
@@ -362,18 +362,18 @@ GtRlRepositoryRelease >> initialize [
 	self releaseStrategy: GtRlNullReleaseStrategy new.
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlRepositoryRelease >> isPassiveRelease [
 	^ isPassiveRelease ifNil: [ true ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlRepositoryRelease >> isRootRepositoryRelease [
 	^ isRoot
 	
 ]
 
-{ #category : 'accessing - dynamic' }
+{ #category : #'accessing - dynamic' }
 GtRlRepositoryRelease >> latestSemanticVersionTag [
 	^ ((self icebergRepository tags 
 		select: #gtIsSemanticVersion
@@ -382,7 +382,7 @@ GtRlRepositoryRelease >> latestSemanticVersionTag [
 				a value <= b value ]) last key
 ]
 
-{ #category : 'accessing - dynamic' }
+{ #category : #'accessing - dynamic' }
 GtRlRepositoryRelease >> localRootProjects [
 	| localRootProjects |
 	localRootProjects := self projectReleases select: [ :aProject |
@@ -393,29 +393,29 @@ GtRlRepositoryRelease >> localRootProjects [
 	^ localRootProjects
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlRepositoryRelease >> makePassiveRelease [
 	self markAsPassive.
 	self resetReleaseActions
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlRepositoryRelease >> markAsActive [
 	isPassiveRelease := false
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlRepositoryRelease >> markAsPassive [
 	isPassiveRelease := true
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlRepositoryRelease >> matchesDependenciesIn: versionMetadata [
 	^ (self childRepositoryReleases allSatisfy: [ :aChildRelease |
 		versionMetadata matchesVersionForRelease: aChildRelease ]) 
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlRepositoryRelease >> mergeToBranch: aBranchName [
 	| initialBranchName icebergRepository |
 	icebergRepository := self icebergRepository.
@@ -444,22 +444,22 @@ GtRlRepositoryRelease >> mergeToBranch: aBranchName [
 		executeWithAcceptingLeftOnConflictAndWithoutImageUpdate.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlRepositoryRelease >> newCommits [
 	^ newCommits
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlRepositoryRelease >> newCommits: aListOfCommits [
 	newCommits := aListOfCommits
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlRepositoryRelease >> nodeName [
 	^ self repository id
 ]
 
-{ #category : 'accessing - dynamic' }
+{ #category : #'accessing - dynamic' }
 GtRlRepositoryRelease >> parentRepositoryReleases [
 	^ (self projectReleases flatCollect: [ :aProjectRelease | 
 		aProjectRelease parentReleases collect: #repositoryRelease ]) removeDuplicates 
@@ -467,7 +467,7 @@ GtRlRepositoryRelease >> parentRepositoryReleases [
 			yourself
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlRepositoryRelease >> printNewCommitsToString [
 	|flattenedCommits|
 	newCommitsString ifNil: [ 
@@ -501,7 +501,7 @@ GtRlRepositoryRelease >> printNewCommitsToString [
 		^ newCommitsString
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlRepositoryRelease >> printOn: aStream [
 	super printOn: aStream.
 	aStream 
@@ -510,13 +510,13 @@ GtRlRepositoryRelease >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlRepositoryRelease >> projectReleases [ 	
 	^ projectReleases ifNil: [ 
 		projectReleases := OrderedCollection new ]
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlRepositoryRelease >> releaseDetailsDescription [
 	^ String streamContents: [ :stream |
 		stream 
@@ -525,83 +525,83 @@ GtRlRepositoryRelease >> releaseDetailsDescription [
 			nextPutAll: self releaseStrategy description ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlRepositoryRelease >> releaseStrategy [
 	^ releaseStrategy
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlRepositoryRelease >> releaseStrategy: aReleaseStrategy [
 	releaseStrategy := aReleaseStrategy
 ]
 
-{ #category : 'accessing - dynamic' }
+{ #category : #'accessing - dynamic' }
 GtRlRepositoryRelease >> remoteOrigin [
 	^ self icebergRepository remotes 
 		detect: [ :iceRemote | iceRemote name = #origin ]
 		
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlRepositoryRelease >> repository [
 	^ repository 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlRepositoryRelease >> repository: aRepository [
 	repository := aRepository
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlRepositoryRelease >> repositoryName [
 	^ self repository repositoryName
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlRepositoryRelease >> resetReleaseActions [
 	super resetReleaseActions.
 	self projectReleases do: #resetReleaseActions
 ]
 
-{ #category : 'accessing - dynamic' }
+{ #category : #'accessing - dynamic' }
 GtRlRepositoryRelease >> semanticVersionTags [
 	^ self icebergRepository gtSemanticVersionsTags
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlRepositoryRelease >> setRootRepositoryRelease: aBoolean [
 	isRoot := aBoolean 
 	
 ]
 
-{ #category : 'accessing - dynamic' }
+{ #category : #'accessing - dynamic' }
 GtRlRepositoryRelease >> urlWithReleaseVersion [
 	^ self repository urlWithVersion: self version versionString
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlRepositoryRelease >> version [
 	^ version
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlRepositoryRelease >> version: aVersion [
 	version := aVersion
 ]
 
-{ #category : 'accessing - dynamic' }
+{ #category : #'accessing - dynamic' }
 GtRlRepositoryRelease >> versionString [
 	^ self version versionString
 ]
 
-{ #category : 'accessing - dynamic' }
+{ #category : #'accessing - dynamic' }
 GtRlRepositoryRelease >> versionsMetadata [
 	^ (self childRepositoryReleases
 		collect: [ :aRepositoryRelease | aRepositoryRelease repository id -> aRepositoryRelease versionString ])
 			asDictionary
 ]
 
-{ #category : 'traversing' }
+{ #category : #traversing }
 GtRlRepositoryRelease >> withAllChildRepositoryReleases [
 	^ self withDeepCollect: #childRepositoryReleases
 ]
