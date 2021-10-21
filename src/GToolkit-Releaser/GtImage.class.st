@@ -10,14 +10,14 @@ Class {
 		'singleton',
 		'isSyncEnabled'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #clap }
 GtImage class >> commandLine [
 	<commandline>
 
-	^ (ClapCommand withName: 'gtVersionInfo')
+	^ (ClapCommand id: 'gtVersionInfo')
 		description: 'Gtoolkit version information';
 		add: ClapFlag forHelp;
 		meaning: [ :args | | stdout |
