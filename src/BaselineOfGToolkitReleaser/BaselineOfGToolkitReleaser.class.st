@@ -179,18 +179,18 @@ Also to ensure that a proper release is created, most operations from Releaser c
 
 "
 Class {
-	#name : 'BaselineOfGToolkitReleaser',
-	#superclass : 'BaselineOf',
-	#category : 'BaselineOfGToolkitReleaser'
+	#name : #BaselineOfGToolkitReleaser,
+	#superclass : #BaselineOf,
+	#category : #BaselineOfGToolkitReleaser
 }
 
-{ #category : 'baseline' }
+{ #category : #baseline }
 BaselineOfGToolkitReleaser >> baseline: spec [
 	<baseline>
 	spec for: #'common' do: [
 		spec
 			baseline: 'DeepTraverser' with: [
-				spec repository: 'github://feenkcom/DeepTraverser:v1.1.88/src' ].
+				spec repository: 'github://feenkcom/DeepTraverser:v1.1.89/src' ].
 
 		spec package: 'GToolkit-Releaser-BaselineModel'.
 		spec package: 'GToolkit-Releaser' with: [
