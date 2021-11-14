@@ -271,10 +271,11 @@ GtImage >> gtPreviewFor: aView [
 			('GT release timestamp' -> self timestamp).
 			('Image directory'
 				-> Smalltalk image imageDirectory asFileReference).
-			('Image format version' -> Smalltalk image imageFormatVersion).
+			('Base image info' -> (String streamContents: [ :s | self imageInfoOn: s])).
 			"'License' -> self licenseString."
-			('VM' -> Smalltalk vm).
-			('Last opened version' -> self lastOpenedVersion versionString)} ];
+			('Virtual Machine' -> Smalltalk vm).
+			('Last opened version' -> self lastOpenedVersion versionString).
+			('Preferences directory') -> self class defaultPreferencesFolder} ];
 		column: 'Property' text: [ :each | each key ];
 		column: 'Value' text: [ :each | each value ];
 		send: #value
