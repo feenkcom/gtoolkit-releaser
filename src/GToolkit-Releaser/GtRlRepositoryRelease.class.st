@@ -29,7 +29,7 @@ Class {
 		'newCommitsString',
 		'isRoot'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #'instance creation' }
@@ -142,7 +142,7 @@ GtRlRepositoryRelease >> gtBranchesFor: aView [
 GtRlRepositoryRelease >> gtCommitsAncestryFor: aView [
 	<gtView>
 	^ self releaseStrategy 
-		ifNil: [ aView ]
+		ifNil: [ aView empty ]
 		ifNotNil: [ :aReleaseStrategy | 
 			(aReleaseStrategy gtCommitsAncestryFor: aView)
 				priority: 45 ]
