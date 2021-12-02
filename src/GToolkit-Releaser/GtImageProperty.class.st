@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #accessing }
+GtImageProperty >> description [
+	^ self gtDisplayString
+]
+
+{ #category : #accessing }
 GtImageProperty >> key [
 	^ self subclassResponsibility
 ]

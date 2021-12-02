@@ -280,7 +280,7 @@ GtImage >> gtPreviewFor: aView [
 				('Last opened version' -> self lastOpenedVersion versionString).
 				('Preferences directory') -> self class defaultPreferencesFolder
 			}, (self properties collect: [ :aProperty | 
-				aProperty name -> aProperty value ]) ];
+				aProperty name -> aProperty description ]) ];
 		column: 'Property' text: [ :each | each key ];
 		column: 'Value' text: [ :each | each value ];
 		send: #value
@@ -335,7 +335,7 @@ GtImage >> osInfoOn: aStream [
 
 { #category : #'accessing - properties' }
 GtImage >> properties [
-	^ propertiesByKey
+	^ propertiesByKey values
 ]
 
 { #category : #'accessing - properties' }
@@ -349,16 +349,23 @@ GtImage >> propertyAt: aPropertyKey [
 
 { #category : #'accessing - properties' }
 GtImage >> propertyAt: aPropertyKey ifAbsent: aBlock [
-	^ self properties
+	^ propertiesByKey
 		at: aPropertyKey
 		ifAbsent: aBlock
 ]
 
 { #category : #'accessing - properties' }
-GtImage >> propertyAt: aPropertyKey put: anImageProperty [
-	^ self properties
+GtImage >> propertyAt: aPropertyKey ifAbsentPut: aBlock [
+	^ propertiesByKey
 		at: aPropertyKey
-		ifAbsentPut: anImageProperty
+		ifAbsentPut: aBlock
+]
+
+{ #category : #'accessing - properties' }
+GtImage >> propertyAt: aPropertyKey put: anImageProperty [
+	^ propertiesByKey
+		at: aPropertyKey
+		put: anImageProperty
 ]
 
 { #category : #'accessing - properties' }
