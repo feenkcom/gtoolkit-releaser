@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'version',
 		'timestamp',
-		'lastOpenedVersion'
+		'lastOpenedVersion',
+		'propertiesByKey'
 	],
 	#classInstVars : [
 		'singleton',
@@ -267,15 +268,19 @@ GtImage >> gtPreviewFor: aView [
 	^ aView columnedList
 		title: 'Details';
 		priority: 10;
-		items: [ {('GT version' -> self version versionString).
-			('GT release timestamp' -> self timestamp).
-			('Image directory'
-				-> Smalltalk image imageDirectory asFileReference).
-			('Base image info' -> (String streamContents: [ :s | self imageInfoOn: s])).
-			"'License' -> self licenseString."
-			('Virtual Machine' -> Smalltalk vm).
-			('Last opened version' -> self lastOpenedVersion versionString).
-			('Preferences directory') -> self class defaultPreferencesFolder} ];
+		items: [ 
+			{
+				('GT version' -> self version versionString).
+				('GT release timestamp' -> self timestamp).
+				('Image directory'
+					-> Smalltalk image imageDirectory asFileReference).
+				('Base image info' -> (String streamContents: [ :s | self imageInfoOn: s])).
+				"'License' -> self licenseString."
+				('Virtual Machine' -> Smalltalk vm).
+				('Last opened version' -> self lastOpenedVersion versionString).
+				('Preferences directory') -> self class defaultPreferencesFolder
+			}, (self properties collect: [ :aProperty | 
+				aProperty name -> aProperty value ]) ];
 		column: 'Property' text: [ :each | each key ];
 		column: 'Value' text: [ :each | each value ];
 		send: #value
@@ -300,6 +305,12 @@ GtImage >> imageInfoOn: aStream [
 		cr.
 ]
 
+{ #category : #initialization }
+GtImage >> initialize [
+	super initialize.
+	propertiesByKey := OrderedDictionary new.
+]
+
 { #category : #accessing }
 GtImage >> lastOpenedVersion [
 	^ lastOpenedVersion. 
@@ -320,6 +331,41 @@ GtImage >> osInfoOn: aStream [
 		[ aStream 
 			nextPutAll: osInfoFile contents;
 			cr ].
+]
+
+{ #category : #'accessing - properties' }
+GtImage >> properties [
+	^ propertiesByKey
+]
+
+{ #category : #'accessing - properties' }
+GtImage >> propertyAt: aPropertyKey [
+	"Answer the property value associated with aKey."
+	
+	^ self 
+		propertyAt: aPropertyKey 
+		ifAbsent: [ self error: 'Property not found' ].
+]
+
+{ #category : #'accessing - properties' }
+GtImage >> propertyAt: aPropertyKey ifAbsent: aBlock [
+	^ self properties
+		at: aPropertyKey
+		ifAbsent: aBlock
+]
+
+{ #category : #'accessing - properties' }
+GtImage >> propertyAt: aPropertyKey put: anImageProperty [
+	^ self properties
+		at: aPropertyKey
+		ifAbsentPut: anImageProperty
+]
+
+{ #category : #'accessing - properties' }
+GtImage >> setProperty: anImageProperty [
+	self
+		propertyAt: anImageProperty key 
+		put: anImageProperty
 ]
 
 { #category : #private }
