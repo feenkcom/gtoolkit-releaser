@@ -18,7 +18,7 @@ Class {
 	#instVars : [
 		'referenceBranchName'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #assertions }
@@ -60,7 +60,7 @@ GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChanges [
 
 { #category : #assertions }
 GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChangesBetween: aSourceCommit and: aTargetCommit [
-	| commonAncestor sourceDiff targetDiff releaserChanges metadataChanges |
+	| commonAncestor sourceDiff targetDiff releaserChanges metadataChanges disallowedChanges |
 	commonAncestor := (aSourceCommit commonAncestorWith: aTargetCommit).
 	sourceDiff := aSourceCommit diffTo: commonAncestor.
 	targetDiff := aTargetCommit diffTo: commonAncestor.
@@ -71,17 +71,24 @@ GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChangesBetween: aSourceCo
 		targetDiff tree allChildrenDo: [ :e |
 			(e isEmptyNode not and: [ e value hasChanges ]) ifTrue: [ 
 				releaserChanges add: e ] ] ].
-	
-	
+
 	releaserChanges do: [ :aChange | NonInteractiveTranscript stdout show: aChange ].
+
 	
+	disallowedChanges := releaserChanges reject: [ :aNode |
+		aNode key = GtRlReleaseVersionMetadata fileName or: [ 
+			aNode key = GtRlExportReleaserVersionAction fileName or: [ 
+				aNode key = 'baseline:' ] ] ].
+
 	self
-		assert: [ (releaserChanges allSatisfy: [ :aNode |
-			aNode key = GtRlReleaseVersionMetadata fileName or: [ 
-				aNode key = GtRlExportReleaserVersionAction fileName or: [ 
-					aNode key = 'baseline:' ] ]  ]) ]
-		description: [ 'releaserChanges allSatisfy' ].
-	
+		assert: [ disallowedChanges isEmpty ]
+		description: [ String streamContents: [ :aStream |
+			aStream
+				nextPutAll: 'Found disallowed changes:'; cr.
+			disallowedChanges do: [ :eachChange |
+				aStream tab; print: eachChange
+			] separatedBy: [ aStream cr ] ] ].
+
 	releaserChanges 
 		select: [ :aNode | aNode key = 'baseline:' ] 
 		thenDo: [ :aNode | self assertBaselineMethodNodeFor: aNode ].
