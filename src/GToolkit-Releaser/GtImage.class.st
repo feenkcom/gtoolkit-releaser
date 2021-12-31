@@ -138,6 +138,13 @@ GtImage class >> loadLastOpenedVersion [
 		ifFalse: [ GtRlNullVersionNumber new ]
 ]
 
+{ #category : #testing }
+GtImage class >> noGtImageUpdate [
+	"Answer a boolean indicating whether the image has been started with the --noGtImageUpdate option"
+
+	^ Smalltalk commandLine argumentsInclude: '--noGtImageUpdate'
+]
+
 { #category : #accessing }
 GtImage class >> reset [
 	singleton := nil
@@ -158,8 +165,9 @@ GtImage class >> setupLepiterIntegration [
 
 { #category : #'system startup' }
 GtImage class >> startUp: resuming [
-	resuming
-		ifFalse: [ ^ self ].
+
+	(resuming not or: [ self noGtImageUpdate ])
+		ifTrue: [ ^ self ].
 	self initializeLastOpenedVersion.
 ]
 
