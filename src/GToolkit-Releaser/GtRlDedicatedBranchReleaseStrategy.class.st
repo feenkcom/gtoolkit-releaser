@@ -281,8 +281,13 @@ GtRlDedicatedBranchReleaseStrategy >> shouldCreateNewRelease [
 	latestVersionTag := self repositoryRelease latestSemanticVersionTag.
 	(self isReferenceBranchMergedIn: latestVersionTag commit) ifFalse: [
 		^ true ].
+		
+	"4. If the latest release was not created by releaser we generate a new release
+	as we do not have a way to detect what changed in terms of dependencies."
+	latestVersionTag commit hasGtReleaseMetadata ifFalse: [
+		^ true ].
 	
-	"4. If any dependency has a different version than in the current release generate a new release."
+	"5. If any dependency has a different version than in the current release generate a new release."
 	releaseMetadata := GtRlReleaseVersionMetadata fromCommit: latestVersionTag commit.
 	(self repositoryRelease matchesDependenciesIn: releaseMetadata) ifFalse: [
 		^ true ].
