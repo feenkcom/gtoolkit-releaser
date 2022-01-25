@@ -12,3 +12,8 @@ IceGitCommit >> ensureCreateTag: aString [
 			named: aString
 			inRepository: self repository ]
 ]
+
+{ #category : #'*GToolkit-Releaser' }
+IceGitCommit >> hasGtReleaseMetadata [
+	^ (GtRlReleaseVersionMetadata metadataFileFroCommit: self) exists
+]

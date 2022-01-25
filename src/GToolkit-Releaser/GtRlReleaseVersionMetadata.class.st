@@ -23,8 +23,14 @@ GtRlReleaseVersionMetadata class >> fileName [
 
 { #category : #'instance creation' }
 GtRlReleaseVersionMetadata class >> fromCommit: anIceCommmit [
-	^ self new
-		data: (STON fromString: (anIceCommmit fileSystem / self fileName) contents)
+
+	^ self new data: (STON fromString: (self metadataFileFroCommit: anIceCommmit) contents)
+]
+
+{ #category : #'instance creation' }
+GtRlReleaseVersionMetadata class >> metadataFileFroCommit: anIceCommmit [
+
+	^ anIceCommmit fileSystem / self fileName
 ]
 
 { #category : #converting }
