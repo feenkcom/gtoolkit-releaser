@@ -9,7 +9,7 @@ All my subclasses should provide immutable versions numbers. Once created a vers
 Class {
 	#name : #GtRlVersionNumber,
 	#superclass : #Object,
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #accessing }
@@ -33,7 +33,7 @@ GtRlVersionNumber >> printOn: aStream [
 	super printOn: aStream.
 	aStream 
 		nextPut: $(;
-		nextPutAll: self description;
+		nextPutAll: (self description ifNil: [ '<no description>' ]);
 		nextPut: $)
 ]
 
