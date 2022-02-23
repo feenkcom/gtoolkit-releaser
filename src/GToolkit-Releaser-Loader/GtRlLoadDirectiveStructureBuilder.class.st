@@ -1,13 +1,13 @@
 Class {
-	#name : 'GtRlLoadDirectiveStructureBuilder',
-	#superclass : 'Object',
+	#name : #GtRlLoadDirectiveStructureBuilder,
+	#superclass : #Object,
 	#instVars : [
 		'loadDirectivesMap'
 	],
 	#category : 'GToolkit-Releaser-Loader'
 }
 
-{ #category : 'building' }
+{ #category : #building }
 GtRlLoadDirectiveStructureBuilder >> buildLoadDirectiveForProject: aProject [
 	| loadDirective |
 	self assert: [ (self loadDirectivesMap includesKey: aProject) not ].
@@ -22,7 +22,7 @@ GtRlLoadDirectiveStructureBuilder >> buildLoadDirectiveForProject: aProject [
 	^ loadDirective
 ]
 
-{ #category : 'private building' }
+{ #category : #'private building' }
 GtRlLoadDirectiveStructureBuilder >> createChildrenForLoadDirective: loadDirective [
 	"We ignore relations to child projects that have already been added to the load directive.
 	So we just add a project to the load directive the first time we encounter it, 
@@ -38,7 +38,7 @@ GtRlLoadDirectiveStructureBuilder >> createChildrenForLoadDirective: loadDirecti
 				loadDirective addIgnoredChildLoadDirective: childLoadDirective ]  ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlLoadDirectiveStructureBuilder >> loadDirectivesMap [
 	^ loadDirectivesMap ifNil: [ 
 		loadDirectivesMap := Dictionary new ]

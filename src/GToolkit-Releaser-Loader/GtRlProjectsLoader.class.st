@@ -1,10 +1,10 @@
 Class {
-	#name : 'GtRlProjectsLoader',
-	#superclass : 'Object',
+	#name : #GtRlProjectsLoader,
+	#superclass : #Object,
 	#category : 'GToolkit-Releaser-Loader'
 }
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlProjectsLoader >> cloneBaseline: aBaselineName fromRepository: aRepositoryLocationString [
 	| projectCloner |
 	projectCloner := GtRlProjectsCloner new.
@@ -14,7 +14,7 @@ GtRlProjectsLoader >> cloneBaseline: aBaselineName fromRepository: aRepositoryLo
 	^ projectCloner execute
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlProjectsLoader >> loadBaseline: aBaselineName fromRepository: aRepositoryLocationString [
 	| clonedProject |
 	clonedProject := self 
@@ -25,7 +25,7 @@ GtRlProjectsLoader >> loadBaseline: aBaselineName fromRepository: aRepositoryLoc
 		fromRepository: clonedProject repository urlString
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlProjectsLoader >> loadBaselineClass: aBaselineClass fromRepository: aRepositoryLocationString [
 	| rootProject |
 	rootProject := aBaselineClass
@@ -34,7 +34,7 @@ GtRlProjectsLoader >> loadBaselineClass: aBaselineClass fromRepository: aReposit
 	self loadFullProject: rootProject
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlProjectsLoader >> loadFullProject: aRootProject [
 	| structureBuilder loadDirective loadWorkflow |
 	structureBuilder := GtRlLoadDirectiveStructureBuilder new.

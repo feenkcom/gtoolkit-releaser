@@ -1,6 +1,6 @@
 Class {
-	#name : 'GtRlProjectLoadDirectiveAction',
-	#superclass : 'Object',
+	#name : #GtRlProjectLoadDirectiveAction,
+	#superclass : #Object,
 	#instVars : [
 		'loadDirective',
 		'isExecuted'
@@ -8,17 +8,17 @@ Class {
 	#category : 'GToolkit-Releaser-Loader'
 }
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlProjectLoadDirectiveAction >> descriptionDetails [
 	self subclassResponsibility
 ]
 
-{ #category : 'logging' }
+{ #category : #logging }
 GtRlProjectLoadDirectiveAction >> emitExecutionSignal [
 	
 ]
 
-{ #category : 'execution' }
+{ #category : #execution }
 GtRlProjectLoadDirectiveAction >> execute [ 
 	self isExecuted ifTrue: [ Error signal: 'Action already executed' ].
 	self emitExecutionSignal.
@@ -26,27 +26,27 @@ GtRlProjectLoadDirectiveAction >> execute [
 		ensure: [ isExecuted := true ].
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectLoadDirectiveAction >> isExecuted [
 	^ isExecuted ifNil: [ false ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectLoadDirectiveAction >> loadDirective [
 	^ loadDirective
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectLoadDirectiveAction >> loadDirective: anObject [
 	loadDirective := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectLoadDirectiveAction >> name [
 	self subclassResponsibility
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlProjectLoadDirectiveAction >> performAction [
 	self subclassResponsibility
 ]

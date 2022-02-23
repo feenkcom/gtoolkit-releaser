@@ -1,15 +1,15 @@
 Class {
-	#name : 'GtRlPreLoadAction',
-	#superclass : 'GtRlPrePostLoadAction',
+	#name : #GtRlPreLoadAction,
+	#superclass : #GtRlPrePostLoadAction,
 	#category : 'GToolkit-Releaser-Loader'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlPreLoadAction >> actionSelector [
 	^ self loadDirective project preLoadAction
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlPreLoadAction >> name [
 	^ 'Evaluate pre-load actions'
 ]

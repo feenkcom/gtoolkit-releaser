@@ -160,11 +160,42 @@ GtRlClonerBaselineEventsGroup >> gtBarElementsWithGlobalWeight: aWeight local: a
 ]
 
 { #category : #'gt-extensions' }
+GtRlClonerBaselineEventsGroup >> gtLoadDirectivesMapFor: aView [
+	<gtView>
+	^ aView mondrian
+		title: 'Clone map' translated;
+		priority: 20;
+		painting: [ :mondrian |
+			mondrian nodes 
+				shape: [ :aSubgroup |
+					BrLabel new 
+						text: aSubgroup description; 
+						aptitude: BrGlamorousLabelAptitude;
+						when: BlClickEvent do: [ :anEvent | 
+							anEvent currentTarget phlow spawnObject: aSubgroup ] ];
+				with: (self withDeepCollect: #subgroups).
+			mondrian edges
+				stencil: [:class | 
+					BlParabollaArcElement new 
+						zIndex: 0;
+						curvatureFraction: 0.3;
+						border: (BlBorder paint: (Color gray alpha: 0.5) width: 2);
+						toHead: (BlArrowheadSimpleArrow new
+							border: (BlBorder builder paint: (Color gray alpha: 0.5); width: 2; build)) ];
+				fromRightCenter;
+				toLeftCenter;
+				connectToAll: #subgroups.
+			mondrian layout  horizontalDominanceTree
+				levelDistance: 100;
+				nodeDistance: 10 ]
+]
+
+{ #category : #'gt-extensions' }
 GtRlClonerBaselineEventsGroup >> gtMapFor: aView [
 	<gtView>
 
 	^ aView explicit
-		title: 'Map';
+		title: 'Duration Map';
 		priority: 20;
 		stencil: [ self gtBarElements ]
 ]

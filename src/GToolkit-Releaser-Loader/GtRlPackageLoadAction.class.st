@@ -1,41 +1,41 @@
 Class {
-	#name : 'GtRlPackageLoadAction',
-	#superclass : 'GtRlProjectLoadDirectiveAction',
+	#name : #GtRlPackageLoadAction,
+	#superclass : #GtRlProjectLoadDirectiveAction,
 	#instVars : [
 		'package'
 	],
 	#category : 'GToolkit-Releaser-Loader'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlPackageLoadAction >> descriptionDetails [
 	^ self package name
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlPackageLoadAction >> name [
 	^ 'Load package'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlPackageLoadAction >> package [
 	^ package
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlPackageLoadAction >> package: aPackage [
 	self assert: [ aPackage notNil ].
 	package := aPackage
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlPackageLoadAction >> performAction [ 
 	self assert: [ self package notNil ].
 	
 	self package icebergPackage load
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlPackageLoadAction >> printOn: aStream [
 	super printOn: aStream.
 	aStream
