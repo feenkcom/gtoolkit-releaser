@@ -1,6 +1,6 @@
 Class {
-	#name : 'GtRlUnresolvedProject',
-	#superclass : 'Object',
+	#name : #GtRlUnresolvedProject,
+	#superclass : #Object,
 	#instVars : [
 		'name',
 		'repository',
@@ -10,7 +10,7 @@ Class {
 	#category : 'GToolkit-Releaser-Cloner-Core'
 }
 
-{ #category : 'adding' }
+{ #category : #adding }
 GtRlUnresolvedProject >> addProjectReference: aProjectReference [
 	self assert: [ aProjectReference notNil ].
 	self assert: [ aProjectReference referencedProject notNil ].
@@ -20,53 +20,53 @@ GtRlUnresolvedProject >> addProjectReference: aProjectReference [
 	aProjectReference referencedProject basicAddParentProject: self.
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 GtRlUnresolvedProject >> addProjectReferences: aCollection [
 	aCollection do: [ :aProjectReference | 
 		self addProjectReference: aProjectReference ]
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 GtRlUnresolvedProject >> basicAddParentProject: aParentProject [
 	self parentProjects add: aParentProject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlUnresolvedProject >> childProjects [
 	^ self projectReferences collect: [ :aProjectReference |
 		aProjectReference referencedProject ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 GtRlUnresolvedProject >> initialize [ 
 	super initialize.
 	parentProjects := OrderedCollection new.
 	projectReferences := OrderedCollection new.
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlUnresolvedProject >> linkWithRepository: aRepository [
 	self repository: aRepository.
 	(GtRlProjectLinkWithRepositorySignal project: self repository: aRepository) emit.
 	aRepository addProject: self
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlUnresolvedProject >> name [
 	^ name
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlUnresolvedProject >> name: anObject [
 	name := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlUnresolvedProject >> parentProjects [
 	^ parentProjects
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlUnresolvedProject >> printOn: aStream [
 	super printOn: aStream.
 	aStream 
@@ -75,17 +75,17 @@ GtRlUnresolvedProject >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlUnresolvedProject >> projectReferences [
 	^ projectReferences
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlUnresolvedProject >> repository [
 	^ repository
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlUnresolvedProject >> repository: anObject [
 	repository := anObject
 ]

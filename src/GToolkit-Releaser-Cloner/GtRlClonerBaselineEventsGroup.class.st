@@ -1,15 +1,15 @@
 Class {
-	#name : 'GtRlClonerBaselineEventsGroup',
-	#superclass : 'Object',
+	#name : #GtRlClonerBaselineEventsGroup,
+	#superclass : #Object,
 	#instVars : [
 		'baselineName',
 		'events',
 		'subgroups'
 	],
-	#category : 'GToolkit-Releaser-Cloner-Logging'
+	#category : #'GToolkit-Releaser-Cloner-Logging'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 GtRlClonerBaselineEventsGroup class >> fromEvents: aCollection [
 	| latestGroup groupsStack |
 	
@@ -37,32 +37,139 @@ GtRlClonerBaselineEventsGroup class >> fromEvents: aCollection [
 	^ latestGroup
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 GtRlClonerBaselineEventsGroup >> addEvent: anEvent [
 	self events add: anEvent
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 GtRlClonerBaselineEventsGroup >> addSubgroup: aGroup [
 	self subgroups add: aGroup
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlClonerBaselineEventsGroup >> baselineName [
 	^ baselineName
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlClonerBaselineEventsGroup >> baselineName: anObject [
 	baselineName := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #printing }
+GtRlClonerBaselineEventsGroup >> description [
+	^ String streamContents: [ :aStream |
+		self descriptionOn: aStream ]
+]
+
+{ #category : #printing }
+GtRlClonerBaselineEventsGroup >> descriptionOn: aStream [
+	aStream
+		nextPutAll: self baselineName; space;
+		nextPut: $(;
+		nextPutAll: self duration gtHumanReadableString;
+		nextPut: $)
+]
+
+{ #category : #accessing }
+GtRlClonerBaselineEventsGroup >> duration [
+	^ self totalLoadDuration
+]
+
+{ #category : #accessing }
 GtRlClonerBaselineEventsGroup >> events [
 	^ events
 ]
 
-{ #category : 'accessing' }
+{ #category : #'gt-extensions' }
+GtRlClonerBaselineEventsGroup >> gtBarElements [
+	^ (self gtBarElementsWithGlobalWeight: 1.0 local: 1.0) asScrollableElement
+		margin: (BlInsets all: 10)
+]
+
+{ #category : #'gt-extensions' }
+GtRlClonerBaselineEventsGroup >> gtBarElementsWithGlobalWeight: aWeight local: aLocalWeight [
+	| taskElements aBarColor |
+	
+	aBarColor := BlColorTransition interpolate: Color veryLightGray to: BrGlamorousColors errorBorderColor at: aWeight.
+	
+	taskElements := aWeight > 0.1
+		ifTrue: [
+			| myDuration |		
+			myDuration := self duration.
+	
+			self subgroups collect: [ :eachTask |
+				| eachWeight |
+				
+				eachWeight := myDuration isZero
+					ifTrue: [ 0 ]
+					ifFalse: [ (eachTask duration / myDuration) asFloat ].
+				(eachTask gtBarElementsWithGlobalWeight: eachWeight * aWeight local: eachWeight)
+					constraintsDo: [ :c | c linear weight: (eachWeight max: 0.001) ] ] ]
+		ifFalse: [
+			self subgroups
+				ifEmpty: [ #() ]
+				ifNotEmpty: [ {
+					BlElement new
+						layout: BlLinearLayout horizontal;
+						constraintsDo: [ :c |
+							c horizontal matchParent.
+							c vertical exact: 20 ];
+						when: BlClickEvent
+						do: [ :anEvent |
+							anEvent consumed: true.
+							anEvent currentTarget phlow spawnObject: self ];
+						geometry: (BlRoundedRectangleGeometry cornerRadius: 3);
+						border: (BlBorder paint: Color transparent width: (aWeight max: 0.1));
+						background: (BlLinearGradientPaint vertical stops: {
+							0 -> aBarColor.
+							0.4 -> (aBarColor alpha: 0.5).
+							1 -> (aBarColor alpha: 0)}) } ] ].
+	
+	^ BlElement new
+		layout: BlLinearLayout vertical;
+		constraintsDo: [ :c |
+			c horizontal matchParent.
+			c vertical fitContent ];
+		addChild: (BlElement new
+			layout: BlLinearLayout horizontal alignCenter;
+			when: BlClickEvent
+			do: [ :anEvent |
+				anEvent consumed: true.
+				anEvent currentTarget phlow spawnObject: self ];
+			constraintsDo: [ :c |
+				c horizontal matchParent.
+				c vertical exact: 20 ];
+			padding: (BlInsets top: 3 bottom: 3);
+			geometry: (BlRoundedRectangleGeometry cornerRadius: 3);
+			border: (BlBorder paint: Color transparent width: 0.25);
+			background: aBarColor;
+			in: [ :aPane | aWeight > 0.005
+				ifTrue: [ aPane addChild: (BrLabel new
+					aptitude: (BrGlamorousLabelAptitude new fontSize: 10);
+					text: self description) asScalableElement ] ];
+			yourself);
+		addChild: (BlElement new
+			layout: (BlLinearLayout horizontal alignTopCenter weightSum: 1);
+			constraintsDo: [ :c |
+				c horizontal matchParent.
+				c vertical fitContent ];
+			addChildren: taskElements);
+		yourself
+]
+
+{ #category : #'gt-extensions' }
+GtRlClonerBaselineEventsGroup >> gtMapFor: aView [
+	<gtView>
+
+	^ aView explicit
+		title: 'Map';
+		priority: 20;
+		stencil: [ self gtBarElements ]
+]
+
+{ #category : #accessing }
 GtRlClonerBaselineEventsGroup >> gtViewAllEventsFor: aView [
 	<gtView>
 	^ aView forward
@@ -73,7 +180,7 @@ GtRlClonerBaselineEventsGroup >> gtViewAllEventsFor: aView [
 	 	view: #gtItemsFor:
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlClonerBaselineEventsGroup >> gtViewLocalEventsFor: aView [
 	<gtView>
 	^ aView forward
@@ -83,33 +190,62 @@ GtRlClonerBaselineEventsGroup >> gtViewLocalEventsFor: aView [
 	 	view: #gtItemsFor:
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlClonerBaselineEventsGroup >> gtViewSubgroupsFor: aView [
 	<gtView>
-	^ aView tree
+	^ aView columnedTree
 		title: 'Baselines (tree)';
+		priority: 10;
 		items: [ {self} ];
 		children: #subgroups;
-		itemText: #baselineName
+		column: 'Baseline' text: #baselineName;
+		column: 'Total Duration' 
+			text: [ :aGroup | aGroup totalLoadDuration ];
+		column: 'Local Duration' 
+			text: [ :aGroup | aGroup localLoadDuration ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 GtRlClonerBaselineEventsGroup >> initialize [ 
 	super initialize.
 	events := GtRlClonerEventsGroup new. 
 	subgroups := OrderedCollection new. 
 ]
 
-{ #category : 'printing' }
+{ #category : #accessing }
+GtRlClonerBaselineEventsGroup >> loadCompletedEvent [
+	^ self events detect: [ :anEvent |
+		anEvent class = GtRlClonerBaselineLoadCompletedEvent]
+]
+
+{ #category : #accessing }
+GtRlClonerBaselineEventsGroup >> loadStartedEvent [
+	^ self events detect: [ :anEvent |
+		anEvent class = GtRlClonerBaselineLoadStartedEvent]
+]
+
+{ #category : #accessing }
+GtRlClonerBaselineEventsGroup >> localLoadDuration [
+	^ self totalLoadDuration - (self subgroups sum: [ :aGroup | 
+		aGroup totalLoadDuration ]) asDuration
+]
+
+{ #category : #printing }
 GtRlClonerBaselineEventsGroup >> printOn: stream [
 	super printOn: stream.
 	stream 
-		nextPutAll: '(';
-		nextPutAll: self baselineName;
+		nextPutAll: '('.
+	self descriptionOn: stream.
+	stream
 		nextPutAll: ')'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlClonerBaselineEventsGroup >> subgroups [
 	^ subgroups
+]
+
+{ #category : #accessing }
+GtRlClonerBaselineEventsGroup >> totalLoadDuration [
+	^ self loadCompletedEvent timestamp - self loadStartedEvent timestamp
 ]

@@ -10,8 +10,8 @@ I am a wrapper around {{gtClass:GtRlProjectsCloneWorkflow}} that provides the cl
 
 "
 Class {
-	#name : 'GtRlProjectsCloner',
-	#superclass : 'Object',
+	#name : #GtRlProjectsCloner,
+	#superclass : #Object,
 	#instVars : [
 		'baselineName',
 		'repositoryUrlString',
@@ -21,13 +21,13 @@ Class {
 	#category : 'GToolkit-Releaser-Cloner-Core'
 }
 
-{ #category : 'baselines' }
+{ #category : #baselines }
 GtRlProjectsCloner >> baseline: aBaselineName [
 	self assert: [ aBaselineName notNil and: [ baselineName isNil ] ].
 	baselineName := aBaselineName
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlProjectsCloner >> execute [ 
 	self assert: [ cloneWorkflow isNil ].
 	self assert: [ baselineName notNil ].
@@ -48,7 +48,7 @@ GtRlProjectsCloner >> execute [
 	
 ]
 
-{ #category : 'gt extensions' }
+{ #category : #'gt extensions' }
 GtRlProjectsCloner >> gtViewEventsFor: aView [
 	<gtView>
 	self hasMemoryLogger ifNil: [ ^ aView empty ].
@@ -59,7 +59,7 @@ GtRlProjectsCloner >> gtViewEventsFor: aView [
 	 	view: #gtItemsFor:
 ]
 
-{ #category : 'gt extensions' }
+{ #category : #'gt extensions' }
 GtRlProjectsCloner >> gtViewGroupedEventsFor: aView [
 	<gtView>
 	self hasMemoryLogger ifNil: [ ^ aView empty ].
@@ -71,7 +71,7 @@ GtRlProjectsCloner >> gtViewGroupedEventsFor: aView [
 		view: #gtViewSubgroupsFor:
 ]
 
-{ #category : 'gt extensions' }
+{ #category : #'gt extensions' }
 GtRlProjectsCloner >> gtViewLoadedProjectsListFor: aView [
 	<gtView>
 	cloneWorkflow ifNil: [ ^ aView empty ].
@@ -82,7 +82,7 @@ GtRlProjectsCloner >> gtViewLoadedProjectsListFor: aView [
 		view: #gtViewLoadedProjectsListFor:
 ]
 
-{ #category : 'gt extensions' }
+{ #category : #'gt extensions' }
 GtRlProjectsCloner >> gtViewRepositoriesCacheFor: aView [
 	<gtView>
 	cloneWorkflow ifNil: [ ^ aView empty ].
@@ -93,17 +93,17 @@ GtRlProjectsCloner >> gtViewRepositoriesCacheFor: aView [
 		view: #gtViewRepositoriesCacheFor:
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlProjectsCloner >> hasMemoryLogger [
 	^ loggersById includesKey: #memoryLogger
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlProjectsCloner >> hasTranscriptLogger [
 	^ loggersById includesKey: #transcriptLogger
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 GtRlProjectsCloner >> initialize [
 	super initialize.
 	loggersById := OrderedDictionary new.
@@ -111,17 +111,17 @@ GtRlProjectsCloner >> initialize [
 	self registerTranscriptLogger.
 ]
 
-{ #category : 'accessing - logging' }
+{ #category : #'accessing - logging' }
 GtRlProjectsCloner >> loggers [
 	^ loggersById values
 ]
 
-{ #category : 'accessing - logging' }
+{ #category : #'accessing - logging' }
 GtRlProjectsCloner >> memoryLogger [
 	^ loggersById at: #memoryLogger
 ]
 
-{ #category : 'configuration' }
+{ #category : #configuration }
 GtRlProjectsCloner >> registerMemoryLogger [
 	self hasMemoryLogger ifTrue: [ ^ self ].
 	loggersById
@@ -129,7 +129,7 @@ GtRlProjectsCloner >> registerMemoryLogger [
 		put: MemoryLogger new
 ]
 
-{ #category : 'configuration' }
+{ #category : #configuration }
 GtRlProjectsCloner >> registerTranscriptLogger [
 	self hasTranscriptLogger ifTrue: [ ^ self ].
 	loggersById
@@ -137,13 +137,13 @@ GtRlProjectsCloner >> registerTranscriptLogger [
 		put: TranscriptLogger new
 ]
 
-{ #category : 'baselines' }
+{ #category : #baselines }
 GtRlProjectsCloner >> repository: aUrlString [
 	self assert: [ aUrlString notNil and: [ repositoryUrlString isNil ] ].
 	repositoryUrlString := aUrlString
 ]
 
-{ #category : 'accessing - logging' }
+{ #category : #'accessing - logging' }
 GtRlProjectsCloner >> transcriptLogger [
 	^ loggersById at: #transcriptLogger
 ]

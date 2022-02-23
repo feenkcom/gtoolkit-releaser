@@ -1,1 +1,1 @@
-Package { #name : 'GToolkit-Releaser-Cloner' }
+Package { #name : #'GToolkit-Releaser-Cloner' }
