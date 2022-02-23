@@ -6,8 +6,8 @@ My main purpose is to group together the baseline name and the repository contai
 
 "
 Class {
-	#name : 'GtRlClonerBaselineSpec',
-	#superclass : 'Object',
+	#name : #GtRlClonerBaselineSpec,
+	#superclass : #Object,
 	#instVars : [
 		'baselineName',
 		'repositoryLocation'
@@ -15,17 +15,17 @@ Class {
 	#category : 'GToolkit-Releaser-Cloner-Core'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlClonerBaselineSpec >> baselineName [
 	^ baselineName
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlClonerBaselineSpec >> baselineName: anObject [
 	baselineName := anObject
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlClonerBaselineSpec >> printOn: aStream [
 	super printOn: aStream.
 	aStream 
@@ -36,12 +36,12 @@ GtRlClonerBaselineSpec >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlClonerBaselineSpec >> repositoryLocation [
 	^ repositoryLocation
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlClonerBaselineSpec >> repositoryLocation: anObject [
 	repositoryLocation := anObject
 ]

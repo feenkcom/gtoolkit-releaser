@@ -7,8 +7,8 @@ I currently raise errros when I detect conflictual situations. I do not try to r
 
 "
 Class {
-	#name : 'GtRlProjectsCloneWorkflow',
-	#superclass : 'Object',
+	#name : #GtRlProjectsCloneWorkflow,
+	#superclass : #Object,
 	#instVars : [
 		'loadedProjectsByName',
 		'repositoriesCacheById',
@@ -17,7 +17,7 @@ Class {
 	#category : 'GToolkit-Releaser-Cloner-Core'
 }
 
-{ #category : 'private - building' }
+{ #category : #'private - building' }
 GtRlProjectsCloneWorkflow >> createBaselineProjectForPackage: baselinePackage fromSpec: aBaselineSpec [
 	| baselineClassName baselineClass |
 	baselineClassName := baselinePackage name.
@@ -30,12 +30,12 @@ GtRlProjectsCloneWorkflow >> createBaselineProjectForPackage: baselinePackage fr
 	
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlProjectsCloneWorkflow >> defaultBranchName [
 	^ 'master'
 ]
 
-{ #category : 'logging' }
+{ #category : #logging }
 GtRlProjectsCloneWorkflow >> emitBaselineAlreadyLoadedForSpec: aBaselineSpec [
 	GtRlClonerBaselineSkipLoadEvent new
 		baselineName: aBaselineSpec baselineName;
@@ -43,7 +43,7 @@ GtRlProjectsCloneWorkflow >> emitBaselineAlreadyLoadedForSpec: aBaselineSpec [
 		emit
 ]
 
-{ #category : 'logging' }
+{ #category : #logging }
 GtRlProjectsCloneWorkflow >> emitLoadCompletedEventForSpec: aBaselineSpec [
 	GtRlClonerBaselineLoadCompletedEvent new
 		baselineName: aBaselineSpec baselineName;
@@ -51,7 +51,7 @@ GtRlProjectsCloneWorkflow >> emitLoadCompletedEventForSpec: aBaselineSpec [
 		emit
 ]
 
-{ #category : 'logging' }
+{ #category : #logging }
 GtRlProjectsCloneWorkflow >> emitLoadStartEventForSpec: aBaselineSpec [
 	GtRlClonerBaselineLoadStartedEvent new
 		baselineName: aBaselineSpec baselineName;
@@ -59,7 +59,7 @@ GtRlProjectsCloneWorkflow >> emitLoadStartEventForSpec: aBaselineSpec [
 		emit
 ]
 
-{ #category : 'logging' }
+{ #category : #logging }
 GtRlProjectsCloneWorkflow >> emitPackageLoadForSpec: aBaselineSpec [
 	GtRlClonerBaselinePackageLoadEvent new
 		baselineName: aBaselineSpec baselineName;
@@ -67,7 +67,7 @@ GtRlProjectsCloneWorkflow >> emitPackageLoadForSpec: aBaselineSpec [
 		emit
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlProjectsCloneWorkflow >> ensureNoConflictWithIcebergRepoForSpec: aBaselineSpec [
 	| toLoadRepository icebergRepo repoVersion |
 	toLoadRepository := GtRlRepository 
@@ -109,7 +109,7 @@ GtRlProjectsCloneWorkflow >> ensureNoConflictWithIcebergRepoForSpec: aBaselineSp
 			signal ].
 ]
 
-{ #category : 'private - building' }
+{ #category : #'private - building' }
 GtRlProjectsCloneWorkflow >> ensureRepositoryCloneFor: aRepositoryLocationString [
 	| mcRepositorySpec mcRepository |
 	mcRepositorySpec := MetacelloRepositorySpec new 
@@ -124,7 +124,7 @@ GtRlProjectsCloneWorkflow >> ensureRepositoryCloneFor: aRepositoryLocationString
 	^ mcRepository repository
 ]
 
-{ #category : 'private - building' }
+{ #category : #'private - building' }
 GtRlProjectsCloneWorkflow >> ensureRepositoryRegisteredFor: aRepositoryLocationString [
 	| repository |
 	"This is a hack as we are missing a url model. So we create
@@ -137,7 +137,7 @@ GtRlProjectsCloneWorkflow >> ensureRepositoryRegisteredFor: aRepositoryLocationS
 			repositoriesCacheById at: repository id asLowercase put: repository ].
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlProjectsCloneWorkflow >> ensureSameRepositoryForBaselineSpec: aBaselineSpec [
 	| loadedProject |
 	(loadedProjectsByName includesKey: aBaselineSpec baselineName) ifFalse: [ ^ self ].
@@ -150,7 +150,7 @@ GtRlProjectsCloneWorkflow >> ensureSameRepositoryForBaselineSpec: aBaselineSpec 
 			signal ]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlProjectsCloneWorkflow >> ensureSingleRepositoryVersionForSpec: aBaselineSpec [
 	| toLoadRepository loadedRepository  |
 	
@@ -173,7 +173,7 @@ GtRlProjectsCloneWorkflow >> ensureSingleRepositoryVersionForSpec: aBaselineSpec
 			signal ] 
 ]
 
-{ #category : 'gt extensions' }
+{ #category : #'gt extensions' }
 GtRlProjectsCloneWorkflow >> gtViewLoadedProjectsListFor: aView [
 	<gtView>
 	^ aView list
@@ -182,7 +182,7 @@ GtRlProjectsCloneWorkflow >> gtViewLoadedProjectsListFor: aView [
 		items: [ loadedProjectsByName values ]
 ]
 
-{ #category : 'gt extensions' }
+{ #category : #'gt extensions' }
 GtRlProjectsCloneWorkflow >> gtViewRepositoriesCacheFor: aView [
 	<gtView>
 	^ aView list
@@ -191,7 +191,7 @@ GtRlProjectsCloneWorkflow >> gtViewRepositoriesCacheFor: aView [
 		items: [ repositoriesCacheById values ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 GtRlProjectsCloneWorkflow >> initialize [
 	super initialize.
 	loadedProjectsByName := OrderedDictionary new.
@@ -199,17 +199,17 @@ GtRlProjectsCloneWorkflow >> initialize [
 	initialIcebergRepos := OrderedCollection new.
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 GtRlProjectsCloneWorkflow >> initializeIcebergRepos [
 	initialIcebergRepos addAll: IceRepository registry
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlProjectsCloneWorkflow >> isBaselineNamedAlreadyLoadedForSpec: aBaselineSpec [
 	^ loadedProjectsByName includesKey: aBaselineSpec baselineName
 ]
 
-{ #category : 'loading' }
+{ #category : #loading }
 GtRlProjectsCloneWorkflow >> loadBaselinePackageForSpec: aBaselineSpec [
 	| icebergRepository icebergPackage baselineClassName |
 	baselineClassName := MetacelloScriptEngine 
@@ -228,7 +228,7 @@ GtRlProjectsCloneWorkflow >> loadBaselinePackageForSpec: aBaselineSpec [
 		packageNamed: icebergPackage name
 ]
 
-{ #category : 'loading' }
+{ #category : #loading }
 GtRlProjectsCloneWorkflow >> loadBaselineSpec: aBaselineSpec [
 	| baselinePackage project |
 	
@@ -250,7 +250,7 @@ GtRlProjectsCloneWorkflow >> loadBaselineSpec: aBaselineSpec [
 	^ project
 ]
 
-{ #category : 'loading' }
+{ #category : #loading }
 GtRlProjectsCloneWorkflow >> loadProjectDependenciesFor: aBaselineProject [
 	aBaselineProject childProjects do: [ :aProject |
 		self 
@@ -259,7 +259,7 @@ GtRlProjectsCloneWorkflow >> loadProjectDependenciesFor: aBaselineProject [
 				repositoryLocation: aProject repository urlString) ].
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlProjectsCloneWorkflow >> shouldLoadBaselineSpec: aBaselineSpec [
 	"Ensure that we can load the baseline without having conflictual repositories 
 	or baselines loaded. Throw an error if there is a conflict from which we 

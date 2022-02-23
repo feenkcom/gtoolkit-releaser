@@ -1,6 +1,6 @@
 Class {
-	#name : 'GtRlClonerIcebergRepoMismatchError',
-	#superclass : 'GtRlClonerBaselineError',
+	#name : #GtRlClonerIcebergRepoMismatchError,
+	#superclass : #GtRlClonerBaselineError,
 	#instVars : [
 		'mismatchType',
 		'baselineData',
@@ -9,17 +9,17 @@ Class {
 	#category : 'GToolkit-Releaser-Cloner-Errors'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlClonerIcebergRepoMismatchError >> baselineData [
 	^ baselineData
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlClonerIcebergRepoMismatchError >> baselineData: anObject [
 	baselineData := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlClonerIcebergRepoMismatchError >> defaultMessageText [
 	^ 'Mismatch when loading {1} between existing iceberg repo and baseline spec for "{2}"; baseline spec: {3}; iceberg: {4}' format: { 
 		self baselineName.
@@ -28,22 +28,22 @@ GtRlClonerIcebergRepoMismatchError >> defaultMessageText [
 		self icebergData }
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlClonerIcebergRepoMismatchError >> icebergData [
 	^ icebergData
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlClonerIcebergRepoMismatchError >> icebergData: anObject [
 	icebergData := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlClonerIcebergRepoMismatchError >> mismatchType [
 	^ mismatchType
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlClonerIcebergRepoMismatchError >> mismatchType: anObject [
 	mismatchType := anObject
 ]
