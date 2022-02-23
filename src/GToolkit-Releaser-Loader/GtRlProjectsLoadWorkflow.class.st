@@ -1,6 +1,6 @@
 Class {
-	#name : 'GtRlProjectsLoadWorkflow',
-	#superclass : 'Object',
+	#name : #GtRlProjectsLoadWorkflow,
+	#superclass : #Object,
 	#instVars : [
 		'rootLoadDirective',
 		'loadActions',
@@ -9,20 +9,20 @@ Class {
 	#category : 'GToolkit-Releaser-Loader'
 }
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlProjectsLoadWorkflow >> executeLoadActions [
 	self loadActions do: [ :aLoadAction |
 		aLoadAction execute ]
 ]
 
-{ #category : 'formatting' }
+{ #category : #formatting }
 GtRlProjectsLoadWorkflow >> format: aString for: anAction [
 	^ anAction isExecuted
 		ifTrue: [ aString asRopedText foreground: Color gray ] 
 		ifFalse: [ aString ]
 ]
 
-{ #category : 'gt-extensions' }
+{ #category : #'gt-extensions' }
 GtRlProjectsLoadWorkflow >> gtLoadActionsFor: aView [
 	<gtView>
 	^ aView columnedList
@@ -39,30 +39,30 @@ GtRlProjectsLoadWorkflow >> gtLoadActionsFor: aView [
 				for: anAction ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectsLoadWorkflow >> loadActions [
 	^ loadActions
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectsLoadWorkflow >> rootLoadDirective [
 	^ rootLoadDirective
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectsLoadWorkflow >> rootLoadDirective: aLoadDirective [
 	rootLoadDirective := aLoadDirective.
 	self updateLoadActions
 ]
 
-{ #category : 'updating' }
+{ #category : #updating }
 GtRlProjectsLoadWorkflow >> updateLoadActions [
 	loadActions := OrderedCollection new.
 	visitedLoadDirectives := Set new.
 	self updateLoadActionsFor: self rootLoadDirective
 ]
 
-{ #category : 'updating' }
+{ #category : #updating }
 GtRlProjectsLoadWorkflow >> updateLoadActionsFor: aLoadDirective [
 	(visitedLoadDirectives includes: aLoadDirective) ifTrue: [ ^ self ].
 	visitedLoadDirectives add: aLoadDirective.

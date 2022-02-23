@@ -1,20 +1,20 @@
 Class {
-	#name : 'GtRlPrePostLoadAction',
-	#superclass : 'GtRlProjectLoadDirectiveAction',
+	#name : #GtRlPrePostLoadAction,
+	#superclass : #GtRlProjectLoadDirectiveAction,
 	#category : 'GToolkit-Releaser-Loader'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlPrePostLoadAction >> actionSelector [
 	self subclassResponsibility
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlPrePostLoadAction >> descriptionDetails [
 	^ self actionSelector
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlPrePostLoadAction >> gtViewCodeFor: aView [
 	<gtView>
 	^ aView forward
@@ -23,7 +23,7 @@ GtRlPrePostLoadAction >> gtViewCodeFor: aView [
 		view: #gtSourceFor:
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 GtRlPrePostLoadAction >> performAction [ 
 	self assert: [ self actionSelector notNil ].
 	
@@ -32,7 +32,7 @@ GtRlPrePostLoadAction >> performAction [
 		withEnoughArguments: { nil }
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlPrePostLoadAction >> printOn: aStream [
 	super printOn: aStream.
 	aStream
