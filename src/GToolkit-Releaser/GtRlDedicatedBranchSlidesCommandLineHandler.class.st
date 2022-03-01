@@ -1,7 +1,7 @@
 Class {
 	#name : #GtRlDedicatedBranchSlidesCommandLineHandler,
 	#superclass : #GtReleaserDedicatedBranchExamplesCommandLineHandler,
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #accessing }
@@ -15,17 +15,14 @@ GtRlDedicatedBranchSlidesCommandLineHandler class >> description [
 ]
 
 { #category : #accessing }
-GtRlDedicatedBranchSlidesCommandLineHandler >> exampleReport [
-	(self hasOption: 'junit-xml-output') ifTrue: [ ^ GtSlidesHudsonReport ].
-	^ self error: 'only works for now for junit for now'
-]
-
-{ #category : #accessing }
 GtRlDedicatedBranchSlidesCommandLineHandler >> packages [ 
-	| packages |
+	| baselineProject packages packageNames |
 	
-	packages := GtRlReleaserExportWorkflow allSlidesPackagesInDedicatedReleaseRepositories 
-			collect: #name.
+	baselineProject := BaselineOfGToolkitForPharo9 gtRlProjectWithRepository: 'github://feenkcom/gtoolkit:main/src'.
+	packages := baselineProject withAllContainedRPackagesSelect: [ :aPackage |
+		aPackage gtSlideBuildersAllContained isNotEmpty ].
 	
-	^ packages difference: self packagesToSkip
+	packageNames := packages collect: [ :aPackage | aPackage name ].
+	
+	^ packageNames difference: self packagesToSkip
 ]

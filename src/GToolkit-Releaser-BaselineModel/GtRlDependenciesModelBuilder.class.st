@@ -10,8 +10,8 @@ I only work with Metacello baselines that:
 
 "
 Class {
-	#name : 'GtRlDependenciesModelBuilder',
-	#superclass : 'Object',
+	#name : #GtRlDependenciesModelBuilder,
+	#superclass : #Object,
 	#instVars : [
 		'projectsByBaselineClass',
 		'repositoriesByUrl',
@@ -20,13 +20,13 @@ Class {
 	#category : 'GToolkit-Releaser-BaselineModel-Builder'
 }
 
-{ #category : 'assertions' }
+{ #category : #assertions }
 GtRlDependenciesModelBuilder >> assertBaselineMethodIn: aBaselineClass [
 	self assert: [ aBaselineClass includesSelector: #baseline: ].
 	self assert: [ (aBaselineClass >> #baseline:) hasPragmaNamed: #baseline ]
 ]
 
-{ #category : 'building' }
+{ #category : #building }
 GtRlDependenciesModelBuilder >> buildProjectFromBaselineClass: aBaselineClass withRepositoryDescription: aRepositoryUrl [
 	| newProject mcVersion |
 	self assert: [ aBaselineClass project versions size = 1 ].
@@ -44,7 +44,7 @@ GtRlDependenciesModelBuilder >> buildProjectFromBaselineClass: aBaselineClass wi
 	^ newProject
 ]
 
-{ #category : 'building' }
+{ #category : #building }
 GtRlDependenciesModelBuilder >> buildProjectFromMetacelloSpec: aMetacelloProjectSpec [
 	| newProject |
 	self assert: [ aMetacelloProjectSpec project versions size = 1 ].
@@ -68,7 +68,7 @@ GtRlDependenciesModelBuilder >> buildProjectFromMetacelloSpec: aMetacelloProject
 	^ newProject
 ]
 
-{ #category : 'private - building' }
+{ #category : #'private - building' }
 GtRlDependenciesModelBuilder >> createDependencyFromPackage: aSourcePackage toNode: aTargetNode [
 	| dependency |
 	dependency := GtRlPackageDependency new
@@ -78,7 +78,7 @@ GtRlDependenciesModelBuilder >> createDependencyFromPackage: aSourcePackage toNo
 	aTargetNode addIncomingDependency: dependency
 ]
 
-{ #category : 'private - building' }
+{ #category : #'private - building' }
 GtRlDependenciesModelBuilder >> ensureRepositoriesFor: aRepositoryUrl [
 	^ repositoriesByUrl 
 		at: aRepositoryUrl 
@@ -86,7 +86,7 @@ GtRlDependenciesModelBuilder >> ensureRepositoriesFor: aRepositoryUrl [
 			GtRlRepository fromUrlString: aRepositoryUrl ]
 ]
 
-{ #category : 'initialize' }
+{ #category : #initialize }
 GtRlDependenciesModelBuilder >> initialize [ 
 	super initialize.
 	projectsByBaselineClass := IdentityDictionary new.
@@ -94,13 +94,13 @@ GtRlDependenciesModelBuilder >> initialize [
 	projectsChain := OrderedCollection new.
 ]
 
-{ #category : 'private - building' }
+{ #category : #'private - building' }
 GtRlDependenciesModelBuilder >> instantiatePackageFromMetacelloSpec: aMetacelloPackageSpec [
 	^ GtRlPackage new
 		name: aMetacelloPackageSpec name
 ]
 
-{ #category : 'private - building' }
+{ #category : #'private - building' }
 GtRlDependenciesModelBuilder >> instantiateProjectFromMetacelloSpec: aBaselineProjectSpec [
 	| repositoriesSpec |
 	repositoriesSpec := aBaselineProjectSpec version spec repositories.
@@ -112,12 +112,12 @@ GtRlDependenciesModelBuilder >> instantiateProjectFromMetacelloSpec: aBaselinePr
 		linkWithRepository: (self ensureRepositoriesFor: repositoriesSpec map values first description) 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlDependenciesModelBuilder >> projectsByBaselineClass [
 	^ projectsByBaselineClass
 ]
 
-{ #category : 'dependencies' }
+{ #category : #dependencies }
 GtRlDependenciesModelBuilder >> resolvePackageDependenciesFor: currentProject fromMCVersion: aMetacelloVersion [
 	| packagesByName projectReferencesByName |
 	packagesByName := Dictionary new.
@@ -150,7 +150,7 @@ GtRlDependenciesModelBuilder >> resolvePackageDependenciesFor: currentProject fr
 							toNode: (GtRlUnknownNode withName: aRequirementName) ] ] ] ].
 ]
 
-{ #category : 'dependencies' }
+{ #category : #dependencies }
 GtRlDependenciesModelBuilder >> updateDependenciesFor: currentProject fromMCVersion: aMetacelloVersion [
 	self 
 		updateProjectDependenciesFor: currentProject 
@@ -160,7 +160,7 @@ GtRlDependenciesModelBuilder >> updateDependenciesFor: currentProject fromMCVers
 		fromMCVersion: aMetacelloVersion
 ]
 
-{ #category : 'dependencies' }
+{ #category : #dependencies }
 GtRlDependenciesModelBuilder >> updatePackageDependenciesFor: currentProject fromMCVersion: aMetacelloVersion [
 	| newPackages |
 	newPackages := aMetacelloVersion packages collect: [ :aMetacelloPackageSpec |
@@ -170,7 +170,7 @@ GtRlDependenciesModelBuilder >> updatePackageDependenciesFor: currentProject fro
 	self resolvePackageDependenciesFor: currentProject fromMCVersion: aMetacelloVersion
 ]
 
-{ #category : 'dependencies' }
+{ #category : #dependencies }
 GtRlDependenciesModelBuilder >> updateProjectDependenciesFor: currentProject fromMCVersion: aMetacelloVersion [
 	| projectReferences |
 	projectReferences := (aMetacelloVersion projects 

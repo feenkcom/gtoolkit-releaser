@@ -9,22 +9,22 @@ The writting of the actual baseline code is done using a {{gtClass:GtRlBaselineP
 Subclasses define the project model that provides information about dependencies.
 "
 Class {
-	#name : 'GtRlBaselineGenerator',
-	#superclass : 'Object',
+	#name : #GtRlBaselineGenerator,
+	#superclass : #Object,
 	#category : 'GToolkit-Releaser-BaselineModel-Generator'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlBaselineGenerator >> baselineCategory [
 	^ 'baseline'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlBaselineGenerator >> baselineProject [
 	self subclassResponsibility 
 ]
 
-{ #category : 'compiling' }
+{ #category : #compiling }
 GtRlBaselineGenerator >> compileBaselineMethod [
 	| baselineSource compilationResult |
 	baselineSource := self generateBaselineSource.
@@ -35,7 +35,7 @@ GtRlBaselineGenerator >> compileBaselineMethod [
 	compilationResult ifNil: [ self error: 'Error compiling the method' ]
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 GtRlBaselineGenerator >> generateBaselineSource [
 	^ String streamContents: [ :aRawStream |
 		| baselineStream |
@@ -44,7 +44,7 @@ GtRlBaselineGenerator >> generateBaselineSource [
 		self generateBaselineSourceOn: baselineStream ]
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 GtRlBaselineGenerator >> generateBaselineSourceOn: aStream [
 	aStream baselineWithCommonSpecOn: [  
 		self generatePreAndPostActionsOn: aStream.
@@ -55,7 +55,7 @@ GtRlBaselineGenerator >> generateBaselineSourceOn: aStream [
 		self generatePackageDependenciesOn: aStream ]
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 GtRlBaselineGenerator >> generatePackageDependenciesOn: aStream [
 	self baselineProject packages do: [ :aPackage |
 		aStream 
@@ -63,7 +63,7 @@ GtRlBaselineGenerator >> generatePackageDependenciesOn: aStream [
 			withDependencies: aPackage outgoingDependencyNames ]
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 GtRlBaselineGenerator >> generatePreAndPostActionsOn: aStream [
 	self baselineProject preLoadAction ifNotNil: [ 
 		aStream preLoadAction: self baselineProject preLoadAction ].
@@ -71,12 +71,12 @@ GtRlBaselineGenerator >> generatePreAndPostActionsOn: aStream [
 		aStream postLoadAction: self baselineProject postLoadAction ].
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 GtRlBaselineGenerator >> generateProjectDependenciesOn: aStream [
 	self subclassResponsibility 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlBaselineGenerator >> gtViewGeneratedBaselineFor: aView [
 	<gtView>
 	^ aView textEditor
@@ -85,12 +85,12 @@ GtRlBaselineGenerator >> gtViewGeneratedBaselineFor: aView [
 		text: [ self generateBaselineSource ]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlBaselineGenerator >> hasProjectDependencies [
 	self subclassResponsibility 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlBaselineGenerator >> printOn: aStream [
 	super printOn: aStream.
 	aStream

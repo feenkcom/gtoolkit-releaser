@@ -1,7 +1,7 @@
 Class {
 	#name : #GtReleaserDedicatedBranchExamplesCommandLineHandler,
 	#superclass : #GtExamplesCommandLineHandler,
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #accessing }
@@ -11,9 +11,13 @@ GtReleaserDedicatedBranchExamplesCommandLineHandler class >> commandName [
 
 { #category : #accessing }
 GtReleaserDedicatedBranchExamplesCommandLineHandler >> packages [ 
-	| packages |
+	| baselineProject packages packageNames |
 	
-	packages := GtRlReleaserExportWorkflow allExamplePackagesInDedicatedReleaseRepositories collect: [:p | p name].
+	baselineProject := BaselineOfGToolkitForPharo9 gtRlProjectWithRepository: 'github://feenkcom/gtoolkit:main/src'.
+	packages := baselineProject withAllContainedRPackagesSelect: [ :aPackage |
+		aPackage gtExamplesAllContained isNotEmpty ].
 	
-	^ packages difference: self packagesToSkip
+	packageNames := packages collect: [ :aPackage | aPackage name ].
+	
+	^ packageNames difference: self packagesToSkip
 ]
