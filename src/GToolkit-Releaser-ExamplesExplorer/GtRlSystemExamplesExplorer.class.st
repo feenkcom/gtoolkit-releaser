@@ -5,13 +5,19 @@ Class {
 		'rootProject',
 		'repositoryExplorers'
 	],
-	#category : 'GToolkit-Releaser-ExamplesExplorer'
+	#category : #'GToolkit-Releaser-ExamplesExplorer'
 }
 
 { #category : #'instance creation' }
 GtRlSystemExamplesExplorer class >> forProject: aProject [
 	^ self new
 		initializeForRootProject: aProject
+]
+
+{ #category : #accessing }
+GtRlSystemExamplesExplorer >> allContainedExamples [
+	^ GtExampleGroup withAll: (repositoryExplorers flatCollect: [ :each |
+		each containedExamples ])
 ]
 
 { #category : #converting }
@@ -23,6 +29,16 @@ GtRlSystemExamplesExplorer >> asPreviewElement [
 { #category : #ui }
 GtRlSystemExamplesExplorer >> gtDisplayOn: stream [
 	stream nextPutAll: 'Examples Explorer'
+]
+
+{ #category : #ui }
+GtRlSystemExamplesExplorer >> gtViewAllExamplesFor: aView [
+	<gtView>
+	^ aView forward
+		title: 'All Examples';
+		priority: 15;
+		object: [ self allContainedExamples ];
+		view: #gtExamplesFor:
 ]
 
 { #category : #ui }

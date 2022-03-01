@@ -5,7 +5,7 @@ Class {
 		'cachedExamples',
 		'cachedTestCases'
 	],
-	#category : 'GToolkit-Releaser-ExamplesExplorer'
+	#category : #'GToolkit-Releaser-ExamplesExplorer'
 }
 
 { #category : #accessing }
@@ -47,5 +47,9 @@ GtRlExamplesExplorer >> gtGraphFor: aView [
 { #category : #ui }
 GtRlExamplesExplorer >> gtViewExamplesFor: aView [
 	<gtView>
-	^ self containedExamples gtExamplesFor: aView
+	^ aView forward
+		title: 'Examples';
+		priority: 15;
+		object: [ self containedExamples ];
+		view: #gtExamplesFor:
 ]
