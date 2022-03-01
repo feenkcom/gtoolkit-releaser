@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'project'
 	],
-	#category : 'GToolkit-Releaser-ExamplesExplorer'
+	#category : #'GToolkit-Releaser-ExamplesExplorer'
 }
 
 { #category : #'instance creation' }
@@ -19,7 +19,7 @@ GtRlProjectExamplesExplorer >> containedExamples [
 		| currentExamples |
 		currentExamples := OrderedCollection new.
 		self project containedRPackagesDo: [ :aRPackage | 
-			currentExamples addAll: aRPackage gtExamplesContained ].
+			currentExamples addAll: aRPackage gtExamplesAllContained ].
 		cachedExamples := GtExampleGroup withAll: currentExamples ]
 ]
 
