@@ -19,7 +19,7 @@ GtRlProjectExamplesExplorer >> containedExamples [
 		| currentExamples |
 		currentExamples := OrderedCollection new.
 		self project containedRPackagesDo: [ :aRPackage | 
-			currentExamples addAll: aRPackage gtExamplesContained ].
+			currentExamples addAll: aRPackage gtExamplesAllContained ].
 		cachedExamples := GtExampleGroup withAll: currentExamples ]
 ]
 
