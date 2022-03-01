@@ -15,12 +15,6 @@ GtRlDedicatedBranchSlidesCommandLineHandler class >> description [
 ]
 
 { #category : #accessing }
-GtRlDedicatedBranchSlidesCommandLineHandler >> exampleReport [
-	(self hasOption: 'junit-xml-output') ifTrue: [ ^ GtSlidesHudsonReport ].
-	^ self error: 'only works for now for junit for now'
-]
-
-{ #category : #accessing }
 GtRlDedicatedBranchSlidesCommandLineHandler >> packages [ 
 	| baselineProject packages packageNames |
 	
