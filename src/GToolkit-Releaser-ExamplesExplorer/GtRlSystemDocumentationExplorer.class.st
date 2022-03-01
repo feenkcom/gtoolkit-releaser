@@ -5,7 +5,7 @@ Class {
 		'rootProject',
 		'repositoryExplorers'
 	],
-	#category : 'GToolkit-Releaser-ExamplesExplorer'
+	#category : #'GToolkit-Releaser-ExamplesExplorer'
 }
 
 { #category : #'instance creation' }
@@ -21,8 +21,8 @@ GtRlSystemDocumentationExplorer >> gtViewPerProjectsListFor: aView [
 		title: 'Per-projects' translated;
 		priority: 50;
 		items: [ repositoryExplorers ];
-		itemText:
-				[ :aRepositoryExplorer | aRepositoryExplorer repository repositoryName ]
+		itemText: [ :aRepositoryExplorer | 
+			aRepositoryExplorer repository repositoryName ]
 ]
 
 { #category : #initialization }

@@ -1,7 +1,7 @@
 Class {
 	#name : #GtRlGToolkitExamplesExplorer,
 	#superclass : #GtRlSystemExamplesExplorer,
-	#category : 'GToolkit-Releaser-ExamplesExplorer'
+	#category : #'GToolkit-Releaser-ExamplesExplorer'
 }
 
 { #category : #'instance creation' }
@@ -17,9 +17,11 @@ GtRlGToolkitExamplesExplorer class >> buildForGToolkitProject [
 { #category : #ui }
 GtRlGToolkitExamplesExplorer >> gtViewAllExamplesInImageFor: aView [
 	<gtView>
-	^ ((GtExampleGroup withAll: Smalltalk gtExamplesContained) gtExamplesFor: aView)
-		title: 'All examples' translated;
-		priority: 20
+	^ aView forward 
+		title: 'All examples';
+		priority: 20;
+		object: [ GtExampleGroup withAll: Smalltalk gtExamplesContained ];
+		view: #gtExamplesFor:
 ]
 
 { #category : #ui }
