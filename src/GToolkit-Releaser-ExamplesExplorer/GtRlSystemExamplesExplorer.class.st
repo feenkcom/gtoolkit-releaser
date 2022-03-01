@@ -14,6 +14,12 @@ GtRlSystemExamplesExplorer class >> forProject: aProject [
 		initializeForRootProject: aProject
 ]
 
+{ #category : #accessing }
+GtRlSystemExamplesExplorer >> allContainedExamples [
+	^ GtExampleGroup withAll: (repositoryExplorers flatCollect: [ :each |
+		each containedExamples ])
+]
+
 { #category : #converting }
 GtRlSystemExamplesExplorer >> asPreviewElement [
 	"Used by ${method:GtSpotterStart>>#gtSpotterForToolsFor:}$"
@@ -23,6 +29,16 @@ GtRlSystemExamplesExplorer >> asPreviewElement [
 { #category : #ui }
 GtRlSystemExamplesExplorer >> gtDisplayOn: stream [
 	stream nextPutAll: 'Examples Explorer'
+]
+
+{ #category : #ui }
+GtRlSystemExamplesExplorer >> gtViewAllExamplesFor: aView [
+	<gtView>
+	^ aView forward
+		title: 'All Examples';
+		priority: 15;
+		object: [ self allContainedExamples ];
+		view: #gtExamplesFor:
 ]
 
 { #category : #ui }
