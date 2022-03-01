@@ -1,19 +1,19 @@
 Class {
-	#name : 'GtRlRepositoryDocumentationExplorer',
-	#superclass : 'GtRlDocumentationExplorer',
+	#name : #GtRlRepositoryDocumentationExplorer,
+	#superclass : #GtRlDocumentationExplorer,
 	#instVars : [
 		'repository'
 	],
 	#category : 'GToolkit-Releaser-ExamplesExplorer'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 GtRlRepositoryDocumentationExplorer class >> forRepository: aRepository [
 	^ self new
 		initializeForRepository: aRepository
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 GtRlRepositoryDocumentationExplorer >> initializeForRepository: aRepository [
 	repository := aRepository.
 	aRepository projects do: [ :aChildProject |
@@ -34,7 +34,7 @@ GtRlRepositoryDocumentationExplorer >> initializeForRepository: aRepository [
 	
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlRepositoryDocumentationExplorer >> repository [ 	
 	^ repository
 ]

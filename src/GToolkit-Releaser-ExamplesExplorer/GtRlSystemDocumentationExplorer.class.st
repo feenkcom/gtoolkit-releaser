@@ -1,6 +1,6 @@
 Class {
-	#name : 'GtRlSystemDocumentationExplorer',
-	#superclass : 'GtRlDocumentationExplorer',
+	#name : #GtRlSystemDocumentationExplorer,
+	#superclass : #GtRlDocumentationExplorer,
 	#instVars : [
 		'rootProject',
 		'repositoryExplorers'
@@ -8,13 +8,13 @@ Class {
 	#category : 'GToolkit-Releaser-ExamplesExplorer'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 GtRlSystemDocumentationExplorer class >> forProject: aProject [
 	^ self new
 		initializeForRootProject: aProject
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlSystemDocumentationExplorer >> gtViewPerProjectsListFor: aView [
 	<gtView>
 	^ aView list
@@ -25,7 +25,7 @@ GtRlSystemDocumentationExplorer >> gtViewPerProjectsListFor: aView [
 				[ :aRepositoryExplorer | aRepositoryExplorer repository repositoryName ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 GtRlSystemDocumentationExplorer >> initializeForRootProject: aProject [
 	rootProject := aProject.
 	repositoryExplorers := rootProject withAllRepositories collect: [ :aRepository |
@@ -38,7 +38,7 @@ GtRlSystemDocumentationExplorer >> initializeForRootProject: aProject [
 		repositoryDocumentation ] 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlSystemDocumentationExplorer >> rootProject [
 	^ rootProject
 ]

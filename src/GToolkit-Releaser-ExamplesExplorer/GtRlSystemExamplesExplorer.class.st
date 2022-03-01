@@ -1,6 +1,6 @@
 Class {
-	#name : 'GtRlSystemExamplesExplorer',
-	#superclass : 'Object',
+	#name : #GtRlSystemExamplesExplorer,
+	#superclass : #Object,
 	#instVars : [
 		'rootProject',
 		'repositoryExplorers'
@@ -8,24 +8,24 @@ Class {
 	#category : 'GToolkit-Releaser-ExamplesExplorer'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 GtRlSystemExamplesExplorer class >> forProject: aProject [
 	^ self new
 		initializeForRootProject: aProject
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 GtRlSystemExamplesExplorer >> asPreviewElement [
 	"Used by ${method:GtSpotterStart>>#gtSpotterForToolsFor:}$"
 	^ GtInspector newOn: self
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlSystemExamplesExplorer >> gtDisplayOn: stream [
 	stream nextPutAll: 'Examples Explorer'
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlSystemExamplesExplorer >> gtViewRepositoriesListFor: aView [
 	<gtView>
 	^ aView columnedList
@@ -41,19 +41,19 @@ GtRlSystemExamplesExplorer >> gtViewRepositoriesListFor: aView [
 			width: 100
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 GtRlSystemExamplesExplorer >> initializeForRootProject: aProject [
 	rootProject := aProject.
 	repositoryExplorers := rootProject withAllRepositories collect: [ :aRepository |
 		GtRlRepositoryExamplesExplorer forRepository: aRepository ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlSystemExamplesExplorer >> repositoryExplorers [
 	^ repositoryExplorers
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlSystemExamplesExplorer >> rootProject [
 	^ rootProject
 ]
