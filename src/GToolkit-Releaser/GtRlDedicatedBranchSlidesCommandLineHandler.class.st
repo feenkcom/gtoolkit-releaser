@@ -14,6 +14,14 @@ GtRlDedicatedBranchSlidesCommandLineHandler class >> description [
 	^ 'A command line runner for slides'.
 ]
 
+{ #category : #private }
+GtRlDedicatedBranchSlidesCommandLineHandler >> exampleReport [
+	"This need to be overriden to provide the runner for slides."
+	
+	(self hasOption: 'junit-xml-output') ifTrue: [ ^ GtSlidesHudsonReport ].
+	^ self error: 'only works for now for junit for now'
+]
+
 { #category : #accessing }
 GtRlDedicatedBranchSlidesCommandLineHandler >> packages [ 
 	| baselineProject packages packageNames |
