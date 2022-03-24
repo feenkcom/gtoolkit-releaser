@@ -370,6 +370,15 @@ GtImage >> propertyAt: aPropertyKey ifAbsentPut: aBlock [
 ]
 
 { #category : #'accessing - properties' }
+GtImage >> propertyAt: aPropertyKey ifPresent: aPresentBlock ifAbsent: anAbsentBlock [
+
+	^ propertiesByKey
+		  at: aPropertyKey
+		  ifPresent: aPresentBlock
+		  ifAbsent: anAbsentBlock
+]
+
+{ #category : #'accessing - properties' }
 GtImage >> propertyAt: aPropertyKey put: anImageProperty [
 	^ propertiesByKey
 		at: aPropertyKey
