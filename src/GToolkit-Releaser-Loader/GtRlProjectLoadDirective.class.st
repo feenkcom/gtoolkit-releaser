@@ -56,18 +56,21 @@ GtRlProjectLoadDirective >> gtFullLoadDirectivesMapFor: aView [
 				shape: [ :aLoadDirective |
 					BrLabel new 
 						text: aLoadDirective projectName; 
-						aptitude: BrGlamorousLabelAptitude;
+						aptitude: (BrGlamorousLabelAptitude new 
+							in: [ :anAptitude |
+								aLoadDirective = self ifTrue: [
+									anAptitude bold ].
+								anAptitude ]);
 						when: BlClickEvent do: [ :anEvent | 
 							anEvent currentTarget phlow spawnObject: aLoadDirective ] ];
-				with: (self withAllChildLoadDirectived
-					, self withAllChildIgnoredLoadDirectived) removeDuplicates.
+				with: (self withAllChildActiveAndIgnoredLoadDirectived) removeDuplicates.
 			mondrian edges
 				shape: [ 
 					BlLineElement new 
 						zIndex: -1;
-						border: (BlBorder paint: (Color gray alpha: 0.5) width: 2);
+						border: (BlBorder paint: (Color blue alpha: 0.5) width: 2);
 						toHead: (BlArrowheadSimpleArrow new
-							border: (BlBorder builder paint: (Color gray alpha: 0.5); width: 2; build)) ];
+							border: (BlBorder builder paint: (Color blue alpha: 0.5); width: 2; build)) ];
 				fromRightCenter;
 				toLeftCenter;
 				connectToAll: #childLoadDirectives.
@@ -119,7 +122,7 @@ GtRlProjectLoadDirective >> gtProjectWithDirectivesMapFor: aView [
 	<gtView>
 	^ aView mondrian
 		title: 'Project map' translated;
-		priority: 10;
+		priority: 11;
 		painting: [ :mondrian |
 			| projectEdges |
 			projectEdges := OrderedCollection new.
@@ -135,20 +138,20 @@ GtRlProjectLoadDirective >> gtProjectWithDirectivesMapFor: aView [
 						yourself ];
 				with: self project withAllChildProjects.
 			mondrian edges
-				shape: [ :each :fromElement :toElement|
-					"self halt."
+				shape: [ :each :fromElement :toElement |
 					| isInLoadDirective |
-					"self halt."
 					isInLoadDirective := (projectEdges anySatisfy: [:anEdge |
 						(anEdge key = (fromElement userData at: #projectModel)) and: [
 							anEdge value = (toElement userData at: #projectModel) ] ]).
 					BlLineElement new 
 						zIndex: -1;
 						border: (isInLoadDirective 
-							ifTrue: [(BlBorder  paint: (Color gray alpha: 0.5) width: 2)]
+							ifTrue: [(BlBorder  paint: (Color blue alpha: 0.5) width: 2)]
 							ifFalse: [(BlBorder  paint: (Color gray alpha: 0.2) width: 1)]) ;
 						toHead: (BlArrowheadSimpleArrow new
-							border: (BlBorder builder paint: (Color gray alpha: 0.5); width: 2; build)) ];
+							border: (isInLoadDirective
+								ifTrue: [ BlBorder builder paint: (Color blue alpha: 0.5); width: 2; build ]
+								ifFalse: [ BlBorder builder paint: (Color gray alpha: 0.5); width: 1; build ])) ];
 				fromRightCenter;
 				toLeftCenter;
 				connectToAll: #childProjects.
@@ -172,6 +175,19 @@ GtRlProjectLoadDirective >> gtViewChildLoadDirectivesFor: aView [
 		title: 'Child directives' translated;
 		priority: 15;
 		items: [ self childLoadDirectives ]
+]
+
+{ #category : #'gt-extensions' }
+GtRlProjectLoadDirective >> gtViewLoadDirectivesTreesFor: aView [
+	<gtView>
+	^ aView columnedTree
+		title: 'Directives tree' translated;
+		priority: 16;
+		items: [ {self} ];
+		expandUpTo: 2;
+		children: [ :aLoadDirective | aLoadDirective childLoadDirectives ];
+		column: 'Type' text: [ :aDirective | aDirective className ];
+		column: 'Component' text: [ :aDirective | aDirective projectName ]
 ]
 
 { #category : #'gt-extensions' }
@@ -240,10 +256,12 @@ GtRlProjectLoadDirective >> loadActions [
 	loadActions := OrderedCollection new.
 	self preLoadAction ifNotNil: [ :anAction |
 		loadActions add: anAction ].
+	
+	loadActions addAll: self packageLoadActions.
+	
 	self postLoadAction ifNotNil: [ :anAction |
 		loadActions add: anAction ].
 	
-	loadActions addAll: self packageLoadActions.
 	^ loadActions
 ]
 
@@ -291,6 +309,12 @@ GtRlProjectLoadDirective >> project [
 { #category : #accessing }
 GtRlProjectLoadDirective >> projectName [
 	^ self project name
+]
+
+{ #category : #accessing }
+GtRlProjectLoadDirective >> withAllChildActiveAndIgnoredLoadDirectived [
+	^ self withDeepCollect: [ :aLoadDirective | 
+		aLoadDirective childLoadDirectives, aLoadDirective ignoredChildLoadDirectives ]
 ]
 
 { #category : #accessing }
