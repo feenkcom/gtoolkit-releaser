@@ -60,7 +60,7 @@ GtRlProjectLoadDirective >> gtFullLoadDirectivesMapFor: aView [
 						when: BlClickEvent do: [ :anEvent | 
 							anEvent currentTarget phlow spawnObject: aLoadDirective ] ];
 				with: (self withAllChildLoadDirectived
-					, self withAllChildIgnoredLoadDirectived).
+					, self withAllChildIgnoredLoadDirectived) removeDuplicates.
 			mondrian edges
 				shape: [ 
 					BlLineElement new 
