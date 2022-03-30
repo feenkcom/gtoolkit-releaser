@@ -181,7 +181,7 @@ GtRlDedicatedBranchReleaseStrategy >> findNewCommits [
 { #category : #ui }
 GtRlDedicatedBranchReleaseStrategy >> gtCommitsAncestryFor: aView [
 	<gtView>
-	self repositoryRelease ifNil: [ ^ aView ].
+	self repositoryRelease ifNil: [ ^ aView empty ].
 	^ aView mondrian
 		title: 'Commits ancestry' translated;
 		priority: 100;
