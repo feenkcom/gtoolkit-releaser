@@ -27,7 +27,7 @@ Class {
 		'enforcedVersion',
 		'defaultReleaseStrategy'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #accessing }
@@ -121,6 +121,7 @@ GtRlReleaseConfiguration >> gtDefaultOptionsFor: aView [
 	<gtView>
 	^ aView columnedList
 		title: 'Defaults';
+		priority: 5;
 		items: [ { 
 			'Release strategy' -> self defaultReleaseStrategy.
 			'Release branch' -> self defaultReleaseBranchName.
@@ -130,6 +131,18 @@ GtRlReleaseConfiguration >> gtDefaultOptionsFor: aView [
 		column: 'Option' text: #key;
 		column: 'Default value' text: #value;
 		send: #value
+]
+
+{ #category : #ui }
+GtRlReleaseConfiguration >> gtViewCustomReleaseStrategiesFor: aView [
+	<gtView>
+	^ aView columnedList
+		title: 'Custom Strategies';
+		priority: 10;
+		items: [ customReleaseStrategies associations ];
+		column: 'Repository Spec' text: [ :assoc | assoc key ];
+		column: 'Release strategy' text: [ :assoc | assoc value description ];
+		send: [ :assoc | assoc value ]
 ]
 
 { #category : #'options - accessing' }
