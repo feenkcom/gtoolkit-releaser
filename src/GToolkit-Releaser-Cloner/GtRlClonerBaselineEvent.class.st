@@ -51,7 +51,6 @@ GtRlClonerBaselineEvent >> printOneLineContentsOn: stream [
 		nextPutAll: self repositoryUrlString;
 		space; nextPut: $|; space;
 		nextPutAll: self processId
-		
 ]
 
 { #category : #accessing }
