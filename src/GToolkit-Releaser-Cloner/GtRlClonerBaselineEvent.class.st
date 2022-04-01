@@ -5,7 +5,7 @@ Class {
 		'baselineName',
 		'repositoryUrlString'
 	],
-	#category : 'GToolkit-Releaser-Cloner-Logging'
+	#category : #'GToolkit-Releaser-Cloner-Logging'
 }
 
 { #category : #converting }
@@ -29,6 +29,15 @@ GtRlClonerBaselineEvent >> baselineName: anObject [
 { #category : #accessing }
 GtRlClonerBaselineEvent >> eventName [
 	^ 'Baseline Event'
+]
+
+{ #category : #initialization }
+GtRlClonerBaselineEvent >> initializeFromTimestamp: aTimestamp andData: dataParts [
+	self 	
+		basicTimestamp: aTimestamp;
+		baselineName: dataParts third;
+		repositoryUrlString: dataParts fourth;
+		basicProcessId: dataParts fifth
 ]
 
 { #category : #printing }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'events'
 	],
-	#category : 'GToolkit-Releaser-Cloner-Logging'
+	#category : #'GToolkit-Releaser-Cloner-Logging'
 }
 
 { #category : #'instance creation' }
@@ -18,17 +18,15 @@ GtRlClonerEventLogReader >> readEventFromLine: aLine [
 	| timestampString eventClassName parts eventClass event |
 	
 	parts := aLine splitOn: ' | '.
-	
+	 
 	timestampString := parts first copyUpTo: Character space.
-	eventClassName := (parts first copyFrom: timestampString size +1  to: parts first size) trimBoth.
+	eventClassName := (parts first copyFrom: timestampString size + 1 to: parts first size) trimBoth.
 	
 	eventClass := eventClassName asClass.
 	event := eventClass new.
-	event 	
-		basicTimestamp: timestampString asDateAndTime;
-		baselineName: parts third;
-		repositoryUrlString: parts fourth;
-		basicProcessId: parts fifth .
+	event 
+		initializeFromTimestamp: timestampString asDateAndTime 
+		andData: parts.
 	^ event
 ]
 

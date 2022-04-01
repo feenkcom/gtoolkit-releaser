@@ -21,7 +21,7 @@ GtRlClonerBaselineEventsGroup class >> fromEvents: aCollection [
 				baselineName: anEvent baselineName.
 			topGroup := groupsStack size > 0 
 				ifTrue: [ groupsStack top ]
-				ifFalse: [ nil] .
+				ifFalse: [ nil ] .
 			topGroup ifNotNil: [ 
 				topGroup addSubgroup: newGroup ].
 			newGroup addEvent: anEvent.
