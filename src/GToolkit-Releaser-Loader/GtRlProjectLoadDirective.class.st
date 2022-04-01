@@ -10,7 +10,7 @@ Class {
 		'postLoadAction',
 		'packageLoadActions'
 	],
-	#category : #'GToolkit-Releaser-Loader'
+	#category : #'GToolkit-Releaser-Loader-Core'
 }
 
 { #category : #'instance creation' }

@@ -1,7 +1,7 @@
 Class {
 	#name : #GtRlProjectsLoader,
 	#superclass : #Object,
-	#category : 'GToolkit-Releaser-Loader'
+	#category : #'GToolkit-Releaser-Loader-Core'
 }
 
 { #category : #actions }

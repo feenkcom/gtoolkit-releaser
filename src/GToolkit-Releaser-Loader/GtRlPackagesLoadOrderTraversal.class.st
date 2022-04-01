@@ -1,7 +1,7 @@
 Class {
 	#name : #GtRlPackagesLoadOrderTraversal,
 	#superclass : #Object,
-	#category : 'GToolkit-Releaser-Loader'
+	#category : #'GToolkit-Releaser-Loader-Core'
 }
 
 { #category : #private }

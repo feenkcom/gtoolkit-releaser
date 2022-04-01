@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'loadDirectivesMap'
 	],
-	#category : 'GToolkit-Releaser-Loader'
+	#category : #'GToolkit-Releaser-Loader-Core'
 }
 
 { #category : #building }

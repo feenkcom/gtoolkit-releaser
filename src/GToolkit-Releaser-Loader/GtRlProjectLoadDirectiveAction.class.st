@@ -5,7 +5,7 @@ Class {
 		'loadDirective',
 		'isExecuted'
 	],
-	#category : 'GToolkit-Releaser-Loader'
+	#category : #'GToolkit-Releaser-Loader-Core'
 }
 
 { #category : #printing }
