@@ -1,6 +1,6 @@
 Class {
-	#name : 'GtRlProjectReleaseStrategySignal',
-	#superclass : 'GtReleaserSignal',
+	#name : #GtRlProjectReleaseStrategySignal,
+	#superclass : #GtReleaserSignal,
 	#instVars : [
 		'project',
 		'strategy'
@@ -8,34 +8,34 @@ Class {
 	#category : 'GToolkit-Releaser-Logging'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GtRlProjectReleaseStrategySignal class >> project: aProjectId strategy: aReleaseStrategy [
 	^ self new
 	  project: aProjectId;
 	  strategy: aReleaseStrategy.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectReleaseStrategySignal >> printOneLineContentsOn: stream [
 	stream nextPutAll: project; nextPutAll: ' '; nextPutAll: strategy class name
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectReleaseStrategySignal >> project [
 	^ project
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectReleaseStrategySignal >> project: anObject [
 	project := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectReleaseStrategySignal >> strategy [
 	^ strategy
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectReleaseStrategySignal >> strategy: anObject [
 	strategy := anObject
 ]

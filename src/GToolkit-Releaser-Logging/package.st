@@ -1,1 +1,1 @@
-Package { #name : 'GToolkit-Releaser-Logging' }
+Package { #name : #'GToolkit-Releaser-Logging' }

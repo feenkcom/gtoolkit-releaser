@@ -246,13 +246,13 @@ GtRlClonerBaselineEventsGroup >> initialize [
 { #category : #accessing }
 GtRlClonerBaselineEventsGroup >> loadCompletedEvent [
 	^ self events detect: [ :anEvent |
-		anEvent class = GtRlClonerBaselineLoadCompletedEvent]
+		anEvent class = GtRlClonerBaselineLoadCompletedEvent ]
 ]
 
 { #category : #accessing }
 GtRlClonerBaselineEventsGroup >> loadStartedEvent [
 	^ self events detect: [ :anEvent |
-		anEvent class = GtRlClonerBaselineLoadStartedEvent]
+		anEvent class = GtRlClonerBaselineLoadStartedEvent ]
 ]
 
 { #category : #accessing }

@@ -1,19 +1,19 @@
 Class {
-	#name : 'GtRlActionSignal',
-	#superclass : 'GtReleaserSignal',
+	#name : #GtRlActionSignal,
+	#superclass : #GtReleaserSignal,
 	#instVars : [
 		'action'
 	],
 	#category : 'GToolkit-Releaser-Logging'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlActionSignal class >> action: anAction [
 	^ self new
 		action: anAction
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlActionSignal >> action: anObject [
 	action := anObject
 ]

@@ -31,7 +31,6 @@ GtRlProjectsLoader >> hasTranscriptLogger [
 GtRlProjectsLoader >> initialize [
 	super initialize.
 	loggersById := OrderedDictionary new.
-	self registerMemoryLogger.
 	self registerTranscriptLogger.
 ]
 
