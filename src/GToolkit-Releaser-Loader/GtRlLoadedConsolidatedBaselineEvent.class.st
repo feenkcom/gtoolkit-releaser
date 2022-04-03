@@ -105,7 +105,8 @@ GtRlLoadedConsolidatedBaselineEvent >> gtViewSubEventsFor: aView [
 { #category : #initialization }
 GtRlLoadedConsolidatedBaselineEvent >> initialize [ 
 	super initialize.
-	subEvents := OrderedCollection new. 
+	subEvents := OrderedCollection new.
+	loaderEvents := GtRlLoaderEventsGroup new. 
 ]
 
 { #category : #initialization }
@@ -130,6 +131,7 @@ GtRlLoadedConsolidatedBaselineEvent >> localDuration [
 
 { #category : #accessing }
 GtRlLoadedConsolidatedBaselineEvent >> localLoaderDuration [
+	loaderEvents size = 0 ifTrue: [ ^ 0 seconds ].
 	^ loaderEvents totalDuration
 ]
 

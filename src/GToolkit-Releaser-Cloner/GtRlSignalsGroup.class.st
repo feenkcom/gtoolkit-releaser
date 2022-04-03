@@ -68,6 +68,18 @@ GtRlSignalsGroup >> items [
 ]
 
 { #category : #accessing }
+GtRlSignalsGroup >> printOn: aStream [
+	super printOn: aStream.
+	aStream
+		space;
+		nextPut: $[;
+		print: self size;
+		nextPutAll: (' item' asPluralBasedOn: self size);
+		nextPut: $];
+		space.
+]
+
+{ #category : #accessing }
 GtRlSignalsGroup >> size [
 	^ self items size
 ]
