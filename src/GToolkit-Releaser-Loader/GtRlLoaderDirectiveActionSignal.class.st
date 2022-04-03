@@ -54,6 +54,22 @@ GtRlLoaderDirectiveActionSignal >> baselineName: anObject [
 	baselineName := anObject
 ]
 
+{ #category : #accessing }
+GtRlLoaderDirectiveActionSignal >> eventName [
+	^ 'Loader Action Event'
+]
+
+{ #category : #initialization }
+GtRlLoaderDirectiveActionSignal >> initializeFromTimestamp: aTimestamp andData: dataParts [
+	self 	
+		basicTimestamp: aTimestamp;
+		baselineName: dataParts third;
+		actionType: dataParts fourth;
+		actionDescription: dataParts fifth;
+		repositoryUrlString: dataParts sixth;
+		basicProcessId: dataParts seventh
+]
+
 { #category : #printing }
 GtRlLoaderDirectiveActionSignal >> printOneLineContentsOn: stream [
 	stream 

@@ -3,3 +3,8 @@ Class {
 	#superclass : #GtRlLoaderDirectiveActionSignal,
 	#category : #'GToolkit-Releaser-Loader-Logging'
 }
+
+{ #category : #accessing }
+GtRlLoaderDirectiveActionExecutionStartedSignal >> eventName [
+	^ 'Loader Action Started'
+]

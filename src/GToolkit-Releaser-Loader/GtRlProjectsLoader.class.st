@@ -39,7 +39,7 @@ GtRlProjectsLoader >> loadBaseline: aBaselineName fromRepository: aRepositoryLoc
 	| clonedProject |
 	
 	self loggers do: [ :aLogger |
-		aLogger startFor: GtRlClonerBaselineEvent, GtRlLoaderDirectiveActionSignal ].
+		aLogger startFor: GtRlClonerBaselineSignal, GtRlLoaderDirectiveActionSignal ].
 	
 	[
 		clonedProject := self 

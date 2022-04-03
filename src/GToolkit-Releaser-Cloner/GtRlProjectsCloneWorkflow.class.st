@@ -14,7 +14,7 @@ Class {
 		'repositoriesCacheById',
 		'initialIcebergRepos'
 	],
-	#category : 'GToolkit-Releaser-Cloner-Core'
+	#category : #'GToolkit-Releaser-Cloner-Core'
 }
 
 { #category : #'private - building' }
@@ -37,7 +37,7 @@ GtRlProjectsCloneWorkflow >> defaultBranchName [
 
 { #category : #logging }
 GtRlProjectsCloneWorkflow >> emitBaselineAlreadyLoadedForSpec: aBaselineSpec [
-	GtRlClonerBaselineSkipLoadEvent new
+	GtRlClonerBaselineSkipLoadSignal new
 		baselineName: aBaselineSpec baselineName;
 		repositoryUrlString: aBaselineSpec repositoryLocation;
 		emit
@@ -45,7 +45,7 @@ GtRlProjectsCloneWorkflow >> emitBaselineAlreadyLoadedForSpec: aBaselineSpec [
 
 { #category : #logging }
 GtRlProjectsCloneWorkflow >> emitLoadCompletedEventForSpec: aBaselineSpec [
-	GtRlClonerBaselineLoadCompletedEvent new
+	GtRlClonerBaselineLoadCompletedSignal new
 		baselineName: aBaselineSpec baselineName;
 		repositoryUrlString: aBaselineSpec repositoryLocation;
 		emit
@@ -53,7 +53,7 @@ GtRlProjectsCloneWorkflow >> emitLoadCompletedEventForSpec: aBaselineSpec [
 
 { #category : #logging }
 GtRlProjectsCloneWorkflow >> emitLoadStartEventForSpec: aBaselineSpec [
-	GtRlClonerBaselineLoadStartedEvent new
+	GtRlClonerBaselineLoadStartedSignal new
 		baselineName: aBaselineSpec baselineName;
 		repositoryUrlString: aBaselineSpec repositoryLocation;
 		emit
@@ -61,7 +61,7 @@ GtRlProjectsCloneWorkflow >> emitLoadStartEventForSpec: aBaselineSpec [
 
 { #category : #logging }
 GtRlProjectsCloneWorkflow >> emitPackageLoadForSpec: aBaselineSpec [
-	GtRlClonerBaselinePackageLoadEvent new
+	GtRlClonerBaselinePackageLoadSignal new
 		baselineName: aBaselineSpec baselineName;
 		repositoryUrlString: aBaselineSpec repositoryLocation;
 		emit

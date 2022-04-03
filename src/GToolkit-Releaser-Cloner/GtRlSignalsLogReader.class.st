@@ -1,25 +1,31 @@
 Class {
-	#name : #GtRlClonerEventLogReader,
+	#name : #GtRlSignalsLogReader,
 	#superclass : #Object,
 	#instVars : [
-		'events'
+		'events',
+		'eventTypeIndicator'
 	],
 	#category : #'GToolkit-Releaser-Cloner-Logging'
 }
 
 { #category : #'instance creation' }
-GtRlClonerEventLogReader class >> readFrom: aStream [
+GtRlSignalsLogReader class >> readFrom: aStream [
 	^ self new
 		readFrom: aStream
 ]
 
 { #category : #accessing }
-GtRlClonerEventLogReader >> eventType [
-	^ 'ClonerEvent'
+GtRlSignalsLogReader >> eventTypeIndicator [
+	^ eventTypeIndicator
+]
+
+{ #category : #accessing }
+GtRlSignalsLogReader >> eventsGroupType [
+	^ OrderedCollection
 ]
 
 { #category : #initialization }
-GtRlClonerEventLogReader >> readEventFromLine: aLine [
+GtRlSignalsLogReader >> readEventFromLine: aLine [
 	| timestampString eventClassName parts eventClass event |
 	
 	parts := aLine splitOn: ' | '.
@@ -36,10 +42,10 @@ GtRlClonerEventLogReader >> readEventFromLine: aLine [
 ]
 
 { #category : #initialization }
-GtRlClonerEventLogReader >> readFrom: aStream [
+GtRlSignalsLogReader >> readFrom: aStream [
 	| newEvents typeIndicator |
-	newEvents := GtRlClonerEventsGroup new.
-	typeIndicator := '| ', self eventType ,' |'.
+	newEvents := self eventsGroupType new.
+	typeIndicator := '| ', self eventTypeIndicator ,' |'.
 	aStream contents linesDo: [ :aLine |
 		(aLine includesSubstring: typeIndicator) ifTrue: [
 			| newEvent |
