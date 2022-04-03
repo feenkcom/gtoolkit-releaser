@@ -1,8 +1,6 @@
 Class {
 	#name : #GtRlLoaderEventsGroup,
 	#superclass : #Object,
-	#traits : 'TGtGroup',
-	#classTraits : 'TGtGroup classTrait',
 	#instVars : [
 		'items'
 	],
@@ -29,6 +27,16 @@ GtRlLoaderEventsGroup class >> withAll: aCollection [
 { #category : #adding }
 GtRlLoaderEventsGroup >> add: anEvent [
 	self items add: anEvent
+]
+
+{ #category : #converting }
+GtRlLoaderEventsGroup >> asBrItemsProvider [
+	^ BrListSequenceableCollectionItemsProvider forCollection: self
+]
+
+{ #category : #accessing }
+GtRlLoaderEventsGroup >> at: anIndex [
+	^ self items at: anIndex
 ]
 
 { #category : #accessing }
@@ -62,7 +70,8 @@ GtRlLoaderEventsGroup >> gtViewByBaselineEventFor: aView [
 		items: [ self groupedByBaseline  associations ];
 		column: 'Baseline' text: [ :assoc | assoc key ];
 		column: 'Events count' text: [ :assoc | assoc value size ];
-		column: 'Duration' text: [ :assoc | assoc value totalDuration ]
+		column: 'Duration' text: [ :assoc | assoc value totalDuration ];
+		send: [ :each | each value ]
 ]
 
 { #category : #initialization }
@@ -91,6 +100,11 @@ GtRlLoaderEventsGroup >> printOn: aStream [
 		<< ', ';
 		print: self totalDuration;
 		<< ')'
+]
+
+{ #category : #accessing }
+GtRlLoaderEventsGroup >> size [
+	^ self items size
 ]
 
 { #category : #accessing }

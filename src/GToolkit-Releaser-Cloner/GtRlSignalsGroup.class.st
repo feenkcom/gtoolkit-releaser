@@ -1,8 +1,6 @@
 Class {
 	#name : #GtRlSignalsGroup,
 	#superclass : #Object,
-	#traits : 'TGtGroup',
-	#classTraits : 'TGtGroup classTrait',
 	#instVars : [
 		'items'
 	],
@@ -20,9 +18,24 @@ GtRlSignalsGroup >> add: anEvent [
 	^ self items add: anEvent
 ]
 
+{ #category : #converting }
+GtRlSignalsGroup >> asBrItemsProvider [
+	^ BrListSequenceableCollectionItemsProvider forCollection: self
+]
+
+{ #category : #accessing }
+GtRlSignalsGroup >> at: anIndex [
+	^ self items at: anIndex
+]
+
 { #category : #enumerating }
 GtRlSignalsGroup >> detect: aBlock [
 	^ self items detect: aBlock
+]
+
+{ #category : #enumerating }
+GtRlSignalsGroup >> do: aBlock [
+	^ self items do: aBlock
 ]
 
 { #category : #ui }
@@ -52,4 +65,9 @@ GtRlSignalsGroup >> initializeWith: aCollection [
 { #category : #accessing }
 GtRlSignalsGroup >> items [
 	^ items
+]
+
+{ #category : #accessing }
+GtRlSignalsGroup >> size [
+	^ self items size
 ]
