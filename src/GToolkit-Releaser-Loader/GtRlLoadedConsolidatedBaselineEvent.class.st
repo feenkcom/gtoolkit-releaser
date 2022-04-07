@@ -128,6 +128,57 @@ GtRlLoadedConsolidatedBaselineEvent >> gtBarElementsWithGlobalWeight: aWeight lo
 ]
 
 { #category : #accessing }
+GtRlLoadedConsolidatedBaselineEvent >> gtClonerSignalsFor: aView [
+	<gtView>
+	^ aView forward
+		title: 'Cloner Signals' translated;
+		priority: 30;
+		object: [ clonerEvent ];
+		view: #gtViewLocalSignalsFor:
+]
+
+{ #category : #accessing }
+GtRlLoadedConsolidatedBaselineEvent >> gtLoadDirectivesDetailedMapFor: aView [
+	"<gtView>"
+	^ aView mondrian
+		title: 'Load map' translated;
+		priority: 20;
+		painting: [ :mondrian |
+			mondrian nodes 
+				shape: [ :aSubgroup |
+					BrVerticalPane new
+						fitContent;
+						alignCenter;
+						border: (BlBorder paint: Color gray);
+						padding: (BlInsets all: 3);
+						geometry: (BlRoundedRectangleGeometry cornerRadius: 5);
+						when: BlClickEvent do: [ :anEvent | 
+							anEvent currentTarget phlow spawnObject: aSubgroup ];
+						addChild: (BrLabel new 
+							text: aSubgroup baselineName; 
+							aptitude: BrGlamorousLabelAptitude);
+						addChild: (BrLabel new 
+							text: aSubgroup totalDuration gtHumanReadableString; 
+							aptitude: BrGlamorousLabelAptitude) ];
+				with: (self withDeepCollect: #subEvents).
+			mondrian edges
+				stencil: [:class | 
+					BlParabollaArcElement new 
+						zIndex: 0;
+						curvatureFraction: 0.3;
+						border: (BlBorder paint: (Color gray alpha: 0.5) width: 2);
+						toHead: (BlArrowheadSimpleArrow new
+							border: (BlBorder builder paint: (Color gray alpha: 0.5); width: 2; build)) ];
+				fromRightCenter;
+				toLeftCenter;
+				connectToAll: #subEvents.
+			"mondrian layout custom: (GtGradWestHierarchicalLayout new)"
+			mondrian layout  horizontalDominanceTree
+				levelDistance: 200;
+				nodeDistance: 10 ]
+]
+
+{ #category : #accessing }
 GtRlLoadedConsolidatedBaselineEvent >> gtLoadDirectivesMapFor: aView [
 	<gtView>
 	^ aView mondrian
@@ -137,7 +188,7 @@ GtRlLoadedConsolidatedBaselineEvent >> gtLoadDirectivesMapFor: aView [
 			mondrian nodes 
 				shape: [ :aSubgroup |
 					BrLabel new 
-						text: aSubgroup baselineName; 
+						text: aSubgroup description; 
 						aptitude: BrGlamorousLabelAptitude;
 						when: BlClickEvent do: [ :anEvent | 
 							anEvent currentTarget phlow spawnObject: aSubgroup ] ];
@@ -153,6 +204,7 @@ GtRlLoadedConsolidatedBaselineEvent >> gtLoadDirectivesMapFor: aView [
 				fromRightCenter;
 				toLeftCenter;
 				connectToAll: #subEvents.
+			"mondrian layout custom: (GtGradWestHierarchicalLayout new)"
 			mondrian layout  horizontalDominanceTree
 				levelDistance: 100;
 				nodeDistance: 10 ]
@@ -178,6 +230,25 @@ GtRlLoadedConsolidatedBaselineEvent >> gtViewLoaderEventsFor: aView [
 		column: 'Action Type' text: [ :anEvent | anEvent actionType ];
 		column: 'Action Description' text: [ :anEvent | anEvent actionDescription ];
 		column: 'Duration' text: [ :anEvent | anEvent duration ]
+]
+
+{ #category : #accessing }
+GtRlLoadedConsolidatedBaselineEvent >> gtViewOverviewFor: aView [
+	<gtView>
+	^ aView columnedTree
+		title: 'Overview';
+		items: [ self overviewData ];
+		"expandUpTo: 2;"
+		children: [ :assoc | 
+			assoc value isDictionary 
+				ifTrue: [ assoc value at: 'children' ]
+				ifFalse: [ #() ] ];
+		column: 'Property' text: [ :assoc | 
+			assoc key ];
+		column: 'Value' text: [ :assoc |
+			assoc value isDictionary 
+				ifTrue: [ assoc value at: 'value' ]
+				ifFalse: [ assoc value ] ]
 ]
 
 { #category : #'gt-extensions' }
@@ -226,6 +297,30 @@ GtRlLoadedConsolidatedBaselineEvent >> localDuration [
 GtRlLoadedConsolidatedBaselineEvent >> localLoaderDuration [
 	loaderEvents size = 0 ifTrue: [ ^ 0 seconds ].
 	^ loaderEvents totalDuration
+]
+
+{ #category : #accessing }
+GtRlLoadedConsolidatedBaselineEvent >> overviewData [
+	^ {
+		'Total Loading Time' -> {
+			'value' -> self totalDuration.
+			'children' -> { 
+				'Project Loading Time' ->  self localDuration.
+				'Dependencies Loading Time' ->  (self totalDuration - self localDuration )
+		 }} asDictionary.
+		'Cloner Loading Time' -> {
+			'value' -> clonerEvent totalLoadDuration.
+			'children' -> {
+				'Local Loading Time' -> clonerEvent localLoadDuration.
+				'Dependencies Loading Time' -> (clonerEvent totalLoadDuration - clonerEvent localLoadDuration)
+		}} asDictionary.
+		'Loader Loading Time' -> {
+			'value' -> self totalLoaderDuration.
+			'children' -> {
+				'Local Loading Time' -> self localLoaderDuration.
+				'Dependencies Loading Time' -> (self totalLoaderDuration - self localLoaderDuration )
+		}} asDictionary
+	}
 ]
 
 { #category : #printing }
