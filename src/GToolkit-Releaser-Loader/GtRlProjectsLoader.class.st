@@ -1,7 +1,10 @@
 Class {
 	#name : #GtRlProjectsLoader,
 	#superclass : #Object,
-	#category : 'GToolkit-Releaser-Loader'
+	#instVars : [
+		'loggersById'
+	],
+	#category : #'GToolkit-Releaser-Loader-Core'
 }
 
 { #category : #actions }
@@ -14,15 +17,39 @@ GtRlProjectsLoader >> cloneBaseline: aBaselineName fromRepository: aRepositoryLo
 	^ projectCloner execute
 ]
 
+{ #category : #testing }
+GtRlProjectsLoader >> hasMemoryLogger [
+	^ loggersById includesKey: #memoryLogger
+]
+
+{ #category : #testing }
+GtRlProjectsLoader >> hasTranscriptLogger [
+	^ loggersById includesKey: #transcriptLogger
+]
+
+{ #category : #initialization }
+GtRlProjectsLoader >> initialize [
+	super initialize.
+	loggersById := OrderedDictionary new.
+	self registerTranscriptLogger.
+]
+
 { #category : #actions }
 GtRlProjectsLoader >> loadBaseline: aBaselineName fromRepository: aRepositoryLocationString [
 	| clonedProject |
-	clonedProject := self 
-		cloneBaseline: aBaselineName 
-		fromRepository: aRepositoryLocationString.
-	self 
-		loadBaselineClass: clonedProject baselineClass
-		fromRepository: clonedProject repository urlString
+	
+	self loggers do: [ :aLogger |
+		aLogger startFor: GtRlClonerBaselineSignal, GtRlLoaderDirectiveActionSignal ].
+	
+	[
+		clonedProject := self 
+			cloneBaseline: aBaselineName 
+			fromRepository: aRepositoryLocationString.
+		self 
+			loadBaselineClass: clonedProject baselineClass
+			fromRepository: clonedProject repository urlString 
+	] ensure: [
+		self loggers do: [ :aLogger | aLogger stop ] ]
 ]
 
 { #category : #actions }
@@ -44,4 +71,30 @@ GtRlProjectsLoader >> loadFullProject: aRootProject [
 	loadWorkflow := GtRlProjectsLoadWorkflow new
 		rootLoadDirective: loadDirective.
 	loadWorkflow executeLoadActions
+]
+
+{ #category : #accessing }
+GtRlProjectsLoader >> loggers [
+	^ loggersById values
+]
+
+{ #category : #'accessing - logging' }
+GtRlProjectsLoader >> memoryLogger [
+	^ loggersById at: #memoryLogger
+]
+
+{ #category : #configuration }
+GtRlProjectsLoader >> registerMemoryLogger [
+	self hasMemoryLogger ifTrue: [ ^ self ].
+	loggersById
+		at: #memoryLogger 
+		put: MemoryLogger new
+]
+
+{ #category : #configuration }
+GtRlProjectsLoader >> registerTranscriptLogger [
+	self hasTranscriptLogger ifTrue: [ ^ self ].
+	loggersById
+		at: #transcriptLogger 
+		put: TranscriptLogger new
 ]

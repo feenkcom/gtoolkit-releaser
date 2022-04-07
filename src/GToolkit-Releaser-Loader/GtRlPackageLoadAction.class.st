@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'package'
 	],
-	#category : 'GToolkit-Releaser-Loader'
+	#category : #'GToolkit-Releaser-Loader-Core'
 }
 
 { #category : #accessing }

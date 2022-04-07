@@ -10,7 +10,7 @@ Class {
 		'postLoadAction',
 		'packageLoadActions'
 	],
-	#category : #'GToolkit-Releaser-Loader'
+	#category : #'GToolkit-Releaser-Loader-Core'
 }
 
 { #category : #'instance creation' }
@@ -108,9 +108,37 @@ GtRlProjectLoadDirective >> gtLoadDirectivesMapFor: aView [
 				shape: [ 
 					BlLineElement new 
 						zIndex: -1;
-						border: (BlBorder paint: (Color gray alpha: 0.5) width: 2);
+						border: (BlBorder paint: (Color blue alpha: 0.5) width: 2);
 						toHead: (BlArrowheadSimpleArrow new
-							border: (BlBorder builder paint: (Color gray alpha: 0.5); width: 2; build)) ];
+							border: (BlBorder builder paint: (Color blue alpha: 0.5); width: 2; build)) ];
+				fromRightCenter;
+				toLeftCenter;
+				connectToAll: #childLoadDirectives.
+			mondrian layout custom: (GtGradWestHierarchicalLayout new) ]
+]
+
+{ #category : #'gt-extensions' }
+GtRlProjectLoadDirective >> gtParentLoadDirectivesMapFor: aView [
+	<gtView>
+	^ aView mondrian
+		title: 'Parents Chain' translated;
+		priority: 20;
+		painting: [ :mondrian |
+			mondrian nodes 
+				shape: [ :aLoadDirective |
+					BrLabel new 
+						text: aLoadDirective projectName; 
+						aptitude: BrGlamorousLabelAptitude;
+						when: BlClickEvent do: [ :anEvent | 
+							anEvent currentTarget phlow spawnObject: aLoadDirective ] ];
+				with: (self withDeepCollect: #parentLoadDirectives).
+			mondrian edges
+				shape: [ 
+					BlLineElement new 
+						zIndex: -1;
+						border: (BlBorder paint: (Color blue alpha: 0.5) width: 2);
+						toHead: (BlArrowheadSimpleArrow new
+							border: (BlBorder builder paint: (Color blue alpha: 0.5); width: 2; build)) ];
 				fromRightCenter;
 				toLeftCenter;
 				connectToAll: #childLoadDirectives.
@@ -147,7 +175,7 @@ GtRlProjectLoadDirective >> gtProjectWithDirectivesMapFor: aView [
 						zIndex: -1;
 						border: (isInLoadDirective 
 							ifTrue: [(BlBorder  paint: (Color blue alpha: 0.5) width: 2)]
-							ifFalse: [(BlBorder  paint: (Color gray alpha: 0.2) width: 1)]) ;
+							ifFalse: [(BlBorder  paint: (Color gray alpha: 0.5) width: 1)]) ;
 						toHead: (BlArrowheadSimpleArrow new
 							border: (isInLoadDirective
 								ifTrue: [ BlBorder builder paint: (Color blue alpha: 0.5); width: 2; build ]

@@ -5,7 +5,7 @@ Class {
 		'loadDirective',
 		'isExecuted'
 	],
-	#category : 'GToolkit-Releaser-Loader'
+	#category : #'GToolkit-Releaser-Loader-Core'
 }
 
 { #category : #printing }
@@ -14,19 +14,36 @@ GtRlProjectLoadDirectiveAction >> descriptionDetails [
 ]
 
 { #category : #logging }
-GtRlProjectLoadDirectiveAction >> emitExecutionSignal [
-	
+GtRlProjectLoadDirectiveAction >> emitExecutionCompletedSignal [
+	GtRlLoaderDirectiveActionExecutionCompletedSignal new
+		baselineName: loadDirective projectName;
+		actionType: self className;
+		actionDescription: self descriptionDetails;
+		repositoryUrlString: loadDirective project repository loadSpecificationString;
+		emit
+]
+
+{ #category : #logging }
+GtRlProjectLoadDirectiveAction >> emitExecutionStartedSignal [
+	GtRlLoaderDirectiveActionExecutionStartedSignal new
+		baselineName: loadDirective projectName;
+		actionType: self className;
+		actionDescription: self descriptionDetails;
+		repositoryUrlString: loadDirective project repository loadSpecificationString;
+		emit
 ]
 
 { #category : #execution }
 GtRlProjectLoadDirectiveAction >> execute [ 
 	self isExecuted ifTrue: [ Error signal: 'Action already executed' ].
-	self emitExecutionSignal.
-	[ self performAction ] 
-		ensure: [ isExecuted := true ].
+	self emitExecutionStartedSignal.
+	[ 
+		self performAction.
+		self emitExecutionCompletedSignal
+	] ensure: [ isExecuted := true ].
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 GtRlProjectLoadDirectiveAction >> isExecuted [
 	^ isExecuted ifNil: [ false ]
 ]

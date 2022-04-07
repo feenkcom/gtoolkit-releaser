@@ -18,7 +18,7 @@ Class {
 		'cloneWorkflow',
 		'loggersById'
 	],
-	#category : 'GToolkit-Releaser-Cloner-Core'
+	#category : #'GToolkit-Releaser-Cloner-Core'
 }
 
 { #category : #baselines }
@@ -37,14 +37,14 @@ GtRlProjectsCloner >> execute [
 	cloneWorkflow initializeIcebergRepos.
 	
 	self loggers do: [ :aLogger |
-		aLogger startFor: GtRlClonerBaselineEvent ].
+		aLogger startFor: GtRlClonerBaselineSignal ].
 	[ 
 		^ cloneWorkflow
 			loadBaselineSpec: (GtRlClonerBaselineSpec new
 				baselineName: baselineName;
 				repositoryLocation: repositoryUrlString)
 	] ensure: [
-		self loggers do: [ :aLogger | aLogger stop ] ].
+		self loggers do: [ :aLogger | aLogger stop ] ]
 	
 ]
 
@@ -55,7 +55,7 @@ GtRlProjectsCloner >> gtViewEventsFor: aView [
 	^ aView forward
 	 	title: 'Events';
 	 	priority: 30;
-	 	object: [ GtRlClonerEventsGroup withAll: self memoryLogger recordings ];
+	 	object: [ GtRlClonerSignalsGroup withAll: self memoryLogger recordings ];
 	 	view: #gtItemsFor:
 ]
 
@@ -66,9 +66,9 @@ GtRlProjectsCloner >> gtViewGroupedEventsFor: aView [
 	^ aView forward
 		title: 'Events (grouped)';
 		priority: 35;
-		object: [ GtRlClonerBaselineEventsGroup 
+		object: [ GtRlClonerBaselineEvent 
 			fromEvents: self memoryLogger recordings  ];
-		view: #gtViewSubgroupsFor:
+		view: #gtViewSubEventsFor:
 ]
 
 { #category : #'gt extensions' }
@@ -107,8 +107,6 @@ GtRlProjectsCloner >> hasTranscriptLogger [
 GtRlProjectsCloner >> initialize [
 	super initialize.
 	loggersById := OrderedDictionary new.
-	self registerMemoryLogger.
-	self registerTranscriptLogger.
 ]
 
 { #category : #'accessing - logging' }

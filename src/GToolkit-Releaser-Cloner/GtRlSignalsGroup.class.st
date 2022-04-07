@@ -1,5 +1,5 @@
 Class {
-	#name : #GtRlClonerEventsGroup,
+	#name : #GtRlSignalsGroup,
 	#superclass : #Object,
 	#instVars : [
 		'items'
@@ -8,33 +8,38 @@ Class {
 }
 
 { #category : #'instance creation' }
-GtRlClonerEventsGroup class >> withAll: aCollection [
+GtRlSignalsGroup class >> withAll: aCollection [
 	^ self new 
 		initializeWith: aCollection
 ]
 
 { #category : #adding }
-GtRlClonerEventsGroup >> add: anEvent [ 
+GtRlSignalsGroup >> add: anEvent [ 
 	^ self items add: anEvent
 ]
 
-{ #category : #accessing }
-GtRlClonerEventsGroup >> collect: aBlock [
-	^ self items collect: aBlock
+{ #category : #converting }
+GtRlSignalsGroup >> asBrItemsProvider [
+	^ BrListSequenceableCollectionItemsProvider forCollection: self
 ]
 
 { #category : #accessing }
-GtRlClonerEventsGroup >> detect: aBlock [
+GtRlSignalsGroup >> at: anIndex [
+	^ self items at: anIndex
+]
+
+{ #category : #enumerating }
+GtRlSignalsGroup >> detect: aBlock [
 	^ self items detect: aBlock
 ]
 
 { #category : #enumerating }
-GtRlClonerEventsGroup >> do: aBlock [
+GtRlSignalsGroup >> do: aBlock [
 	^ self items do: aBlock
 ]
 
 { #category : #ui }
-GtRlClonerEventsGroup >> gtItemsFor: aView [
+GtRlSignalsGroup >> gtItemsFor: aView [
 	<gtView>
 	^ aView columnedList
 	 	title: 'Events';
@@ -47,17 +52,34 @@ GtRlClonerEventsGroup >> gtItemsFor: aView [
 ]
 
 { #category : #initialization }
-GtRlClonerEventsGroup >> initialize [
+GtRlSignalsGroup >> initialize [
 	super initialize.
 	items := OrderedCollection new.
 ]
 
 { #category : #initialization }
-GtRlClonerEventsGroup >> initializeWith: aCollection [
+GtRlSignalsGroup >> initializeWith: aCollection [
 	items := aCollection
 ]
 
 { #category : #accessing }
-GtRlClonerEventsGroup >> items [
+GtRlSignalsGroup >> items [
 	^ items
+]
+
+{ #category : #accessing }
+GtRlSignalsGroup >> printOn: aStream [
+	super printOn: aStream.
+	aStream
+		space;
+		nextPut: $[;
+		print: self size;
+		nextPutAll: (' item' asPluralBasedOn: self size);
+		nextPut: $];
+		space.
+]
+
+{ #category : #accessing }
+GtRlSignalsGroup >> size [
+	^ self items size
 ]

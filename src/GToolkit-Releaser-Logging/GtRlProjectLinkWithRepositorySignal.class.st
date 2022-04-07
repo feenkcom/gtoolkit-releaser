@@ -1,6 +1,6 @@
 Class {
-	#name : 'GtRlProjectLinkWithRepositorySignal',
-	#superclass : 'GtReleaserSignal',
+	#name : #GtRlProjectLinkWithRepositorySignal,
+	#superclass : #GtReleaserSignal,
 	#instVars : [
 		'projectName',
 		'repositoryName',
@@ -10,24 +10,24 @@ Class {
 	#category : 'GToolkit-Releaser-Logging'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 GtRlProjectLinkWithRepositorySignal class >> project: aProject repository: aRepository [
 	^ self new
 	  project: aProject;
 	  repository: aRepository.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectLinkWithRepositorySignal >> printOneLineContentsOn: stream [
 	stream nextPutAll: project name; nextPutAll: ' -> '; nextPutAll: repository repositoryName 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectLinkWithRepositorySignal >> project: aProject [
 	project := aProject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlProjectLinkWithRepositorySignal >> repository: aRepository [
 	repository := aRepository 
 ]

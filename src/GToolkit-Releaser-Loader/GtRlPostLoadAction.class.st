@@ -1,7 +1,7 @@
 Class {
 	#name : #GtRlPostLoadAction,
 	#superclass : #GtRlPrePostLoadAction,
-	#category : 'GToolkit-Releaser-Loader'
+	#category : #'GToolkit-Releaser-Loader-Core'
 }
 
 { #category : #accessing }
