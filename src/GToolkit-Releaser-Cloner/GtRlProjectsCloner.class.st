@@ -67,7 +67,7 @@ GtRlProjectsCloner >> gtViewGroupedEventsFor: aView [
 		title: 'Events (grouped)';
 		priority: 35;
 		object: [ GtRlClonerBaselineEvent 
-			fromEvents: self memoryLogger recordings  ];
+			fromSignals: self memoryLogger recordings  ];
 		view: #gtViewSubEventsFor:
 ]
 

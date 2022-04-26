@@ -14,42 +14,44 @@ GtRlSignalsLogReader class >> readFrom: aStream [
 		readFrom: aStream
 ]
 
-{ #category : #accessing }
-GtRlSignalsLogReader >> eventTypeIndicator [
-	^ eventTypeIndicator
-]
-
-{ #category : #accessing }
-GtRlSignalsLogReader >> eventsGroupType [
-	^ OrderedCollection
+{ #category : #initialization }
+GtRlSignalsLogReader >> readFrom: aStream [
+	| newSignals typeIndicator |
+	newSignals := self signalsGroupType new.
+	typeIndicator := '| ', self signalTypeIndicator ,' |'.
+	
+	aStream contents linesDo: [ :aLine |
+		(aLine includesSubstring: typeIndicator) ifTrue: [
+			| newSignal |
+			newSignal := self readSignalFromLine: aLine.
+			newSignals add: newSignal ] ].
+	
+	^ newSignals
 ]
 
 { #category : #initialization }
-GtRlSignalsLogReader >> readEventFromLine: aLine [
-	| timestampString eventClassName parts eventClass event |
+GtRlSignalsLogReader >> readSignalFromLine: aLine [
+	| timestampString signalClassName parts signalClass signal |
 	
 	parts := aLine splitOn: ' | '.
 	
 	timestampString := parts first copyUpTo: Character space.
-	eventClassName := (parts first copyFrom: timestampString size + 1 to: parts first size) trimBoth.
+	signalClassName := (parts first copyFrom: timestampString size + 1 to: parts first size) trimBoth.
 	
-	eventClass := eventClassName asClass.
-	event := eventClass new.
-	event 
+	signalClass := signalClassName asClass.
+	signal := signalClass new.
+	signal 
 		initializeFromTimestamp: timestampString asDateAndTime 
 		andData: parts.
-	^ event
+	^ signal
 ]
 
-{ #category : #initialization }
-GtRlSignalsLogReader >> readFrom: aStream [
-	| newEvents typeIndicator |
-	newEvents := self eventsGroupType new.
-	typeIndicator := '| ', self eventTypeIndicator ,' |'.
-	aStream contents linesDo: [ :aLine |
-		(aLine includesSubstring: typeIndicator) ifTrue: [
-			| newEvent |
-			newEvent := self readEventFromLine: aLine.
-			newEvents add: newEvent ] ].
-	^ newEvents
+{ #category : #accessing }
+GtRlSignalsLogReader >> signalTypeIndicator [
+	^ eventTypeIndicator
+]
+
+{ #category : #accessing }
+GtRlSignalsLogReader >> signalsGroupType [
+	^ OrderedCollection
 ]
