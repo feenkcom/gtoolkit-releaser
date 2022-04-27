@@ -4,13 +4,13 @@ Class {
 	#category : #'GToolkit-Releaser-Loader-Logging'
 }
 
-{ #category : #accessing }
-GtRlLoaderSignalsLogReader >> eventsGroupType [
-	^ GtRlLoaderSignalsGroup
-]
-
 { #category : #initialization }
 GtRlLoaderSignalsLogReader >> initialize [ 
 	super initialize.
 	eventTypeIndicator := 'LoaderEvent'.
+]
+
+{ #category : #accessing }
+GtRlLoaderSignalsLogReader >> signalsGroupType [
+	^ GtRlLoaderSignalsGroup
 ]
