@@ -42,7 +42,19 @@ GtMetrics class >> totalCodeAnalysedSize [
 	<gtExample>
 	<noTest>
 	
-	^ self totalClassesSize + self totalMethodsSize + self totalSymbolsSize + self totalPragmasCacheSize
+	^ self totalClassesSize 
+		+ self totalMethodsSize 
+		+ self totalSymbolsSize 
+		+ self totalPragmasCacheSize
+		+ self totalCompleterCacheSize
+]
+
+{ #category : #accessing }
+GtMetrics class >> totalCompleterCacheSize [
+	<gtExample>
+	<noTest>
+	
+	^ GtPharoCompletionStrategy cacheSizeInMemory 
 ]
 
 { #category : #accessing }
