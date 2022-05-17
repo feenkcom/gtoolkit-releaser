@@ -115,6 +115,7 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://feenkcom/gtoolkit-releaser/src' };"
 	setReleaseStrategyOfType: GtRlHeadCommitReleaseStrategy forProjecs: {
 		'github://kursjan/petitparser2'.
+		'github://j-brant/RBFormatter/src'.
 		'github://j-brant/SmaCC/src'.
 		'github://feenkcom/pharo-beacon/repository'.
 		'github://pharo-contributions/OrderPreservingDictionary/src'.
