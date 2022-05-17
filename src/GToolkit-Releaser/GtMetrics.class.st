@@ -28,13 +28,39 @@ GtMetrics class >> reset [
 ]
 
 { #category : #accessing }
-GtMetrics class >> totalClassesSize [
+GtMetrics class >> totalClassesClassSideSize [
 	<gtExample>
 	<noTest>
 	
 	^ SystemNavigation default  allClasses 
 		sum: [ :aClass |
-	 		aClass gtSpecificSizeInMemory +  aClass class gtSpecificSizeInMemory ].
+	 		aClass classSide gtSpecificSizeInMemory ].
+]
+
+{ #category : #accessing }
+GtMetrics class >> totalClassesCount [
+	<gtExample>
+	<noTest>
+	
+	^ SystemNavigation default  allClasses size
+]
+
+{ #category : #accessing }
+GtMetrics class >> totalClassesInstanceSideSize [
+	<gtExample>
+	<noTest>
+	
+	^ SystemNavigation default  allClasses 
+		sum: [ :aClass |
+	 		aClass instanceSide gtSpecificSizeInMemory ].
+]
+
+{ #category : #accessing }
+GtMetrics class >> totalClassesSize [
+	<gtExample>
+	<noTest>
+	
+	^ self totalClassesClassSideSize  + self totalClassesInstanceSideSize
 ]
 
 { #category : #accessing }
@@ -58,12 +84,28 @@ GtMetrics class >> totalCompleterCacheSize [
 ]
 
 { #category : #accessing }
+GtMetrics class >> totalMethodDictionaryInstancesCount [
+	<gtExample>
+	<noTest>
+	
+	^ MethodDictionary allInstances  size
+]
+
+{ #category : #accessing }
 GtMetrics class >> totalMethodDictionarySize [
 	<gtExample>
 	<noTest>
 	
 	^ MethodDictionary allInstances 
 		sum: [ :aMethodDictionary | aMethodDictionary gtSpecificSizeInMemory ]
+]
+
+{ #category : #accessing }
+GtMetrics class >> totalMethodsCount [
+	<gtExample>
+	<noTest>
+	
+	^ SystemNavigation default  allMethods size
 ]
 
 { #category : #accessing }
@@ -82,6 +124,14 @@ GtMetrics class >> totalPragmasCacheSize [
 	^ Pragma pragmaCache gtSpecificSizeInMemory + 
 		(Pragma pragmaCache sum: [ :pragmasSet | 
 			pragmasSet gtSpecificSizeInMemory +  (pragmasSet sum: #sizeInMemory) ]).
+]
+
+{ #category : #accessing }
+GtMetrics class >> totalSymbolsCount [
+	<gtExample>
+	<noTest>
+	
+	^ Symbol allSymbols size
 ]
 
 { #category : #accessing }
