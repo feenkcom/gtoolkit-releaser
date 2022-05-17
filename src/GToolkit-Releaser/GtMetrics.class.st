@@ -27,6 +27,91 @@ GtMetrics class >> reset [
 	default := nil
 ]
 
+{ #category : #accessing }
+GtMetrics class >> totalClassesSize [
+	<gtExample>
+	<noTest>
+	
+	^ SystemNavigation default  allClasses 
+		sum: [ :aClass |
+	 		aClass gtSpecificSizeInMemory +  aClass class gtSpecificSizeInMemory ].
+]
+
+{ #category : #accessing }
+GtMetrics class >> totalCodeAnalysedSize [
+	<gtExample>
+	<noTest>
+	
+	^ self totalClassesSize 
+		+ self totalMethodsSize 
+		+ self totalSymbolsSize 
+		+ self totalPragmasCacheSize
+		+ self totalCompleterCacheSize
+]
+
+{ #category : #accessing }
+GtMetrics class >> totalCompleterCacheSize [
+	<gtExample>
+	<noTest>
+	
+	^ GtPharoCompletionStrategy cacheSizeInMemory 
+]
+
+{ #category : #accessing }
+GtMetrics class >> totalMethodDictionarySize [
+	<gtExample>
+	<noTest>
+	
+	^ MethodDictionary allInstances 
+		sum: [ :aMethodDictionary | aMethodDictionary gtSpecificSizeInMemory ]
+]
+
+{ #category : #accessing }
+GtMetrics class >> totalMethodsSize [
+	<gtExample>
+	<noTest>
+	
+	^ SystemNavigation default  allMethods 
+		sum: #gtSpecificSizeInMemory
+]
+
+{ #category : #accessing }
+GtMetrics class >> totalPragmasCacheSize [
+	<gtExample>
+	<noTest>
+	^ Pragma pragmaCache gtSpecificSizeInMemory + 
+		(Pragma pragmaCache sum: [ :pragmasSet | 
+			pragmasSet gtSpecificSizeInMemory +  (pragmasSet sum: #sizeInMemory) ]).
+]
+
+{ #category : #accessing }
+GtMetrics class >> totalSymbolsSize [
+	<gtExample>
+	<noTest>
+	
+	^ Symbol allSymbols sum: [ :aSymbol | aSymbol sizeInMemory ].
+]
+
+{ #category : #accessing }
+GtMetrics class >> totalTraitsOverheadSize [
+	<gtExample>
+	<noTest>
+	| targetTraits traitsOverheadSize |
+	
+	targetTraits := Smalltalk allClasses 
+		select: [ :class | class isTrait ].
+	targetTraits remove: TraitedClass.
+
+	traitsOverheadSize := targetTraits  
+		inject: 0
+		into: [ :memorySize :targetTait | 
+			memorySize 
+				+ targetTait class localMethodDict gtSpecificSizeInMemory
+				+ targetTait class baseLocalMethods gtSpecificSizeInMemory ].
+	
+	^ traitsOverheadSize 
+]
+
 { #category : #'as yet unclassified' }
 GtMetrics >> basePharoLinesOfCode [
 	^ basePharoLinesOfCode ifNil: [ basePharoLinesOfCode := self totalLinesOfCode - self gtLinesOfCode ]
