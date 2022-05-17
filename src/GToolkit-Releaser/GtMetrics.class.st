@@ -84,6 +84,14 @@ GtMetrics class >> totalCompleterCacheSize [
 ]
 
 { #category : #accessing }
+GtMetrics class >> totalImageSize [
+	<gtExample>
+	<noTest>
+	
+	^ Smalltalk vm memorySize
+]
+
+{ #category : #accessing }
 GtMetrics class >> totalMethodDictionaryInstancesCount [
 	<gtExample>
 	<noTest>
