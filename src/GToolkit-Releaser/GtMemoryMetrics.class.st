@@ -30,6 +30,22 @@ GtMemoryMetrics class >> reset [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics class >> totalClassOrganisationInstancesCount [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassOrganisationInstancesCount
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalClassOrganisationInstancesSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassOrganisationInstancesSize
+]
+
+{ #category : #metrics }
 GtMemoryMetrics class >> totalClassesClassSideSize [
 	<gtExample>
 	<noTest>
@@ -67,6 +83,22 @@ GtMemoryMetrics class >> totalCodeAnalysedSize [
 	<noTest>
 	
 	^ self default totalCodeAnalysedSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalCompiledMethodInstancesCount [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalCompiledMethodInstancesCount
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalCompiledMethodInstancesSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalCompiledMethodInstancesSize
 ]
 
 { #category : #metrics }
@@ -211,6 +243,26 @@ GtMemoryMetrics >> navigationEnvironmentSize [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics >> totalClassOrganisationInstancesCount [
+
+	^ self 
+		cacheAt: #totalClassOrganisationInstancesCount
+		ifAbsentPut: [
+			 ClassOrganization allInstances size ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalClassOrganisationInstancesSize [
+
+	^ self 
+		cacheAt: #totalClassOrganisationInstancesSize
+		ifAbsentPut: [
+			 ClassOrganization allInstances 
+				sum: [ :aClassOrganization | 
+					aClassOrganization gtSpecificSizeInMemory ] ]
+]
+
+{ #category : #metrics }
 GtMemoryMetrics >> totalClassesClassSideSize [
 
 	^ self 
@@ -252,6 +304,26 @@ GtMemoryMetrics >> totalCodeAnalysedSize [
 		+ self totalPragmasCacheSize
 		+ self totalCompleterCacheSize
 		+ self navigationEnvironmentSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalCompiledMethodInstancesCount [
+
+	^ self 
+		cacheAt: #totalCompiledMethodInstancesCount
+		ifAbsentPut: [
+			 CompiledMethod allInstances size ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalCompiledMethodInstancesSize [
+
+	^ self 
+		cacheAt: #totalCompiledMethodInstancesSize
+		ifAbsentPut: [
+			 CompiledMethod allInstances 
+				sum: [ :aCompiledMethod | 
+					aCompiledMethod gtSpecificSizeInMemory ] ]
 ]
 
 { #category : #metrics }
