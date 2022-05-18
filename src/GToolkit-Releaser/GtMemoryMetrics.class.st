@@ -150,6 +150,14 @@ GtMemoryMetrics class >> totalMethodsSize [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics class >> totalPackagesSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalPackagesSize
+]
+
+{ #category : #metrics }
 GtMemoryMetrics class >> totalPragmasCacheSize [
 	<gtExample>
 	<noTest>
@@ -304,6 +312,7 @@ GtMemoryMetrics >> totalCodeAnalysedSize [
 		+ self totalPragmasCacheSize
 		+ self totalCompleterCacheSize
 		+ self navigationEnvironmentSize
+		+ self totalPackagesSize
 ]
 
 { #category : #metrics }
@@ -372,6 +381,15 @@ GtMemoryMetrics >> totalMethodsSize [
 		ifAbsentPut: [
 			SystemNavigation default  allMethods 
 				sum: [ :aMethod | aMethod gtSpecificSizeInMemory ] ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalPackagesSize [
+
+	^ self 
+		cacheAt: #totalPackagesSize
+		ifAbsentPut: [
+			 RPackageOrganizer default gtSpecificSizeInMemory ]
 ]
 
 { #category : #metrics }
