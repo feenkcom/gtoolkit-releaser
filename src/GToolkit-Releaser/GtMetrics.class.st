@@ -154,20 +154,21 @@ GtMetrics class >> totalSymbolsSize [
 GtMetrics class >> totalTraitsOverheadSize [
 	<gtExample>
 	<noTest>
-	| targetTraits traitsOverheadSize |
+	| targetTraits |
 	
 	targetTraits := Smalltalk allClasses 
 		select: [ :class | class isTrait ].
 	targetTraits remove: TraitedClass.
 
-	traitsOverheadSize := targetTraits  
+	^ targetTraits  
 		inject: 0
-		into: [ :memorySize :targetTait | 
-			memorySize 
-				+ targetTait class localMethodDict gtSpecificSizeInMemory
-				+ targetTait class baseLocalMethods gtSpecificSizeInMemory ].
-	
-	^ traitsOverheadSize 
+		into: [ :traitsOverheadSize :targetTrait | 
+			traitsOverheadSize + (targetTrait users  
+				inject: 0
+				into: [ :traitUsersSize :targetClass | 
+					traitUsersSize 
+						+ targetClass class localMethodDict gtSpecificSizeInMemory
+						+ targetClass class baseLocalMethods gtSpecificSizeInMemory ]) ]
 ]
 
 { #category : #'as yet unclassified' }
