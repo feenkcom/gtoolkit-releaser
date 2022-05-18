@@ -13,7 +13,7 @@ Class {
 	#classVars : [
 		'default'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #accessing }
@@ -28,150 +28,6 @@ GtMetrics class >> reset [
 ]
 
 { #category : #accessing }
-GtMetrics class >> totalClassesClassSideSize [
-	<gtExample>
-	<noTest>
-	
-	^ SystemNavigation default  allClasses 
-		sum: [ :aClass |
-	 		aClass classSide gtSpecificSizeInMemory ].
-]
-
-{ #category : #accessing }
-GtMetrics class >> totalClassesCount [
-	<gtExample>
-	<noTest>
-	
-	^ SystemNavigation default  allClasses size
-]
-
-{ #category : #accessing }
-GtMetrics class >> totalClassesInstanceSideSize [
-	<gtExample>
-	<noTest>
-	
-	^ SystemNavigation default  allClasses 
-		sum: [ :aClass |
-	 		aClass instanceSide gtSpecificSizeInMemory ].
-]
-
-{ #category : #accessing }
-GtMetrics class >> totalClassesSize [
-	<gtExample>
-	<noTest>
-	
-	^ self totalClassesClassSideSize  + self totalClassesInstanceSideSize
-]
-
-{ #category : #accessing }
-GtMetrics class >> totalCodeAnalysedSize [
-	<gtExample>
-	<noTest>
-	
-	^ self totalClassesSize 
-		+ self totalMethodsSize 
-		+ self totalSymbolsSize 
-		+ self totalPragmasCacheSize
-		+ self totalCompleterCacheSize
-]
-
-{ #category : #accessing }
-GtMetrics class >> totalCompleterCacheSize [
-	<gtExample>
-	<noTest>
-	
-	^ GtPharoCompletionStrategy cacheSizeInMemory 
-]
-
-{ #category : #accessing }
-GtMetrics class >> totalImageSize [
-	<gtExample>
-	<noTest>
-	
-	^ Smalltalk vm memorySize
-]
-
-{ #category : #accessing }
-GtMetrics class >> totalMethodDictionaryInstancesCount [
-	<gtExample>
-	<noTest>
-	
-	^ MethodDictionary allInstances  size
-]
-
-{ #category : #accessing }
-GtMetrics class >> totalMethodDictionarySize [
-	<gtExample>
-	<noTest>
-	
-	^ MethodDictionary allInstances 
-		sum: [ :aMethodDictionary | aMethodDictionary gtSpecificSizeInMemory ]
-]
-
-{ #category : #accessing }
-GtMetrics class >> totalMethodsCount [
-	<gtExample>
-	<noTest>
-	
-	^ SystemNavigation default  allMethods size
-]
-
-{ #category : #accessing }
-GtMetrics class >> totalMethodsSize [
-	<gtExample>
-	<noTest>
-	
-	^ SystemNavigation default  allMethods 
-		sum: #gtSpecificSizeInMemory
-]
-
-{ #category : #accessing }
-GtMetrics class >> totalPragmasCacheSize [
-	<gtExample>
-	<noTest>
-	^ Pragma pragmaCache gtSpecificSizeInMemory + 
-		(Pragma pragmaCache sum: [ :pragmasSet | 
-			pragmasSet gtSpecificSizeInMemory +  (pragmasSet sum: #sizeInMemory) ]).
-]
-
-{ #category : #accessing }
-GtMetrics class >> totalSymbolsCount [
-	<gtExample>
-	<noTest>
-	
-	^ Symbol allSymbols size
-]
-
-{ #category : #accessing }
-GtMetrics class >> totalSymbolsSize [
-	<gtExample>
-	<noTest>
-	
-	^ Symbol allSymbols sum: [ :aSymbol | aSymbol sizeInMemory ].
-]
-
-{ #category : #accessing }
-GtMetrics class >> totalTraitsOverheadSize [
-	<gtExample>
-	<noTest>
-	| targetTraits |
-	
-	targetTraits := Smalltalk allClasses 
-		select: [ :class | class isTrait ].
-	targetTraits remove: TraitedClass.
-
-	^ targetTraits  
-		inject: 0
-		into: [ :traitsOverheadSize :targetTrait | 
-			traitsOverheadSize + (targetTrait users  
-				inject: 0
-				into: [ :traitUsersSize :targetClass | 
-					traitUsersSize 
-						+ targetClass class localMethodDict gtSpecificSizeInMemory
-						+ targetClass class baseLocalMethods gtSpecificSizeInMemory ]) ]
-]
-
-{ #category : #'as yet unclassified' }
 GtMetrics >> basePharoLinesOfCode [
 	^ basePharoLinesOfCode ifNil: [ basePharoLinesOfCode := self totalLinesOfCode - self gtLinesOfCode ]
 ]
@@ -183,7 +39,7 @@ GtMetrics >> famix3LinesOfCode [
 		sum: [:each | each gtRPackages sum: #linesOfCode ] ]
 ]
 
-{ #category : #accessing }
+{ #category : #'gt-extensions' }
 GtMetrics >> gtBarChartFor: aView [
 	<gtView>
 	| theData projectsAndSizes maxLines aBarWidthScale barChart |
@@ -213,12 +69,12 @@ GtMetrics >> gtBarChartFor: aView [
 				with: theData ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GtMetrics >> gtLinesOfCode [
 	^ gtLinesOfCode ifNil: [ gtLinesOfCode := self gtMethods sumNumbers: [ :each | each linesOfCode ] ]
 ]
 
-{ #category : #accessing }
+{ #category : #'gt-extensions' }
 GtMetrics >> gtMapFor: aView [
 	<gtView>
 	^ aView explicit
@@ -308,12 +164,12 @@ value nodes do: [ :group |
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GtMetrics >> gtMethods [
 	^ self methodsInProjects: self gtProjects
 ]
 
-{ #category : #accessing }
+{ #category : #'gt-extensions' }
 GtMetrics >> gtMetricsFor: aView [
 	<gtView>
 	^ aView columnedList
@@ -330,7 +186,7 @@ GtMetrics >> gtMetricsFor: aView [
 		column: 'Lines of code' text: #value
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GtMetrics >> gtProjects [
 	| projects |
 	projects := {BaselineOfGToolkit} flatCollect: [:project | 
@@ -341,7 +197,7 @@ GtMetrics >> gtProjects [
 	^ projects
 ]
 
-{ #category : #accessing }
+{ #category : #'gt-extensions' }
 GtMetrics >> gtProjectsFor: aView [
 	<gtView>
 	^ aView columnedList
@@ -354,7 +210,7 @@ GtMetrics >> gtProjectsFor: aView [
 		send: #value
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GtMetrics >> methodsInProjects: aCollection [
 	| mPackages packages |
 	mPackages := aCollection flatCollect: [:each | each packages ].
@@ -366,12 +222,12 @@ GtMetrics >> methodsInProjects: aCollection [
 		packages includes: each package ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GtMetrics >> pharoToReplaceLinesOfCode [
 	^ pharoToReplaceLinesOfCode ifNil: [ pharoToReplaceLinesOfCode := self pharoToReplaceMethods sumNumbers: [ :each | each linesOfCode ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GtMetrics >> pharoToReplaceMethods [
 	^ self methodsInProjects: self pharoToReplaceProjects
 ]
