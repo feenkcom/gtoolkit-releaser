@@ -16,6 +16,14 @@ GtMemoryMetrics class >> default [
 	^ default ifNil: [ default := self new ]
 ]
 
+{ #category : #metrics }
+GtMemoryMetrics class >> navigationEnvironmentSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default navigationEnvironmentSize
+]
+
 { #category : #accessing }
 GtMemoryMetrics class >> reset [
 	default := nil
@@ -194,6 +202,15 @@ GtMemoryMetrics >> initialize [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics >> navigationEnvironmentSize [
+
+	^ self 
+		cacheAt: #navigationEnvironmentSize
+		ifAbsentPut: [
+			 SystemNavigation default environment gtSpecificSizeInMemory ]
+]
+
+{ #category : #metrics }
 GtMemoryMetrics >> totalClassesClassSideSize [
 
 	^ self 
@@ -234,6 +251,7 @@ GtMemoryMetrics >> totalCodeAnalysedSize [
 		+ self totalSymbolsSize 
 		+ self totalPragmasCacheSize
 		+ self totalCompleterCacheSize
+		+ self navigationEnvironmentSize
 ]
 
 { #category : #metrics }
