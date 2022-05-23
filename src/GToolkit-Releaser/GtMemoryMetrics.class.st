@@ -256,7 +256,7 @@ GtMemoryMetrics >> totalClassOrganisationInstancesCount [
 	^ self 
 		cacheAt: #totalClassOrganisationInstancesCount
 		ifAbsentPut: [
-			 ClassOrganization allInstances size ]
+			 ClassOrganization instanceCount ]
 ]
 
 { #category : #metrics }
@@ -321,7 +321,7 @@ GtMemoryMetrics >> totalCompiledMethodInstancesCount [
 	^ self 
 		cacheAt: #totalCompiledMethodInstancesCount
 		ifAbsentPut: [
-			 CompiledMethod allInstances size ]
+			 CompiledMethod instanceCount ]
 ]
 
 { #category : #metrics }
@@ -350,7 +350,7 @@ GtMemoryMetrics >> totalMethodDictionaryInstancesCount [
 	^ self 
 		cacheAt: #totalMethodDictionaryInstancesCount
 		ifAbsentPut: [
-			 MethodDictionary allInstances size ]
+			 MethodDictionary instanceCount ]
 ]
 
 { #category : #metrics }
