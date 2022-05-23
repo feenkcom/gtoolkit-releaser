@@ -86,6 +86,14 @@ GtMemoryMetrics class >> totalCodeAnalysedSize [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics class >> totalCompiledMethodBasicInstancesSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalCompiledMethodBasicInstancesSize
+]
+
+{ #category : #metrics }
 GtMemoryMetrics class >> totalCompiledMethodInstancesCount [
 	<gtExample>
 	<noTest>
@@ -115,6 +123,14 @@ GtMemoryMetrics class >> totalImageSize [
 	<noTest>
 	
 	^ Smalltalk vm memorySize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalMethodDictionaryBasicSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalMethodDictionaryBasicSize
 ]
 
 { #category : #metrics }
@@ -316,6 +332,15 @@ GtMemoryMetrics >> totalCodeAnalysedSize [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics >> totalCompiledMethodBasicInstancesSize [
+
+	^ self 
+		cacheAt: #totalCompiledMethodBasicInstancesSize
+		ifAbsentPut: [
+			 CompiledMethod instancesSizeInMemory ]
+]
+
+{ #category : #metrics }
 GtMemoryMetrics >> totalCompiledMethodInstancesCount [
 
 	^ self 
@@ -342,6 +367,15 @@ GtMemoryMetrics >> totalCompleterCacheSize [
 		cacheAt: #totalCompleterCacheSize
 		ifAbsentPut: [
 			 GtPharoCompletionStrategy cacheSizeInMemory ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalMethodDictionaryBasicSize [
+
+	^ self 
+		cacheAt: #totalMethodDictionaryBasicSize
+		ifAbsentPut: [
+			 MethodDictionary instancesSizeInMemory ]
 ]
 
 { #category : #metrics }
