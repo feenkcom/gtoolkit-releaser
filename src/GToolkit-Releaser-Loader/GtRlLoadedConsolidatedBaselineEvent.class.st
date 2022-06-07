@@ -9,6 +9,19 @@ Class {
 	#category : #'GToolkit-Releaser-Loader-Logging'
 }
 
+{ #category : #accessing }
+GtRlLoadedConsolidatedBaselineEvent class >> fromContents: aLog [
+	| baselineCloneEvent actionEvents consolidatedEvent |
+	baselineCloneEvent := GtRlClonerBaselineEvent fromContents: aLog. 
+	actionEvents := GtRlLoaderEventsGroup fromContents:  aLog.
+	
+	consolidatedEvent := self new
+		initializeFrom: baselineCloneEvent.
+	consolidatedEvent addLoaderEvents: actionEvents.
+	
+	^ consolidatedEvent
+]
+
 { #category : #initialization }
 GtRlLoadedConsolidatedBaselineEvent >> addLoaderEvents: aGroup [ 
 	| byBaselineGroups |
