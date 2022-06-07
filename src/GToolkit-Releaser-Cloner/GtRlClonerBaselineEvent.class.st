@@ -10,6 +10,14 @@ Class {
 }
 
 { #category : #'instance creation' }
+GtRlClonerBaselineEvent class >> fromContents: aLoadingStringLog [
+	| clonerSignals |
+	clonerSignals := GtRlClonerSignalsLogReader  readFrom:  aLoadingStringLog.
+	
+	^ self fromSignals:   clonerSignals
+]
+
+{ #category : #'instance creation' }
 GtRlClonerBaselineEvent class >> fromSignals: aCollectionOfSignals [
 	| latestEvent eventsStack |
 	

@@ -8,6 +8,14 @@ Class {
 }
 
 { #category : #'instance creation' }
+GtRlLoaderEventsGroup class >> fromContents: aLoadingStringLog [
+	| loaderSignals |
+	loaderSignals := GtRlLoaderSignalsLogReader readFrom:  aLoadingStringLog.
+	
+	^ self fromSignals: loaderSignals
+]
+
+{ #category : #'instance creation' }
 GtRlLoaderEventsGroup class >> fromSignals: aGroupOfSignals [
 	| eventGroup |
 	eventGroup := self new.
