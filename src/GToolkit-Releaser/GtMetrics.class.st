@@ -42,7 +42,7 @@ GtMetrics >> famix3LinesOfCode [
 { #category : #'gt-extensions' }
 GtMetrics >> gtBarChartFor: aView [
 	<gtView>
-	| theData projectsAndSizes maxLines aBarWidthScale barChart |
+	| theData projectsAndSizes maxLines aBarWidthScale |
 	^ aView explicit
 		title: 'Bar chart';
 		stencil: [
@@ -80,7 +80,7 @@ GtMetrics >> gtMapFor: aView [
 	^ aView explicit
 		title: 'Map';
 		stencil: [ 
-		| value container all allBarsContainer |
+		| value container allBarsContainer |
 value := GtNestedTreeNode new
 	name: 'Entire distribution';
 	nodes: {
