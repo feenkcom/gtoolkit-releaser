@@ -18,7 +18,7 @@ Class {
 		'rootProjectRelease',
 		'releaseActions'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #releasing }
@@ -245,7 +245,7 @@ GtRlReleaserExportWorkflow >> printNewCommitsToFile [
 		newCommits do: [ :aGtRlNewCommits | aGtRlNewCommits newCommits do: [:c |
 			|url|
 			url := aGtRlNewCommits repository remotes anyOne url.
-			url := url replaceSuffix: '.git' with: '/commit/'. 
+			url := (url withoutSuffix: '.git') with: '/commit/'. 
 			url := url copyReplaceAll: 'git@' with: 'https://'.
 			url := url copyReplaceAll: 'com:' with: 'com/'.
 			writeStream nextPutAll: url.
