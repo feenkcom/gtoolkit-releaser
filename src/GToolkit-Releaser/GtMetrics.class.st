@@ -239,11 +239,8 @@ GtMetrics >> pharoToReplaceProjects [
 		BaselineOfShout . 
 		BaselineOfGeneralHelp . 
 		BaselineOfCalypso . 
-		BaselineOfPharoGlamour . 
-		BaselineOfPharoGT . 
 		BaselineOfQA . 
 		BaselineOfOSWindow.
-		BaselineOfSpec.
 		BaselineOfSpec2 } flatCollect: [:project | 
 			project version withDeepCollect: [ :each | 
 				each projects collect: #version ] as: Set ].
