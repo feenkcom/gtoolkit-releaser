@@ -31,7 +31,7 @@ GtRlReleaserCommandLineHandler >> activate [
 
 	theWorkflowBuilder := [
 		| theWorkflow |
-		GtPharoCompletionStrategy unsubscribeFromSystem.
+		GtPharoIndex current unsubscribeFromSystem.
 		theWorkflow := GtRlReleaserExportWorkflow buildGToolkitReleaseWithVersionComputation: theVersionComputation.
 		
 		self commandLine
@@ -49,7 +49,7 @@ GtRlReleaserCommandLineHandler >> activate [
 							anActualVersion versionString }) ] ].
 		
 		theWorkflow executeReleaseActions.
-		GtPharoCompletionStrategy subscribeToSystem ].
+		GtPharoIndex current subscribeToSystem ].
 
 	(self hasOption: 'verbose')
 		ifTrue: [ TranscriptLogger runDuring: theWorkflowBuilder ]

@@ -366,7 +366,7 @@ GtMemoryMetrics >> totalCompleterCacheSize [
 	^ self 
 		cacheAt: #totalCompleterCacheSize
 		ifAbsentPut: [
-			 GtPharoCompletionStrategy cacheSizeInMemory ]
+			 GtPharoIndex cacheSizeInMemory ]
 ]
 
 { #category : #metrics }
