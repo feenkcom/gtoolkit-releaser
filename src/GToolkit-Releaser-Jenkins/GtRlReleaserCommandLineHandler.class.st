@@ -1,20 +1,20 @@
 Class {
-	#name : 'GtRlReleaserCommandLineHandler',
-	#superclass : 'CommandLineHandler',
-	#category : 'GToolkit-Releaser-Jenkins'
+	#name : #GtRlReleaserCommandLineHandler,
+	#superclass : #CommandLineHandler,
+	#category : #'GToolkit-Releaser-Jenkins'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaserCommandLineHandler class >> commandName [
 	^ 'releasegtoolkit'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaserCommandLineHandler class >> description [
 	^ 'GtRlReleaserCommand line utility'
 ]
 
-{ #category : 'activation' }
+{ #category : #activation }
 GtRlReleaserCommandLineHandler >> activate [
 	| theWorkflowBuilder theVersionComputation |
 	
@@ -31,7 +31,7 @@ GtRlReleaserCommandLineHandler >> activate [
 
 	theWorkflowBuilder := [
 		| theWorkflow |
-		GtPharoCompletionStrategy unsubscribeFromSystem.
+		GtPharoIndex current unsubscribeFromSystem.
 		theWorkflow := GtRlReleaserExportWorkflow buildGToolkitReleaseWithVersionComputation: theVersionComputation.
 		
 		self commandLine
@@ -49,7 +49,7 @@ GtRlReleaserCommandLineHandler >> activate [
 							anActualVersion versionString }) ] ].
 		
 		theWorkflow executeReleaseActions.
-		GtPharoCompletionStrategy subscribeToSystem ].
+		GtPharoIndex current subscribeToSystem ].
 
 	(self hasOption: 'verbose')
 		ifTrue: [ TranscriptLogger runDuring: theWorkflowBuilder ]
@@ -65,7 +65,7 @@ GtRlReleaserCommandLineHandler >> activate [
 		ifFalse: [ self quit ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlReleaserCommandLineHandler >> assignSshKeys [
 	| privateKey publicKey |
 	
