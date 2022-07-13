@@ -20,7 +20,7 @@ GtRlSignalsGroup >> add: anEvent [
 
 { #category : #converting }
 GtRlSignalsGroup >> asBrItemsProvider [
-	^ BrListSequenceableCollectionItemsProvider forCollection: self
+	^ BrSequenceableCollectionItemsProvider forCollection: self
 ]
 
 { #category : #accessing }
