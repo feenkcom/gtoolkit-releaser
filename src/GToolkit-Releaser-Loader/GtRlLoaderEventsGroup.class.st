@@ -39,7 +39,7 @@ GtRlLoaderEventsGroup >> add: anEvent [
 
 { #category : #converting }
 GtRlLoaderEventsGroup >> asBrItemsProvider [
-	^ BrListSequenceableCollectionItemsProvider forCollection: self
+	^ BrSequenceableCollectionItemsProvider forCollection: self
 ]
 
 { #category : #accessing }
