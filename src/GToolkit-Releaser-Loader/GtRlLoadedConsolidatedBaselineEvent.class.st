@@ -153,40 +153,39 @@ GtRlLoadedConsolidatedBaselineEvent >> gtClonerSignalsFor: aView [
 { #category : #accessing }
 GtRlLoadedConsolidatedBaselineEvent >> gtLoadDirectivesDetailedMapFor: aView [
 	"<gtView>"
+
 	^ aView mondrian
 		title: 'Load map' translated;
 		priority: 20;
-		painting: [ :mondrian |
-			mondrian nodes 
-				shape: [ :aSubgroup |
+		painting: [ :mondrian | 
+			mondrian nodes
+				shape: [ :aSubgroup | 
 					BrVerticalPane new
 						fitContent;
 						alignCenter;
 						border: (BlBorder paint: Color gray);
 						padding: (BlInsets all: 3);
 						geometry: (BlRoundedRectangleGeometry cornerRadius: 5);
-						when: BlClickEvent do: [ :anEvent | 
-							anEvent currentTarget phlow spawnObject: aSubgroup ];
-						addChild: (BrLabel new 
-							text: aSubgroup baselineName; 
-							aptitude: BrGlamorousLabelAptitude);
-						addChild: (BrLabel new 
-							text: aSubgroup totalDuration gtHumanReadableString; 
-							aptitude: BrGlamorousLabelAptitude) ];
+						when: BlClickEvent
+							do: [ :anEvent | anEvent currentTarget phlow spawnObject: aSubgroup ];
+						addChild: (BrLabel new text: aSubgroup baselineName);
+						addChild: (BrLabel new text: aSubgroup totalDuration gtHumanReadableString) ];
 				with: (self withDeepCollect: #subEvents).
 			mondrian edges
-				stencil: [:class | 
-					BlParabollaArcElement new 
+				stencil: [ :class | 
+					BlParabollaArcElement new
 						zIndex: 0;
 						curvatureFraction: 0.3;
 						border: (BlBorder paint: (Color gray alpha: 0.5) width: 2);
 						toHead: (BlArrowheadSimpleArrow new
-							border: (BlBorder builder paint: (Color gray alpha: 0.5); width: 2; build)) ];
+								border: (BlBorder builder
+										paint: (Color gray alpha: 0.5);
+										width: 2;
+										build)) ];
 				fromRightCenter;
 				toLeftCenter;
-				connectToAll: #subEvents.
-			"mondrian layout custom: (GtGradWestHierarchicalLayout new)"
-			mondrian layout  horizontalDominanceTree
+				connectToAll: #subEvents.	"mondrian layout custom: (GtGradWestHierarchicalLayout new)"
+			mondrian layout horizontalDominanceTree
 				levelDistance: 200;
 				nodeDistance: 10 ]
 ]
@@ -197,28 +196,29 @@ GtRlLoadedConsolidatedBaselineEvent >> gtLoadDirectivesMapFor: aView [
 	^ aView mondrian
 		title: 'Load map' translated;
 		priority: 20;
-		painting: [ :mondrian |
-			mondrian nodes 
-				shape: [ :aSubgroup |
-					BrLabel new 
-						text: aSubgroup description; 
-						aptitude: BrGlamorousLabelAptitude;
-						when: BlClickEvent do: [ :anEvent | 
-							anEvent currentTarget phlow spawnObject: aSubgroup ] ];
+		painting: [ :mondrian | 
+			mondrian nodes
+				shape: [ :aSubgroup | 
+					BrLabel new
+						text: aSubgroup description;
+						when: BlClickEvent
+							do: [ :anEvent | anEvent currentTarget phlow spawnObject: aSubgroup ] ];
 				with: (self withDeepCollect: #subEvents).
 			mondrian edges
-				stencil: [:class | 
-					BlParabollaArcElement new 
+				stencil: [ :class | 
+					BlParabollaArcElement new
 						zIndex: 0;
 						curvatureFraction: 0.3;
 						border: (BlBorder paint: (Color gray alpha: 0.5) width: 2);
 						toHead: (BlArrowheadSimpleArrow new
-							border: (BlBorder builder paint: (Color gray alpha: 0.5); width: 2; build)) ];
+								border: (BlBorder builder
+										paint: (Color gray alpha: 0.5);
+										width: 2;
+										build)) ];
 				fromRightCenter;
 				toLeftCenter;
-				connectToAll: #subEvents.
-			"mondrian layout custom: (GtGradWestHierarchicalLayout new)"
-			mondrian layout  horizontalDominanceTree
+				connectToAll: #subEvents.	"mondrian layout custom: (GtGradWestHierarchicalLayout new)"
+			mondrian layout horizontalDominanceTree
 				levelDistance: 100;
 				nodeDistance: 10 ]
 ]

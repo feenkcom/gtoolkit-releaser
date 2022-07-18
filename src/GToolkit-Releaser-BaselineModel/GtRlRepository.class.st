@@ -18,7 +18,7 @@ Class {
 		'projects',
 		'icebergRepository'
 	],
-	#category : 'GToolkit-Releaser-BaselineModel-Model'
+	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
 
 { #category : #'instance creation' }
@@ -106,33 +106,31 @@ GtRlRepository >> gtRepoDependenciesFor: aView [
 
 { #category : #ui }
 GtRlRepository >> gtRepoMapFor: aView [
-	<gtView> 
-	^ aView mondrian 
-	  title: 'Repo Map';
-	  priority: 10; 
-	  painting: [ :mondrian | 
+	<gtView>
+	^ aView mondrian
+		title: 'Repo Map';
+		priority: 10;
+		painting: [ :mondrian | 
 			| repos |
 			repos := (self withDeepCollect: #childRepositories) asSet.
-			mondrian nodes 
+			mondrian nodes
 				shape: [ :aRepository | 
 					| container children label |
 					container := BlElement new
-						layout: BlLinearLayout vertical;
-						border: (BlBorder paint: Color gray width: 1);
-						zIndex: 1;
-						constraintsDo: [ :c |
-							c padding: (BlInsets all: 5).
-							c horizontal fitContent.
-							c vertical fitContent ].
+							layout: BlLinearLayout vertical;
+							border: (BlBorder paint: Color gray width: 1);
+							zIndex: 1;
+							constraintsDo: [ :c | 
+								c padding: (BlInsets all: 5).
+								c horizontal fitContent.
+								c vertical fitContent ].
 					label := BrLabel new
-						text: aRepository loadSpecificationString;
-						aptitude: BrGlamorousLabelAptitude;
-						constraintsDo: [ :c | 
-							c padding: (BlInsets all: 5).
-							c linear horizontal alignCenter ].
+							text: aRepository loadSpecificationString;
+							constraintsDo: [ :c | 
+								c padding: (BlInsets all: 5).
+								c linear horizontal alignCenter ].
 					children := BlElement new
-						constraintsDo: [ :c | 
-							c linear horizontal alignCenter ].
+							constraintsDo: [ :c | c linear horizontal alignCenter ].
 					children graph beChildrenContainer.
 					container
 						addChild: label;
@@ -141,28 +139,32 @@ GtRlRepository >> gtRepoMapFor: aView [
 				with: repos;
 				forEach: [ :aRepository | 
 					mondrian nodes
-						shape: [ :aProject |
+						shape: [ :aProject | 
 							(BlTextElement text: aProject name asRopedText)
 								constraintsDo: [ :c | 
 									c padding: (BlInsets all: 2).
-									c linear horizontal alignCenter ]. ];
+									c linear horizontal alignCenter ] ];
 						with: aRepository projects.
 					mondrian layout vertical ].
 			mondrian edges
-				shape: [
-					BlParabollaArcElement new 
+				shape: [ BlParabollaArcElement new
 						zIndex: 0;
 						curvatureFraction: 0.2;
 						border: (BlBorder paint: (Color gray alpha: 0.2) width: 2);
 						toHead: (BlArrowheadSimpleArrow new
-							border: (BlBorder builder paint: (Color gray alpha: 0.2); width: 2; build)) ];
+								border: (BlBorder builder
+										paint: (Color gray alpha: 0.2);
+										width: 2;
+										build)) ];
 				fromRightCenter;
 				toLeftCenter;
-				connectFrom: #yourself 
-				toAll: [:each | |dependedRepos |
-					dependedRepos := each childRepositories.
-					repos select: [ :project | dependedRepos anySatisfy: [ :dependedProject | dependedProject = project ] ] ].
-			mondrian layout custom: (GtGradWestHierarchicalLayout new)]
+				connectFrom: #yourself
+					toAll: [ :each | 
+						| dependedRepos |
+						dependedRepos := each childRepositories.
+						repos
+							select: [ :project | dependedRepos anySatisfy: [ :dependedProject | dependedProject = project ] ] ].
+			mondrian layout custom: GtGradWestHierarchicalLayout new ]
 ]
 
 { #category : #ui }
