@@ -3,7 +3,7 @@ I model a collection of release actions. I exist to provide an interface for sim
 
 Some public API methods: 
 	- {{gtMethod:GtRlReleaseActionsGroup>>#execute}} - execute all release actions from this group
-	- ${method:method:GtRlReleaseActionsGroup>>#sortedByOrder} - return a new group where actions are sorted based on the order attribute. 
+	- {{gtMethod:GtRlReleaseActionsGroup>>#sortedByOrder}} - return a new group where actions are sorted based on the order attribute. 
 
 
 "
@@ -13,7 +13,7 @@ Class {
 	#instVars : [
 		'actions'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #copying }
