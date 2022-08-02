@@ -2,9 +2,6 @@
 I merge the reference branch to the release branch.
 
 I only work with strategies of type {{gtClass:GtRlSemanticTagReleaseStrategy}}. 
-See {{gtMethod:GtRlSemanticTagReleaseStrategy>>#mergeToReleaseBranch}} for more implementation details.
-
-
 "
 Class {
 	#name : #GtRlMergeToReleaseBranchAction,
