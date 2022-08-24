@@ -20,7 +20,7 @@ GtRlGToolkitExamplesExplorer >> gtViewAllExamplesInImageFor: aView [
 	^ aView forward 
 		title: 'All examples';
 		priority: 20;
-		object: [ GtExampleGroup withAll: Smalltalk gtExamplesContained ];
+		object: [ GtExampleGroup withAll: (Smalltalk gtExamplesContained collect: #asCachedExampleWithResult) ];
 		view: #gtExamplesFor:
 ]
 
