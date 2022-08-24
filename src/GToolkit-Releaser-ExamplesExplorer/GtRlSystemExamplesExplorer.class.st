@@ -32,16 +32,6 @@ GtRlSystemExamplesExplorer >> gtDisplayOn: stream [
 ]
 
 { #category : #ui }
-GtRlSystemExamplesExplorer >> gtViewAllExamplesFor: aView [
-	<gtView>
-	^ aView forward
-		title: 'All Examples';
-		priority: 15;
-		object: [ self allContainedExamples ];
-		view: #gtExamplesFor:
-]
-
-{ #category : #ui }
 GtRlSystemExamplesExplorer >> gtViewRepositoriesListFor: aView [
 	<gtView>
 	^ aView columnedList
