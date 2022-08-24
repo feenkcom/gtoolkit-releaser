@@ -15,16 +15,6 @@ GtRlGToolkitExamplesExplorer class >> buildForGToolkitProject [
 ]
 
 { #category : #ui }
-GtRlGToolkitExamplesExplorer >> gtViewAllExamplesInImageFor: aView [
-	<gtView>
-	^ aView forward 
-		title: 'All examples';
-		priority: 20;
-		object: [ GtExampleGroup withAll: (Smalltalk gtExamplesContained collect: #asCachedExampleWithResult) ];
-		view: #gtExamplesFor:
-]
-
-{ #category : #ui }
 GtRlGToolkitExamplesExplorer >> gtViewBrickStackRepositoriesListFor: aView [
 	<gtView>
 	^ (super gtViewRepositoriesListFor: aView)
