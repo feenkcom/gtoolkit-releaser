@@ -20,7 +20,7 @@ GtRlProjectExamplesExplorer >> containedExamples [
 		currentExamples := OrderedCollection new.
 		self project containedRPackagesDo: [ :aRPackage | 
 			currentExamples addAll: aRPackage gtExamplesAllContained ].
-		cachedExamples := GtExampleGroup withAll: currentExamples ]
+		cachedExamples := GtExampleGroup withAll: (currentExamples collect: #asCachedExampleWithResult) ]
 ]
 
 { #category : #accessing }
