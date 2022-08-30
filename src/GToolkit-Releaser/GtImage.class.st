@@ -235,6 +235,29 @@ GtImage >> gtCommitInfoFor: aView [
 		column: 'Commit' translated text: [ :each | each value asString ].
 ]
 
+{ #category : #accessing }
+GtImage >> gtExensionsFor: aView [
+	<gtView>
+	| inspectorPragmas spotterPragmas coderAddOnsPragmas coderContextMenuPragmas |
+	^ aView columnedList
+		title: 'GT Extensions';
+		priority: 20;
+		items: [ 
+			inspectorPragmas := GtInspector extensionsPragma gtPragmas.
+			spotterPragmas := GtSpotter extensionsPragma gtPragmas.
+			coderAddOnsPragmas := GtCoderModel astExtensionsPragma gtPragmas.
+			coderContextMenuPragmas := GtCoderModel contextMenuAddOnsPragma gtPragmas.
+			{
+				{'Inspector extensions' . inspectorPragmas . inspectorPragmas size}.
+				{'Spotter extensions' . spotterPragmas . spotterPragmas size}.
+				{'Coder AST AddOns' . coderAddOnsPragmas . coderAddOnsPragmas size}.
+				{'Coder Menu AddOns' . coderContextMenuPragmas . coderContextMenuPragmas size}.
+			} ];
+		column: 'Property' text: [ :each | each first ];
+		column: 'Value' text: [ :each | each last ];
+		send: #value
+]
+
 { #category : #ui }
 GtImage >> gtImageInfoFor: aView [
 	<gtView>
