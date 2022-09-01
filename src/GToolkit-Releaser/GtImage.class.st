@@ -238,7 +238,7 @@ GtImage >> gtCommitInfoFor: aView [
 { #category : #accessing }
 GtImage >> gtExensionsFor: aView [
 	<gtView>
-	| inspectorPragmas spotterPragmas coderAddOnsPragmas coderContextMenuPragmas |
+	| inspectorPragmas spotterPragmas coderAddOnsPragmas coderContextMenuPragmas advicePragmas actionPragmas |
 	^ aView columnedList
 		title: 'GT Extensions';
 		priority: 20;
@@ -247,15 +247,19 @@ GtImage >> gtExensionsFor: aView [
 			spotterPragmas := GtSpotter extensionsPragma gtPragmas.
 			coderAddOnsPragmas := GtCoderModel astExtensionsPragma gtPragmas.
 			coderContextMenuPragmas := GtCoderModel contextMenuAddOnsPragma gtPragmas.
+			actionPragmas := #gtAction gtPragmas.
+			advicePragmas := #gtAdvice gtPragmas.
 			{
 				{'Inspector extensions' . inspectorPragmas . inspectorPragmas size}.
-				{'Spotter extensions' . spotterPragmas . spotterPragmas size}.
+				{'Object actions' . actionPragmas . actionPragmas size}.
+				{'Search extensions' . spotterPragmas . spotterPragmas size}.
 				{'Coder AST AddOns' . coderAddOnsPragmas . coderAddOnsPragmas size}.
 				{'Coder Menu AddOns' . coderContextMenuPragmas . coderContextMenuPragmas size}.
+				{'Advices' . advicePragmas . advicePragmas size}.
 			} ];
 		column: 'Property' text: [ :each | each first ];
 		column: 'Value' text: [ :each | each last ];
-		send: #value
+		send: #second
 ]
 
 { #category : #ui }
