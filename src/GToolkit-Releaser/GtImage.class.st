@@ -238,9 +238,9 @@ GtImage >> gtCommitInfoFor: aView [
 { #category : #accessing }
 GtImage >> gtExensionsFor: aView [
 	<gtView>
-	| inspectorPragmas spotterPragmas coderAddOnsPragmas coderContextMenuPragmas advicePragmas actionPragmas |
+	| inspectorPragmas spotterPragmas coderAddOnsPragmas coderContextMenuPragmas advicePragmas actionPragmas lepiterSnippets |
 	^ aView columnedList
-		title: 'GT Extensions';
+		title: 'Extensions';
 		priority: 20;
 		items: [ 
 			inspectorPragmas := GtInspector extensionsPragma gtPragmas.
@@ -249,6 +249,7 @@ GtImage >> gtExensionsFor: aView [
 			coderContextMenuPragmas := GtCoderModel contextMenuAddOnsPragma gtPragmas.
 			actionPragmas := #gtAction gtPragmas.
 			advicePragmas := #gtAdvice gtPragmas.
+			lepiterSnippets := LeSnippet allSubclasses select: [:each | each class includesSelector: #leJsonV4Name ].
 			{
 				{'Inspector extensions' . inspectorPragmas . inspectorPragmas size}.
 				{'Object actions' . actionPragmas . actionPragmas size}.
@@ -256,6 +257,7 @@ GtImage >> gtExensionsFor: aView [
 				{'Coder AST AddOns' . coderAddOnsPragmas . coderAddOnsPragmas size}.
 				{'Coder Menu AddOns' . coderContextMenuPragmas . coderContextMenuPragmas size}.
 				{'Advices' . advicePragmas . advicePragmas size}.
+				{'Lepiter snippets' . lepiterSnippets . lepiterSnippets size}.
 			} ];
 		column: 'Property' text: [ :each | each first ];
 		column: 'Value' text: [ :each | each last ];
