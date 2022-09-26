@@ -17,13 +17,19 @@ Class {
 		'repositoriesByUrl',
 		'projectsChain'
 	],
-	#category : 'GToolkit-Releaser-BaselineModel-Builder'
+	#category : #'GToolkit-Releaser-BaselineModel-Builder'
 }
 
 { #category : #assertions }
 GtRlDependenciesModelBuilder >> assertBaselineMethodIn: aBaselineClass [
-	self assert: [ aBaselineClass includesSelector: #baseline: ].
-	self assert: [ (aBaselineClass >> #baseline:) hasPragmaNamed: #baseline ]
+	self
+		assert: [ aBaselineClass includesSelector: #baseline: ]
+		description: [ 'Baseline class named {1} must include #baseline: selector'
+				format: {aBaselineClass} ].
+	self
+		assert: [ aBaselineClass >> #baseline: hasPragmaNamed: #baseline ]
+		description: [ 'Baseline method {1} >> #baseline: must have <baseline> pragma.'
+				format: {aBaselineClass} ]
 ]
 
 { #category : #building }
