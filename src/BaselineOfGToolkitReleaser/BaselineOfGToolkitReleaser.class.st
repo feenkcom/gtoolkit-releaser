@@ -190,7 +190,7 @@ BaselineOfGToolkitReleaser >> baseline: spec [
 	spec for: #'common' do: [
 		spec
 			baseline: 'DeepTraverser' with: [
-				spec repository: 'github://feenkcom/DeepTraverser:v1.1.124/src' ].
+				spec repository: 'github://feenkcom/DeepTraverser:v1.1.125/src' ].
 
 		spec package: 'GToolkit-Releaser-BaselineModel'.
 		spec package: 'GToolkit-Releaser' with: [
