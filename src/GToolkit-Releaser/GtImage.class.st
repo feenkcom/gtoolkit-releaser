@@ -244,7 +244,7 @@ GtImage >> gtExensionsFor: aView [
 		priority: 20;
 		items: [ 
 			inspectorPragmas := GtInspector extensionsPragma gtPragmas.
-			spotterPragmas := GtSpotter extensionsPragma gtPragmas.
+			spotterPragmas := GtStreamingSpotter extensionsPragma gtPragmas.
 			coderAddOnsPragmas := GtCoderModel astExtensionsPragma gtPragmas.
 			coderContextMenuPragmas := GtCoderModel contextMenuAddOnsPragma gtPragmas.
 			actionPragmas := #gtAction gtPragmas.
