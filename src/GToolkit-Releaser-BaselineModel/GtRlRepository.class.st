@@ -18,7 +18,7 @@ Class {
 		'projects',
 		'icebergRepository'
 	],
-	#category : 'GToolkit-Releaser-BaselineModel-Model'
+	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
 
 { #category : #'instance creation' }
@@ -50,20 +50,38 @@ GtRlRepository >> childRepositories [
 
 ]
 
+{ #category : #accessing }
+GtRlRepository >> containedPackages [
+	^ self projects flatCollect: [ :aProject |
+		aProject packages ]
+]
+
 { #category : #ui }
 GtRlRepository >> gtBranchesFor: aView [
 	<gtView>
+	
 	^ aView list
-		title: 'Branches' translated;
+		title: 'Branches';
 		items: [ self icebergRepository allBranches ];
 		itemText: #gtSummaryDescription
 ]
 
 { #category : #ui }
+GtRlRepository >> gtContainedPackagesFor: aView [
+	<gtView>
+	
+	^ aView list
+		title: 'Packages';
+		priority: 50;
+		items: [ self containedPackages ]
+]
+
+{ #category : #ui }
 GtRlRepository >> gtProjectsFor: aView [
 	<gtView>
+	
 	^ aView list 
-		title: 'Projects' translated;
+		title: 'Projects';
 		items: [ self projects ]
 ]
 
