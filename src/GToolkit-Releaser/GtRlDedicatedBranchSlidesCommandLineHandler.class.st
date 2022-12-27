@@ -26,7 +26,7 @@ GtRlDedicatedBranchSlidesCommandLineHandler >> exampleReport [
 GtRlDedicatedBranchSlidesCommandLineHandler >> packages [ 
 	| baselineProject packages packageNames |
 	
-	baselineProject := BaselineOfGToolkitForPharo9 gtRlProjectWithRepository: 'github://feenkcom/gtoolkit:main/src'.
+	baselineProject := BaselineOfGToolkit fullBaselineProject.
 	packages := baselineProject withAllContainedRPackagesSelect: [ :aPackage |
 		aPackage gtSlideBuildersAllContained isNotEmpty ].
 	
