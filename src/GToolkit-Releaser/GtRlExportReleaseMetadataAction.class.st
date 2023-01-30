@@ -8,7 +8,7 @@ See {{gtClass:GtRlReleaseVersionMetadata}} for more details about what metadata 
 Class {
 	#name : #GtRlExportReleaseMetadataAction,
 	#superclass : #GtRlRepositoryReleaseAction,
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #printing }
@@ -51,7 +51,7 @@ GtRlExportReleaseMetadataAction >> gtViewPreviousMetadataDiffFor: aView [
 			releaseMetadata := GtRlReleaseVersionMetadata new
 				repositories: self repositoryRelease versionsMetadata.
 			
-			(GtDiffElement on: (TextDiffBuilder 
+			(GtDiffElement onDiff: (TextDiffBuilder 
 				from: (previousMetadataJson ifNil: [ '' ])
 				to: releaseMetadata asJSONForExport)) aptitude: GtDiffShadowAptitude ]
 ]

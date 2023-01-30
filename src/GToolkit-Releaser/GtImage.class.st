@@ -55,6 +55,13 @@ GtImage class >> computeNextGToolkitVersion: aVersionComputation [
 	^ aVersionComputation nextSemanticVersionFrom: self computeCurrentGToolkitVersion
 ]
 
+{ #category : #accessing }
+GtImage class >> currentBasePharoImage [
+	<gtExample>
+	
+	^ SystemVersion current asString
+]
+
 { #category : #configuration }
 GtImage class >> defaultPreferencesFolder [
 	^ FileLocator preferences / 'pharo'

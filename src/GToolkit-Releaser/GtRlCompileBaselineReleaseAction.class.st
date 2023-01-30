@@ -11,7 +11,7 @@ Class {
 	#instVars : [
 		'projectRelease'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #'instance creation' }
@@ -64,7 +64,7 @@ GtRlCompileBaselineReleaseAction >> gtViewBaselineSourceDiffFor: aView [
 		title: 'Diff current baseline' translated;
 		priority: 20;
 		stencil: [ :anEditor | 
-			(GtDiffElement on: (TextDiffBuilder 
+			(GtDiffElement onDiff: (TextDiffBuilder 
 				from: (self projectRelease project baselineClass >> #baseline:)
 				to: (self projectRelease generateBaselineSource))) aptitude: GtDiffShadowAptitude ]
 ]
@@ -82,7 +82,7 @@ GtRlCompileBaselineReleaseAction >> gtViewPreviousVersionDiffFor: aView [
 			| latestTag  originalCode |
 			latestTag := self projectRelease repositoryRelease latestSemanticVersionTag.
 			originalCode := self baselineCodeForCommit: latestTag commit.
-			(GtDiffElement on: (TextDiffBuilder 
+			(GtDiffElement onDiff: (TextDiffBuilder 
 				from: (originalCode ifNil: [ '' ])
 				to: (self projectRelease generateBaselineSource))) aptitude: GtDiffShadowAptitude ]
 ]
