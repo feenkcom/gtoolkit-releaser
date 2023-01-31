@@ -39,21 +39,22 @@ GtRlExportReleaseMetadataAction >> gtViewPreviousMetadataDiffFor: aView [
 	<gtView>
 	self repositoryRelease ifNil: [ ^ aView ].
 	self repositoryRelease semanticVersionTags ifEmpty: [ ^ self ].
-	
+
 	^ aView explicit
 		title: 'Diff previous metadata' translated;
 		priority: 45;
 		stencil: [ :anEditor | 
-			| latestTag previousMetadataJson releaseMetadata |
+			| latestTag previousMetadataJson releaseMetadata change |
 			latestTag := self repositoryRelease latestSemanticVersionTag.
-			
+
 			previousMetadataJson := self metadataForCommit: latestTag commit.
 			releaseMetadata := GtRlReleaseVersionMetadata new
-				repositories: self repositoryRelease versionsMetadata.
-			
-			(GtDiffElement onDiff: (TextDiffBuilder 
-				from: (previousMetadataJson ifNil: [ '' ])
-				to: releaseMetadata asJSONForExport)) aptitude: GtDiffShadowAptitude ]
+					repositories: self repositoryRelease versionsMetadata.
+			change := GtDiffBuilder
+					computeDifferencesFrom: (previousMetadataJson ifNil: [ '' ])
+					to: releaseMetadata asJSONForExport
+					using: GtCharacterGroupDiffSplitter words.
+			(GtDiffElement onChange: change) aptitude: GtDiffShadowAptitude ]
 ]
 
 { #category : #baselines }
