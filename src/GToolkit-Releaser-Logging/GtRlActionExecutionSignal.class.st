@@ -57,6 +57,19 @@ GtRlActionExecutionSignal >> initializeForAction: anAction [
 	versionDescription := anAction repositoryRelease version description.
 ]
 
+{ #category : #initialization }
+GtRlActionExecutionSignal >> initializeFromTimestamp: aTimestamp andData: dataParts [
+	self basicTimestamp: aTimestamp.
+	
+	actionOrder := dataParts third.
+	actionType := dataParts fourth.
+	actionDescription := dataParts fifth.
+	repositoryId := dataParts sixth.
+	versionDescription := dataParts seventh.
+	
+	self basicProcessId: dataParts eighth
+]
+
 { #category : #testing }
 GtRlActionExecutionSignal >> isEndSignalType [
 	^ false
