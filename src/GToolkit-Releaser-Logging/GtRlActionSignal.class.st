@@ -1,19 +1,24 @@
 Class {
 	#name : #GtRlActionSignal,
-	#superclass : #GtReleaserSignal,
+	#superclass : #GtRlReleaserSignal,
 	#instVars : [
 		'action'
 	],
-	#category : 'GToolkit-Releaser-Logging'
+	#category : #'GToolkit-Releaser-Logging'
 }
 
-{ #category : #accessing }
-GtRlActionSignal class >> action: anAction [
+{ #category : #'instance creation' }
+GtRlActionSignal class >> forAction: anAction [
 	^ self new
-		action: anAction
+		initializeForAction: anAction
 ]
 
 { #category : #accessing }
 GtRlActionSignal >> action: anObject [
 	action := anObject
+]
+
+{ #category : #initialization }
+GtRlActionSignal >> initializeForAction: anAction [
+	self action:  anAction
 ]

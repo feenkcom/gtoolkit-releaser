@@ -1,10 +1,10 @@
 Class {
 	#name : #GtRlReleaseConfigurationSignal,
-	#superclass : #GtReleaserSignal,
+	#superclass : #GtRlReleaserSignal,
 	#instVars : [
 		'configuration'
 	],
-	#category : 'GToolkit-Releaser-Logging'
+	#category : #'GToolkit-Releaser-Logging'
 }
 
 { #category : #'instance creation' }

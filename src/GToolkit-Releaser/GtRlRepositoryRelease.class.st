@@ -113,7 +113,7 @@ GtRlRepositoryRelease >> description [
 	^ String streamContents: [ :stream |
 		stream 
 			nextPutAll: self repository id;
-		 	nextPutAll: ', ';
+			nextPutAll: ', ';
 			nextPutAll: self releaseDetailsDescription ]
 ]
 

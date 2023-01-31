@@ -1,13 +1,13 @@
 Class {
 	#name : #GtRlProjectLinkWithRepositorySignal,
-	#superclass : #GtReleaserSignal,
+	#superclass : #GtRlReleaserSignal,
 	#instVars : [
 		'projectName',
 		'repositoryName',
 		'project',
 		'repository'
 	],
-	#category : 'GToolkit-Releaser-Logging'
+	#category : #'GToolkit-Releaser-Logging'
 }
 
 { #category : #'as yet unclassified' }
