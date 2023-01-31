@@ -18,7 +18,7 @@ Class {
 		'order',
 		'isExecuted'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #printing }
@@ -33,12 +33,17 @@ GtRlReleaseAction >> descriptionDetails [
 
 { #category : #logging }
 GtRlReleaseAction >> emitCreationSignal [
-	(GtRlCreateReleaseActionSignal action: self) emit.
+	(GtRlCreateReleaseActionSignal forAction: self) emit.
 ]
 
 { #category : #logging }
-GtRlReleaseAction >> emitExecutionSignal [
-	(GtRlExecuteActionSignal action: self) emit.
+GtRlReleaseAction >> emitExecutionCompletedSignal [
+	(GtRlActionExecutionCompletedSignal forAction: self) emit.
+]
+
+{ #category : #logging }
+GtRlReleaseAction >> emitExecutionStartedSignal [
+	(GtRlActionExecutionStartedSignal forAction: self) emit.
 ]
 
 { #category : #actions }
@@ -48,9 +53,12 @@ GtRlReleaseAction >> execute [
 		description: 'Release actions should only be executed on releases that are not passive.'.
 	
 	isExecuted ifTrue: [ Error signal: 'Action already executed' ].
-	self emitExecutionSignal.
+	
+	self emitExecutionStartedSignal.
 	[ self performAction ] 
-		ensure: [ isExecuted := true ].
+		ensure: [ 
+			isExecuted := true.
+			self emitExecutionCompletedSignal ].
 ]
 
 { #category : #ui }

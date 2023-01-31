@@ -1,11 +1,11 @@
 Class {
 	#name : #GtRlRepositoryPassiveReleaseVersionSignal,
-	#superclass : #GtReleaserSignal,
+	#superclass : #GtRlReleaserSignal,
 	#instVars : [
 		'repositoryRelease',
 		'version'
 	],
-	#category : 'GToolkit-Releaser-Logging'
+	#category : #'GToolkit-Releaser-Logging'
 }
 
 { #category : #'as yet unclassified' }
