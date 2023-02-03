@@ -64,9 +64,13 @@ GtRlCompileBaselineReleaseAction >> gtViewBaselineSourceDiffFor: aView [
 		title: 'Diff current baseline' translated;
 		priority: 20;
 		stencil: [ :anEditor | 
-			(GtDiffElement onDiff: (TextDiffBuilder 
-				from: (self projectRelease project baselineClass >> #baseline:)
-				to: (self projectRelease generateBaselineSource))) aptitude: GtDiffShadowAptitude ]
+			| change |
+			change := GtDiffBuilder
+					computeDifferencesFrom: self projectRelease project baselineClass
+							>> #baseline:
+					to: self projectRelease generateBaselineSource
+					using: GtCharacterGroupDiffSplitter words.
+			(GtDiffElement onChange: change) aptitude: GtDiffShadowAptitude ]
 ]
 
 { #category : #ui }
@@ -74,17 +78,19 @@ GtRlCompileBaselineReleaseAction >> gtViewPreviousVersionDiffFor: aView [
 	<gtView>
 	self projectRelease ifNil: [ ^ aView ].
 	self projectRelease repositoryRelease semanticVersionTags ifEmpty: [ ^ self ].
-	
+
 	^ aView explicit
 		title: 'Diff previous version' translated;
 		priority: 20;
 		stencil: [ :anEditor | 
-			| latestTag  originalCode |
+			| latestTag originalCode change |
 			latestTag := self projectRelease repositoryRelease latestSemanticVersionTag.
 			originalCode := self baselineCodeForCommit: latestTag commit.
-			(GtDiffElement onDiff: (TextDiffBuilder 
-				from: (originalCode ifNil: [ '' ])
-				to: (self projectRelease generateBaselineSource))) aptitude: GtDiffShadowAptitude ]
+			change := GtDiffBuilder
+					computeDifferencesFrom: (originalCode ifNil: [ '' ])
+					to: self projectRelease generateBaselineSource
+					using: GtCharacterGroupDiffSplitter words.
+			(GtDiffElement onChange: change) aptitude: GtDiffShadowAptitude ]
 ]
 
 { #category : #accessing }
