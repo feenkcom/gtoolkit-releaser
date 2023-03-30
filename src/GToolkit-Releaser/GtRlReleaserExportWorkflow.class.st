@@ -124,10 +124,11 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://pharo-contributions/BitmapCharacterSet/src'.
 		'github://pharo-contributions/CollectionExtensions/src'.
 		'github://feenkcom/RemoteServiceReplication/src'.
-		'github://feenkcom/SparkleFFI/src' };
+		'github://feenkcom/SparkleFFI/src'.
+		'github://svenvc/NeoJSON/repository'. 
+	};
 	setReleaseStrategyOfType: GtRlBaselineTagReleaseStrategy forProjecs: {
 		'github://pharo-contributions/FFICHeaderExtractor/repository'.
-		'github://svenvc/NeoJSON/repository'.
 		'github://msgpack/msgpack-smalltalk/repository'.
 		'github://juliendelplanque/Python3Generator/repository'.
 		'github://feenkcom/mustache/repository'.
@@ -136,7 +137,8 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://feenkcom/Chrysal/src'.
 		'github://feenkcom/XMLParser/src'.
 		'github://feenkcom/XMLWriter/src'.
-		'github://feenkcom/XPath/src' }
+		'github://feenkcom/XPath/src'.
+	}
 ]
 
 { #category : #releasing }

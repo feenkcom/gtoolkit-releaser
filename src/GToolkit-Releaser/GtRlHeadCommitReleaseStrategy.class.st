@@ -12,14 +12,15 @@ See {{gtMethod:GtRlHeadCommitReleaseStrategy>>#assertCompatibleWithRepository:}}
 Class {
 	#name : #GtRlHeadCommitReleaseStrategy,
 	#superclass : #GtRlReleaseStrategy,
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #assertions }
 GtRlHeadCommitReleaseStrategy >> assertCompatibleWithRepository: aRepository [
 	self 
 		assert: [ aRepository childRepositories isEmpty ] 
-		description: 'The commit id can be used as a release version only for repositories that do not have any children'.
+		description: ('The commit id can be used as a release version only for repositories that do not have any children. The project {1} with the url {2} does not follow this.' format: {
+			aRepository projectName. aRepository loadSpecificationString})
 ]
 
 { #category : #accessing }
