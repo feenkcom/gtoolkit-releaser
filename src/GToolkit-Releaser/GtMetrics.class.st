@@ -251,9 +251,16 @@ GtMetrics >> pharoToReplaceProjects [
 
 { #category : #accessing }
 GtMetrics >> smaccParserPackages [
-	^ (BaselineOfSmaCC version gtRPackages select: [:each | 
-	({'SnaCC_Grammar_Parser' . 'SmaCC_Debugging_Support' . 'SmaCC_Rewrite' . 'SmaCC_Rewrite_Engine' . 'SmaCC_Rewrite_Engine_Tests'} includes: each name) not and: [
-		each classes anySatisfy: [:c | c inheritsFrom: SmaCCScanner]]])
+	^ ((BaselineOfSmaCC project version
+		withDeepCollect: [ :each | each projects collect: #version ]
+		as: Set) flatCollect: #gtRPackages)
+		select: [ :each | 
+			({'SmaCC_Grammar_Parser'.
+				'SmaCC_Debugging_Support'.
+				'SmaCC_Rewrite'.
+				'SmaCC_Rewrite_Engine'.
+				'SmaCC_Rewrite_Engine_Tests'} includes: each name) not
+				and: [ each classes anySatisfy: [ :c | c inheritsFrom: SmaCCScanner ] ] ]
 ]
 
 { #category : #accessing }
