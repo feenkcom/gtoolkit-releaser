@@ -198,7 +198,7 @@ GtRlClonerBaselineEvent >> gtMapFor: aView [
 	<gtView>
 
 	^ aView explicit
-		title: 'Duration Map';
+		title: 'Duration map';
 		priority: 20;
 		stencil: [ self gtBarElements ]
 ]

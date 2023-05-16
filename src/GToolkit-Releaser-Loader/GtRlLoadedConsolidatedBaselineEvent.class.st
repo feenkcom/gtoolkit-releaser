@@ -144,7 +144,7 @@ GtRlLoadedConsolidatedBaselineEvent >> gtBarElementsWithGlobalWeight: aWeight lo
 GtRlLoadedConsolidatedBaselineEvent >> gtClonerSignalsFor: aView [
 	<gtView>
 	^ aView forward
-		title: 'Cloner Signals' translated;
+		title: 'Cloner signals' translated;
 		priority: 30;
 		object: [ clonerEvent ];
 		view: #gtViewLocalSignalsFor:
@@ -228,7 +228,7 @@ GtRlLoadedConsolidatedBaselineEvent >> gtMapFor: aView [
 	<gtView>
 
 	^ aView explicit
-		title: 'Duration Map';
+		title: 'Duration map';
 		priority: 20;
 		stencil: [ self gtBarElements ]
 ]
@@ -237,7 +237,7 @@ GtRlLoadedConsolidatedBaselineEvent >> gtMapFor: aView [
 GtRlLoadedConsolidatedBaselineEvent >> gtViewLoaderEventsFor: aView [
 	<gtView>
 	^ aView columnedList
-		title: 'Loader Events';
+		title: 'Loader events';
 		items: [ loaderEvents ];
 		column: 'Timestamp' text: [ :anEvent | anEvent completedSignal timestamp asString ];
 		column: 'Action Type' text: [ :anEvent | anEvent actionType ];

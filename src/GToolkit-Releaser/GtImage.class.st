@@ -235,7 +235,7 @@ GtImage >> gtCommitInfoFor: aView [
 	<gtView>
 	
 	^ aView columnedList 
-		title: 'Commit Info' translated;
+		title: 'Commit info' translated;
 		priority: 11;
 		items: [ self commitInfo ];
 		column: 'Repository' translated text: [ :each | each key asString ];
@@ -276,7 +276,7 @@ GtImage >> gtImageInfoFor: aView [
 	<gtView>
 
 	^ aView textEditor 
-		title: 'Image Info' translated;
+		title: 'Image info' translated;
 		priority: 12;
 		aptitude: BrGlamorousCodeEditorAptitude;
 		text: [ (String streamContents: [ :s | self imageInfoOn: s]) asRopedText ]
@@ -290,7 +290,7 @@ GtImage >> gtOSInfoFor: aView [
 	info := String streamContents: [ :s | self osInfoOn: s ].
 	info ifEmpty: [ ^ aView empty ].
 	^ aView textEditor 
-		title: 'OS Info' translated;
+		title: 'OS info' translated;
 		priority: 14;
 		aptitude: BrGlamorousCodeEditorAptitude;
 		text: [ info asRopedText ]
@@ -335,7 +335,7 @@ GtImage >> gtVmInfoFor: aView [
 	<gtView>
 
 	^ aView textEditor 
-		title: 'VM Info' translated;
+		title: 'VM info' translated;
 		priority: 13;
 		aptitude: BrGlamorousCodeEditorAptitude;
 		text: [ (String streamContents: [ :s | self vmInfoOn: s]) asRopedText ]

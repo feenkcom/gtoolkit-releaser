@@ -11,7 +11,7 @@ Subclasses define the project model that provides information about dependencies
 Class {
 	#name : #GtRlBaselineGenerator,
 	#superclass : #Object,
-	#category : 'GToolkit-Releaser-BaselineModel-Generator'
+	#category : #'GToolkit-Releaser-BaselineModel-Generator'
 }
 
 { #category : #accessing }
@@ -80,7 +80,7 @@ GtRlBaselineGenerator >> generateProjectDependenciesOn: aStream [
 GtRlBaselineGenerator >> gtViewGeneratedBaselineFor: aView [
 	<gtView>
 	^ aView textEditor
-		title: 'Generated Baseline';
+		title: 'Generated baseline';
 		priority: 101;
 		text: [ self generateBaselineSource ]
 ]

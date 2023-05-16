@@ -152,7 +152,7 @@ GtRlProject >> containedRPackagesDo: aBloc [
 GtRlProject >> gtChildProjectsFor: aView [
 	<gtView>
 	^ aView list
-		title: 'Child Projects' translated;
+		title: 'Child projects' translated;
 		items: [ self childProjects ];
 		itemText: #name;
 		priority: 46
@@ -165,7 +165,7 @@ GtRlProject >> gtMCProjectMapFor: aView [
 		ifNil: [ aView empty ]
 		ifNotNil: [ :aBaselineVersion |
 			(aBaselineVersion gtProjectMapFor: aView)
-				title: 'MC Map' translated;
+				title: 'MC map' translated;
 				priority: 70 ]
 ]
 
@@ -173,7 +173,7 @@ GtRlProject >> gtMCProjectMapFor: aView [
 GtRlProject >> gtParentProjectsFor: aView [
 	<gtView>
 	^ aView list
-		title: 'Parent Projects' translated;
+		title: 'Parent projects' translated;
 		items: [ self parentProjects ];
 		itemText: #name;
 		priority: 45
@@ -207,7 +207,7 @@ GtRlProject >> gtProjectMapFor: aView [
 GtRlProject >> gtProjectReferencesFor: aView [
 	<gtView>
 	^ aView list
-		title: 'Project References' translated;
+		title: 'Project references' translated;
 		items: [ self projectReferences ];
 		itemText: [ :aProjectReference |
 			aProjectReference referencedProject name ];

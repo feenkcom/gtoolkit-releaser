@@ -13,7 +13,7 @@ Class {
 		'parentProject',
 		'incomingDependencies'
 	],
-	#category : 'GToolkit-Releaser-BaselineModel-Model'
+	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
 
 { #category : #adding }
@@ -46,7 +46,7 @@ GtRlNode >> gtViewDependentPackagesListFor: aView [
 GtRlNode >> gtViewIncomingDependenciesListFor: aView [
 	<gtView>
 	^ aView list
-		title: 'Incoming Dependencies' translated;
+		title: 'Incoming dependencies' translated;
 		priority: 90;
 		items: [ self incomingDependencies ]
 ]

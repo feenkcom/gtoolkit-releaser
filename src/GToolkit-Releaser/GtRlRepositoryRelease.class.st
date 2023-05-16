@@ -181,7 +181,7 @@ GtRlRepositoryRelease >> gtReleaseTagsFor: aView [
 GtRlRepositoryRelease >> gtRepoMapFor: aView [
 	<gtView> 
 	^ aView mondrian 
-	  title: 'Release Map' translated;
+	  title: 'Release map' translated;
 	  priority: 10; 
 	  painting: [ :mondrian | 
 			| repos |
@@ -270,7 +270,7 @@ GtRlRepositoryRelease >> gtRepoMapFor: aView [
 GtRlRepositoryRelease >> gtRepositoryMapFor: aView [
 	<gtView> 
 	^ aView explicit
-		title: 'Release Graph';
+		title: 'Release graph';
 		stencil: [
 			| gtconnector options |
 			gtconnector := GtConnector new.

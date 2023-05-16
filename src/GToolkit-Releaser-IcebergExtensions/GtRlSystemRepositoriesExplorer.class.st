@@ -1,6 +1,6 @@
 Class {
-	#name : 'GtRlSystemRepositoriesExplorer',
-	#superclass : 'Object',
+	#name : #GtRlSystemRepositoriesExplorer,
+	#superclass : #Object,
 	#instVars : [
 		'rootProject',
 		'icebergRegistry'
@@ -8,13 +8,13 @@ Class {
 	#category : 'GToolkit-Releaser-IcebergExtensions'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 GtRlSystemRepositoriesExplorer class >> forProject: aGtRlProject [ 
 	^ self new
 		initializeForRootProject: aGtRlProject
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlSystemRepositoriesExplorer >> gtViewSystemRepositoriesFor: aView [
 	<gtView>
 	^ self icebergRegistry 
@@ -22,19 +22,19 @@ GtRlSystemRepositoriesExplorer >> gtViewSystemRepositoriesFor: aView [
 		ifNotNil: [ self icebergRegistry  gtRepositoriesListFor: aView ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlSystemRepositoriesExplorer >> icebergRegistry [
 	^ icebergRegistry
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 GtRlSystemRepositoriesExplorer >> initializeForRootProject: aProject [
 	rootProject := aProject.
 	icebergRegistry := GtRlIceRegistry new.
 	icebergRegistry repositories: (rootProject withAllRepositories collect: #icebergRepository).
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlSystemRepositoriesExplorer >> rootProject [
 	^ rootProject
 ]

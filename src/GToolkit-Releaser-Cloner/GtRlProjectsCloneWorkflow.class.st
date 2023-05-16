@@ -177,7 +177,7 @@ GtRlProjectsCloneWorkflow >> ensureSingleRepositoryVersionForSpec: aBaselineSpec
 GtRlProjectsCloneWorkflow >> gtViewLoadedProjectsListFor: aView [
 	<gtView>
 	^ aView list
-		title: 'Loaded Projects';
+		title: 'Loaded projects';
 		priority: 15;
 		items: [ loadedProjectsByName values ]
 ]
@@ -186,7 +186,7 @@ GtRlProjectsCloneWorkflow >> gtViewLoadedProjectsListFor: aView [
 GtRlProjectsCloneWorkflow >> gtViewRepositoriesCacheFor: aView [
 	<gtView>
 	^ aView list
-		title: 'Repositories Cache';
+		title: 'Repositories cache';
 		priority: 20;
 		items: [ repositoriesCacheById values ]
 ]
