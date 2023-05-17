@@ -89,7 +89,7 @@ GtRlRepository >> gtProjectsFor: aView [
 GtRlRepository >> gtRepoDependenciesFor: aView [
 	<gtView> 
 	^ aView mondrian 
-	  title: 'Repo Dependencies';
+	  title: 'Repo dependencies';
 	  priority: 10; 
 	  painting: [ :mondrian | 
 			| repos |
@@ -126,7 +126,7 @@ GtRlRepository >> gtRepoDependenciesFor: aView [
 GtRlRepository >> gtRepoMapFor: aView [
 	<gtView> 
 	^ aView mondrian 
-	  title: 'Repo Map';
+	  title: 'Repo map';
 	  priority: 10; 
 	  painting: [ :mondrian | 
 			| repos |

@@ -1,29 +1,29 @@
 Class {
-	#name : 'GtRlIceCommitsGroup',
-	#superclass : 'Object',
+	#name : #GtRlIceCommitsGroup,
+	#superclass : #Object,
 	#instVars : [
 		'commits'
 	],
 	#category : 'GToolkit-Releaser-IcebergExtensions'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 GtRlIceCommitsGroup class >> forCommits: aCollectionOfCommits [
 	^ self new
 		commits: aCollectionOfCommits
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlIceCommitsGroup >> commits [
 	^ commits
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlIceCommitsGroup >> commits: aCollectionOfCommits [
 	commits := aCollectionOfCommits
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlIceCommitsGroup >> gtViewCommitsListFor: aView [
 	<gtView>
 	^ aView columnedList 

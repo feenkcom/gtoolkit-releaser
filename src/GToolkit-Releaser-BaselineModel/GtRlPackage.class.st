@@ -17,7 +17,7 @@ Class {
 	#instVars : [
 		'outgoingDependencies'
 	],
-	#category : 'GToolkit-Releaser-BaselineModel-Model'
+	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
 
 { #category : #'instance creation' }
@@ -45,7 +45,7 @@ GtRlPackage >> asRPackage [
 GtRlPackage >> gtViewOutgoingDependenciesListFor: aView [
 	<gtView>
 	^ aView list
-		title: 'Outgoing Dependencies' translated;
+		title: 'Outgoing dependencies' translated;
 		priority: 92;
 		items: [ self outgoingDependencies ]
 ]
@@ -64,7 +64,7 @@ GtRlPackage >> gtViewRequiredPackagesListFor: aView [
 GtRlPackage >> gtViewRequiredProjectReferencesListFor: aView [
 	<gtView>
 	^ aView list
-		title: 'Project References' translated;
+		title: 'Project references' translated;
 		priority: 56;
 		items: [ self requiredProjectReferences ];
 		itemText: #name

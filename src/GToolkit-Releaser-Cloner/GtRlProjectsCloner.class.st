@@ -76,7 +76,7 @@ GtRlProjectsCloner >> gtViewLoadedProjectsListFor: aView [
 	<gtView>
 	cloneWorkflow ifNil: [ ^ aView empty ].
 	^ aView forward
-		title: 'Loaded Projects';
+		title: 'Loaded projects';
 		priority: 15;
 		object: [ cloneWorkflow ];
 		view: #gtViewLoadedProjectsListFor:
@@ -87,7 +87,7 @@ GtRlProjectsCloner >> gtViewRepositoriesCacheFor: aView [
 	<gtView>
 	cloneWorkflow ifNil: [ ^ aView empty ].
 	^ aView forward
-		title: 'Repositories Cache';
+		title: 'Repositories cache';
 		priority: 20;
 		object: [ cloneWorkflow ];
 		view: #gtViewRepositoriesCacheFor:

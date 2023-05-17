@@ -137,7 +137,7 @@ GtRlReleaseConfiguration >> gtDefaultOptionsFor: aView [
 GtRlReleaseConfiguration >> gtViewCustomReleaseStrategiesFor: aView [
 	<gtView>
 	^ aView columnedList
-		title: 'Custom Strategies';
+		title: 'Custom strategies';
 		priority: 10;
 		items: [ customReleaseStrategies associations ];
 		column: 'Repository Spec' text: [ :assoc | assoc key ];

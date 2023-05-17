@@ -1,10 +1,10 @@
 Class {
-	#name : 'GtRlGToolkitRepositoriesExplorer',
-	#superclass : 'GtRlSystemRepositoriesExplorer',
-	#category : 'GToolkit-Releaser-IcebergExtensions'
+	#name : #GtRlGToolkitRepositoriesExplorer,
+	#superclass : #GtRlSystemRepositoriesExplorer,
+	#category : #'GToolkit-Releaser-IcebergExtensions'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlGToolkitRepositoriesExplorer class >> buildForGToolkitProject [
 	| projectBuilder project |
 	projectBuilder := GtRlDependenciesModelBuilder new.
@@ -14,7 +14,7 @@ GtRlGToolkitRepositoriesExplorer class >> buildForGToolkitProject [
 	^ self forProject: project
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlGToolkitRepositoriesExplorer >> gtViewAllImageRepositoriesFor: aView [
 	<gtView>
 	^ (GtRlIceRegistry forAllIcebergRepositories gtRepositoriesListFor: aView)
@@ -22,7 +22,7 @@ GtRlGToolkitRepositoriesExplorer >> gtViewAllImageRepositoriesFor: aView [
 		priority: 25
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlGToolkitRepositoriesExplorer >> gtViewGToolkitRepositoriesFor: aView [
 	<gtView>
 	| gtoolitRegistry |
@@ -34,7 +34,7 @@ GtRlGToolkitRepositoriesExplorer >> gtViewGToolkitRepositoriesFor: aView [
 			priority: 5
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlGToolkitRepositoriesExplorer >> gtViewGraphicalStackRepositoriesFor: aView [
 	<gtView>
 	| graphicalRegistry |
@@ -43,14 +43,14 @@ GtRlGToolkitRepositoriesExplorer >> gtViewGraphicalStackRepositoriesFor: aView [
 		{ 'brick' . 'bloc' . 'sparta' } anySatisfy: [ :aPrefix |
 			aRepository name asLowercase beginsWith: aPrefix ] ].
 	^ (graphicalRegistry gtRepositoriesListFor: aView)
-			title: 'Brick, Bloc & Sparta' translated;
+			title: 'Brick, bloc & sparta' translated;
 			priority: 10
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 GtRlGToolkitRepositoriesExplorer >> gtViewSystemRepositoriesFor: aView [
 	<gtView>
 	^ (super gtViewSystemRepositoriesFor: aView)
-			title: 'GToolkit & Dependencies' translated;
+			title: 'GToolkit & dependencies' translated;
 			priority: 15
 ]

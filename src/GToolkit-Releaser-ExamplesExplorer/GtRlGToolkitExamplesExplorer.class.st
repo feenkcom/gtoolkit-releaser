@@ -18,7 +18,7 @@ GtRlGToolkitExamplesExplorer class >> buildForGToolkitProject [
 GtRlGToolkitExamplesExplorer >> gtViewBrickStackRepositoriesListFor: aView [
 	<gtView>
 	^ (super gtViewRepositoriesListFor: aView)
-		title: 'Brick, Bloc & Sparta' translated;
+		title: 'Brick, bloc & sparta' translated;
 		priority: 10;
 		items: [ self repositoryExplorers select: [ :aRepositoryExported | 
 			| repositoryName |
@@ -41,6 +41,6 @@ GtRlGToolkitExamplesExplorer >> gtViewGtoolkitRepositoriesListFor: aView [
 GtRlGToolkitExamplesExplorer >> gtViewRepositoriesListFor: aView [
 	<gtView>
 	^ (super gtViewRepositoriesListFor: aView)
-		title: 'GToolkit & Dependencies' translated;
+		title: 'GToolkit & dependencies' translated;
 		priority: 15
 ]

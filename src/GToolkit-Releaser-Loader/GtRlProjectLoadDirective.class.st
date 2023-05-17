@@ -121,7 +121,7 @@ GtRlProjectLoadDirective >> gtLoadDirectivesMapFor: aView [
 GtRlProjectLoadDirective >> gtParentLoadDirectivesMapFor: aView [
 	<gtView>
 	^ aView mondrian
-		title: 'Parents Chain' translated;
+		title: 'Parents chain' translated;
 		priority: 20;
 		painting: [ :mondrian |
 			mondrian nodes 

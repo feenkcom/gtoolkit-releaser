@@ -74,7 +74,7 @@ GtRlLoaderEventsGroup >> gtItemsFor: aView [
 GtRlLoaderEventsGroup >> gtViewByBaselineEventFor: aView [
 	<gtView>
 	^ aView columnedList 
-		title: 'By Baseline';
+		title: 'By baseline';
 		items: [ self groupedByBaseline  associations ];
 		column: 'Baseline' text: [ :assoc | assoc key ];
 		column: 'Events count' text: [ :assoc | assoc value size ];
