@@ -119,7 +119,7 @@ GtRlRepository >> gtRepoDependenciesFor: aView [
 				toAll: [:each | |dependedRepos |
 					dependedRepos := each childRepositories.
 					repos select: [ :project | dependedRepos anySatisfy: [ :dependedProject | dependedProject = project ] ] ].
-			mondrian layout custom: (GtGradHorizontalDominanceCenteredTreeLayout new levelDistance: 50; nodeDistance: 10)]
+			mondrian layout custom: (GtGradHorizontalDominanceTreeLayout new levelDistance: 50; nodeDistance: 10)]
 ]
 
 { #category : #ui }
