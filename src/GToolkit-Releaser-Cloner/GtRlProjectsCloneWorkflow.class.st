@@ -218,7 +218,7 @@ GtRlProjectsCloneWorkflow >> loadBaselinePackageForSpec: aBaselineSpec [
 	icebergRepository := self ensureRepositoryCloneFor: aBaselineSpec repositoryLocation.
 	(icebergRepository workingCopy packageNames 
 		includes: baselineClassName)
-			ifFalse: [ Error signal: 'Cannot find baseline package' ].
+			ifFalse: [ Error signal: 'Cannot find baseline package ', baselineClassName ].
 	
 	self emitPackageLoadForSpec: aBaselineSpec.
 	icebergPackage := icebergRepository workingCopy packageNamed: baselineClassName.
