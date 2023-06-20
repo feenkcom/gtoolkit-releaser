@@ -51,7 +51,8 @@ GtRlProjectsCloner >> execute [
 { #category : #'gt extensions' }
 GtRlProjectsCloner >> gtViewEventsFor: aView [
 	<gtView>
-	self hasMemoryLogger ifNil: [ ^ aView empty ].
+	self hasMemoryLogger ifFalse: [ ^ aView empty ].
+	
 	^ aView forward
 	 	title: 'Events';
 	 	priority: 30;
@@ -62,7 +63,8 @@ GtRlProjectsCloner >> gtViewEventsFor: aView [
 { #category : #'gt extensions' }
 GtRlProjectsCloner >> gtViewGroupedEventsFor: aView [
 	<gtView>
-	self hasMemoryLogger ifNil: [ ^ aView empty ].
+	self hasMemoryLogger ifFalse: [ ^ aView empty ].
+	
 	^ aView forward
 		title: 'Events (grouped)';
 		priority: 35;
