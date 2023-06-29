@@ -97,16 +97,16 @@ value := GtNestedTreeNode new
 			name: 'Glamorous Toolkit';
 			leaves: {
 				GtNestedTreeItemLeaf new 
-					item: 'Glamorous Toolkit Core' -> ((BrGlamorousColors primaryBorderColor) alpha: 1);
+					item: 'Glamorous Toolkit Core' -> ((BrGlamorousColors primaryBorderColor));
 					weight: [:x | GtMetrics default gtLinesOfCode - GtMetrics default smaccParsersLinesOfCode - GtMetrics default xmlSupportLinesOfCode - GtMetrics default famix3LinesOfCode ].
 				GtNestedTreeItemLeaf new 
-					item: 'Parsers' -> ((BrGlamorousColors primaryBorderColor) alpha: 0.5);
+					item: 'Parsers' -> ((BrGlamorousColors primaryBorderColor));
 					weight: [ :x | GtMetrics default smaccParsersLinesOfCode ].
 				GtNestedTreeItemLeaf new 
-					item: 'XML' -> ((BrGlamorousColors primaryBorderColor) alpha: 0.5);
+					item: 'XML' -> ((BrGlamorousColors primaryBorderColor));
 					weight: [ :x | GtMetrics default xmlSupportLinesOfCode].
 				GtNestedTreeItemLeaf new 
-					item: 'Famix' -> ((BrGlamorousColors primaryBorderColor) alpha: 0.5);
+					item: 'Famix' -> ((BrGlamorousColors primaryBorderColor));
 					weight: [ :x | GtMetrics default famix3LinesOfCode]. }}.
 
 container := BlElement new
