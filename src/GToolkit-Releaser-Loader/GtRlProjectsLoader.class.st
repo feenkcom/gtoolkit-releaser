@@ -70,7 +70,9 @@ GtRlProjectsLoader >> loadFullProject: aRootProject [
 	
 	loadWorkflow := GtRlProjectsLoadWorkflow new
 		rootLoadDirective: loadDirective.
-	loadWorkflow executeLoadActions
+	loadWorkflow executeLoadActions.
+	
+	^ loadWorkflow
 ]
 
 { #category : #accessing }
