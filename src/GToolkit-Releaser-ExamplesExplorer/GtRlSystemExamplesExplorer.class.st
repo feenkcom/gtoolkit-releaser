@@ -20,6 +20,18 @@ GtRlSystemExamplesExplorer >> allContainedExamples [
 		each containedExamples ])
 ]
 
+{ #category : #accessing }
+GtRlSystemExamplesExplorer >> allEditorExamples [
+	^ GtExampleGroup withAll: ({
+		'Brick-Editor-Examples'.
+		'Brick-Examples'.
+		'GToolkit-Pharo-Coder'.
+		'GToolkit-Pharo-Coder-Examples'
+		
+		} flatCollect: [ :each |
+		each asPackage gtExamplesContained ])
+]
+
 { #category : #converting }
 GtRlSystemExamplesExplorer >> asPreviewElement [
 	"Used by ${method:GtSpotterStart>>#gtSpotterForToolsFor:}$"
