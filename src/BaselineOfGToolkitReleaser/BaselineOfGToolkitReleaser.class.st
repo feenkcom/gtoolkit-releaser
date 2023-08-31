@@ -188,8 +188,11 @@ Class {
 BaselineOfGToolkitReleaser >> baseline: spec [
 	<baseline>
 	spec for: #'common' do: [
-		spec baseline: 'DeepTraverser' with: [
-				spec repository: 'github://feenkcom/DeepTraverser:main/src' ].
+		spec 
+			baseline: 'DeepTraverser' with: [
+				spec repository: 'github://feenkcom/DeepTraverser:main/src' ]; 
+			baseline: 'Beacon' with: [
+				spec repository: 'github://feenkcom/pharo-beacon/repository' ].
 		spec 
 			package: 'GToolkit-Releaser-BaselineModel';
 			package: 'GToolkit-Releaser' with: [
@@ -202,7 +205,8 @@ BaselineOfGToolkitReleaser >> baseline: spec [
 				spec requires: #('GToolkit-Releaser-BaselineModel' ). ];
 			package: 'GToolkit-Releaser-Loader' with: [
 				spec requires: #('GToolkit-Releaser-Cloner' ). ];
-			package: 'GToolkit-Releaser-Logging';
+			package: 'GToolkit-Releaser-Logging' with: [
+				spec requires: #('Beacon' ). ];
 			package: 'GToolkit-Releaser-Jenkins';
 			package: 'GToolkit-Releaser-BaselineModel-SystemOneExamples';
 			package: 'GToolkit-Releaser-BaselineModel-SystemThreeExamples';
