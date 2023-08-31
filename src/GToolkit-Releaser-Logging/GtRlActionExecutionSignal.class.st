@@ -12,11 +12,6 @@ Class {
 }
 
 { #category : #accessing }
-GtRlActionExecutionSignal class >> eventType [
-	^ GtRlActionExecutedEvent
-]
-
-{ #category : #accessing }
 GtRlActionExecutionSignal >> actionDescription [
 	^ actionDescription
 ]
