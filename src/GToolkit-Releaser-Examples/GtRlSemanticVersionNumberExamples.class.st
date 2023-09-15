@@ -1,10 +1,10 @@
 Class {
-	#name : 'GtRlSemanticVersionNumberExamples',
-	#superclass : 'GtRlVersionNumberExamples',
+	#name : #GtRlSemanticVersionNumberExamples,
+	#superclass : #GtRlVersionNumberExamples,
 	#category : 'GToolkit-Releaser-Examples'
 }
 
-{ #category : 'assertions' }
+{ #category : #assertions }
 GtRlSemanticVersionNumberExamples >> assertSemanticVersion: versionNumber withMajor: majorNumer minor: minorNumber patch: patchNuber [
 	| expectedVersionString |
 	
@@ -20,7 +20,7 @@ GtRlSemanticVersionNumberExamples >> assertSemanticVersion: versionNumber withMa
 	
 ]
 
-{ #category : 'examples - factory' }
+{ #category : #'examples - factory' }
 GtRlSemanticVersionNumberExamples >> createSemanticVersionWithComponents: anArray [
 	<gtExample>
 	self assert: [ anArray size = 3 ].
@@ -30,7 +30,7 @@ GtRlSemanticVersionNumberExamples >> createSemanticVersionWithComponents: anArra
 		patch: anArray third 
 ]
 
-{ #category : 'examples - factory' }
+{ #category : #'examples - factory' }
 GtRlSemanticVersionNumberExamples >> createSemanticVersionWithMajor: majorNumber minor: minorNumber patch: patchNumber [
 	<gtExample>
 	| versionNumber |
@@ -48,7 +48,7 @@ GtRlSemanticVersionNumberExamples >> createSemanticVersionWithMajor: majorNumber
 	^ versionNumber
 ]
 
-{ #category : 'examples - equality' }
+{ #category : #'examples - equality' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNotEqualsWithVersionsWithDifferentNumbers [
 	<gtExample>
 	| versionNumber anotherNotEqualVersion1 anotherNotEqualVersion2 anotherNotEqualVersion3 |
@@ -66,7 +66,7 @@ GtRlSemanticVersionNumberExamples >> semanticVersionNotEqualsWithVersionsWithDif
 	
 ]
 
-{ #category : 'examples - versions' }
+{ #category : #'examples - versions' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumber [
 	<gtExample>
 	| versionNumber |
@@ -79,7 +79,7 @@ GtRlSemanticVersionNumberExamples >> semanticVersionNumber [
 	^ versionNumber
 ]
 
-{ #category : 'examples - equality' }
+{ #category : #'examples - equality' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberEqualWithItself [
 	<gtExample>
 	| versionNumber |
@@ -89,7 +89,7 @@ GtRlSemanticVersionNumberExamples >> semanticVersionNumberEqualWithItself [
 	
 ]
 
-{ #category : 'examples - equality' }
+{ #category : #'examples - equality' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberEqualWithTheSameVersion [
 	<gtExample>
 	| versionNumber anotherEqualVersion |
@@ -103,7 +103,7 @@ GtRlSemanticVersionNumberExamples >> semanticVersionNumberEqualWithTheSameVersio
 	
 ]
 
-{ #category : 'examples - comparison' }
+{ #category : #'examples - comparison' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberGreaterThenComparison [
 	<gtExample>
 	| anotherVersionM2M2P3 anotherVersionM1M3P3 anotherVersionM1M2P4 anotherVersionM1M2P5 |
@@ -125,7 +125,7 @@ GtRlSemanticVersionNumberExamples >> semanticVersionNumberGreaterThenComparison 
 	
 ]
 
-{ #category : 'examples - hash' }
+{ #category : #'examples - hash' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberHasDifferentWithOtherVersions [
 	<gtExample>
 	| versionNumber anotherNotEqualVersion1 anotherNotEqualVersion2 anotherNotEqualVersion3 |
@@ -143,7 +143,7 @@ GtRlSemanticVersionNumberExamples >> semanticVersionNumberHasDifferentWithOtherV
 	
 ]
 
-{ #category : 'examples - hash' }
+{ #category : #'examples - hash' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberHasEqualHashWithTheSameVersion [
 	<gtExample>
 	| versionNumber anotherEqualVersion |
@@ -158,40 +158,40 @@ GtRlSemanticVersionNumberExamples >> semanticVersionNumberHasEqualHashWithTheSam
 	
 ]
 
-{ #category : 'examples - versions' }
+{ #category : #'examples - versions' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberMajor1Minor2Patch3 [
 	<gtExample>
 	^ self createSemanticVersionWithMajor: 1 minor: 2 patch: 3.
 ]
 
-{ #category : 'examples - versions' }
+{ #category : #'examples - versions' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberMajor1Minor2Patch4 [
 	<gtExample>
 	^ self createSemanticVersionWithMajor: 1 minor: 2 patch: 4.
 ]
 
-{ #category : 'examples - versions' }
+{ #category : #'examples - versions' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberMajor1Minor2Patch5 [
 	<gtExample>
 	^ self createSemanticVersionWithMajor: 1 minor: 2 patch: 5.
 	
 ]
 
-{ #category : 'examples - versions' }
+{ #category : #'examples - versions' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberMajor1Minor3Patch3 [
 	<gtExample>
 	^ self createSemanticVersionWithMajor: 1 minor: 3 patch: 3.
 	
 ]
 
-{ #category : 'examples - versions' }
+{ #category : #'examples - versions' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberMajor2Minor2Patch3 [
 	<gtExample>
 	^ self createSemanticVersionWithMajor: 2 minor: 2 patch: 3.
 	
 ]
 
-{ #category : 'examples - comparison' }
+{ #category : #'examples - comparison' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberOtherComparisons [
 	<gtExample>
 	|  anotherVersionM1M2P4 anotherVersionM1M2P5 |
@@ -211,7 +211,7 @@ GtRlSemanticVersionNumberExamples >> semanticVersionNumberOtherComparisons [
 	
 ]
 
-{ #category : 'examples - versions' }
+{ #category : #'examples - versions' }
 GtRlSemanticVersionNumberExamples >> uninitializedSemanticVersionNumber [
 	<gtExample>
 	| versionNumber |
