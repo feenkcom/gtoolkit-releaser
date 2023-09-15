@@ -1,10 +1,10 @@
 Class {
-	#name : 'GtRlProjectReleaseBaselinePrinterExamples',
-	#superclass : 'Object',
+	#name : #GtRlProjectReleaseBaselinePrinterExamples,
+	#superclass : #Object,
 	#category : 'GToolkit-Releaser-Examples'
 }
 
-{ #category : 'baselines' }
+{ #category : #baselines }
 GtRlProjectReleaseBaselinePrinterExamples >> baselineForSystemFiveNullProjectRelease [
 	^ 'baseline: spec
 	<baseline>
@@ -25,7 +25,7 @@ GtRlProjectReleaseBaselinePrinterExamples >> baselineForSystemFiveNullProjectRel
 	]'
 ]
 
-{ #category : 'baselines' }
+{ #category : #baselines }
 GtRlProjectReleaseBaselinePrinterExamples >> baselineForSystemOneManualProjectRelease [
 	^ 'baseline: spec
 	<baseline>
@@ -45,7 +45,7 @@ GtRlProjectReleaseBaselinePrinterExamples >> baselineForSystemOneManualProjectRe
 	]'
 ]
 
-{ #category : 'baselines' }
+{ #category : #baselines }
 GtRlProjectReleaseBaselinePrinterExamples >> baselineForSystemTwoNullProjectRelease [
 	^ 'baseline: spec
 	<baseline>
@@ -62,7 +62,7 @@ GtRlProjectReleaseBaselinePrinterExamples >> baselineForSystemTwoNullProjectRele
 	]'
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlProjectReleaseBaselinePrinterExamples >> printSystemFiveProjectRelease [
 	<gtExample>
 	| projectRelease printer |
@@ -80,7 +80,7 @@ GtRlProjectReleaseBaselinePrinterExamples >> printSystemFiveProjectRelease [
 	^ printer
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlProjectReleaseBaselinePrinterExamples >> printSystemOneManualProjectRelease [
 	<gtExample>
 	| projectRelease printer |
@@ -94,7 +94,7 @@ GtRlProjectReleaseBaselinePrinterExamples >> printSystemOneManualProjectRelease 
 	^ printer
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 GtRlProjectReleaseBaselinePrinterExamples >> printSystemTwoProjectRelease [
 	<gtExample>
 	| projectRelease printer |

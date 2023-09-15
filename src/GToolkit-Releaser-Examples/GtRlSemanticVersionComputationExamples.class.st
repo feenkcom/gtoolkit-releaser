@@ -1,10 +1,10 @@
 Class {
-	#name : 'GtRlSemanticVersionComputationExamples',
-	#superclass : 'Object',
+	#name : #GtRlSemanticVersionComputationExamples,
+	#superclass : #Object,
 	#category : 'GToolkit-Releaser-Examples'
 }
 
-{ #category : 'examples ' }
+{ #category : #'examples ' }
 GtRlSemanticVersionComputationExamples >> nextMajorVersionComputation [
 	<gtExample>
 	| versionComputation |
@@ -20,7 +20,7 @@ GtRlSemanticVersionComputationExamples >> nextMajorVersionComputation [
 	
 ]
 
-{ #category : 'examples ' }
+{ #category : #'examples ' }
 GtRlSemanticVersionComputationExamples >> nextMajorVersionComputationResettingPatchAndMinorNumbers [
 	<gtExample>
 	| versionComputation |
@@ -33,7 +33,7 @@ GtRlSemanticVersionComputationExamples >> nextMajorVersionComputationResettingPa
 	
 ]
 
-{ #category : 'examples ' }
+{ #category : #'examples ' }
 GtRlSemanticVersionComputationExamples >> nextMinorVersionComputation [
 	<gtExample>
 	| versionComputation |
@@ -49,7 +49,7 @@ GtRlSemanticVersionComputationExamples >> nextMinorVersionComputation [
 	
 ]
 
-{ #category : 'examples ' }
+{ #category : #'examples ' }
 GtRlSemanticVersionComputationExamples >> nextMinorVersionComputationResettingPatchNumber [
 	<gtExample>
 	| versionComputation |
@@ -62,7 +62,7 @@ GtRlSemanticVersionComputationExamples >> nextMinorVersionComputationResettingPa
 	
 ]
 
-{ #category : 'examples ' }
+{ #category : #'examples ' }
 GtRlSemanticVersionComputationExamples >> nextPatchVersionComputation [
 	<gtExample>
 	| versionComputation |

@@ -1,13 +1,13 @@
 Class {
-	#name : 'GtRlSystemOneReleaseExamples',
-	#superclass : 'GtRlSystemOneModelExamples',
+	#name : #GtRlSystemOneReleaseExamples,
+	#superclass : #GtRlSystemOneModelExamples,
 	#instVars : [
 		'repositoryReleaseComponentB'
 	],
 	#category : 'GToolkit-Releaser-Examples'
 }
 
-{ #category : 'assertions' }
+{ #category : #assertions }
 GtRlSystemOneReleaseExamples >> assertStandaloneRepositoryRelease: aRelease [
 	self assert: aRelease isPassiveRelease.
 	self assert: aRelease releaseActions isEmpty.
@@ -16,7 +16,7 @@ GtRlSystemOneReleaseExamples >> assertStandaloneRepositoryRelease: aRelease [
 	self assert: aRelease releaseStrategy isNullReleaseStrategy.
 ]
 
-{ #category : 'examples - projects' }
+{ #category : #'examples - projects' }
 GtRlSystemOneReleaseExamples >> projectReleaseComponentA [
 	<gtExample>
 	| projectRelease repositoryRelease |
@@ -32,7 +32,7 @@ GtRlSystemOneReleaseExamples >> projectReleaseComponentA [
 	^ projectRelease
 ]
 
-{ #category : 'examples - projects' }
+{ #category : #'examples - projects' }
 GtRlSystemOneReleaseExamples >> projectReleaseComponentBMain [
 	<gtExample>
 	| projectReleaseBMain projectReleaseBUtil repositoryRelease |
@@ -55,7 +55,7 @@ GtRlSystemOneReleaseExamples >> projectReleaseComponentBMain [
 	^ projectReleaseBMain
 ]
 
-{ #category : 'examples - projects' }
+{ #category : #'examples - projects' }
 GtRlSystemOneReleaseExamples >> projectReleaseComponentBUtil [
 	<gtExample>
 	| projectReleaseBUtil repositoryRelease |
@@ -71,7 +71,7 @@ GtRlSystemOneReleaseExamples >> projectReleaseComponentBUtil [
 	^ projectReleaseBUtil
 ]
 
-{ #category : 'examples - projects' }
+{ #category : #'examples - projects' }
 GtRlSystemOneReleaseExamples >> projectReleaseComponentC [
 	<gtExample>
 	| projectRelease repositoryRelease |
@@ -86,7 +86,7 @@ GtRlSystemOneReleaseExamples >> projectReleaseComponentC [
 	^ projectRelease
 ]
 
-{ #category : 'examples - projects' }
+{ #category : #'examples - projects' }
 GtRlSystemOneReleaseExamples >> projectReleaseComponentD [
 	<gtExample>
 	| projectDRelease projectDModuleARelease repositoryRelease |
@@ -108,7 +108,7 @@ GtRlSystemOneReleaseExamples >> projectReleaseComponentD [
 	^ projectDRelease
 ]
 
-{ #category : 'examples - projects' }
+{ #category : #'examples - projects' }
 GtRlSystemOneReleaseExamples >> projectReleaseComponentDModuleA [
 	<gtExample>
 	| projectRelease repositoryRelease |
@@ -124,7 +124,7 @@ GtRlSystemOneReleaseExamples >> projectReleaseComponentDModuleA [
 	^ projectRelease
 ]
 
-{ #category : 'examples - projects' }
+{ #category : #'examples - projects' }
 GtRlSystemOneReleaseExamples >> projectReleaseSystem [
 	<gtExample>
 	| systemRelease repositoryRelease projectReleaseComponentA projectReleaseComponentB projectReleaseComponentC projectReleaseComponentD |
@@ -154,7 +154,7 @@ GtRlSystemOneReleaseExamples >> projectReleaseSystem [
 	^ systemRelease
 ]
 
-{ #category : 'examples - repositories' }
+{ #category : #'examples - repositories' }
 GtRlSystemOneReleaseExamples >> repositoryReleaseComponentA [
 	<gtExample>
 	| repository release |
@@ -170,7 +170,7 @@ GtRlSystemOneReleaseExamples >> repositoryReleaseComponentA [
 	
 ]
 
-{ #category : 'examples - repositories' }
+{ #category : #'examples - repositories' }
 GtRlSystemOneReleaseExamples >> repositoryReleaseComponentB [
 	<gtExample>
 	^ repositoryReleaseComponentB ifNil: [
@@ -187,7 +187,7 @@ GtRlSystemOneReleaseExamples >> repositoryReleaseComponentB [
 	
 ]
 
-{ #category : 'examples - repositories' }
+{ #category : #'examples - repositories' }
 GtRlSystemOneReleaseExamples >> repositoryReleaseComponentC [
 	<gtExample>
 	| repository release |
@@ -203,7 +203,7 @@ GtRlSystemOneReleaseExamples >> repositoryReleaseComponentC [
 	
 ]
 
-{ #category : 'examples - repositories' }
+{ #category : #'examples - repositories' }
 GtRlSystemOneReleaseExamples >> repositoryReleaseComponentD [
 	<gtExample>
 	| repository release |
@@ -219,7 +219,7 @@ GtRlSystemOneReleaseExamples >> repositoryReleaseComponentD [
 	
 ]
 
-{ #category : 'examples - repositories' }
+{ #category : #'examples - repositories' }
 GtRlSystemOneReleaseExamples >> repositoryReleaseComponentDModuleA [
 	<gtExample>
 	| repository release |
@@ -235,7 +235,7 @@ GtRlSystemOneReleaseExamples >> repositoryReleaseComponentDModuleA [
 	
 ]
 
-{ #category : 'examples - repositories' }
+{ #category : #'examples - repositories' }
 GtRlSystemOneReleaseExamples >> repositoryReleaseSystem [
 	<gtExample>
 	| repository release |
