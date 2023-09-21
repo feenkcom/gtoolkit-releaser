@@ -235,9 +235,12 @@ GtMetrics >> pharoToReplaceMethods [
 { #category : #accessing }
 GtMetrics >> pharoToReplaceProjects [
 	| projects |
-	projects := {BaselineOfBasicTools . 
+	projects :=
+		(self 
+			forPharo11: [ #()] 
+			forPharo10: [ {BaselineOfGeneralHelp}]), 
+	 {BaselineOfBasicTools . 
 		BaselineOfShout . 
-		BaselineOfGeneralHelp . 
 		BaselineOfCalypso . 
 		BaselineOfQA . 
 		BaselineOfOSWindow.
