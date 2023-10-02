@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #accessing }
+GtRlDedicatedBranchSlidesCommandLineHandler class >> checksLabel [
+	^ 'Slide'
+]
+
+{ #category : #accessing }
 GtRlDedicatedBranchSlidesCommandLineHandler class >> commandName [
 	^ 'dedicatedReleaseBranchSlides'
 ]
