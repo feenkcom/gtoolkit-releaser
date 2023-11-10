@@ -127,7 +127,8 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://pharo-contributions/CollectionExtensions/src'.
 		'github://feenkcom/RemoteServiceReplication/src'.
 		'github://feenkcom/SparkleFFI/src'.
-		'github://svenvc/NeoJSON/repository'. 
+		'github://svenvc/NeoJSON/repository'.
+		'https://github.com/svenvc/ztimestamp'.
 	};
 	setReleaseStrategyOfType: GtRlBaselineTagReleaseStrategy forProjecs: {
 		'github://pharo-contributions/FFICHeaderExtractor/repository'.
