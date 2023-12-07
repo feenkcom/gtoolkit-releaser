@@ -22,6 +22,12 @@ GtRlLoadedConsolidatedBaselineEvent class >> fromContents: aLog [
 	^ consolidatedEvent
 ]
 
+{ #category : #accessing }
+GtRlLoadedConsolidatedBaselineEvent class >> readFromFile: aFileReference [
+	^ aFileReference readStreamDo: [ :aStream | 
+		self fromContents: aStream contents ]
+]
+
 { #category : #initialization }
 GtRlLoadedConsolidatedBaselineEvent >> addLoaderEvents: aGroup [ 
 	| byBaselineGroups |

@@ -55,6 +55,12 @@ GtRlClonerBaselineEvent >> addSubEvent: anEvent [
 	self subEvents add: anEvent
 ]
 
+{ #category : #'gt-extensions' }
+GtRlClonerBaselineEvent >> allSignals [
+	^ GtRlClonerSignalsGroup 
+			withAll: (self withDeep: #subEvents flatCollect: #signals)
+]
+
 { #category : #accessing }
 GtRlClonerBaselineEvent >> baselineName [
 	^ baselineName
@@ -209,8 +215,7 @@ GtRlClonerBaselineEvent >> gtViewAllSignalsFor: aView [
 	^ aView forward
 	 	title: 'Signals (all)';
 	 	priority: 33;
-	 	object: [ GtRlClonerSignalsGroup 
-			withAll: (self withDeep: #subEvents flatCollect: #signals) ];
+	 	object: [ self allSignals];
 	 	view: #gtItemsFor:
 ]
 
