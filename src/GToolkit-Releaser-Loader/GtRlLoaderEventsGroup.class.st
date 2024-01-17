@@ -117,5 +117,7 @@ GtRlLoaderEventsGroup >> size [
 
 { #category : #accessing }
 GtRlLoaderEventsGroup >> totalDuration [
-	^ self items sum: #duration
+	^ self items 
+		inject: 0 seconds
+		into: [:sum :each | sum +  each duration ]
 ]
