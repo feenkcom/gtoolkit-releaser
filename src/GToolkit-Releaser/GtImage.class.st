@@ -357,8 +357,8 @@ GtImage >> gtPreviewFor: aView [
 			{
 				('GT version' -> self version versionString).
 				('GT release timestamp' -> self timestamp).
-				('Image directory'
-					-> Smalltalk image imageDirectory asFileReference).
+				('Image directory' -> Smalltalk image imageDirectory).
+				('Image file' -> Smalltalk image imageFile resolve basename).
 				('Base image info' -> (String streamContents: [ :s | self imageInfoOn: s])).
 				"'License' -> self licenseString."
 				('Virtual Machine' -> Smalltalk vm).
@@ -367,7 +367,7 @@ GtImage >> gtPreviewFor: aView [
 			}, (self properties collect: [ :aProperty | 
 				aProperty name -> aProperty description ]) ];
 		column: 'Property' text: [ :each | each key ];
-		column: 'Value' text: [ :each | each value ];
+		column: 'Value' text: [ :each | each value ] weight: 2;
 		send: #value
 ]
 
