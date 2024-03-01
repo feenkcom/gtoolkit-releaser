@@ -1,10 +1,10 @@
 Class {
-	#name : 'GtRlRepositoryLoadSpecificationForFiletreeExamples',
-	#superclass : 'GtRlRepositoryLoadSpecificationBasicExamples',
-	#category : 'GToolkit-Releaser-BaselineModel-Examples'
+	#name : #GtRlRepositoryLoadSpecificationForFiletreeExamples,
+	#superclass : #GtRlRepositoryLoadSpecificationBasicExamples,
+	#category : #'GToolkit-Releaser-BaselineModel-Examples'
 }
 
-{ #category : 'examples' }
+{ #category : #examples }
 GtRlRepositoryLoadSpecificationForFiletreeExamples >> loadSpecificationHasCorrectVersion [
 	<gtExample>
 	| loadSpecification |
@@ -16,12 +16,32 @@ GtRlRepositoryLoadSpecificationForFiletreeExamples >> loadSpecificationHasCorrec
 	^ loadSpecification
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
+GtRlRepositoryLoadSpecificationForFiletreeExamples >> specificationClass [
+	^ GtRlRepositoryDefaultLoadSpecification
+]
+
+{ #category : #accessing }
 GtRlRepositoryLoadSpecificationForFiletreeExamples >> specificationId [
 	^ 'filetree:///Users/example/Documents/temp/repo'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
+GtRlRepositoryLoadSpecificationForFiletreeExamples >> specificationProjectName [
+	^ 'Users'
+]
+
+{ #category : #accessing }
 GtRlRepositoryLoadSpecificationForFiletreeExamples >> specificationUrlString [
 	^ 'filetree:///Users/example/Documents/temp/repo'
+]
+
+{ #category : #accessing }
+GtRlRepositoryLoadSpecificationForFiletreeExamples >> specificationUrlWithVersion2024 [
+	^ 'filetree:///Users:v2.0.24/example/Documents/temp/repo'
+]
+
+{ #category : #accessing }
+GtRlRepositoryLoadSpecificationForFiletreeExamples >> specificationVersionString [
+	^ nil
 ]

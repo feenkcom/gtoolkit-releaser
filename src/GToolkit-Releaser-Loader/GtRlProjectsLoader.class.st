@@ -47,7 +47,7 @@ GtRlProjectsLoader >> loadBaseline: aBaselineName fromRepository: aRepositoryLoc
 			fromRepository: aRepositoryLocationString.
 		self 
 			loadBaselineClass: clonedProject baselineClass
-			fromRepository: clonedProject repository urlString 
+			fromRepository: clonedProject repository loadSpecificationString 
 	] ensure: [
 		self loggers do: [ :aLogger | aLogger stop ] ]
 ]

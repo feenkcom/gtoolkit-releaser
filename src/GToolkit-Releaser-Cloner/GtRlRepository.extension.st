@@ -2,7 +2,7 @@ Extension { #name : #GtRlRepository }
 
 { #category : #'*GToolkit-Releaser-Cloner' }
 GtRlRepository >> ownerName [
-	^ self url host
+	^ self loadSpecification host
 ]
 
 { #category : #'*GToolkit-Releaser-Cloner' }
@@ -16,9 +16,5 @@ GtRlRepository >> projectPath [
 
 { #category : #'*GToolkit-Releaser-Cloner' }
 GtRlRepository >> repoPath [
-	| urlSegments |
-	urlSegments := self url segments.
-	^ urlSegments size = 1 
-		ifTrue: [ '' ]
-		ifFalse: [ urlSegments last ]
+	^ self loadSpecification repoPath
 ]

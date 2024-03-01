@@ -1,28 +1,28 @@
 Class {
-	#name : 'GtRlRepositoryLoadSpecificationBasicExamples',
-	#superclass : 'Object',
-	#category : 'GToolkit-Releaser-BaselineModel-Examples'
+	#name : #GtRlRepositoryLoadSpecificationBasicExamples,
+	#superclass : #Object,
+	#category : #'GToolkit-Releaser-BaselineModel-Examples'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 GtRlRepositoryLoadSpecificationBasicExamples class >> isAbstract [ 	
 	^ self name = GtRlRepositoryLoadSpecificationBasicExamples name
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecification [
 	<gtExample>
 	| loadSpecification |
 	loadSpecification := GtRlRepositoryLoadSpecification 
 		fromUrlString: self specificationUrlString.
 	
-	self assert: loadSpecification specificationUrl equals: (ZnUrl fromString: self specificationUrlString).
+	self assert: loadSpecification class equals: self specificationClass.
 	self assert: loadSpecification specificationString equals: self specificationUrlString.
 	
 	^ loadSpecification
 ]
 
-{ #category : 'examples - comparison' }
+{ #category : #'examples - comparison' }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationEqualsSameInstance [
 	<gtExample>
 	| loadSpecification |
@@ -33,7 +33,7 @@ GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationEqualsSameInsta
 	^ loadSpecification
 ]
 
-{ #category : 'examples - comparison' }
+{ #category : #'examples - comparison' }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationEqualsSelf [
 	<gtExample>
 	| loadSpecification |
@@ -44,7 +44,7 @@ GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationEqualsSelf [
 	^ loadSpecification
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHasCorrectId [
 	<gtExample>
 	| loadSpecification |
@@ -55,7 +55,18 @@ GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHasCorrectId [
 	^ loadSpecification
 ]
 
-{ #category : 'examples - comparison' }
+{ #category : #examples }
+GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHasVersion [
+	<gtExample>
+	| loadSpecification |
+	loadSpecification := self loadSpecification.
+	
+	self assert: loadSpecification hasVersion equals: self specificationHasVersion.
+	
+	^ loadSpecification
+]
+
+{ #category : #'examples - comparison' }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHashEqualsBetweenSameInstance [
 	<gtExample>
 	| loadSpecification |
@@ -66,24 +77,90 @@ GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHashEqualsBetwe
 	^ loadSpecification
 ]
 
-{ #category : 'examples - comparison' }
+{ #category : #'examples - comparison' }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHashNotEqualUrlHash [
 	<gtExample>
 	| loadSpecification |
 	loadSpecification := self loadSpecification.
 	
-	self assert: (loadSpecification hash = loadSpecification specificationUrl hash) not.
 	self assert: (loadSpecification hash = loadSpecification specificationString hash) not.
 	
 	^ loadSpecification
 ]
 
-{ #category : 'accessing' }
+{ #category : #examples }
+GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationProjectName [
+	<gtExample>
+	| loadSpecification |
+	loadSpecification := self loadSpecification.
+
+	self
+		assert: loadSpecification projectName
+		equals: self specificationProjectName.
+
+	^ loadSpecification
+]
+
+{ #category : #examples }
+GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationUrlWithVersion [
+	<gtExample>
+	| loadSpecification |
+	loadSpecification := self loadSpecification.
+
+	self
+		assert: (loadSpecification urlWithVersion: 'v2.0.24')
+		equals: self specificationUrlWithVersion2024.
+
+	^ loadSpecification
+]
+
+{ #category : #examples }
+GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationVersionString [
+	<gtExample>
+	| loadSpecification |
+	loadSpecification := self loadSpecification.
+
+	self specificationHasVersion
+		ifTrue: [ self
+				assert: loadSpecification versionString
+				equals: self specificationVersionString ].
+
+	^ loadSpecification
+]
+
+{ #category : #accessing }
+GtRlRepositoryLoadSpecificationBasicExamples >> specificationClass [
+	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
+GtRlRepositoryLoadSpecificationBasicExamples >> specificationHasVersion [
+	^ self specificationVersionString isNotNil
+]
+
+{ #category : #accessing }
 GtRlRepositoryLoadSpecificationBasicExamples >> specificationId [
 	^ self subclassResponsibility
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
+GtRlRepositoryLoadSpecificationBasicExamples >> specificationProjectName [
+	<return: #String>
+	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
 GtRlRepositoryLoadSpecificationBasicExamples >> specificationUrlString [
+	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
+GtRlRepositoryLoadSpecificationBasicExamples >> specificationUrlWithVersion2024 [
+	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
+GtRlRepositoryLoadSpecificationBasicExamples >> specificationVersionString [
+	<return: #String or: nil>
 	^ self subclassResponsibility
 ]

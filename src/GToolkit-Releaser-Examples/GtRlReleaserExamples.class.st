@@ -131,7 +131,7 @@ GtRlReleaserExamples >> createIcebergRepositoryNamed: projectName withProjectDep
 	baselineClass := self 
 		createBaselineForProjectNamed: projectName 
 		withDependencies: (projectDependencies collect: [ :aProject | 
-			aProject name -> aProject repository urlString ]).
+			aProject name -> aProject repository loadSpecificationString ]).
 	repository := self createBasicIcebergRepositoryWithName: projectName.
 	repository workingCopy 
 		addPackageNamed: baselineClass package name;

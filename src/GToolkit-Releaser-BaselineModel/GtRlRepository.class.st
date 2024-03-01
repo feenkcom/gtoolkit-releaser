@@ -256,11 +256,6 @@ GtRlRepository >> loadSpecificationString [
 ]
 
 { #category : #'accessing - load specification' }
-GtRlRepository >> loadSpecificationUrl [
-	^ self loadSpecification specificationUrl
-]
-
-{ #category : #'accessing - load specification' }
 GtRlRepository >> nameSegment [
 	^ self loadSpecification nameSegment
 ]
@@ -300,16 +295,12 @@ GtRlRepository >> repositoryName [
 
 { #category : #deprecated }
 GtRlRepository >> url [
-	^ self loadSpecificationUrl
-]
-
-{ #category : #deprecated }
-GtRlRepository >> urlString [
 	^ self loadSpecificationString
 ]
 
 { #category : #'accessing - load specification' }
 GtRlRepository >> urlWithVersion: aVersionString [
+	<return: #String>
 	^ self loadSpecification urlWithVersion: aVersionString
 ]
 
