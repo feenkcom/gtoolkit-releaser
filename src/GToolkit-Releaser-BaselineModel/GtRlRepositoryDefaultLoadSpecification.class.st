@@ -9,6 +9,11 @@ GtRlRepositoryDefaultLoadSpecification >> hasVersion [
 	^ specificationUrl segments first includes: $:
 ]
 
+{ #category : #accessing }
+GtRlRepositoryDefaultLoadSpecification >> host [
+	^ specificationUrl host
+]
+
 { #category : #'initialization ' }
 GtRlRepositoryDefaultLoadSpecification >> initializeWithString: aString [
 	specificationUrl := ZnUrl fromString: aString

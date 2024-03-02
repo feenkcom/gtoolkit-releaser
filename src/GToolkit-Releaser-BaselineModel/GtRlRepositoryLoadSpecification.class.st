@@ -57,6 +57,7 @@ GtRlRepositoryLoadSpecification >> gtOverview [
 		at: 'Specification string'
 			put: (aPrinter value: [ self specificationString ]);
 		at: 'Specification ID' put: (aPrinter value: [ self specificationId ]);
+		at: 'Host' put: (aPrinter value: [ self host ]);
 		at: 'Project name' put: (aPrinter value: [ self projectName ]);
 		at: 'Repository name' put: (aPrinter value: [ self repositoryName ]);
 		at: 'Has version' put: (aPrinter value: [ self hasVersion ]);
@@ -87,6 +88,11 @@ GtRlRepositoryLoadSpecification >> hasVersion [
 GtRlRepositoryLoadSpecification >> hash [ 
 	^ self class hash 
 		bitXor: self specificationString asSymbol hash
+]
+
+{ #category : #accessing }
+GtRlRepositoryLoadSpecification >> host [
+	^ self subclassResponsibility
 ]
 
 { #category : #'initialization ' }

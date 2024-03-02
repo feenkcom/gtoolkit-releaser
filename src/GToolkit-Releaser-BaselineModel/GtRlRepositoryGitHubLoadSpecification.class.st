@@ -1,5 +1,5 @@
 Class {
-	#name : #GtRlRepositoryGitLabLoadSpecification,
+	#name : #GtRlRepositoryGitHubLoadSpecification,
 	#superclass : #GtRlRepositoryLoadSpecification,
 	#instVars : [
 		'mcRepository',
@@ -9,24 +9,24 @@ Class {
 }
 
 { #category : #testing }
-GtRlRepositoryGitLabLoadSpecification class >> isForUrlString: aString [
-	^ aString beginsWith: 'gitlab://'
+GtRlRepositoryGitHubLoadSpecification class >> isForUrlString: aString [
+	^ aString beginsWith: 'github://'
 ]
 
 { #category : #testing }
-GtRlRepositoryGitLabLoadSpecification >> hasVersion [
+GtRlRepositoryGitHubLoadSpecification >> hasVersion [
 	^ hasProjectVersion
 ]
 
 { #category : #accessing }
-GtRlRepositoryGitLabLoadSpecification >> host [
-	^ mcRepository hostname
+GtRlRepositoryGitHubLoadSpecification >> host [
+	^ 'github.com'
 ]
 
 { #category : #'initialization ' }
-GtRlRepositoryGitLabLoadSpecification >> initializeWithString: aString [
+GtRlRepositoryGitHubLoadSpecification >> initializeWithString: aString [
 	| aSuffix |
-	mcRepository := MCGitlabRepository parseLocation: aString version: nil.
+	mcRepository := MCGitHubRepository parseLocation: aString version: nil.
 	aSuffix := ':', mcRepository projectVersion, '/', mcRepository repoPath.
 	hasProjectVersion := aString endsWith: aSuffix.
 	(mcRepository repoPath includes: $/) ifTrue: [ 
@@ -41,31 +41,28 @@ GtRlRepositoryGitLabLoadSpecification >> initializeWithString: aString [
 ]
 
 { #category : #accessing }
-GtRlRepositoryGitLabLoadSpecification >> projectName [
+GtRlRepositoryGitHubLoadSpecification >> projectName [
 	^ ($/ split: mcRepository projectPath)
 		ifNotEmpty: #last
 		ifEmpty: [ mcRepository projectPath ]
 ]
 
 { #category : #accessing }
-GtRlRepositoryGitLabLoadSpecification >> repositoryName [
+GtRlRepositoryGitHubLoadSpecification >> repositoryName [
 	^ self projectName
 ]
 
 { #category : #accessing }
-GtRlRepositoryGitLabLoadSpecification >> specificationId [
-	^ 'gitlab://' , mcRepository hostname , ':' , mcRepository projectPath , '/'
-		, mcRepository repoPath
+GtRlRepositoryGitHubLoadSpecification >> specificationId [
+	^ 'github://' , mcRepository projectPath , '/' , mcRepository repoPath
 ]
 
 { #category : #accessing }
-GtRlRepositoryGitLabLoadSpecification >> specificationString [
+GtRlRepositoryGitHubLoadSpecification >> specificationString [
 	^ String
 		streamContents: [ :aStream | 
 			aStream
-				nextPutAll: 'gitlab://';
-				nextPutAll: mcRepository hostname;
-				nextPut: $:;
+				nextPutAll: 'github://';
 				nextPutAll: mcRepository projectPath.
 
 			hasProjectVersion
@@ -79,14 +76,12 @@ GtRlRepositoryGitLabLoadSpecification >> specificationString [
 ]
 
 { #category : #accessing }
-GtRlRepositoryGitLabLoadSpecification >> urlWithVersion: aVersionString [
+GtRlRepositoryGitHubLoadSpecification >> urlWithVersion: aVersionString [
 	<return: #String>
 	^ String
 		streamContents: [ :aStream | 
 			aStream
-				nextPutAll: 'gitlab://';
-				nextPutAll: mcRepository hostname;
-				nextPut: $:;
+				nextPutAll: 'github://';
 				nextPutAll: mcRepository projectPath.
 
 			aStream
@@ -99,7 +94,7 @@ GtRlRepositoryGitLabLoadSpecification >> urlWithVersion: aVersionString [
 ]
 
 { #category : #accessing }
-GtRlRepositoryGitLabLoadSpecification >> versionString [
+GtRlRepositoryGitHubLoadSpecification >> versionString [
 	^ hasProjectVersion
 		ifTrue: [ mcRepository projectVersion ]
 		ifFalse: [ Error signal: 'The repository does not have a version number.' ]

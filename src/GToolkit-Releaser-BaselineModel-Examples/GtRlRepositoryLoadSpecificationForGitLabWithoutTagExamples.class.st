@@ -10,13 +10,18 @@ GtRlRepositoryLoadSpecificationForGitLabWithoutTagExamples >> specificationClass
 ]
 
 { #category : #accessing }
+GtRlRepositoryLoadSpecificationForGitLabWithoutTagExamples >> specificationHost [
+	^ 'ssh.git.feenk.com'
+]
+
+{ #category : #accessing }
 GtRlRepositoryLoadSpecificationForGitLabWithoutTagExamples >> specificationId [
 	^ 'gitlab://ssh.git.feenk.com:projects/subproject1/subproject2/project/src'
 ]
 
 { #category : #accessing }
 GtRlRepositoryLoadSpecificationForGitLabWithoutTagExamples >> specificationProjectName [
-	^ 'projects/subproject1/subproject2/project'
+	^ 'project'
 ]
 
 { #category : #accessing }

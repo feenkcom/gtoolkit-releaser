@@ -22,6 +22,11 @@ GtRlRepositoryLoadSpecificationForFiletreeExamples >> specificationClass [
 ]
 
 { #category : #accessing }
+GtRlRepositoryLoadSpecificationForFiletreeExamples >> specificationHost [
+	^ nil
+]
+
+{ #category : #accessing }
 GtRlRepositoryLoadSpecificationForFiletreeExamples >> specificationId [
 	^ 'filetree:///Users/example/Documents/temp/repo'
 ]

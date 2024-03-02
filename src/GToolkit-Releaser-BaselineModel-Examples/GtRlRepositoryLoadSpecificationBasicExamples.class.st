@@ -89,6 +89,17 @@ GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHashNotEqualUrl
 ]
 
 { #category : #examples }
+GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHost [
+	<gtExample>
+	| loadSpecification |
+	loadSpecification := self loadSpecification.
+
+	self assert: loadSpecification host equals: self specificationHost.
+
+	^ loadSpecification
+]
+
+{ #category : #examples }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationProjectName [
 	<gtExample>
 	| loadSpecification |
@@ -136,6 +147,11 @@ GtRlRepositoryLoadSpecificationBasicExamples >> specificationClass [
 { #category : #accessing }
 GtRlRepositoryLoadSpecificationBasicExamples >> specificationHasVersion [
 	^ self specificationVersionString isNotNil
+]
+
+{ #category : #accessing }
+GtRlRepositoryLoadSpecificationBasicExamples >> specificationHost [
+	^ self subclassResponsibility
 ]
 
 { #category : #accessing }
