@@ -1,10 +1,10 @@
 Class {
-	#name : 'GtRlProjectExamples',
-	#superclass : 'Object',
-	#category : 'GToolkit-Releaser-BaselineModel-Examples'
+	#name : #GtRlProjectExamples,
+	#superclass : #Object,
+	#category : #'GToolkit-Releaser-BaselineModel-Examples'
 }
 
-{ #category : 'examples - basic' }
+{ #category : #'examples - basic' }
 GtRlProjectExamples >> projectWithBaselineClass [
 	<gtExample>
 	| project |
@@ -19,7 +19,7 @@ GtRlProjectExamples >> projectWithBaselineClass [
 	^ project
 ]
 
-{ #category : 'examples - basic' }
+{ #category : #'examples - basic' }
 GtRlProjectExamples >> projectWithBaselineVersion [
 	<gtExample>
 	| project |
@@ -34,7 +34,7 @@ GtRlProjectExamples >> projectWithBaselineVersion [
 	^ project
 ]
 
-{ #category : 'examples - basic' }
+{ #category : #'examples - basic' }
 GtRlProjectExamples >> projectWithChildProjectWithRepository [
 	<gtExample>
 	| project repository childProject childProjectReference |
@@ -56,7 +56,7 @@ GtRlProjectExamples >> projectWithChildProjectWithRepository [
 	^ project
 ]
 
-{ #category : 'examples - basic' }
+{ #category : #'examples - basic' }
 GtRlProjectExamples >> projectWithChildProjectWithRepositoryAndPackages [
 	<gtExample>
 	| project packageA packageB |
@@ -76,7 +76,7 @@ GtRlProjectExamples >> projectWithChildProjectWithRepositoryAndPackages [
 	^ project
 ]
 
-{ #category : 'examples - basic' }
+{ #category : #'examples - basic' }
 GtRlProjectExamples >> projectWithChildren [
 	<gtExample>
 	| project childA childB referenceA referenceB |
@@ -108,7 +108,7 @@ GtRlProjectExamples >> projectWithChildren [
 	^ project
 ]
 
-{ #category : 'examples - basic' }
+{ #category : #'examples - basic' }
 GtRlProjectExamples >> projectWithName [
 	<gtExample>
 	| project |
@@ -126,7 +126,7 @@ GtRlProjectExamples >> projectWithName [
 	^ project
 ]
 
-{ #category : 'examples - basic' }
+{ #category : #'examples - basic' }
 GtRlProjectExamples >> projectWithPackageWithPackageDependency [
 	<gtExample>
 	| project packageA packageB |
@@ -152,7 +152,7 @@ GtRlProjectExamples >> projectWithPackageWithPackageDependency [
 	^ project
 ]
 
-{ #category : 'examples - basic' }
+{ #category : #'examples - basic' }
 GtRlProjectExamples >> projectWithPackages [
 	<gtExample>
 	| project packageA packageB |
@@ -173,7 +173,7 @@ GtRlProjectExamples >> projectWithPackages [
 	^ project
 ]
 
-{ #category : 'examples - basic' }
+{ #category : #'examples - basic' }
 GtRlProjectExamples >> projectWithPostLoadAction [
 	<gtExample>
 	| project |
@@ -189,7 +189,7 @@ GtRlProjectExamples >> projectWithPostLoadAction [
 	^ project
 ]
 
-{ #category : 'examples - basic' }
+{ #category : #'examples - basic' }
 GtRlProjectExamples >> projectWithPreAndPostLoadActions [
 	<gtExample>
 	| project |
@@ -206,7 +206,7 @@ GtRlProjectExamples >> projectWithPreAndPostLoadActions [
 	^ project
 ]
 
-{ #category : 'examples - basic' }
+{ #category : #'examples - basic' }
 GtRlProjectExamples >> projectWithPreLoadAction [
 	<gtExample>
 	| project |
@@ -222,7 +222,7 @@ GtRlProjectExamples >> projectWithPreLoadAction [
 	^ project
 ]
 
-{ #category : 'examples - basic' }
+{ #category : #'examples - basic' }
 GtRlProjectExamples >> projectWithRepository [
 	<gtExample>
 	| project repository |
@@ -238,7 +238,7 @@ GtRlProjectExamples >> projectWithRepository [
 	^ project
 ]
 
-{ #category : 'examples - structure' }
+{ #category : #'examples - structure' }
 GtRlProjectExamples >> projectWithStructureWithinDistinctRepos [
 	<gtExample>
 	| project childA childB repositoryOne repositoryTwo repositoryThree |
@@ -261,7 +261,7 @@ GtRlProjectExamples >> projectWithStructureWithinDistinctRepos [
 	^ project
 ]
 
-{ #category : 'examples - structure' }
+{ #category : #'examples - structure' }
 GtRlProjectExamples >> projectWithStructureWithinOneRepo [
 	<gtExample>
 	| project childA childB repository |
@@ -279,7 +279,7 @@ GtRlProjectExamples >> projectWithStructureWithinOneRepo [
 	^ project
 ]
 
-{ #category : 'examples - basic' }
+{ #category : #'examples - basic' }
 GtRlProjectExamples >> projectWithTwoParents [
 	<gtExample>
 	| project parentA parentB parentReferenceA parentReferenceB |
@@ -311,7 +311,7 @@ GtRlProjectExamples >> projectWithTwoParents [
 	^ project
 ]
 
-{ #category : 'examples - generated' }
+{ #category : #'examples - generated' }
 GtRlProjectExamples >> systemOneProject [
 	<gtExample>
 	| projectBuilder project repositoryName |
@@ -326,7 +326,7 @@ GtRlProjectExamples >> systemOneProject [
 	self assert: project withAllChildProjects size equals: 7.
 	self assert: project allProjectReferences size equals: 6.
 	self assert: project parentProjects size equals: 0.
-	self assert: project repository urlString equals: repositoryName.
+	self assert: project repository loadSpecificationString equals: repositoryName.
 	self assert: project withAllRepositories size equals: 6.
 	
 	^ project

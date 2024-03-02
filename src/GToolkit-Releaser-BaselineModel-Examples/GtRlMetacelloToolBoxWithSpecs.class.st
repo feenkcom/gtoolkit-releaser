@@ -6,15 +6,15 @@ I make it possible to generate the code of baselines that depend on baselines no
 
 "
 Class {
-	#name : 'GtRlMetacelloToolBoxWithSpecs',
-	#superclass : 'GtRlMetacelloToolBox',
+	#name : #GtRlMetacelloToolBoxWithSpecs,
+	#superclass : #GtRlMetacelloToolBox,
 	#instVars : [
 		'specs'
 	],
 	#category : 'GToolkit-Releaser-BaselineModel-Examples'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlMetacelloToolBoxWithSpecs >> addSpecForBaselineClass: aBaselineClass [
 	| spec |
 	"spec := (aBaselineClass project projectSpec
@@ -30,7 +30,7 @@ GtRlMetacelloToolBoxWithSpecs >> addSpecForBaselineClass: aBaselineClass [
 		put: spec
 ]
 
-{ #category : 'spec creation' }
+{ #category : #'spec creation' }
 GtRlMetacelloToolBoxWithSpecs >> createProjectReferenceSpec: projectBaseName [
   | projectSpec |
   projectSpec := (Metacello image
@@ -55,7 +55,7 @@ GtRlMetacelloToolBoxWithSpecs >> createProjectReferenceSpec: projectBaseName [
     	yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 GtRlMetacelloToolBoxWithSpecs >> specs [
 	^ specs ifNil: [ specs := Dictionary new ]
 ]

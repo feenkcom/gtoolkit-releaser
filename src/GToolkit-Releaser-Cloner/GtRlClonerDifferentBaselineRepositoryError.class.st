@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'loadedProject'
 	],
-	#category : 'GToolkit-Releaser-Cloner-Errors'
+	#category : #'GToolkit-Releaser-Cloner-Errors'
 }
 
 { #category : #accessing }
@@ -27,5 +27,5 @@ GtRlClonerDifferentBaselineRepositoryError >> loadedProject: anObject [
 
 { #category : #accessing }
 GtRlClonerDifferentBaselineRepositoryError >> loadedRepositoryLocation [
-	^ self loadedProject repository urlString
+	^ self loadedProject repository loadSpecificationString
 ]

@@ -1,10 +1,10 @@
 Class {
-	#name : 'GtRlProjectBaselinePrinterExamples',
-	#superclass : 'Object',
+	#name : #GtRlProjectBaselinePrinterExamples,
+	#superclass : #Object,
 	#category : 'GToolkit-Releaser-BaselineModel-Examples'
 }
 
-{ #category : 'accessing - code' }
+{ #category : #'accessing - code' }
 GtRlProjectBaselinePrinterExamples >> baselineWithChildProject [
 	^ 'baseline: spec
 	<baseline>
@@ -15,7 +15,7 @@ GtRlProjectBaselinePrinterExamples >> baselineWithChildProject [
 	]'
 ]
 
-{ #category : 'accessing - code' }
+{ #category : #'accessing - code' }
 GtRlProjectBaselinePrinterExamples >> baselineWithPackageWithPackageDependenciesCode [
 	^ 'baseline: spec
 	<baseline>
@@ -26,7 +26,7 @@ GtRlProjectBaselinePrinterExamples >> baselineWithPackageWithPackageDependencies
 	]'
 ]
 
-{ #category : 'accessing - code' }
+{ #category : #'accessing - code' }
 GtRlProjectBaselinePrinterExamples >> baselineWithPackagesCode [
 	^ 'baseline: spec
 	<baseline>
@@ -36,7 +36,7 @@ GtRlProjectBaselinePrinterExamples >> baselineWithPackagesCode [
 	]'
 ]
 
-{ #category : 'accessing - code' }
+{ #category : #'accessing - code' }
 GtRlProjectBaselinePrinterExamples >> baselineWithPostLoadCode [
 	^ 'baseline: spec
 	<baseline>
@@ -45,7 +45,7 @@ GtRlProjectBaselinePrinterExamples >> baselineWithPostLoadCode [
 	]'
 ]
 
-{ #category : 'accessing - code' }
+{ #category : #'accessing - code' }
 GtRlProjectBaselinePrinterExamples >> baselineWithPreAndPostLoadCode [
 	^ 'baseline: spec
 	<baseline>
@@ -55,7 +55,7 @@ GtRlProjectBaselinePrinterExamples >> baselineWithPreAndPostLoadCode [
 	]'
 ]
 
-{ #category : 'accessing - code' }
+{ #category : #'accessing - code' }
 GtRlProjectBaselinePrinterExamples >> baselineWithPreLoadCode [
 	^ 'baseline: spec
 	<baseline>
@@ -64,7 +64,7 @@ GtRlProjectBaselinePrinterExamples >> baselineWithPreLoadCode [
 	]'
 ]
 
-{ #category : 'accessing - code' }
+{ #category : #'accessing - code' }
 GtRlProjectBaselinePrinterExamples >> emptyBaselineCode [
 	^ 'baseline: spec
 	<baseline>
@@ -72,7 +72,7 @@ GtRlProjectBaselinePrinterExamples >> emptyBaselineCode [
 	]'
 ]
 
-{ #category : 'examples - printing basic projects' }
+{ #category : #'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printEmptyProject [
 	<gtExample>
 	| project printer |
@@ -86,7 +86,7 @@ GtRlProjectBaselinePrinterExamples >> printEmptyProject [
 	^ printer
 ]
 
-{ #category : 'examples - printing basic projects' }
+{ #category : #'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printProjectWithChildProject [
 	<gtExample>
 	| project printer |
@@ -100,7 +100,7 @@ GtRlProjectBaselinePrinterExamples >> printProjectWithChildProject [
 	^ printer
 ]
 
-{ #category : 'examples - printing basic projects' }
+{ #category : #'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printProjectWithPackageWithPackageDependency [
 	<gtExample>
 	| project printer |
@@ -114,7 +114,7 @@ GtRlProjectBaselinePrinterExamples >> printProjectWithPackageWithPackageDependen
 	^ printer
 ]
 
-{ #category : 'examples - printing basic projects' }
+{ #category : #'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printProjectWithPackages [
 	<gtExample>
 	| project printer |
@@ -128,7 +128,7 @@ GtRlProjectBaselinePrinterExamples >> printProjectWithPackages [
 	^ printer
 ]
 
-{ #category : 'examples - printing basic projects' }
+{ #category : #'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printProjectWithPostLoadAction [
 	<gtExample>
 	| project printer |
@@ -142,7 +142,7 @@ GtRlProjectBaselinePrinterExamples >> printProjectWithPostLoadAction [
 	^ printer
 ]
 
-{ #category : 'examples - printing basic projects' }
+{ #category : #'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printProjectWithPreAndPostLoadActions [
 	<gtExample>
 	| project printer |
@@ -156,7 +156,7 @@ GtRlProjectBaselinePrinterExamples >> printProjectWithPreAndPostLoadActions [
 	^ printer
 ]
 
-{ #category : 'examples - printing basic projects' }
+{ #category : #'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printProjectWithPreLoadAction [
 	<gtExample>
 	| project printer |
@@ -170,7 +170,7 @@ GtRlProjectBaselinePrinterExamples >> printProjectWithPreLoadAction [
 	^ printer
 ]
 
-{ #category : 'examples - printing projects' }
+{ #category : #'examples - printing projects' }
 GtRlProjectBaselinePrinterExamples >> printStandaloneProjectWithActions [
 	<gtExample>
 	| projectBuilder project printer |
@@ -188,7 +188,7 @@ GtRlProjectBaselinePrinterExamples >> printStandaloneProjectWithActions [
 	^ printer
 ]
 
-{ #category : 'examples - printing projects' }
+{ #category : #'examples - printing projects' }
 GtRlProjectBaselinePrinterExamples >> printSystemFiveProject [
 	<gtExample>
 	| project printer |
@@ -202,7 +202,7 @@ GtRlProjectBaselinePrinterExamples >> printSystemFiveProject [
 	^ printer
 ]
 
-{ #category : 'examples - printing projects' }
+{ #category : #'examples - printing projects' }
 GtRlProjectBaselinePrinterExamples >> printSystemFourProject [
 	<gtExample>
 	| project printer |
@@ -216,7 +216,7 @@ GtRlProjectBaselinePrinterExamples >> printSystemFourProject [
 	^ printer
 ]
 
-{ #category : 'examples - printing projects' }
+{ #category : #'examples - printing projects' }
 GtRlProjectBaselinePrinterExamples >> printSystemOneManualProject [
 	<gtExample>
 	| project printer |
@@ -230,7 +230,7 @@ GtRlProjectBaselinePrinterExamples >> printSystemOneManualProject [
 	^ printer
 ]
 
-{ #category : 'examples - printing projects' }
+{ #category : #'examples - printing projects' }
 GtRlProjectBaselinePrinterExamples >> printSystemOneProject [
 	<gtExample>
 	| project printer |
@@ -244,7 +244,7 @@ GtRlProjectBaselinePrinterExamples >> printSystemOneProject [
 	^ printer
 ]
 
-{ #category : 'examples - printing projects' }
+{ #category : #'examples - printing projects' }
 GtRlProjectBaselinePrinterExamples >> printSystemTwoProject [
 	<gtExample>
 	| projectBuilder project printer |

@@ -1,10 +1,10 @@
 Class {
-	#name : 'GtRlRepositoryExamples',
-	#superclass : 'Object',
-	#category : 'GToolkit-Releaser-BaselineModel-Examples'
+	#name : #GtRlRepositoryExamples,
+	#superclass : #Object,
+	#category : #'GToolkit-Releaser-BaselineModel-Examples'
 }
 
-{ #category : 'examples - properties' }
+{ #category : #'examples - properties' }
 GtRlRepositoryExamples >> repositoryEqualityExample [
 	<gtExample>
 	"I create a repository and verify that quality with other repositories works as expected."
@@ -12,13 +12,13 @@ GtRlRepositoryExamples >> repositoryEqualityExample [
 	repository := self repositoryWithGithubUrlNoVersion.
 
 	self assert: repository = repository.
-	self assert: repository = (GtRlRepository fromUrlString: repository urlString).
+	self assert: repository = (GtRlRepository fromUrlString: repository loadSpecificationString).
 	self assert: (repository = self repositoryWithGithubUrlExplicitTagVersion) not.
 	
 	^ repository
 ]
 
-{ #category : 'examples - properties' }
+{ #category : #'examples - properties' }
 GtRlRepositoryExamples >> repositoryHashExample [
 	<gtExample>
 	"I create a repository and verify that computing the hash works as expected."
@@ -32,7 +32,7 @@ GtRlRepositoryExamples >> repositoryHashExample [
 	^ repository
 ]
 
-{ #category : 'examples - properties' }
+{ #category : #'examples - properties' }
 GtRlRepositoryExamples >> repositoryHashNotEqualUrlExample [
 	<gtExample>
 	"I create a repository and verify that computing the hash works as expected."
@@ -45,7 +45,7 @@ GtRlRepositoryExamples >> repositoryHashNotEqualUrlExample [
 	^ repository
 ]
 
-{ #category : 'examples - setup' }
+{ #category : #'examples - setup' }
 GtRlRepositoryExamples >> repositoryWithFiletreeUrl [
 	<gtExample>
 	"I build a repository that uses a filetree url to identify a repository."
@@ -57,7 +57,7 @@ GtRlRepositoryExamples >> repositoryWithFiletreeUrl [
 	^ repository
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 GtRlRepositoryExamples >> repositoryWithFiletreeUrlHasCorrectId [
 	<gtExample>
 	| repository |
@@ -68,7 +68,7 @@ GtRlRepositoryExamples >> repositoryWithFiletreeUrlHasCorrectId [
 	^ repository
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 GtRlRepositoryExamples >> repositoryWithFiletreeUrlHasCorrectNames [
 	<gtExample>
 	"I build a repository that uses a filetree url to identify a repository."
@@ -81,20 +81,19 @@ GtRlRepositoryExamples >> repositoryWithFiletreeUrlHasCorrectNames [
 	^ repository
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 GtRlRepositoryExamples >> repositoryWithFiletreeUrlHasCorrectUrl [
 	<gtExample>
 	"I build a repository that uses a filetree url to identify a repository."
 	| repository |
 	repository := self repositoryWithFiletreeUrl.
 	
-	self assert: repository url equals: (ZnUrl fromString: 'filetree:///Users/example/Documents/temp/repo').
-	self assert: repository urlString equals: 'filetree:///Users/example/Documents/temp/repo'.
+	self assert: repository loadSpecificationString equals: 'filetree:///Users/example/Documents/temp/repo'.
 	
 	^ repository
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 GtRlRepositoryExamples >> repositoryWithFiletreeUrlHasNoVersion [
 	<gtExample>
 	"I build a repository that uses a filetree url to identify a repository."
@@ -107,7 +106,7 @@ GtRlRepositoryExamples >> repositoryWithFiletreeUrlHasNoVersion [
 	^ repository
 ]
 
-{ #category : 'examples - setup' }
+{ #category : #'examples - setup' }
 GtRlRepositoryExamples >> repositoryWithGithubUrlExplicitTagVersion [
 	<gtExample>
 	"I build a repository that uses a Github url pointing to a tag instead of the latest version."
@@ -119,7 +118,7 @@ GtRlRepositoryExamples >> repositoryWithGithubUrlExplicitTagVersion [
 	^ repository
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 GtRlRepositoryExamples >> repositoryWithGithubUrlExplicitTagVersionHasCorrectId [
 	<gtExample>
 	"I build a repository that uses a Github url pointing to a tag instead of the latest version."
@@ -131,7 +130,7 @@ GtRlRepositoryExamples >> repositoryWithGithubUrlExplicitTagVersionHasCorrectId 
 	^ repository
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 GtRlRepositoryExamples >> repositoryWithGithubUrlExplicitTagVersionHasCorrectNames [
 	<gtExample>
 	"I build a repository that uses a Github url pointing to a tag instead of the latest version."
@@ -144,7 +143,7 @@ GtRlRepositoryExamples >> repositoryWithGithubUrlExplicitTagVersionHasCorrectNam
 	^ repository
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 GtRlRepositoryExamples >> repositoryWithGithubUrlExplicitTagVersionHasCorrectUrl [
 	<gtExample>
 	"I build a repository that uses a Github url pointing to a tag instead of the latest version."
@@ -157,7 +156,7 @@ GtRlRepositoryExamples >> repositoryWithGithubUrlExplicitTagVersionHasCorrectUrl
 	^ repository
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 GtRlRepositoryExamples >> repositoryWithGithubUrlExplicitTagVersionHasCorrectVersion [
 	<gtExample>
 	"I build a repository that uses a Github url pointing to a tag instead of the latest version."
@@ -170,7 +169,7 @@ GtRlRepositoryExamples >> repositoryWithGithubUrlExplicitTagVersionHasCorrectVer
 	^ repository
 ]
 
-{ #category : 'examples - setup' }
+{ #category : #'examples - setup' }
 GtRlRepositoryExamples >> repositoryWithGithubUrlNoVersion [
 	<gtExample>
 	"I build a repository that uses a Github url with no version information."
@@ -182,7 +181,7 @@ GtRlRepositoryExamples >> repositoryWithGithubUrlNoVersion [
 	^ repository
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 GtRlRepositoryExamples >> repositoryWithGithubUrlNoVersionHasCorrectId [
 	<gtExample>
 	"I build a repository that uses a Github url with no version information."
@@ -194,7 +193,7 @@ GtRlRepositoryExamples >> repositoryWithGithubUrlNoVersionHasCorrectId [
 	^ repository
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 GtRlRepositoryExamples >> repositoryWithGithubUrlNoVersionHasCorrectNames [
 	<gtExample>
 	"I build a repository that uses a Github url with no version information."
@@ -207,20 +206,19 @@ GtRlRepositoryExamples >> repositoryWithGithubUrlNoVersionHasCorrectNames [
 	^ repository
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 GtRlRepositoryExamples >> repositoryWithGithubUrlNoVersionHasCorrectUrl [
 	<gtExample>
 	"I build a repository that uses a Github url with no version information."
 	| repository |
 	repository := self repositoryWithGithubUrlNoVersion.
 	
-	self assert: repository url equals: (ZnUrl fromString: 'github://example/gtoolkit/src').
-	self assert: repository urlString equals: 'github://example/gtoolkit/src'.
+	self assert: repository loadSpecificationString equals: 'github://example/gtoolkit/src'.
 	
 	^ repository
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 GtRlRepositoryExamples >> repositoryWithGithubUrlNoVersionHasNoVersion [
 	<gtExample>
 	"I build a repository that uses a Github url with no version information."

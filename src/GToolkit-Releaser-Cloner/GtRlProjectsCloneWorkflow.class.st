@@ -143,7 +143,7 @@ GtRlProjectsCloneWorkflow >> ensureSameRepositoryForBaselineSpec: aBaselineSpec 
 	(loadedProjectsByName includesKey: aBaselineSpec baselineName) ifFalse: [ ^ self ].
 	
 	loadedProject := loadedProjectsByName at: aBaselineSpec baselineName.
-	(loadedProject repository urlString = aBaselineSpec repositoryLocation) ifFalse: [ 
+	(loadedProject repository loadSpecificationString = aBaselineSpec repositoryLocation) ifFalse: [ 
 		GtRlClonerDifferentBaselineRepositoryError new
 			baselineSpec: aBaselineSpec;
 			loadedProject: loadedProject;
@@ -256,7 +256,7 @@ GtRlProjectsCloneWorkflow >> loadProjectDependenciesFor: aBaselineProject [
 		self 
 			loadBaselineSpec: (GtRlClonerBaselineSpec new
 				baselineName: aProject name;
-				repositoryLocation: aProject repository urlString) ].
+				repositoryLocation: aProject repository loadSpecificationString) ].
 ]
 
 { #category : #testing }
