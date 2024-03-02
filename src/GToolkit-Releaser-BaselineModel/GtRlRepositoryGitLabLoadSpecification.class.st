@@ -48,6 +48,11 @@ GtRlRepositoryGitLabLoadSpecification >> projectName [
 ]
 
 { #category : #accessing }
+GtRlRepositoryGitLabLoadSpecification >> repoPath [
+	^ mcRepository repoPath
+]
+
+{ #category : #accessing }
 GtRlRepositoryGitLabLoadSpecification >> repositoryName [
 	^ self projectName
 ]

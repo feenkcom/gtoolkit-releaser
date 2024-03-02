@@ -25,6 +25,11 @@ GtRlRepositoryLoadSpecificationForGitLabWithoutTagExamples >> specificationProje
 ]
 
 { #category : #accessing }
+GtRlRepositoryLoadSpecificationForGitLabWithoutTagExamples >> specificationRepoPath [
+	^ 'src'
+]
+
+{ #category : #accessing }
 GtRlRepositoryLoadSpecificationForGitLabWithoutTagExamples >> specificationUrlString [
 	^ 'gitlab://ssh.git.feenk.com:projects/subproject1/subproject2/project/src'
 ]

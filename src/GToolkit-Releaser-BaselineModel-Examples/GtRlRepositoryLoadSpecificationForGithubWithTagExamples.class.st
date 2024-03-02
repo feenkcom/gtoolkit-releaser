@@ -50,6 +50,11 @@ GtRlRepositoryLoadSpecificationForGithubWithTagExamples >> specificationProjectN
 ]
 
 { #category : #accessing }
+GtRlRepositoryLoadSpecificationForGithubWithTagExamples >> specificationRepoPath [
+	^ 'src'
+]
+
+{ #category : #accessing }
 GtRlRepositoryLoadSpecificationForGithubWithTagExamples >> specificationUrlString [
 	^ 'github://example/gtoolkit:v0.2.1/src'
 ]

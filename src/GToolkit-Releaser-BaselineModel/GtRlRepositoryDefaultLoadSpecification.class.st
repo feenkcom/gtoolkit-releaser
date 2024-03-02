@@ -38,6 +38,13 @@ GtRlRepositoryDefaultLoadSpecification >> projectName [
 ]
 
 { #category : #accessing }
+GtRlRepositoryDefaultLoadSpecification >> repoPath [
+	| urlSegments |
+	urlSegments := specificationUrl segments.
+	^ urlSegments size = 1 ifTrue: [ '' ] ifFalse: [ urlSegments last ]
+]
+
+{ #category : #accessing }
 GtRlRepositoryDefaultLoadSpecification >> repositoryName [
 	| nameSegment |
 	nameSegment := self nameSegment.

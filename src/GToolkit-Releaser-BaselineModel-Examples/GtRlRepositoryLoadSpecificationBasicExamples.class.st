@@ -113,6 +113,17 @@ GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationProjectName [
 ]
 
 { #category : #examples }
+GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationRepoPath [
+	<gtExample>
+	| loadSpecification |
+	loadSpecification := self loadSpecification.
+
+	self assert: loadSpecification repoPath equals: self specificationRepoPath.
+
+	^ loadSpecification
+]
+
+{ #category : #examples }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationUrlWithVersion [
 	<gtExample>
 	| loadSpecification |
@@ -162,6 +173,11 @@ GtRlRepositoryLoadSpecificationBasicExamples >> specificationId [
 { #category : #accessing }
 GtRlRepositoryLoadSpecificationBasicExamples >> specificationProjectName [
 	<return: #String>
+	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
+GtRlRepositoryLoadSpecificationBasicExamples >> specificationRepoPath [
 	^ self subclassResponsibility
 ]
 

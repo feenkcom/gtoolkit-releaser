@@ -37,6 +37,11 @@ GtRlRepositoryLoadSpecificationForFiletreeExamples >> specificationProjectName [
 ]
 
 { #category : #accessing }
+GtRlRepositoryLoadSpecificationForFiletreeExamples >> specificationRepoPath [
+	^ 'repo'
+]
+
+{ #category : #accessing }
 GtRlRepositoryLoadSpecificationForFiletreeExamples >> specificationUrlString [
 	^ 'filetree:///Users/example/Documents/temp/repo'
 ]

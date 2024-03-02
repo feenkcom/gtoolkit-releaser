@@ -49,6 +49,11 @@ GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples >> specificationPr
 ]
 
 { #category : #accessing }
+GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples >> specificationRepoPath [
+	^ 'src'
+]
+
+{ #category : #accessing }
 GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples >> specificationUrlString [
 	^ 'github://example/gtoolkit/src'
 ]

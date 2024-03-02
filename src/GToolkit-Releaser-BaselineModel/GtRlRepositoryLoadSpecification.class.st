@@ -62,6 +62,7 @@ GtRlRepositoryLoadSpecification >> gtOverview [
 		at: 'Repository name' put: (aPrinter value: [ self repositoryName ]);
 		at: 'Has version' put: (aPrinter value: [ self hasVersion ]);
 		at: 'Version string' put: (aPrinter value: [ self versionStringOrNil ]);
+		at: 'Repo path' put: (aPrinter value: [ self repoPath ]);
 		at: 'Specification with v2.0.24 version'
 			put: (aPrinter value: [ self urlWithVersion: 'v2.0.24' ]);
 		yourself
@@ -102,6 +103,11 @@ GtRlRepositoryLoadSpecification >> initializeWithString: aString [
 
 { #category : #accessing }
 GtRlRepositoryLoadSpecification >> projectName [
+	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
+GtRlRepositoryLoadSpecification >> repoPath [
 	^ self subclassResponsibility
 ]
 
