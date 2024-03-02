@@ -10,7 +10,7 @@ Class {
 
 { #category : #testing }
 GtRlRepositoryGitHubLoadSpecification class >> isForUrlString: aString [
-	^ aString beginsWith: 'github://'
+	^ false "aString beginsWith: 'github://'"
 ]
 
 { #category : #testing }
@@ -49,7 +49,7 @@ GtRlRepositoryGitHubLoadSpecification >> projectName [
 
 { #category : #accessing }
 GtRlRepositoryGitHubLoadSpecification >> repositoryName [
-	^ self projectName
+	^ mcRepository projectPath
 ]
 
 { #category : #accessing }

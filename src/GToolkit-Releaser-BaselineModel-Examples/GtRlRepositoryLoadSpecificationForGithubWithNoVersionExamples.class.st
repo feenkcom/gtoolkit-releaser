@@ -30,12 +30,12 @@ GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples >> loadSpecificati
 
 { #category : #accessing }
 GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples >> specificationClass [
-	^ GtRlRepositoryGitHubLoadSpecification
+	^ GtRlRepositoryDefaultLoadSpecification
 ]
 
 { #category : #accessing }
 GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples >> specificationHost [
-	^ 'github.com'
+	^ 'example'
 ]
 
 { #category : #accessing }

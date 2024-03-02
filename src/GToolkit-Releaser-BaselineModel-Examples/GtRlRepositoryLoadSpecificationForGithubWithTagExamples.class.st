@@ -31,12 +31,12 @@ GtRlRepositoryLoadSpecificationForGithubWithTagExamples >> loadSpecificationHasN
 
 { #category : #accessing }
 GtRlRepositoryLoadSpecificationForGithubWithTagExamples >> specificationClass [
-	^ GtRlRepositoryGitHubLoadSpecification
+	^ GtRlRepositoryDefaultLoadSpecification
 ]
 
 { #category : #accessing }
 GtRlRepositoryLoadSpecificationForGithubWithTagExamples >> specificationHost [
-	^ 'github.com'
+	^ 'example'
 ]
 
 { #category : #accessing }
