@@ -217,6 +217,8 @@ BaselineOfGToolkitReleaser >> baseline: spec [
 			package: 'GToolkit-Releaser-BaselineModel-Examples' with: [
 				spec requires: #('GToolkit-Releaser-BaselineModel-SystemOneExamples' 'GToolkit-Releaser-BaselineModel-SystemThreeExamples' 'GToolkit-Releaser-BaselineModel-SystemTwoExamples' 'GToolkit-Releaser-BaselineModel-StandaloneSystemsExamples' 'GToolkit-Releaser-BaselineModel-SystemFiveExamples' 'GToolkit-Releaser-BaselineModel-MinimalIceberg' ). ];
 			package: 'GToolkit-Releaser-Examples' with: [
-				spec requires: #('GToolkit-Releaser' 'GToolkit-Releaser-IcebergExtensions' 'GToolkit-Releaser-BaselineModel-Examples' ). ]. ].
+				spec requires: #('GToolkit-Releaser' 'GToolkit-Releaser-IcebergExtensions' 'GToolkit-Releaser-BaselineModel-Examples' ). ];
+			package: 'GToolkit-Releaser-Support' with: [ 
+				spec requires: #('Beacon' 'GToolkit-Releaser' ) ]. ].
 
 ]
