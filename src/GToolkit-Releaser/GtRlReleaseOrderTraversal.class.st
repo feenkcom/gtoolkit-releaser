@@ -13,7 +13,7 @@ Class {
 	#instVars : [
 		'traversalContext'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #initialization }
@@ -44,7 +44,7 @@ GtRlReleaseOrderTraversal >> releaseOrderFor: aRepositoryRelease in: currentRele
 				self releaseOrderFor: aChildRelease in: currentReleases ].
 			"The same repository release can be a child of multiple other repository releases.
 			When building the release order we only take it into account the first time we encouter it,
-			since we process repositories usign depth first stragegy."
+			since we process repositories using depth first stragegy."
 			(currentReleases includes: aRepositoryRelease) ifFalse: [
 				currentReleases add: aRepositoryRelease ] ]
 	
