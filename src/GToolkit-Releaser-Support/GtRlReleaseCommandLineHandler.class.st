@@ -30,6 +30,7 @@ GtRlReleaseCommandLineHandler >> activate [
 	TranscriptLogger
 		runDuring: [ | releaseExporter |
 			releaseExporter := self newReleaseExporter.
+			self preReleaseAction: releaseExporter.
 
 			self versionOption ifNotNil: [ :aVersion | 
 				| semanticVersion |
@@ -61,19 +62,26 @@ GtRlReleaseCommandLineHandler >> commitsOption [
 		ifAbsent: [ false ]
 ]
 
-{ #category : #'api - initialization' }
+{ #category : #initialization }
 GtRlReleaseCommandLineHandler >> newReleaseExporter [
-	"Command line handler subclasses must properly initialized the release exporter."
+	"Command line handler subclasses must properly initialize the release exporter."
 
 	^ GtRlReleaseExporter new
 ]
 
-{ #category : #'api - building' }
-GtRlReleaseCommandLineHandler >> postReleaseAction: workflow [
+{ #category : #hooks }
+GtRlReleaseCommandLineHandler >> postReleaseAction: aWorkflow [
 	"Extra actions after a successful release.
 	It can be used to set project version, using 
 	`GtImage instance project: 'Project Name' version: workflow rootProjectRelease version`.
 	You can implement similar yourProjectVersion method."
+
+	
+]
+
+{ #category : #hooks }
+GtRlReleaseCommandLineHandler >> preReleaseAction: aReleaseExporter [
+	"Extra actions before a release."
 
 	
 ]
