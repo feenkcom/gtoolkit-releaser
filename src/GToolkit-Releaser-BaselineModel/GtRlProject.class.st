@@ -230,6 +230,8 @@ GtRlProject >> gtSourceFor: aView [
 	self baselineVersion ifNil: [ ^ aView empty ].
 	^ aView textEditor
 		title: 'Source' translated;
+		styler: (BrRBTextStyler new
+			isForWorkspace: true);
 		text: [ String streamContents: [ :s | 
 			self baselineVersion spec configMethodOn: s] ];
 		priority: 55
