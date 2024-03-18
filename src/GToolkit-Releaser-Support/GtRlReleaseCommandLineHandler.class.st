@@ -72,8 +72,8 @@ GtRlReleaseCommandLineHandler >> newReleaseExporter [
 GtRlReleaseCommandLineHandler >> postReleaseAction: workflow [
 	"Extra actions after a successful release.
 	It can be used to set project version, using 
-	`GtImage projectVersion: workflow rootProjectRelease version`.
-	Note, that the #projectVersion: method must be implemented by the project"
+	`GtImage instance project: 'Project Name' version: workflow rootProjectRelease version`.
+	You can implement similar yourProjectVersion method."
 
 	
 ]

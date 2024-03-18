@@ -66,11 +66,17 @@ GtRlCompileBaselineReleaseAction >> gtViewBaselineSourceDiffFor: aView [
 		stencil: [ :anEditor | 
 			| change |
 			change := GtDiffBuilder
-					computeDifferencesFrom: self projectRelease project baselineClass
-							>> #baseline:
+					computeDifferencesFrom: (self projectRelease project baselineClass
+							>> #baseline:) sourceCode
 					to: self projectRelease generateBaselineSource
 					using: GtCharacterGroupDiffSplitter words.
-			(GtDiffElement onChange: change) aptitude: GtDiffShadowAptitude ]
+			GtDiffElementWithLabelStencil new
+				fromLabelText: 'Current baseline:';
+				toLabelText: 'Release baseline:';
+				change: change;
+				styler: (GtCodeDiffRBTextStyler new
+						isForWorkspace: false;
+						yourself) ]
 ]
 
 { #category : #ui }
@@ -90,7 +96,21 @@ GtRlCompileBaselineReleaseAction >> gtViewPreviousVersionDiffFor: aView [
 					computeDifferencesFrom: (originalCode ifNil: [ '' ])
 					to: self projectRelease generateBaselineSource
 					using: GtCharacterGroupDiffSplitter words.
-			(GtDiffElement onChange: change) aptitude: GtDiffShadowAptitude ]
+			(GtDiffElement onChange: change) aptitude: GtDiffShadowAptitude ];
+		stencil: [ | latestTag originalCode change |
+			latestTag := self projectRelease repositoryRelease latestSemanticVersionTag.
+			originalCode := self baselineCodeForCommit: latestTag commit.
+			change := GtDiffBuilder
+					computeDifferencesFrom: (originalCode ifNil: [ '' ])
+					to: self projectRelease generateBaselineSource
+					using: GtCharacterGroupDiffSplitter words.
+			GtDiffElementWithLabelStencil new
+				fromLabelText: 'Previous release baseline:';
+				toLabelText: 'New release baseline:';
+				change: change;
+				styler: (GtCodeDiffRBTextStyler new
+						isForWorkspace: false;
+						yourself) ]
 ]
 
 { #category : #accessing }
