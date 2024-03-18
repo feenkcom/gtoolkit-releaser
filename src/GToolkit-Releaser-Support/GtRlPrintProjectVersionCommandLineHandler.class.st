@@ -46,5 +46,5 @@ GtRlPrintProjectVersionCommandLineHandler >> projectVersionString [
 	"Return a project version."
 
 	<return: #String>
-	^ self subclassResponsibility
+	^ GtImage instance projectVersion
 ]
