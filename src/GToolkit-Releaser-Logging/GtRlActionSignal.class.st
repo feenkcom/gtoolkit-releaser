@@ -22,3 +22,8 @@ GtRlActionSignal >> action: anObject [
 GtRlActionSignal >> initializeForAction: anAction [
 	self action:  anAction
 ]
+
+{ #category : #accessing }
+GtRlActionSignal >> signalTypeLabel [
+	^ self class name asString
+]
