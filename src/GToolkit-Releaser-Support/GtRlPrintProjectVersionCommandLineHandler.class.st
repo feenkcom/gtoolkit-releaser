@@ -11,7 +11,7 @@ GtRlPrintProjectVersionCommandLineHandler class >> commandName [
 
 { #category : #accessing }
 GtRlPrintProjectVersionCommandLineHandler class >> description [
-	^ 'Print a project version.'
+	^ 'Print a project version. Use --line-ending=false to print just version number.'
 ]
 
 { #category : #testing }
@@ -24,21 +24,25 @@ GtRlPrintProjectVersionCommandLineHandler >> activate [
 	self activateHelp ifTrue: [ ^ self ].
 
 	self stdout
-		nextPutAll: self projectVersionString asString;
-		nextPutAll: OSPlatform current lineEnding;
-		flush.
+		in: [ :aTranscript | 
+			aTranscript nextPutAll: self projectVersionString asString.
+			self lineEndingOption
+				ifTrue: [ aTranscript nextPutAll: OSPlatform current lineEnding ].
+			aTranscript flush ].
 
 	self quit
 ]
 
-{ #category : #'api - building' }
-GtRlPrintProjectVersionCommandLineHandler >> postReleaseAction: workflow [
-	"Extra actions after a successful release.
-	It can be used to set project version, using 
-	`GtImage projectVersion: workflow rootProjectRelease version`.
-	Note, that the #projectVersion: method must be implemented by the project"
+{ #category : #'accessing - arguments' }
+GtRlPrintProjectVersionCommandLineHandler >> lineEndingOption [
+	"Define whether to print line ending.
+	The command line option is written as: --line-ending=true"
 
-	
+	<return: #String>
+	^ self commandLine
+		optionAt: 'line-ending'
+		ifPresent: [ :aValue | aValue = 'true' ]
+		ifAbsent: [ false ]
 ]
 
 { #category : #'api - building' }
