@@ -33,6 +33,18 @@ GtMetrics >> basePharoLinesOfCode [
 ]
 
 { #category : #accessing }
+GtMetrics >> classesAndTraitsInProjects: aCollection [
+	| mPackages packages |
+	mPackages := aCollection flatCollect: [:each | each packages ].
+	packages := mPackages 
+		collect: [:each | RPackageOrganizer default packageNamed: each name asSymbol ifAbsent: [nil]]
+		thenSelect: #notNil.
+	self assert: packages notEmpty.
+	^ Smalltalk allClassesAndTraits select: [:each | 
+		packages includes: each package ]
+]
+
+{ #category : #accessing }
 GtMetrics >> famix3LinesOfCode [
 	^ famix3LinesOfCode ifNil: [ famix3LinesOfCode := (BaselineOfFamix3SmalltalkImporter version 
 	withDeepCollect: [ :each | each projects collect: #version ])
@@ -67,6 +79,11 @@ GtMetrics >> gtBarChartFor: aView [
 				barWidthData: [ :eachValue | eachValue last ];
 				amountOfTicks: 4;
 				with: theData ]
+]
+
+{ #category : #accessing }
+GtMetrics >> gtClassesAndTraits [
+	^ self classesAndTraitsInProjects: self gtProjects
 ]
 
 { #category : #accessing }
