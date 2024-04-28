@@ -254,7 +254,7 @@ GtMetrics >> pharoToReplaceProjects [
 	| projects |
 	projects :=
 		(self 
-			forPharo11: [ #()] 
+			forPharo11AndPharo12: [ #()] 
 			forPharo10: [ {BaselineOfGeneralHelp}]), 
 	 {BaselineOfBasicTools . 
 		BaselineOfShout . 
