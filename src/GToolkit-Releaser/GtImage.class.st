@@ -284,7 +284,7 @@ GtImage >> gtCommitInfoFor: aView [
 ]
 
 { #category : #accessing }
-GtImage >> gtExensionsFor: aView [
+GtImage >> gtExtensionsFor: aView [
 	<gtView>
 	| inspectorPragmas spotterPragmas coderAddOnsPragmas coderContextMenuPragmas advicePragmas actionPragmas lepiterSnippets |
 	^ aView columnedList
