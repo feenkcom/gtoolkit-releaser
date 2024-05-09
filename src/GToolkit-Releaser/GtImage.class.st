@@ -284,26 +284,46 @@ GtImage >> gtCommitInfoFor: aView [
 ]
 
 { #category : #accessing }
+GtImage >> gtExtensionPragmas: aView [
+	<gtView>
+	^ aView columnedList
+		title: 'Extension pragmas';
+		priority: 30;
+		items: [ (GtPragmaType all select: [ :each | each keyword beginsWith: 'gt' ])
+				sorted: [ :a :b | a keyword < b keyword ] ];
+		column: 'Pragma' text: [ :each | each ];
+		column: 'Usages' text: [ :each | each pragmas size ]
+]
+
+{ #category : #accessing }
 GtImage >> gtExtensionsFor: aView [
 	<gtView>
-	| inspectorPragmas spotterPragmas coderAddOnsPragmas coderContextMenuPragmas advicePragmas actionPragmas lepiterSnippets |
+	| inspectorPragmas spotterPragmas coderAddOnsPragmas coderContextMenuPragmas advicePragmas actionPragmas lepiterSnippets exceptionPragmas contextPragmas classPragmas classActionPragmas |
 	^ aView columnedList
-		title: 'Extensions';
+		title: 'Main extensions';
 		priority: 20;
 		items: [ 
 			inspectorPragmas := GtInspector extensionsPragma gtPragmas.
+			exceptionPragmas := #gtExceptionView gtPragmas.
+			contextPragmas := #gtContextView gtPragmas.
+			classPragmas := #gtClassView gtPragmas.
 			spotterPragmas := GtSpotter extensionsPragma gtPragmas.
 			coderAddOnsPragmas := GtCoderModel astExtensionsPragma gtPragmas.
 			coderContextMenuPragmas := GtCoderModel contextMenuAddOnsPragma gtPragmas.
 			actionPragmas := #gtAction gtPragmas.
+			classActionPragmas := #gtClassAction gtPragmas.
 			advicePragmas := #gtAdvice gtPragmas.
 			lepiterSnippets := LeSnippet allSubclasses select: [:each | each class includesSelector: #leJsonV4Name ].
 			{
-				{'Inspector extensions' . inspectorPragmas . inspectorPragmas size}.
+				{'Inspector views' . inspectorPragmas . inspectorPragmas size}.
+				{'Debugger exception views' . exceptionPragmas . exceptionPragmas size}.
+				{'Debugger context views' . contextPragmas . contextPragmas size}.
+				{'Coder class views' . classPragmas . classPragmas size}.
 				{'Object actions' . actionPragmas . actionPragmas size}.
+				{'Coder class actions' . classActionPragmas . classActionPragmas size}.
 				{'Search extensions' . spotterPragmas . spotterPragmas size}.
-				{'Coder AST AddOns' . coderAddOnsPragmas . coderAddOnsPragmas size}.
-				{'Coder Menu AddOns' . coderContextMenuPragmas . coderContextMenuPragmas size}.
+				{'Coder AST add ons' . coderAddOnsPragmas . coderAddOnsPragmas size}.
+				{'Coder menu add ons' . coderContextMenuPragmas . coderContextMenuPragmas size}.
 				{'Advices' . advicePragmas . advicePragmas size}.
 				{'Lepiter snippets' . lepiterSnippets . lepiterSnippets size}.
 			} ];
@@ -362,7 +382,7 @@ GtImage >> gtPreviewFor: aView [
 				('Base image info' -> (String streamContents: [ :s | self imageInfoOn: s])).
 				"'License' -> self licenseString."
 				('Virtual Machine' -> Smalltalk vm).
-				('Last opened version' -> self lastOpenedVersion versionString).
+				('Last opened version' -> (self lastOpenedVersion ifNil: ['?'] ifNotNil: [:v | v versionString ])).
 				('Preferences directory') -> self class defaultPreferencesFolder
 			}, (self properties collect: [ :aProperty | 
 				aProperty name -> aProperty description ]) ];
