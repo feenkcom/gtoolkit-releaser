@@ -52,25 +52,38 @@ GtRlDependenciesModelBuilder >> buildProjectFromBaselineClass: aBaselineClass wi
 
 { #category : #building }
 GtRlDependenciesModelBuilder >> buildProjectFromMetacelloSpec: aMetacelloProjectSpec [
-	| newProject |
-	self assert: [ aMetacelloProjectSpec project versions size = 1 ].
+	| targetVersions newProject |
+	
+	targetVersions := self 
+		forPharo12: [ 
+			(aMetacelloProjectSpec className asClassInEnvironment:
+		         self class environment) project versions first.] 
+		forPharo11: [ aMetacelloProjectSpec project versions ] 
+		forPharo10: [aMetacelloProjectSpec project versions ].
+	 
+	self assert: [ targetVersions size = 1 ].
 	self assert: [ aMetacelloProjectSpec repositorySpecs size = 1 ].
 	self assertBaselineMethodIn: aMetacelloProjectSpec projectClass.
-	
+
 	"If the project was already created return the existing project.
 	This does not initialize any dependencies as it assumes they are already initialized."
-	(self projectsByBaselineClass includesKey: aMetacelloProjectSpec projectClass)
-		ifTrue: [ ^ self projectsByBaselineClass at: aMetacelloProjectSpec projectClass ]
-	
-	"If this is the first time the project is encountered, create it and initalize its dependencies".
+	(self projectsByBaselineClass includesKey:
+		 aMetacelloProjectSpec projectClass) ifTrue: [
+		^ self projectsByBaselineClass at:
+			  aMetacelloProjectSpec projectClass ].
+			  
+	"If this is the first time the project is encountered, create it and initalize its dependencies"
 	newProject := self instantiateProjectFromMetacelloSpec: aMetacelloProjectSpec.
-	self 
-		updateDependenciesFor: newProject 
-		fromMCVersion: aMetacelloProjectSpec version.
-	
+	self updateDependenciesFor: newProject fromMCVersion: (self 
+		forPharo12: [ targetVersions first ] 
+		forPharo11: [ aMetacelloProjectSpec version ] 
+		forPharo10: [ aMetacelloProjectSpec version ]).
+
 	"Only add the project to the "
-	self projectsByBaselineClass at: aMetacelloProjectSpec projectClass put: newProject.
-	
+	self projectsByBaselineClass
+		at: aMetacelloProjectSpec projectClass
+		put: newProject.
+
 	^ newProject
 ]
 
@@ -179,17 +192,23 @@ GtRlDependenciesModelBuilder >> updatePackageDependenciesFor: currentProject fro
 { #category : #dependencies }
 GtRlDependenciesModelBuilder >> updateProjectDependenciesFor: currentProject fromMCVersion: aMetacelloVersion [
 	| projectReferences |
-	projectReferences := (aMetacelloVersion projects 
-		select: [ :aMetacelloProjectSpec || shouldKeep |
-			shouldKeep := aMetacelloProjectSpec version notNil and: [ 
-				aMetacelloProjectSpec version name = 'baseline' ].
-			shouldKeep ifFalse: [ 
-				StringSignal emit: ('Ignoring dependency ', aMetacelloProjectSpec className, ' of ', currentProject name) ].
-			shouldKeep ])
-		collect: [ :aMCProjectSpec | 
-			| referencedProject |
-			referencedProject := self buildProjectFromMetacelloSpec: aMCProjectSpec.
-			GtRlProjectReference new 
-				referencedProject: referencedProject ].
-	currentProject addProjectReferences: projectReferences.
+	projectReferences := (aMetacelloVersion projects
+			select: [ :aMetacelloProjectSpec | 
+				| targetVersion shouldKeep |
+				targetVersion := self 
+					forPharo12: [(aMetacelloProjectSpec className
+						asClassInEnvironment: self class environment) project versions first] 
+					forPharo11: [ aMetacelloProjectSpec version ] 
+					forPharo10: [ aMetacelloProjectSpec version ].
+				shouldKeep := targetVersion notNil
+					and: [ targetVersion first name = 'baseline' ].
+					
+				shouldKeep ifFalse: [ StringSignal
+					emit: ('Ignoring dependency ' , aMetacelloProjectSpec className , ' of ', currentProject name) ].
+				shouldKeep ])
+			collect: [ :aMCProjectSpec | 
+				| referencedProject |
+				referencedProject := self buildProjectFromMetacelloSpec: aMCProjectSpec.
+				GtRlProjectReference new referencedProject: referencedProject ].
+	currentProject addProjectReferences: projectReferences
 ]
