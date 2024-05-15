@@ -201,7 +201,7 @@ GtRlDependenciesModelBuilder >> updateProjectDependenciesFor: currentProject fro
 					forPharo11: [ aMetacelloProjectSpec version ] 
 					forPharo10: [ aMetacelloProjectSpec version ].
 				shouldKeep := targetVersion notNil
-					and: [ targetVersion first name = 'baseline' ].
+					and: [ targetVersion name = 'baseline' ].
 					
 				shouldKeep ifFalse: [ StringSignal
 					emit: ('Ignoring dependency ' , aMetacelloProjectSpec className , ' of ', currentProject name) ].
