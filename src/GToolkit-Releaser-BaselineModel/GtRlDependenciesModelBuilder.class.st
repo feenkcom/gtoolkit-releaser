@@ -58,8 +58,8 @@ GtRlDependenciesModelBuilder >> buildProjectFromMetacelloSpec: aMetacelloProject
 		forPharo12: [ 
 			(aMetacelloProjectSpec className asClassInEnvironment:
 		         self class environment) project versions.] 
-		forPharo11: [ aMetacelloProjectSpec project versions ] 
-		forPharo10: [aMetacelloProjectSpec project versions ].
+		forPharo11AndPharo10: [ 
+			aMetacelloProjectSpec project versions ].
 	 
 	self assert: [ targetVersions size = 1 ].
 	self assert: [ aMetacelloProjectSpec repositorySpecs size = 1 ].
@@ -76,9 +76,8 @@ GtRlDependenciesModelBuilder >> buildProjectFromMetacelloSpec: aMetacelloProject
 	newProject := self instantiateProjectFromMetacelloSpec: aMetacelloProjectSpec.
 	self updateDependenciesFor: newProject fromMCVersion: (self 
 		forPharo12: [ targetVersions first ] 
-		forPharo11: [ aMetacelloProjectSpec version ] 
-		forPharo10: [ aMetacelloProjectSpec version ]).
-
+		forPharo11AndPharo10: [ aMetacelloProjectSpec version ] ).
+	
 	"Only add the project to the "
 	self projectsByBaselineClass
 		at: aMetacelloProjectSpec projectClass
@@ -124,8 +123,7 @@ GtRlDependenciesModelBuilder >> instantiateProjectFromMetacelloSpec: aBaselinePr
 	| repositoriesSpec project |
 	repositoriesSpec := self 
 		forPharo12: [ aBaselineProjectSpec repositories ] 
-		forPharo11: [ aBaselineProjectSpec version spec repositories ] 
-		forPharo10: [ aBaselineProjectSpec version spec repositories ].
+		forPharo11AndPharo10: [ aBaselineProjectSpec version spec repositories ].
 
 	self assert: [ repositoriesSpec map size = 1 ].
 	
@@ -136,8 +134,8 @@ GtRlDependenciesModelBuilder >> instantiateProjectFromMetacelloSpec: aBaselinePr
 		
 	self 
 		forPharo12: [ ] 
-		forPharo11: [ project baselineVersion: aBaselineProjectSpec version ] 
-		forPharo10: [ project baselineVersion: aBaselineProjectSpec version  ].
+		forPharo11AndPharo10: [ 
+			project baselineVersion: aBaselineProjectSpec version ].
 	
 	^ project
 ]
@@ -208,9 +206,9 @@ GtRlDependenciesModelBuilder >> updateProjectDependenciesFor: currentProject fro
 				| targetVersion shouldKeep |
 				targetVersion := self 
 					forPharo12: [(aMetacelloProjectSpec className
-						asClassInEnvironment: self class environment) project versions first] 
-					forPharo11: [ aMetacelloProjectSpec version ] 
-					forPharo10: [ aMetacelloProjectSpec version ].
+						asClassInEnvironment: self class environment) 
+							project versions first] 
+					forPharo11AndPharo10: [ aMetacelloProjectSpec version ].
 				shouldKeep := targetVersion notNil
 					and: [ targetVersion name = 'baseline' ].
 					
