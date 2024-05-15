@@ -133,7 +133,7 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 	setReleaseStrategyOfType: GtRlBaselineTagReleaseStrategy forProjecs: {
 		'github://pharo-contributions/FFICHeaderExtractor/repository'.
 		'github://msgpack/msgpack-smalltalk/repository'.
-		'github://juliendelplanque/Python3Generator/repository'.
+		'github://juliendelplanque/Python3Generator/src'.
 		'github://feenkcom/mustache/repository'.
 		'github://feenkcom/Containers-PropertyEnvironment'.
 		'github://feenkcom/pillar/src'.
