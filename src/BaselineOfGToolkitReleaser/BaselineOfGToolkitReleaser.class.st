@@ -195,7 +195,9 @@ BaselineOfGToolkitReleaser >> baseline: spec [
 			baseline: 'Beacon' with: [
 				spec repository: 'github://feenkcom/pharo-beacon:436efc02a9ec837b7430af1ee783a02c48360788/repository' ].
 
-		spec package: 'GToolkit-Releaser-BaselineModel'.
+		spec package: 'GToolkit-PharoMigrations'.
+		spec package: 'GToolkit-Releaser-BaselineModel' with: [
+			spec requires: #('GToolkit-PharoMigrations') ].
 		spec package: 'GToolkit-Releaser' with: [
 			spec requires: #('GToolkit-Releaser-BaselineModel') ].
 		spec package: 'GToolkit-Releaser-IcebergExtensions' with: [
