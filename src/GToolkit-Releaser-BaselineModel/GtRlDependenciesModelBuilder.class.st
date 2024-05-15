@@ -57,7 +57,7 @@ GtRlDependenciesModelBuilder >> buildProjectFromMetacelloSpec: aMetacelloProject
 	targetVersions := self 
 		forPharo12: [ 
 			(aMetacelloProjectSpec className asClassInEnvironment:
-		         self class environment) project versions first.] 
+		         self class environment) project versions.] 
 		forPharo11: [ aMetacelloProjectSpec project versions ] 
 		forPharo10: [aMetacelloProjectSpec project versions ].
 	 
@@ -121,14 +121,25 @@ GtRlDependenciesModelBuilder >> instantiatePackageFromMetacelloSpec: aMetacelloP
 
 { #category : #'private - building' }
 GtRlDependenciesModelBuilder >> instantiateProjectFromMetacelloSpec: aBaselineProjectSpec [
-	| repositoriesSpec |
-	repositoriesSpec := aBaselineProjectSpec version spec repositories.
+	| repositoriesSpec project |
+	repositoriesSpec := self 
+		forPharo12: [ aBaselineProjectSpec repositories ] 
+		forPharo11: [ aBaselineProjectSpec version spec repositories ] 
+		forPharo10: [ aBaselineProjectSpec version spec repositories ].
+
 	self assert: [ repositoriesSpec map size = 1 ].
-	^ GtRlProject new 
+	
+	project := GtRlProject new 
 		name: (MetacelloScriptEngine baseNameOf: aBaselineProjectSpec projectClass name);
-		baselineVersion: aBaselineProjectSpec version;
 		baselineClass: aBaselineProjectSpec projectClass;
-		linkWithRepository: (self ensureRepositoriesFor: repositoriesSpec map values first description) 
+		linkWithRepository: (self ensureRepositoriesFor: repositoriesSpec map values first description).
+		
+	self 
+		forPharo12: [ ] 
+		forPharo11: [ project baselineVersion: aBaselineProjectSpec version ] 
+		forPharo10: [ project baselineVersion: aBaselineProjectSpec version  ].
+	
+	^ project
 ]
 
 { #category : #accessing }
