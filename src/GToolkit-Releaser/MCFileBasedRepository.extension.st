@@ -2,6 +2,8 @@ Extension { #name : #MCFileBasedRepository }
 
 { #category : #'*GToolkit-Releaser' }
 MCFileBasedRepository >> basicStoreVersion: aVersion [
+	<gtPharoPatch: #Pharo>
+	
 	self
 		writeStreamForFileNamed: aVersion fileName
 		do: [:s | [aVersion fileOutOn: s] on: TonelParseError do: [Error  signal: ('TonelParseError while parsing file ',aVersion fileName) ]].
