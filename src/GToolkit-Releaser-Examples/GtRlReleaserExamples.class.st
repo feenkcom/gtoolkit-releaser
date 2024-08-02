@@ -106,7 +106,7 @@ GtRlReleaserExamples >> createBasicIcebergRepositoryWithName: repositoryName [
 		assert: (IceRepository registry anySatisfy: [ :aRepo | aRepo name = repositoryName ])
 				not.
 
-	repository := IceRepositoryCreator new
+	repository := IceRepository repositoryClass creatorClass new
 			location: reposioryFolder;
 			subdirectory: 'src';
 			ensureProjectFile;
