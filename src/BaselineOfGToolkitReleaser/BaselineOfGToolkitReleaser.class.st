@@ -193,7 +193,7 @@ BaselineOfGToolkitReleaser >> baseline: spec [
 				spec repository: 'github://feenkcom/DeepTraverser:v1.1.157/src' ].
 		spec
 			baseline: 'Beacon' with: [
-				spec repository: 'github://feenkcom/pharo-beacon:2f8e22176e2cae9a7d6d24ce8237b98e3f468d01/repository' ].
+				spec repository: 'github://feenkcom/pharo-beacon:6143981eb0705cfb325a426b8ed4910980639169/repository' ].
 
 		spec package: 'GToolkit-PharoMigrations'.
 		spec package: 'GToolkit-Releaser-BaselineModel' with: [

@@ -1,6 +1,6 @@
 {
 	"repositories" : {
-		"github://feenkcom/pharo-beacon/repository" : "2f8e22176e2cae9a7d6d24ce8237b98e3f468d01",
+		"github://feenkcom/pharo-beacon/repository" : "6143981eb0705cfb325a426b8ed4910980639169",
 		"github://feenkcom/DeepTraverser/src" : "v1.1.157"
 	}
 }
