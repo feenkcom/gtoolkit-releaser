@@ -152,22 +152,25 @@ GtRlDependenciesModelBuilder >> resolvePackageDependenciesFor: currentProject fr
 	projectReferencesByName := Dictionary new.
 	"Create two dictionaries with all possible package and project dependencies"
 	currentProject packages do: [ :aReleaserPackage |
-		packagesByName at: aReleaserPackage name put: aReleaserPackage ].
+		packagesByName at: aReleaserPackage name asString put: aReleaserPackage ].
 	currentProject projectReferences do: [ :aProjectReference |
-		projectReferencesByName at: aProjectReference name put: aProjectReference ].
+		projectReferencesByName 
+			at: aProjectReference name asString
+			put: aProjectReference ].
 	
 	aMetacelloVersion packages do: [ :aMetacelloPackageSpec | 
 		| currentPackage |
-		currentPackage := packagesByName at: aMetacelloPackageSpec name.
+		currentPackage := packagesByName 
+			at: aMetacelloPackageSpec name asString.
 		aMetacelloPackageSpec requires do: [ :aRequirementName | 
 			packagesByName 
-				at: aRequirementName 
+				at: aRequirementName asString
 				ifPresent: [ :aTargetPackage | 
 					self 
 						createDependencyFromPackage: currentPackage 
 						toNode: aTargetPackage ]
 				ifAbsent: [ projectReferencesByName 
-					at: aRequirementName
+					at: aRequirementName asString
 					ifPresent: [ :aTargetProjectReference |
 						self 
 							createDependencyFromPackage: currentPackage 
