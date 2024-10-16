@@ -148,8 +148,8 @@ GtRlDependenciesModelBuilder >> projectsByBaselineClass [
 { #category : #dependencies }
 GtRlDependenciesModelBuilder >> resolvePackageDependenciesFor: currentProject fromMCVersion: aMetacelloVersion [
 	| packagesByName projectReferencesByName |
-	packagesByName := Dictionary new.
-	projectReferencesByName := Dictionary new.
+	packagesByName := GtStringContentDictionary new.
+	projectReferencesByName := GtStringContentDictionary new.
 	"Create two dictionaries with all possible package and project dependencies"
 	currentProject packages do: [ :aReleaserPackage |
 		packagesByName at: aReleaserPackage name put: aReleaserPackage ].
