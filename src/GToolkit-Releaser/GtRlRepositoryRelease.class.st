@@ -344,9 +344,9 @@ GtRlRepositoryRelease >> gtRepositoryMapFor: aView [
 
 { #category : #testing }
 GtRlRepositoryRelease >> hasRemoteOrigin [
-	^ self icebergRepository remotes 
-		anySatisfy: [ :iceRemote | iceRemote name = #origin ]
-		
+
+	^ self icebergRepository remotes
+		anySatisfy: [ :iceRemote | iceRemote name = 'origin' ]
 ]
 
 { #category : #accessing }
