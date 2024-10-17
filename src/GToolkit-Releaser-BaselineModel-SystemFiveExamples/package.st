@@ -1,1 +1,1 @@
-Package { #name : 'GToolkit-Releaser-BaselineModel-SystemFiveExamples' }
+Package { #name : #'GToolkit-Releaser-BaselineModel-SystemFiveExamples' }
