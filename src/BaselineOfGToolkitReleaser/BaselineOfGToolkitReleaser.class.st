@@ -197,19 +197,19 @@ BaselineOfGToolkitReleaser >> baseline: spec [
 
 		spec package: 'GToolkit-PharoMigrations'.
 		spec package: 'GToolkit-Releaser-BaselineModel' with: [
-			spec requires: #('GToolkit-PharoMigrations') ].
+			spec requires: #(#'GToolkit-PharoMigrations') ].
 		spec package: 'GToolkit-Releaser' with: [
-			spec requires: #('GToolkit-Releaser-BaselineModel') ].
+			spec requires: #(#'GToolkit-Releaser-BaselineModel') ].
 		spec package: 'GToolkit-Releaser-IcebergExtensions' with: [
-			spec requires: #('GToolkit-Releaser') ].
+			spec requires: #(#'GToolkit-Releaser') ].
 		spec package: 'GToolkit-Releaser-ExamplesExplorer' with: [
-			spec requires: #('GToolkit-Releaser') ].
+			spec requires: #(#'GToolkit-Releaser') ].
 		spec package: 'GToolkit-Releaser-Cloner' with: [
-			spec requires: #('GToolkit-Releaser-BaselineModel') ].
+			spec requires: #(#'GToolkit-Releaser-BaselineModel') ].
 		spec package: 'GToolkit-Releaser-Loader' with: [
-			spec requires: #('GToolkit-Releaser-Cloner') ].
+			spec requires: #(#'GToolkit-Releaser-Cloner') ].
 		spec package: 'GToolkit-Releaser-Logging' with: [
-			spec requires: #('Beacon') ].
+			spec requires: #(#Beacon) ].
 		spec package: 'GToolkit-Releaser-Jenkins'.
 		spec package: 'GToolkit-Releaser-BaselineModel-SystemOneExamples'.
 		spec package: 'GToolkit-Releaser-BaselineModel-SystemThreeExamples'.
@@ -218,10 +218,10 @@ BaselineOfGToolkitReleaser >> baseline: spec [
 		spec package: 'GToolkit-Releaser-BaselineModel-SystemFiveExamples'.
 		spec package: 'GToolkit-Releaser-BaselineModel-MinimalIceberg'.
 		spec package: 'GToolkit-Releaser-BaselineModel-Examples' with: [
-			spec requires: #('GToolkit-Releaser-BaselineModel-SystemOneExamples' 'GToolkit-Releaser-BaselineModel-SystemThreeExamples' 'GToolkit-Releaser-BaselineModel-SystemTwoExamples' 'GToolkit-Releaser-BaselineModel-StandaloneSystemsExamples' 'GToolkit-Releaser-BaselineModel-SystemFiveExamples' 'GToolkit-Releaser-BaselineModel-MinimalIceberg') ].
+			spec requires: #(#'GToolkit-Releaser-BaselineModel-SystemOneExamples' #'GToolkit-Releaser-BaselineModel-SystemThreeExamples' #'GToolkit-Releaser-BaselineModel-SystemTwoExamples' #'GToolkit-Releaser-BaselineModel-StandaloneSystemsExamples' #'GToolkit-Releaser-BaselineModel-SystemFiveExamples' #'GToolkit-Releaser-BaselineModel-MinimalIceberg') ].
 		spec package: 'GToolkit-Releaser-Examples' with: [
-			spec requires: #('GToolkit-Releaser' 'GToolkit-Releaser-IcebergExtensions' 'GToolkit-Releaser-BaselineModel-Examples') ].
+			spec requires: #(#'GToolkit-Releaser' #'GToolkit-Releaser-IcebergExtensions' #'GToolkit-Releaser-BaselineModel-Examples') ].
 		spec package: 'GToolkit-Releaser-Support' with: [
-			spec requires: #('Beacon' 'GToolkit-Releaser') ].
+			spec requires: #(#Beacon #'GToolkit-Releaser') ].
 	]
 ]
