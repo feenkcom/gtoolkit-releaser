@@ -1,7 +1,7 @@
 Class {
 	#name : #GtRlProjectBaselinePrinterExamples,
 	#superclass : #Object,
-	#category : 'GToolkit-Releaser-BaselineModel-Examples'
+	#category : #'GToolkit-Releaser-BaselineModel-Examples'
 }
 
 { #category : #'accessing - code' }
@@ -22,7 +22,7 @@ GtRlProjectBaselinePrinterExamples >> baselineWithPackageWithPackageDependencies
 	spec for: #''common'' do: [
 		spec package: ''PackageA''.
 		spec package: ''PackageB'' with: [
-			spec requires: #(''PackageA'') ].
+			spec requires: #(#PackageA) ].
 	]'
 ]
 

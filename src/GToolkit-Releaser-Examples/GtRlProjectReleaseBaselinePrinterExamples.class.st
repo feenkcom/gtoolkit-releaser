@@ -1,7 +1,7 @@
 Class {
 	#name : #GtRlProjectReleaseBaselinePrinterExamples,
 	#superclass : #Object,
-	#category : 'GToolkit-Releaser-Examples'
+	#category : #'GToolkit-Releaser-Examples'
 }
 
 { #category : #baselines }
@@ -17,11 +17,11 @@ GtRlProjectReleaseBaselinePrinterExamples >> baselineForSystemFiveNullProjectRel
 				spec repository: ''github://example/SystemFive:unknown/src'' ].
 
 		spec package: ''PackageA'' with: [
-			spec requires: #(''GtRlBaselineExampleSystemFiveComponentA'') ].
+			spec requires: #(#GtRlBaselineExampleSystemFiveComponentA) ].
 		spec package: ''PackageB'' with: [
-			spec requires: #(''PackageA'' ''GtRlBaselineExampleSystemFiveComponentB'') ].
+			spec requires: #(#PackageA #GtRlBaselineExampleSystemFiveComponentB) ].
 		spec package: ''PackageC'' with: [
-			spec requires: #(''GtRlBaselineExampleSystemFiveComponentB'') ].
+			spec requires: #(#GtRlBaselineExampleSystemFiveComponentB) ].
 	]'
 ]
 

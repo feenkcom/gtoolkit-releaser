@@ -95,7 +95,7 @@ GtRlNode >> name: aString [
 		assert: [ name isNil ]
 		description: 'The name of a node is immutable'.  
 	
-	name := aString
+	name := aString asSymbol
 ]
 
 { #category : #accessing }
