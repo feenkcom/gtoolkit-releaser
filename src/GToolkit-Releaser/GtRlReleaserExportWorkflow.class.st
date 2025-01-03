@@ -137,7 +137,7 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://feenkcom/Containers-PropertyEnvironment'.
 		'github://feenkcom/pillar/src'.
 		'github://feenkcom/Chrysal/src'.
-		'github://GemTalk/PharoGemStoneFFI/src'
+		'github://gemtalk/PharoGemStoneFFI/src'
 	}
 ]
 
