@@ -126,7 +126,6 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://pharo-contributions/BitmapCharacterSet/src'.
 		'github://pharo-contributions/CollectionExtensions/src'.
 		'github://feenkcom/RemoteServiceReplication/src'.
-		'github://feenkcom/SparkleFFI/src'.
 		'github://svenvc/NeoJSON/repository'.
 		'github://svenvc/ztimestamp/repository'.
 	};
@@ -138,6 +137,7 @@ GtRlReleaserExportWorkflow class >> gtoolkitReleaseConfiguration [
 		'github://feenkcom/Containers-PropertyEnvironment'.
 		'github://feenkcom/pillar/src'.
 		'github://feenkcom/Chrysal/src'.
+		'github://gemtalk/PharoGemStoneFFI/src'
 	}
 ]
 
