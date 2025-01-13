@@ -1,22 +1,6 @@
 Extension { #name : #Object }
 
 { #category : #'*GToolkit-PharoMigrations' }
-Object >> forPharo11: pharo11Block forPharo10: pharo10Block [
-	"Evaluate one of the blocks based on the pharo's major version"
-	| unsupportedVersionBlock |
-	
-	unsupportedVersionBlock := [
-		self error: 'Unsupported pharo version: ',SystemVersion current major asString ].
-	
-	^ self
-		forPharo12: unsupportedVersionBlock
-		forPharo11: pharo11Block
-		forPharo10: pharo10Block
-		newer: unsupportedVersionBlock
-		older: unsupportedVersionBlock
-]
-
-{ #category : #'*GToolkit-PharoMigrations' }
 Object >> forPharo11AndPharo12: pharo11AndPharo12Block forPharo10: pharo10Block [
 	"Evaluate one of the blocks based on the pharo's major version"
 	| unsupportedVersionBlock |
