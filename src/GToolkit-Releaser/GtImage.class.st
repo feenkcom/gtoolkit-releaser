@@ -424,6 +424,11 @@ GtImage >> initialize [
 	propertiesByKey := OrderedDictionary new.
 ]
 
+{ #category : #testing }
+GtImage >> isDevVersion [
+	^ self version isDevVersion
+]
+
 { #category : #accessing }
 GtImage >> lastOpenedVersion [
 	^ lastOpenedVersion. 
