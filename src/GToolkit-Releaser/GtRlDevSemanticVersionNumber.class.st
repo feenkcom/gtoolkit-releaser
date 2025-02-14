@@ -1,7 +1,7 @@
 Class {
 	#name : #GtRlDevSemanticVersionNumber,
 	#superclass : #GtRlSemanticVersionNumber,
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #accesing }
@@ -29,6 +29,12 @@ GtRlDevSemanticVersionNumber class >> readFromString: aString [
 { #category : #converting }
 GtRlDevSemanticVersionNumber >> asDevSemanticVersion [
 	^ self
+]
+
+{ #category : #testing }
+GtRlDevSemanticVersionNumber >> isDevVersion [
+
+	^ true
 ]
 
 { #category : #accessing }

@@ -18,6 +18,12 @@ GtRlVersionNumber >> description [
 ]
 
 { #category : #testing }
+GtRlVersionNumber >> isDevVersion [
+
+	^ false
+]
+
+{ #category : #testing }
 GtRlVersionNumber >> isNullVersion [
 	^ false
 ]
