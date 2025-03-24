@@ -57,23 +57,32 @@ GtMetrics >> gtBarChartFor: aView [
 	| theData projectsAndSizes maxLines aBarWidthScale |
 	^ aView explicit
 		title: 'Bar chart';
-		stencil: [
-			projectsAndSizes := self gtProjects collect: [:project | 
-				{project . project gtRPackages sumNumbers: #linesOfCode}].
-			theData := GtPlotterDataGroup new 
-				values: projectsAndSizes.
-			theData := theData sorted: [ :a :b | (a last) > (b last) ].
-			theData := theData labelled: [ :each | each first gtDisplayString gtRemovePrefix: 'BaselineOf' ].
-			theData := theData colored: [ :each | Color r: 66 g: 188 b: 238 range: 255 ].
-			maxLines := theData inject: 0 intoValues: [ :anAmount :eachValue | anAmount max: eachValue last ].
+		stencil: [ projectsAndSizes := self gtProjects
+					collect: [ :project | 
+						{project.
+							project gtRPackages sumNumbers: #linesOfCode} ].
+			theData := GtPlotterDataGroup new values: projectsAndSizes.
+			theData := theData sorted: [ :a :b | a last > b last ].
+			theData := theData
+					labelled: [ :each | each first gtDisplayString gtRemovePrefix: 'BaselineOf' ].
+			theData := theData
+					colored: [ :each | 
+						Color
+							r: 66
+							g: 188
+							b: 238
+							range: 255 ].
+			maxLines := theData
+					inject: 0
+					intoValues: [ :anAmount :eachValue | anAmount max: eachValue last ].
 			aBarWidthScale := GtPlotterLinearScale new domainFrom: 0 to: maxLines.
 			GtPlotterHorizontalBarChart new
 				barElement: [ :aGtPlotterContext | 
-				BlElement new
-					aptitude: ((BrGlamorousWithTooltipAptitude2 content: [
-						BrLabel new
-							text: (aGtPlotterContext originalValue second);
-							aptitude: (BrGlamorousLabelAptitude new padding: (BlInsets all: 1)) ]) hideDelay: 0; showDelay: 0) ];
+					BlElement new
+						aptitude: ((BrGlamorousWithExplicitTooltipAptitude
+								text: aGtPlotterContext originalValue second)
+								hideDelay: 0;
+								showDelay: 0) ];
 				barLabelWidth: 200;
 				barWidthScale: aBarWidthScale;
 				barWidthData: [ :eachValue | eachValue last ];
