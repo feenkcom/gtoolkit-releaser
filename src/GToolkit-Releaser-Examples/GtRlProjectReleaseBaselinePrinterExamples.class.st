@@ -65,49 +65,55 @@ GtRlProjectReleaseBaselinePrinterExamples >> baselineForSystemTwoNullProjectRele
 { #category : #printing }
 GtRlProjectReleaseBaselinePrinterExamples >> printSystemFiveProjectRelease [
 	<gtExample>
+	<return: #GtRlProjectReleaseBaselineGenerator>
 	| projectRelease printer |
 	projectRelease := BaselineOfGtRlBaselineExampleSystemFive
-		gtRlProjectReleaseWithRepository: 'github://example/SystemFive/src' 
-		withConfiguration: (GtRlReleaseConfiguration new 
-			defaultReleaseStrategy: GtRlNullReleaseStrategy new).
-	
-	printer := GtRlProjectReleaseBaselineGenerator forProjectRelease: projectRelease.
-	
-	self 
-		assert: printer generateBaselineSource 
+			gtRlProjectReleaseWithRepository: 'github://example/SystemFive/src'
+			withConfiguration: (GtRlReleaseConfiguration new
+					defaultReleaseStrategy: GtRlNullReleaseStrategy new).
+
+	printer := GtRlProjectReleaseBaselineGenerator
+			forProjectRelease: projectRelease.
+
+	self
+		assert: printer generateBaselineSource
 		equals: self baselineForSystemFiveNullProjectRelease.
-	
+
 	^ printer
 ]
 
 { #category : #printing }
 GtRlProjectReleaseBaselinePrinterExamples >> printSystemOneManualProjectRelease [
 	<gtExample>
+	<return: #GtRlProjectReleaseBaselineGenerator>
 	| projectRelease printer |
 	projectRelease := GtRlSystemOneReleaseExamples new projectReleaseSystem.
-	printer := GtRlProjectReleaseBaselineGenerator forProjectRelease: projectRelease.
-	
-	self 
-		assert: printer generateBaselineSource 
+	printer := GtRlProjectReleaseBaselineGenerator
+			forProjectRelease: projectRelease.
+
+	self
+		assert: printer generateBaselineSource
 		equals: self baselineForSystemOneManualProjectRelease.
-	
+
 	^ printer
 ]
 
 { #category : #printing }
 GtRlProjectReleaseBaselinePrinterExamples >> printSystemTwoProjectRelease [
 	<gtExample>
+	<return: #GtRlProjectReleaseBaselineGenerator>
 	| projectRelease printer |
-	projectRelease := BaselineOfGtRlBaselineExampleSystemTwo 
-		gtRlProjectReleaseWithRepository: 'github://example/SystemTwo/src' 
-		withConfiguration: (GtRlReleaseConfiguration new 
-			defaultReleaseStrategy: GtRlNullReleaseStrategy new).
-	
-	printer := GtRlProjectReleaseBaselineGenerator forProjectRelease: projectRelease.
-	
-	self 
-		assert: printer generateBaselineSource 
+	projectRelease := BaselineOfGtRlBaselineExampleSystemTwo
+			gtRlProjectReleaseWithRepository: 'github://example/SystemTwo/src'
+			withConfiguration: (GtRlReleaseConfiguration new
+					defaultReleaseStrategy: GtRlNullReleaseStrategy new).
+
+	printer := GtRlProjectReleaseBaselineGenerator
+			forProjectRelease: projectRelease.
+
+	self
+		assert: printer generateBaselineSource
 		equals: self baselineForSystemTwoNullProjectRelease.
-	
+
 	^ printer
 ]

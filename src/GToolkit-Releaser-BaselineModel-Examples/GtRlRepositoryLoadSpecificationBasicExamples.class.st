@@ -12,85 +12,96 @@ GtRlRepositoryLoadSpecificationBasicExamples class >> isAbstract [
 { #category : #examples }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecification [
 	<gtExample>
+	<return: #SubclassResponsibility>
 	| loadSpecification |
-	loadSpecification := GtRlRepositoryLoadSpecification 
-		fromUrlString: self specificationUrlString.
-	
+	loadSpecification := GtRlRepositoryLoadSpecification
+			fromUrlString: self specificationUrlString.
+
 	self assert: loadSpecification class equals: self specificationClass.
-	self assert: loadSpecification specificationString equals: self specificationUrlString.
-	
+	self
+		assert: loadSpecification specificationString
+		equals: self specificationUrlString.
+
 	^ loadSpecification
 ]
 
 { #category : #'examples - comparison' }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationEqualsSameInstance [
 	<gtExample>
+	<return: #SubclassResponsibility>
 	| loadSpecification |
 	loadSpecification := self loadSpecification.
-	
+
 	self assert: loadSpecification equals: self loadSpecification.
-	
+
 	^ loadSpecification
 ]
 
 { #category : #'examples - comparison' }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationEqualsSelf [
 	<gtExample>
+	<return: #SubclassResponsibility>
 	| loadSpecification |
 	loadSpecification := self loadSpecification.
-	
+
 	self assert: loadSpecification = loadSpecification.
-	
+
 	^ loadSpecification
 ]
 
 { #category : #examples }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHasCorrectId [
 	<gtExample>
+	<return: #SubclassResponsibility>
 	| loadSpecification |
 	loadSpecification := self loadSpecification.
-	
+
 	self assert: loadSpecification specificationId equals: self specificationId.
-	
+
 	^ loadSpecification
 ]
 
 { #category : #examples }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHasVersion [
 	<gtExample>
+	<return: #SubclassResponsibility>
 	| loadSpecification |
 	loadSpecification := self loadSpecification.
-	
+
 	self assert: loadSpecification hasVersion equals: self specificationHasVersion.
-	
+
 	^ loadSpecification
 ]
 
 { #category : #'examples - comparison' }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHashEqualsBetweenSameInstance [
 	<gtExample>
+	<return: #SubclassResponsibility>
 	| loadSpecification |
 	loadSpecification := self loadSpecification.
-	
+
 	self assert: loadSpecification hash equals: self loadSpecification hash.
-	
+
 	^ loadSpecification
 ]
 
 { #category : #'examples - comparison' }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHashNotEqualUrlHash [
 	<gtExample>
+	<return: #SubclassResponsibility>
 	| loadSpecification |
 	loadSpecification := self loadSpecification.
-	
-	self assert: (loadSpecification hash = loadSpecification specificationString hash) not.
-	
+
+	self
+		assert: (loadSpecification hash = loadSpecification specificationString hash) not.
+
 	^ loadSpecification
 ]
 
 { #category : #examples }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHost [
 	<gtExample>
+	<return: #SubclassResponsibility>
 	| loadSpecification |
 	loadSpecification := self loadSpecification.
 
@@ -102,6 +113,7 @@ GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationHost [
 { #category : #examples }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationProjectName [
 	<gtExample>
+	<return: #SubclassResponsibility>
 	| loadSpecification |
 	loadSpecification := self loadSpecification.
 
@@ -115,6 +127,7 @@ GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationProjectName [
 { #category : #examples }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationRepoPath [
 	<gtExample>
+	<return: #SubclassResponsibility>
 	| loadSpecification |
 	loadSpecification := self loadSpecification.
 
@@ -126,6 +139,7 @@ GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationRepoPath [
 { #category : #examples }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationUrlWithVersion [
 	<gtExample>
+	<return: #SubclassResponsibility>
 	| loadSpecification |
 	loadSpecification := self loadSpecification.
 
@@ -139,6 +153,7 @@ GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationUrlWithVersion 
 { #category : #examples }
 GtRlRepositoryLoadSpecificationBasicExamples >> loadSpecificationVersionString [
 	<gtExample>
+	<return: #SubclassResponsibility>
 	| loadSpecification |
 	loadSpecification := self loadSpecification.
 

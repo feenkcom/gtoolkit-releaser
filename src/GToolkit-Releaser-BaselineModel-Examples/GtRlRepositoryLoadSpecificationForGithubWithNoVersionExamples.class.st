@@ -7,24 +7,26 @@ Class {
 { #category : #examples }
 GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples >> loadSpecificationHasCorrectVersion [
 	<gtExample>
+	<return: #GtRlRepositoryDefaultLoadSpecification>
 	| loadSpecification |
 	loadSpecification := self loadSpecification.
-	
+
 	self assert: loadSpecification hasVersion not.
 	self assert: loadSpecification versionStringOrNil isNil.
-	
+
 	^ loadSpecification
 ]
 
 { #category : #examples }
 GtRlRepositoryLoadSpecificationForGithubWithNoVersionExamples >> loadSpecificationHasNames [
 	<gtExample>
+	<return: #GtRlRepositoryDefaultLoadSpecification>
 	| loadSpecification |
 	loadSpecification := self loadSpecification.
-	
+
 	self assert: loadSpecification projectName equals: 'gtoolkit'.
 	self assert: loadSpecification repositoryName equals: 'gtoolkit'.
-	
+
 	^ loadSpecification
 ]
 

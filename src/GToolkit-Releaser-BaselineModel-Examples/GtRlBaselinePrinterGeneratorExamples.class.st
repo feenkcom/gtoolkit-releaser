@@ -1,18 +1,19 @@
 Class {
 	#name : #GtRlBaselinePrinterGeneratorExamples,
 	#superclass : #Object,
-	#category : 'GToolkit-Releaser-BaselineModel-Examples'
+	#category : #'GToolkit-Releaser-BaselineModel-Examples'
 }
 
 { #category : #'examples - basic api' }
 GtRlBaselinePrinterGeneratorExamples >> baselineWithCommonSpecExample [
 	<gtExample>
+	<return: #GtRlBaselinePrinterStream>
 	| writer |
 	writer := self basicWriterWithStream.
-	writer baselineWithCommonSpecOn: [ ].
-	
-	self 
-		assert: writer contents 
+	writer baselineWithCommonSpecOn: [  ].
+
+	self
+		assert: writer contents
 		equals: 'baseline: spec
 	<baseline>
 	spec for: #''common'' do: [
@@ -24,23 +25,20 @@ GtRlBaselinePrinterGeneratorExamples >> baselineWithCommonSpecExample [
 { #category : #'examples - composition' }
 GtRlBaselinePrinterGeneratorExamples >> baselineWithContentExample [
 	<gtExample>
+	<return: #GtRlBaselinePrinterStream>
 	| writer |
 	writer := self basicWriterWithStream.
-	writer baselineWithCommonSpecOn: [ 
-		writer preLoadAction: #methodSelectorA:.
-		writer postLoadAction: #methodSelectorB:.
-		writer 
-			projectDependencyFor: 'Example-Project' 
-			withLoadSpec: 'github://example/gtoolkit/src'.
-		writer 
-			packageFor: 'PackageA'
-			withDependencies: #().
-		writer 
-			packageFor: 'PackageB'
-			withDependencies: #('PackageA') ].
-	
-	self 
-		assert: writer contents 
+	writer
+		baselineWithCommonSpecOn: [ writer preLoadAction: #methodSelectorA:.
+			writer postLoadAction: #methodSelectorB:.
+			writer
+				projectDependencyFor: 'Example-Project'
+				withLoadSpec: 'github://example/gtoolkit/src'.
+			writer packageFor: 'PackageA' withDependencies: #().
+			writer packageFor: 'PackageB' withDependencies: #('PackageA') ].
+
+	self
+		assert: writer contents
 		equals: 'baseline: spec
 	<baseline>
 	spec for: #''common'' do: [
@@ -66,12 +64,13 @@ GtRlBaselinePrinterGeneratorExamples >> basicWriterWithStream [
 { #category : #'examples - basic api' }
 GtRlBaselinePrinterGeneratorExamples >> commonSpecExample [
 	<gtExample>
+	<return: #GtRlBaselinePrinterStream>
 	| writer |
 	writer := self basicWriterWithStream.
-	writer commonSpecDo: [ ].
-	
-	self 
-		assert: writer contents 
+	writer commonSpecDo: [  ].
+
+	self
+		assert: writer contents
 		equals: 'spec for: #''common'' do: [
 ]'.
 
@@ -81,12 +80,13 @@ GtRlBaselinePrinterGeneratorExamples >> commonSpecExample [
 { #category : #'examples - basic api' }
 GtRlBaselinePrinterGeneratorExamples >> methodHeaderExample [
 	<gtExample>
+	<return: #GtRlBaselinePrinterStream>
 	| writer |
 	writer := self basicWriterWithStream.
 	writer methodHeader.
-	
-	self 
-		assert: writer contents 
+
+	self
+		assert: writer contents
 		equals: 'baseline: spec
 	<baseline>
 '.
@@ -96,12 +96,15 @@ GtRlBaselinePrinterGeneratorExamples >> methodHeaderExample [
 { #category : #'examples - basic api' }
 GtRlBaselinePrinterGeneratorExamples >> packageWithDependenciesExample [
 	<gtExample>
+	<return: #GtRlBaselinePrinterStream>
 	| writer |
 	writer := self basicWriterWithStream.
-	writer packageLineFor: 'Test-Package' withDependencies: #('Another-Package' 'Baseline-Example').
-	
-	self 
-		assert: writer contents 
+	writer
+		packageLineFor: 'Test-Package'
+		withDependencies: #('Another-Package' 'Baseline-Example').
+
+	self
+		assert: writer contents
 		equals: 'spec package: ''Test-Package'' with: [
 	spec requires: #(''Another-Package'' ''Baseline-Example'') ].'.
 
@@ -111,13 +114,12 @@ GtRlBaselinePrinterGeneratorExamples >> packageWithDependenciesExample [
 { #category : #'examples - basic api' }
 GtRlBaselinePrinterGeneratorExamples >> packageWithNoDependenciesExample [
 	<gtExample>
+	<return: #GtRlBaselinePrinterStream>
 	| writer |
 	writer := self basicWriterWithStream.
 	writer packageLineFor: 'Test-Package' withDependencies: #().
-	
-	self 
-		assert: writer contents 
-		equals: 'spec package: ''Test-Package''.'.
+
+	self assert: writer contents equals: 'spec package: ''Test-Package''.'.
 
 	^ writer
 ]
@@ -125,12 +127,13 @@ GtRlBaselinePrinterGeneratorExamples >> packageWithNoDependenciesExample [
 { #category : #'examples - basic api' }
 GtRlBaselinePrinterGeneratorExamples >> postLoadActionExample [
 	<gtExample>
+	<return: #GtRlBaselinePrinterStream>
 	| writer |
 	writer := self basicWriterWithStream.
 	writer postLoadAction: #methodSelector:.
-	
-	self 
-		assert: writer contents 
+
+	self
+		assert: writer contents
 		equals: '
 spec postLoadDoIt: #''methodSelector:''.'.
 
@@ -140,13 +143,12 @@ spec postLoadDoIt: #''methodSelector:''.'.
 { #category : #'examples - basic api' }
 GtRlBaselinePrinterGeneratorExamples >> postLoadActionLineExample [
 	<gtExample>
+	<return: #GtRlBaselinePrinterStream>
 	| writer |
 	writer := self basicWriterWithStream.
 	writer postLoadActionLine: #methodSelector:.
-	
-	self 
-		assert: writer contents 
-		equals: 'spec postLoadDoIt: #''methodSelector:''.'.
+
+	self assert: writer contents equals: 'spec postLoadDoIt: #''methodSelector:''.'.
 
 	^ writer
 ]
@@ -154,12 +156,13 @@ GtRlBaselinePrinterGeneratorExamples >> postLoadActionLineExample [
 { #category : #'examples - basic api' }
 GtRlBaselinePrinterGeneratorExamples >> preLoadActionExample [
 	<gtExample>
+	<return: #GtRlBaselinePrinterStream>
 	| writer |
 	writer := self basicWriterWithStream.
 	writer preLoadAction: #methodSelector:.
-	
-	self 
-		assert: writer contents 
+
+	self
+		assert: writer contents
 		equals: '
 spec preLoadDoIt: #''methodSelector:''.'.
 
@@ -169,13 +172,12 @@ spec preLoadDoIt: #''methodSelector:''.'.
 { #category : #'examples - basic api' }
 GtRlBaselinePrinterGeneratorExamples >> preLoadActionLineExample [
 	<gtExample>
+	<return: #GtRlBaselinePrinterStream>
 	| writer |
 	writer := self basicWriterWithStream.
 	writer preLoadActionLine: #methodSelector:.
-	
-	self 
-		assert: writer contents 
-		equals: 'spec preLoadDoIt: #''methodSelector:''.'.
+
+	self assert: writer contents equals: 'spec preLoadDoIt: #''methodSelector:''.'.
 
 	^ writer
 ]
@@ -183,14 +185,15 @@ GtRlBaselinePrinterGeneratorExamples >> preLoadActionLineExample [
 { #category : #'examples - basic api' }
 GtRlBaselinePrinterGeneratorExamples >> projectDependencyExample [
 	<gtExample>
+	<return: #GtRlBaselinePrinterStream>
 	| writer |
 	writer := self basicWriterWithStream.
-	writer 
-		projectLineDependencyFor: 'Example-Project' 
+	writer
+		projectLineDependencyFor: 'Example-Project'
 		withLoadSpec: 'github://example/gtoolkit/src'.
-	
-	self 
-		assert: writer contents 
+
+	self
+		assert: writer contents
 		equals: 'spec
 	baseline: ''Example-Project'' with: [
 		spec repository: ''github://example/gtoolkit/src'' ].'.

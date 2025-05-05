@@ -7,13 +7,15 @@ Class {
 { #category : #accessing }
 GtRlGlamorousToolkitLoaderLogExamples >> consolidatedBaselineEvent [
 	<gtExample>
+	<return: #GtRlLoadedConsolidatedBaselineEvent>
 	| consolidatedEvent |
-	consolidatedEvent := GtRlLoadedConsolidatedBaselineEvent readFromFile:  self logFile.
-	
-	self 
-		assert: consolidatedEvent totalDuration 
+	consolidatedEvent := GtRlLoadedConsolidatedBaselineEvent
+			readFromFile: self logFile.
+
+	self
+		assert: consolidatedEvent totalDuration
 		equals: (Duration seconds: 462 nanoSeconds: 153798000).
-	
+
 	^ consolidatedEvent
 ]
 

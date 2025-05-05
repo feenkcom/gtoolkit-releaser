@@ -75,188 +75,198 @@ GtRlProjectBaselinePrinterExamples >> emptyBaselineCode [
 { #category : #'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printEmptyProject [
 	<gtExample>
+	<return: #GtRlProjectBaselineGenerator>
 	| project printer |
 	project := GtRlProjectExamples new projectWithName.
 	printer := GtRlProjectBaselineGenerator forProject: project.
-	
-	self 
-		assert: printer generateBaselineSource 
-		equals: self emptyBaselineCode.
-	
+
+	self assert: printer generateBaselineSource equals: self emptyBaselineCode.
+
 	^ printer
 ]
 
 { #category : #'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printProjectWithChildProject [
 	<gtExample>
+	<return: #GtRlProjectBaselineGenerator>
 	| project printer |
 	project := GtRlProjectExamples new projectWithChildProjectWithRepository.
 	printer := GtRlProjectBaselineGenerator forProject: project.
-	
-	self 
-		assert: printer generateBaselineSource 
+
+	self
+		assert: printer generateBaselineSource
 		equals: self baselineWithChildProject.
-	
+
 	^ printer
 ]
 
 { #category : #'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printProjectWithPackageWithPackageDependency [
 	<gtExample>
+	<return: #GtRlProjectBaselineGenerator>
 	| project printer |
 	project := GtRlProjectExamples new projectWithPackageWithPackageDependency.
 	printer := GtRlProjectBaselineGenerator forProject: project.
-	
-	self 
-		assert: printer generateBaselineSource 
+
+	self
+		assert: printer generateBaselineSource
 		equals: self baselineWithPackageWithPackageDependenciesCode.
-	
+
 	^ printer
 ]
 
 { #category : #'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printProjectWithPackages [
 	<gtExample>
+	<return: #GtRlProjectBaselineGenerator>
 	| project printer |
 	project := GtRlProjectExamples new projectWithPackages.
 	printer := GtRlProjectBaselineGenerator forProject: project.
-	
-	self 
-		assert: printer generateBaselineSource 
+
+	self
+		assert: printer generateBaselineSource
 		equals: self baselineWithPackagesCode.
-	
+
 	^ printer
 ]
 
 { #category : #'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printProjectWithPostLoadAction [
 	<gtExample>
+	<return: #GtRlProjectBaselineGenerator>
 	| project printer |
 	project := GtRlProjectExamples new projectWithPostLoadAction.
 	printer := GtRlProjectBaselineGenerator forProject: project.
-	
-	self 
-		assert: printer generateBaselineSource 
+
+	self
+		assert: printer generateBaselineSource
 		equals: self baselineWithPostLoadCode.
-	
+
 	^ printer
 ]
 
 { #category : #'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printProjectWithPreAndPostLoadActions [
 	<gtExample>
+	<return: #GtRlProjectBaselineGenerator>
 	| project printer |
 	project := GtRlProjectExamples new projectWithPreAndPostLoadActions.
 	printer := GtRlProjectBaselineGenerator forProject: project.
-	
-	self 
-		assert: printer generateBaselineSource 
+
+	self
+		assert: printer generateBaselineSource
 		equals: self baselineWithPreAndPostLoadCode.
-	
+
 	^ printer
 ]
 
 { #category : #'examples - printing basic projects' }
 GtRlProjectBaselinePrinterExamples >> printProjectWithPreLoadAction [
 	<gtExample>
+	<return: #GtRlProjectBaselineGenerator>
 	| project printer |
 	project := GtRlProjectExamples new projectWithPreLoadAction.
 	printer := GtRlProjectBaselineGenerator forProject: project.
-	
-	self 
-		assert: printer generateBaselineSource 
+
+	self
+		assert: printer generateBaselineSource
 		equals: self baselineWithPreLoadCode.
-	
+
 	^ printer
 ]
 
 { #category : #'examples - printing projects' }
 GtRlProjectBaselinePrinterExamples >> printStandaloneProjectWithActions [
 	<gtExample>
+	<return: #GtRlProjectBaselineGenerator>
 	| projectBuilder project printer |
-	
 	projectBuilder := GtRlDependenciesModelBuilder new.
-	project := projectBuilder 
-		buildProjectFromBaselineClass: BaselineOfGtRlBaselineExampleStandaloneWithActions
-		withRepositoryDescription: 'github://example/SystemFour/src'. 
+	project := projectBuilder
+			buildProjectFromBaselineClass: BaselineOfGtRlBaselineExampleStandaloneWithActions
+			withRepositoryDescription: 'github://example/SystemFour/src'.
 	printer := GtRlProjectBaselineGenerator forProject: project.
-	
-	self 
-		assert: printer generateBaselineSource 
-		equals: (BaselineOfGtRlBaselineExampleStandaloneWithActions >>#baseline:) sourceCode.
-	
+
+	self
+		assert: printer generateBaselineSource
+		equals: (BaselineOfGtRlBaselineExampleStandaloneWithActions >> #baseline:) sourceCode.
+
 	^ printer
 ]
 
 { #category : #'examples - printing projects' }
 GtRlProjectBaselinePrinterExamples >> printSystemFiveProject [
 	<gtExample>
+	<return: #GtRlProjectBaselineGenerator>
 	| project printer |
 	project := GtRlSystemFiveGeneratedModelExamples new systemProject.
 	printer := GtRlProjectBaselineGenerator forProject: project.
-	
-	self 
-		assert: printer generateBaselineSource 
-		equals: (BaselineOfGtRlBaselineExampleSystemFive >>#baseline:) sourceCode.
-	
+
+	self
+		assert: printer generateBaselineSource
+		equals: (BaselineOfGtRlBaselineExampleSystemFive >> #baseline:) sourceCode.
+
 	^ printer
 ]
 
 { #category : #'examples - printing projects' }
 GtRlProjectBaselinePrinterExamples >> printSystemFourProject [
 	<gtExample>
+	<return: #GtRlProjectBaselineGenerator>
 	| project printer |
 	project := GtRlSystemFourGeneratedModelExamples new systemProject.
 	printer := GtRlProjectBaselineGenerator forProject: project.
-	
-	self 
-		assert: printer generateBaselineSource 
-		equals: (BaselineOfGtRlBaselineExampleSystemFourWithPackages >>#baseline:) sourceCode.
-	
+
+	self
+		assert: printer generateBaselineSource
+		equals: (BaselineOfGtRlBaselineExampleSystemFourWithPackages >> #baseline:) sourceCode.
+
 	^ printer
 ]
 
 { #category : #'examples - printing projects' }
 GtRlProjectBaselinePrinterExamples >> printSystemOneManualProject [
 	<gtExample>
+	<return: #GtRlProjectBaselineGenerator>
 	| project printer |
 	project := GtRlSystemOneModelExamples new projectSystem.
 	printer := GtRlProjectBaselineGenerator forProject: project.
-	
-	self 
-		assert: printer generateBaselineSource 
-		equals: (BaselineOfGtRlBaselineExampleSystemOne >>#baseline:) sourceCode.
-	
+
+	self
+		assert: printer generateBaselineSource
+		equals: (BaselineOfGtRlBaselineExampleSystemOne >> #baseline:) sourceCode.
+
 	^ printer
 ]
 
 { #category : #'examples - printing projects' }
 GtRlProjectBaselinePrinterExamples >> printSystemOneProject [
 	<gtExample>
+	<return: #GtRlProjectBaselineGenerator>
 	| project printer |
 	project := GtRlSystemOneGeneratedModelExamples new systemOneProject.
 	printer := GtRlProjectBaselineGenerator forProject: project.
-	
-	self 
-		assert: printer generateBaselineSource 
-		equals: (BaselineOfGtRlBaselineExampleSystemOne >>#baseline:) sourceCode.
-	
+
+	self
+		assert: printer generateBaselineSource
+		equals: (BaselineOfGtRlBaselineExampleSystemOne >> #baseline:) sourceCode.
+
 	^ printer
 ]
 
 { #category : #'examples - printing projects' }
 GtRlProjectBaselinePrinterExamples >> printSystemTwoProject [
 	<gtExample>
+	<return: #GtRlProjectBaselineGenerator>
 	| projectBuilder project printer |
 	projectBuilder := GtRlDependenciesModelBuilder new.
-	project := projectBuilder 
-		buildProjectFromBaselineClass: BaselineOfGtRlBaselineExampleSystemTwo
-		withRepositoryDescription: 'github://example/SystemTwo/src'. 
+	project := projectBuilder
+			buildProjectFromBaselineClass: BaselineOfGtRlBaselineExampleSystemTwo
+			withRepositoryDescription: 'github://example/SystemTwo/src'.
 	printer := GtRlProjectBaselineGenerator forProject: project.
-	
-	self 
-		assert: printer generateBaselineSource 
-		equals: (BaselineOfGtRlBaselineExampleSystemTwo >>#baseline:) sourceCode.
-	
+
+	self
+		assert: printer generateBaselineSource
+		equals: (BaselineOfGtRlBaselineExampleSystemTwo >> #baseline:) sourceCode.
+
 	^ printer
 ]
