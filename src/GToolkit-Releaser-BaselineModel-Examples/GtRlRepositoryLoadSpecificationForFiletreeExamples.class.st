@@ -7,12 +7,13 @@ Class {
 { #category : #examples }
 GtRlRepositoryLoadSpecificationForFiletreeExamples >> loadSpecificationHasCorrectVersion [
 	<gtExample>
+	<return: #GtRlRepositoryDefaultLoadSpecification>
 	| loadSpecification |
 	loadSpecification := self loadSpecification.
-	
+
 	self assert: loadSpecification hasVersion not.
 	self assert: loadSpecification versionStringOrNil isNil.
-	
+
 	^ loadSpecification
 ]
 

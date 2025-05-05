@@ -1,7 +1,7 @@
 Class {
 	#name : #GtRlSemanticVersionNumberExamples,
 	#superclass : #GtRlVersionNumberExamples,
-	#category : 'GToolkit-Releaser-Examples'
+	#category : #'GToolkit-Releaser-Examples'
 }
 
 { #category : #assertions }
@@ -51,26 +51,30 @@ GtRlSemanticVersionNumberExamples >> createSemanticVersionWithMajor: majorNumber
 { #category : #'examples - equality' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNotEqualsWithVersionsWithDifferentNumbers [
 	<gtExample>
+	<return: #GtRlSemanticVersionNumber>
 	| versionNumber anotherNotEqualVersion1 anotherNotEqualVersion2 anotherNotEqualVersion3 |
 	versionNumber := self semanticVersionNumberMajor1Minor2Patch3.
-	
+
 	anotherNotEqualVersion1 := self semanticVersionNumberMajor2Minor2Patch3.
 	anotherNotEqualVersion2 := self semanticVersionNumberMajor1Minor3Patch3.
 	anotherNotEqualVersion3 := self semanticVersionNumberMajor1Minor2Patch4.
-	
+
 	self assert: (versionNumber = anotherNotEqualVersion1) not.
 	self assert: (versionNumber = anotherNotEqualVersion2) not.
 	self assert: (versionNumber = anotherNotEqualVersion3) not.
-	
+
 	^ versionNumber
-	
 ]
 
 { #category : #'examples - versions' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumber [
 	<gtExample>
+	<return: #GtRlSemanticVersionNumber>
 	| versionNumber |
-	versionNumber := GtRlSemanticVersionNumber major: 1 minor: 2 patch: 3.
+	versionNumber := GtRlSemanticVersionNumber
+			major: 1
+			minor: 2
+			patch: 3.
 
 	self assert: versionNumber versionString equals: 'v1.2.3'.
 	self assert: versionNumber major equals: 1.
@@ -82,148 +86,171 @@ GtRlSemanticVersionNumberExamples >> semanticVersionNumber [
 { #category : #'examples - equality' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberEqualWithItself [
 	<gtExample>
+	<return: #GtRlSemanticVersionNumber>
 	| versionNumber |
 	versionNumber := self semanticVersionNumberMajor1Minor2Patch3.
 	self assert: versionNumber = versionNumber.
 	^ versionNumber
-	
 ]
 
 { #category : #'examples - equality' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberEqualWithTheSameVersion [
 	<gtExample>
+	<return: #GtRlSemanticVersionNumber>
 	| versionNumber anotherEqualVersion |
 	versionNumber := self semanticVersionNumberMajor1Minor2Patch3.
-	anotherEqualVersion := self createSemanticVersionWithMajor: 1 minor: 2 patch: 3. "Ensure a new object"
-	
+	anotherEqualVersion := self
+			createSemanticVersionWithMajor: 1
+			minor: 2
+			patch: 3.	"Ensure a new object"
+
 	self assert: versionNumber ~~ anotherEqualVersion.
 	self assert: versionNumber = anotherEqualVersion.
-	
+
 	^ versionNumber
-	
 ]
 
 { #category : #'examples - comparison' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberGreaterThenComparison [
 	<gtExample>
+	<return: #GtRlSemanticVersionNumber>
 	| anotherVersionM2M2P3 anotherVersionM1M3P3 anotherVersionM1M2P4 anotherVersionM1M2P5 |
 	anotherVersionM2M2P3 := self semanticVersionNumberMajor2Minor2Patch3.
 	anotherVersionM1M3P3 := self semanticVersionNumberMajor1Minor3Patch3.
 	anotherVersionM1M2P4 := self semanticVersionNumberMajor1Minor2Patch4.
 	anotherVersionM1M2P5 := self semanticVersionNumberMajor1Minor2Patch5.
-	
+
 	self assert: anotherVersionM1M2P4 < anotherVersionM2M2P3.
 	self assert: anotherVersionM1M2P4 < anotherVersionM1M3P3.
 	self assert: anotherVersionM1M2P4 < anotherVersionM1M2P5.
-	
+
 	self assert: (anotherVersionM1M2P4 < anotherVersionM1M2P4) not.
 	self assert: (anotherVersionM1M2P5 < anotherVersionM1M2P4) not.
 	self assert: (anotherVersionM1M3P3 < anotherVersionM1M2P4) not.
 	self assert: (anotherVersionM2M2P3 < anotherVersionM1M2P4) not.
-	
+
 	^ anotherVersionM1M2P4
-	
 ]
 
 { #category : #'examples - hash' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberHasDifferentWithOtherVersions [
 	<gtExample>
+	<return: #GtRlSemanticVersionNumber>
 	| versionNumber anotherNotEqualVersion1 anotherNotEqualVersion2 anotherNotEqualVersion3 |
 	versionNumber := self semanticVersionNumberMajor1Minor2Patch3.
-	
+
 	anotherNotEqualVersion1 := self semanticVersionNumberMajor2Minor2Patch3.
 	anotherNotEqualVersion2 := self semanticVersionNumberMajor1Minor3Patch3.
 	anotherNotEqualVersion3 := self semanticVersionNumberMajor1Minor2Patch4.
-	
-	self assert: (versionNumber hash ~= anotherNotEqualVersion1 hash).
-	self assert: (versionNumber hash ~= anotherNotEqualVersion2 hash).
-	self assert: (versionNumber hash ~= anotherNotEqualVersion3 hash).
-	
+
+	self assert: versionNumber hash ~= anotherNotEqualVersion1 hash.
+	self assert: versionNumber hash ~= anotherNotEqualVersion2 hash.
+	self assert: versionNumber hash ~= anotherNotEqualVersion3 hash.
+
 	^ versionNumber
-	
 ]
 
 { #category : #'examples - hash' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberHasEqualHashWithTheSameVersion [
 	<gtExample>
+	<return: #GtRlSemanticVersionNumber>
 	| versionNumber anotherEqualVersion |
 	versionNumber := self semanticVersionNumberMajor1Minor2Patch3.
-	anotherEqualVersion := self createSemanticVersionWithMajor: 1 minor: 2 patch: 3. "Ensure a new object"
-	
+	anotherEqualVersion := self
+			createSemanticVersionWithMajor: 1
+			minor: 2
+			patch: 3.	"Ensure a new object"
+
 	self assert: versionNumber ~~ anotherEqualVersion.
 	self assert: versionNumber hash equals: versionNumber hash.
 	self assert: versionNumber hash equals: anotherEqualVersion hash.
-	
+
 	^ versionNumber
-	
 ]
 
 { #category : #'examples - versions' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberMajor1Minor2Patch3 [
 	<gtExample>
-	^ self createSemanticVersionWithMajor: 1 minor: 2 patch: 3.
+	<return: #GtRlSemanticVersionNumber>
+	^ self
+		createSemanticVersionWithMajor: 1
+		minor: 2
+		patch: 3
 ]
 
 { #category : #'examples - versions' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberMajor1Minor2Patch4 [
 	<gtExample>
-	^ self createSemanticVersionWithMajor: 1 minor: 2 patch: 4.
+	<return: #GtRlSemanticVersionNumber>
+	^ self
+		createSemanticVersionWithMajor: 1
+		minor: 2
+		patch: 4
 ]
 
 { #category : #'examples - versions' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberMajor1Minor2Patch5 [
 	<gtExample>
-	^ self createSemanticVersionWithMajor: 1 minor: 2 patch: 5.
-	
+	<return: #GtRlSemanticVersionNumber>
+	^ self
+		createSemanticVersionWithMajor: 1
+		minor: 2
+		patch: 5
 ]
 
 { #category : #'examples - versions' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberMajor1Minor3Patch3 [
 	<gtExample>
-	^ self createSemanticVersionWithMajor: 1 minor: 3 patch: 3.
-	
+	<return: #GtRlSemanticVersionNumber>
+	^ self
+		createSemanticVersionWithMajor: 1
+		minor: 3
+		patch: 3
 ]
 
 { #category : #'examples - versions' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberMajor2Minor2Patch3 [
 	<gtExample>
-	^ self createSemanticVersionWithMajor: 2 minor: 2 patch: 3.
-	
+	<return: #GtRlSemanticVersionNumber>
+	^ self
+		createSemanticVersionWithMajor: 2
+		minor: 2
+		patch: 3
 ]
 
 { #category : #'examples - comparison' }
 GtRlSemanticVersionNumberExamples >> semanticVersionNumberOtherComparisons [
 	<gtExample>
-	|  anotherVersionM1M2P4 anotherVersionM1M2P5 |
+	<return: #GtRlSemanticVersionNumber>
+	| anotherVersionM1M2P4 anotherVersionM1M2P5 |
 	anotherVersionM1M2P4 := self semanticVersionNumberMajor1Minor2Patch4.
 	anotherVersionM1M2P5 := self semanticVersionNumberMajor1Minor2Patch5.
-	
+
 	self assert: anotherVersionM1M2P5 >= anotherVersionM1M2P5.
 	self assert: anotherVersionM1M2P5 >= anotherVersionM1M2P4.
-	
+
 	self assert: anotherVersionM1M2P5 <= anotherVersionM1M2P5.
 	self assert: anotherVersionM1M2P4 < anotherVersionM1M2P5.
-	
+
 	self assert: anotherVersionM1M2P5 > anotherVersionM1M2P4.
 	self assert: (anotherVersionM1M2P5 > anotherVersionM1M2P5) not.
-	
+
 	^ anotherVersionM1M2P4
-	
 ]
 
 { #category : #'examples - versions' }
 GtRlSemanticVersionNumberExamples >> uninitializedSemanticVersionNumber [
 	<gtExample>
+	<return: #GtRlSemanticVersionNumber>
 	| versionNumber |
 	versionNumber := GtRlSemanticVersionNumber new.
-	
+
 	self assert: versionNumber isNullVersion not.
 	self assert: versionNumber description equals: 'vnil.nil.nil'.
 	self assert: versionNumber versionString equals: 'vnil.nil.nil'.
 	self assert: versionNumber major equals: nil.
 	self assert: versionNumber minor equals: nil.
 	self assert: versionNumber patch equals: nil.
-	
+
 	^ versionNumber
-	
 ]
