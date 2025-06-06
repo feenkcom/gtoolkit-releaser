@@ -136,7 +136,7 @@ GtRlDependenciesModelBuilder >> instantiateProjectFromMetacelloSpec: aBaselinePr
 		forPharo12: [ 
 			project baselineVersion: (aBaselineProjectSpec className
 				asClassInEnvironment:
-		        	self class environment) project versions ] 
+		        	self class environment) project versions first ] 
 		forPharo11AndPharo10: [ 
 			project baselineVersion: aBaselineProjectSpec version ].
 	
