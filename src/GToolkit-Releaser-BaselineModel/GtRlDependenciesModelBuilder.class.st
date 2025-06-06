@@ -133,7 +133,10 @@ GtRlDependenciesModelBuilder >> instantiateProjectFromMetacelloSpec: aBaselinePr
 		linkWithRepository: (self ensureRepositoriesFor: repositoriesSpec map values first description).
 		
 	self 
-		forPharo12: [ ] 
+		forPharo12: [ 
+			project baselineVersion: (aBaselineProjectSpec className
+				asClassInEnvironment:
+		        	self class environment) project versions ] 
 		forPharo11AndPharo10: [ 
 			project baselineVersion: aBaselineProjectSpec version ].
 	
