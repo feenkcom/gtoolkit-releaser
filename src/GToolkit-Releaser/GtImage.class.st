@@ -203,7 +203,7 @@ GtImage class >> treemapWithAllExtensions [
 			data: (Smalltalk allClassesAndTraits select: [:c | 
 			{'Gt'.'Bl'.'Br'.'Le'} anySatisfy: [:p |c name beginsWith: p]]);
 		groupBy: [ :aClass | aClass package ];
-		groupBy: [ :aClass | aClass package classTags detect: [ :e | e hasClass: aClass ] ];
+		groupBy: [ :aClass | aClass package classTags detect: [ :e | e includesClass: aClass ] ];
 		weight: [ :aClass | aClass methods size max: 1];
 		build.
 	^ GtNestedRectangleTreeMap new
