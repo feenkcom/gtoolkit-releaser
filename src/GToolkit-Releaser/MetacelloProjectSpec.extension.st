@@ -1,7 +1,7 @@
-Extension { #name : #MetacelloMCProjectSpec }
+Extension { #name : #MetacelloProjectSpec }
 
 { #category : #'*GToolkit-Releaser' }
-MetacelloMCProjectSpec >> projectClass [
+MetacelloProjectSpec >> projectClass [
 	<gtPharoPatch: #Pharo>
 	
     self className == nil
