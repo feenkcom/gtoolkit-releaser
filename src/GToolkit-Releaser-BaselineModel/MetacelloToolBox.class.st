@@ -1941,7 +1941,10 @@ MetacelloToolBox >> modifyBaselineOf [
   methodSpec := MetacelloBaselineOfMethodSpec new
     project: project;
     selector: (MetacelloPlatform current selectorForPragma: pragma);
-    category: (baselineClass whichCategoryIncludesSelector: (MetacelloPlatform current selectorForPragma: pragma));
+    category: (self 
+    	whichCategoryIncludesSelector: (MetacelloPlatform current
+    		selectorForPragma: pragma)
+    	inClass: baselineClass);
     yourself.
   constructor methodSections
     do: [ :methodSection | self methodSpec methodSections add: methodSection ]
@@ -2080,7 +2083,10 @@ MetacelloToolBox >> modifySymbolicVersionMethodFor: versionSymbol symbolicVersio
     methodSpec := MetacelloSymbolicVersionMethodSpec new
         project: project;
         selector: (MetacelloPlatform current selectorForPragma: pragma);
-        category: (project configuration class whichCategoryIncludesSelector: (MetacelloPlatform current selectorForPragma: pragma));
+        category: (self 
+        	whichCategoryIncludesSelector: (MetacelloPlatform current
+        		selectorForPragma: pragma)
+        	inClass: project configuration class);
         versionString: versionSymbol;
         yourself.
     (constructor extractSymbolicVersionSpecsFor: versionSymbol)
@@ -2149,7 +2155,10 @@ MetacelloToolBox >> updateVersionMethodForVersion: inputVersionStringOrSymbol pr
     methodSpec := MetacelloVersionMethodSpec new
         project: project;
         selector: (MetacelloPlatform current selectorForPragma: pragma);
-        category: (project configuration class whichCategoryIncludesSelector: (MetacelloPlatform current selectorForPragma:  pragma));
+        category: (self 
+        	whichCategoryIncludesSelector: (MetacelloPlatform current
+        		selectorForPragma:  pragma)
+        	inClass: project configuration class);
         versionString: sourceVersionString;
         imports: imports;
         yourself.
@@ -2262,4 +2271,11 @@ MetacelloToolBox >> validateVersion: versionStringOrSymbol [
             MetacelloValidationFailure
                 issues: issues
                 message: 'There are error issues with version ' , versionStringOrSymbol printString ]
+]
+
+{ #category : #utils }
+MetacelloToolBox >> whichCategoryIncludesSelector: aSelector inClass: aClass [
+	^ self
+		forPharo12: [ aClass protocolNameOfSelector: aSelector ]
+		forPharo11AndPharo10: [ aClass whichCategoryIncludesSelector: aSelector ]
 ]
