@@ -2276,6 +2276,6 @@ MetacelloToolBox >> validateVersion: versionStringOrSymbol [
 { #category : #utils }
 MetacelloToolBox >> whichCategoryIncludesSelector: aSelector inClass: aClass [
 	^ self
-		forPharo12: [ aClass protocolNameOfSelector: aSelector ]
-		forPharo11AndPharo10: [ aClass whichCategoryIncludesSelector: aSelector ]
+		fastForPharo12: [ aClass protocolNameOfSelector: aSelector ]
+		forPharo11: [ aClass whichCategoryIncludesSelector: aSelector ]
 ]
