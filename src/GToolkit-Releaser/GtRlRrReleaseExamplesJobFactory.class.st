@@ -2,22 +2,23 @@ Class {
 	#name : #GtRlRrReleaseExamplesJobFactory,
 	#superclass : #Object,
 	#instVars : [
-		'packageNamesToSkip'
+		'packageNamesToSkip',
+		'packageNames'
 	],
 	#category : #'GToolkit-Releaser'
 }
 
 { #category : #accessing }
 GtRlRrReleaseExamplesJobFactory >> allPackageNames [
-	| baselineProject packages packageNames |
+	| baselineProject packages allPackageNames |
 	
 	baselineProject := BaselineOfGToolkit fullBaselineProject.
 	packages := baselineProject withAllContainedRPackagesSelect: [ :aPackage |
 		aPackage gtExamplesAllContained isNotEmpty ].
 	
-	packageNames := packages collect: [ :aPackage | aPackage name ].
+	allPackageNames := packages collect: [ :aPackage | aPackage name ].
 	
-	^ packageNames
+	^ allPackageNames
 ]
 
 { #category : #accessing }
@@ -31,6 +32,16 @@ GtRlRrReleaseExamplesJobFactory >> defaultSkippedPackageNames [
 		'PythonBridge-Pharo' )
 ]
 
+{ #category : #views }
+GtRlRrReleaseExamplesJobFactory >> gtPackageNamesFor: aView [
+	<gtView>
+	packageNames ifNil: [ ^ aView empty ].
+	^ aView columnedList
+		title: 'PackageNames';
+		items: [ packageNames ];
+		column: 'Value' text: [ :each | each gtDisplayString ]
+]
+
 { #category : #accessing }
 GtRlRrReleaseExamplesJobFactory >> job [
 	| factory |
@@ -42,10 +53,17 @@ GtRlRrReleaseExamplesJobFactory >> job [
 	^ factory job
 ]
 
+{ #category : #configuration }
+GtRlRrReleaseExamplesJobFactory >> limit: anInteger [
+
+	packageNames := self packageNames first: anInteger
+]
+
 { #category : #accessing }
 GtRlRrReleaseExamplesJobFactory >> packageNames [
 
-	^ self allPackageNames difference: self packageNamesToSkip
+	^ packageNames ifNil:
+		[ packageNames := self allPackageNames difference: self packageNamesToSkip ]
 ]
 
 { #category : #accessing }
@@ -62,4 +80,10 @@ GtRlRrReleaseExamplesJobFactory >> packageNamesToSkip: anObject [
 GtRlRrReleaseExamplesJobFactory >> skipDefaultPackages [
 
 	self packageNamesToSkip: (self packageNamesToSkip asSet addAll: self defaultSkippedPackageNames)
+]
+
+{ #category : #configuration }
+GtRlRrReleaseExamplesJobFactory >> sortPackageNames [
+
+	packageNames := self packageNames sorted.
 ]
