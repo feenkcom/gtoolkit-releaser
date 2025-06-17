@@ -246,12 +246,6 @@ GtRlChecksRunner >> initialJobTaskCompleted: aTaskCompletedAnnouncement [
 	stats updateWorker: aTaskCompletedAnnouncement.
 ]
 
-{ #category : #private }
-GtRlChecksRunner >> initialJobTaskFailed: aTaskFailedAnnouncement [
-
-	self halt.
-]
-
 { #category : #initialization }
 GtRlChecksRunner >> initialize [
 
