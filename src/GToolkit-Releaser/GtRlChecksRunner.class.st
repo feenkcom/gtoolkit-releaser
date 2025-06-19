@@ -76,6 +76,13 @@ GtRlChecksRunner class >> defaultSkippedPackageNames [
 ]
 
 { #category : #'instance creation' }
+GtRlChecksRunner class >> remoteRunnerExamples [
+	"Run the RemoteRunner examples"
+
+	^ self checksFactory: self remoteRunnerFactory
+]
+
+{ #category : #'instance creation' }
 GtRlChecksRunner class >> remoteRunnerFactory [
 	"Answer a GtRrChecksFactory with the dedicatedReleaseBranch examples"
 	| allPackageNames factory examples |
@@ -230,6 +237,12 @@ GtRlChecksRunner >> inImageTaskCompleted: aTaskFinishedAnnouncement [
 	self storeTaskResults: aTaskFinishedAnnouncement.
 	self runTaskFailures: aTaskFinishedAnnouncement.
 	stats updateInImage: aTaskFinishedAnnouncement.
+]
+
+{ #category : #accessing }
+GtRlChecksRunner >> initialJob [
+
+	^ jobs first
 ]
 
 { #category : #running }
