@@ -1293,7 +1293,13 @@ MetacelloToolBox >> addBaselineOfSection: sectionAttributeOrPath requiredProject
       versionSpec packages merge: spec ].
   aBlock value: versionSpec.
   self methodSpec
-    addMethodSection: sectionAttributeOrPath asMetacelloAttributePath
+    addMethodSection: ((sectionAttributeOrPath class = MetacelloMethodSectionPath)  
+    	ifTrue: [sectionAttributeOrPath]
+    	ifFalse: [
+    		sectionAttributeOrPath isSymbol 
+    			ifTrue: [MetacelloMethodSectionPath withAll: {sectionAttributeOrPath}]
+    			ifFalse: [MetacelloMethodSectionPath withAll: sectionAttributeOrPath]])
+ 
     versionSpec: versionSpec
 ]
 
@@ -1506,11 +1512,15 @@ MetacelloToolBox >> baselineNamed: baseName [
 				superclass: BaselineOf;
 				package: baselineName].
 
-      MetacelloPlatform current registerPackageNamed: baselineName.
-      (MetacelloPlatform current globalNamed: baselineName asSymbol)
+     self 
+     	forPharo12: [ self class packageOrganizer ensurePackage: baselineName ] 
+     	forPharo11AndPharo10: [ 
+     		MetacelloPlatform current registerPackageNamed: baselineName ].
+     
+      (Smalltalk at: baselineName asSymbol)
         compile: 'baseline: spec <baseline>'
         classified: 'baseline'	"a bit of a hack here to create an initial null basline method" ].
-  project := (MetacelloPlatform current globalNamed: baselineName asSymbol)
+  project := (Smalltalk at: baselineName asSymbol)
     project
 ]
 
