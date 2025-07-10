@@ -55,7 +55,7 @@ GtRlChecksRunner class >> dedicatedReleaseBranchExamplesFactory [
 	allPackageNames := allPackageNames first: 100.
 
 	examples := allPackageNames flatCollect: [ :pName | 
-		(RPackage organizer packageNamed: pName) gtExamplesAllContained ].
+		(self class packageOrganizer packageNamed: pName) gtExamplesAllContained ].
 
 	factory := GtRrChecksFactory new.
 	factory addExampleTestNames: 
@@ -91,7 +91,7 @@ GtRlChecksRunner class >> remoteRunnerFactory [
 	allPackageNames := allPackageNames difference: self defaultSkippedPackageNames.
 
 	examples := allPackageNames flatCollect: [ :pName | 
-		(RPackage organizer packageNamed: pName) gtExamplesAllContained ].
+		(self class packageOrganizer packageNamed: pName) gtExamplesAllContained ].
 
 	factory := GtRrChecksFactory new.
 	factory addExampleTestNames: 
