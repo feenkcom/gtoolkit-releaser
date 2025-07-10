@@ -68,7 +68,7 @@ GtRlReleaserExamples >> createBaselineForProjectNamed: projectName withDependenc
 	
 	self 
 		forPharo12: [
-			baselinePackage := RPackage named: 'BaselineOf', projectName.
+			baselinePackage := Package named: 'BaselineOf', projectName.
 			GtPharoCodeModifier registerPackage: baselinePackage.
 	
 			baselineClass := GtPharoCodeModifier current
