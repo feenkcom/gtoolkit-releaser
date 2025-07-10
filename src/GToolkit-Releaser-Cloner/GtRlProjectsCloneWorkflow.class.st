@@ -224,10 +224,8 @@ GtRlProjectsCloneWorkflow >> loadBaselinePackageForSpec: aBaselineSpec [
 	icebergPackage := icebergRepository workingCopy packageNamed: baselineClassName.
 	icebergPackage load.
 	
-	^ (self 
-		fastForPharo12: [self packageOrganizer] 
-		forPharo11: [RPackage organizer] )
-			packageNamed: icebergPackage name
+	^ self class packageOrganizer
+		packageNamed: icebergPackage name
 ]
 
 { #category : #loading }

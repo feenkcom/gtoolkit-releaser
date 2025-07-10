@@ -68,7 +68,7 @@ GtRlReleaserExamples >> createBaselineForProjectNamed: projectName withDependenc
 	
 	self 
 		forPharo12: [
-			baselinePackage := RPackage named: 'BaselineOf', projectName.
+			baselinePackage := Package named: 'BaselineOf', projectName.
 			GtPharoCodeModifier registerPackage: baselinePackage.
 	
 			baselineClass := GtPharoCodeModifier current
@@ -76,7 +76,7 @@ GtRlReleaserExamples >> createBaselineForProjectNamed: projectName withDependenc
 				named: 'BaselineOf', projectName
 				package: 'BaselineOf', projectName ] 
 		forPharo11AndPharo10: [
-			baselinePackage := RPackage named: 'BaselineOf', projectName.
+			baselinePackage := Package named: 'BaselineOf', projectName.
 	
 			SystemAnnouncer uniqueInstance suspendAllWhile: [ 
 				baselineClass := GtPharoCodeModifier current
