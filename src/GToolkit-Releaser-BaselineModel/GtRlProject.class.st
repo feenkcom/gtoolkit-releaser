@@ -142,7 +142,7 @@ GtRlProject >> childProjects [
 { #category : #traversing }
 GtRlProject >> containedRPackagesDo: aBloc [
 	self packages do: [ :aReleaserPackage |
-		(RPackageOrganizer default 
+		(self class packageOrganizer
 			packageNamed: aReleaserPackage name 
 			ifAbsent: [nil]) ifNotNil: [ :aRPackage | 
 				aBloc value: aRPackage ] ]

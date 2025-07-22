@@ -37,7 +37,7 @@ GtMetrics >> classesAndTraitsInProjects: aCollection [
 	| mPackages packages |
 	mPackages := aCollection flatCollect: [:each | each packages ].
 	packages := mPackages 
-		collect: [:each | RPackageOrganizer default packageNamed: each name asSymbol ifAbsent: [nil]]
+		collect: [:each | self class packageOrganizer default packageNamed: each name asSymbol ifAbsent: [nil]]
 		thenSelect: #notNil.
 	self assert: packages notEmpty.
 	^ Smalltalk allClassesAndTraits select: [:each | 
@@ -241,7 +241,7 @@ GtMetrics >> methodsInProjects: aCollection [
 	| mPackages packages |
 	mPackages := aCollection flatCollect: [:each | each packages ].
 	packages := mPackages 
-		collect: [:each | RPackageOrganizer default packageNamed: each name asSymbol ifAbsent: [nil]]
+		collect: [:each | self class packageOrganizer packageNamed: each name asSymbol ifAbsent: [nil]]
 		thenSelect: #notNil.
 	self assert: packages notEmpty.
 	^ (Smalltalk allClassesAndTraits flatCollect: #localMethods) select: [:each | 

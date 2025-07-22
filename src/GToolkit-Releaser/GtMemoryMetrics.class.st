@@ -423,7 +423,7 @@ GtMemoryMetrics >> totalPackagesSize [
 	^ self 
 		cacheAt: #totalPackagesSize
 		ifAbsentPut: [
-			 RPackageOrganizer default gtSpecificSizeInMemory ]
+			 self class packageOrganizer default gtSpecificSizeInMemory ]
 ]
 
 { #category : #metrics }
