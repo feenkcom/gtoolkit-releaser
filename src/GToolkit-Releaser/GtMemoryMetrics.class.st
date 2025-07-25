@@ -220,7 +220,7 @@ GtMemoryMetrics >> cacheAt: aSymbol ifAbsentPut: aBlock [
 GtMemoryMetrics >> computeClasesClasssSideSize [
 
 	^ SystemNavigation default allClasses 
-		sum: [ :aClass |
+		sumNumbers: [ :aClass |
 	 		aClass classSide gtSpecificSizeInMemory ]
 ]
 
@@ -228,7 +228,7 @@ GtMemoryMetrics >> computeClasesClasssSideSize [
 GtMemoryMetrics >> computeClassesInstanceSideSize [
 
 	^ SystemNavigation default allClasses 
-			sum: [ :aClass |
+			sumNumbers: [ :aClass |
 	 			aClass instanceSide gtSpecificSizeInMemory ]
 ]
 
@@ -282,7 +282,7 @@ GtMemoryMetrics >> totalClassOrganisationInstancesSize [
 		cacheAt: #totalClassOrganisationInstancesSize
 		ifAbsentPut: [
 			 ClassOrganization allInstances 
-				sum: [ :aClassOrganization | 
+				sumNumbers: [ :aClassOrganization | 
 					aClassOrganization gtSpecificSizeInMemory ] ]
 ]
 
@@ -356,7 +356,7 @@ GtMemoryMetrics >> totalCompiledMethodInstancesSize [
 		cacheAt: #totalCompiledMethodInstancesSize
 		ifAbsentPut: [
 			 CompiledMethod allInstances 
-				sum: [ :aCompiledMethod | 
+				sumNumbers: [ :aCompiledMethod | 
 					aCompiledMethod gtSpecificSizeInMemory ] ]
 ]
 
@@ -394,7 +394,7 @@ GtMemoryMetrics >> totalMethodDictionarySize [
 		cacheAt: #totalMethodDictionarySize
 		ifAbsentPut: [
 			 MethodDictionary allInstances 
-				sum: [ :aMethodDictionary | 
+				sumNumbers: [ :aMethodDictionary | 
 					aMethodDictionary gtSpecificSizeInMemory ] ]
 ]
 
@@ -414,7 +414,7 @@ GtMemoryMetrics >> totalMethodsSize [
 		cacheAt: #totalMethodsSize
 		ifAbsentPut: [
 			SystemNavigation default  allMethods 
-				sum: [ :aMethod | aMethod gtSpecificSizeInMemory ] ]
+				sumNumbers: [ :aMethod | aMethod gtSpecificSizeInMemory ] ]
 ]
 
 { #category : #metrics }
@@ -433,8 +433,8 @@ GtMemoryMetrics >> totalPragmasCacheSize [
 		cacheAt: #totalPragmasCacheSize
 		ifAbsentPut: [
 			Pragma pragmaCache gtSpecificSizeInMemory + 
-				(Pragma pragmaCache sum: [ :pragmasSet | 
-					pragmasSet gtSpecificSizeInMemory +  (pragmasSet sum: #sizeInMemory) ]) ]
+				(Pragma pragmaCache sumNumbers: [ :pragmasSet | 
+					pragmasSet gtSpecificSizeInMemory +  (pragmasSet sumNumbers: #sizeInMemory) ]) ]
 ]
 
 { #category : #metrics }
@@ -453,7 +453,7 @@ GtMemoryMetrics >> totalSymbolsSize [
 		cacheAt: #totalSymbolsSize
 		ifAbsentPut: [
 			Symbol allSymbols 
-				sum: [ :aSymbol | aSymbol sizeInMemory ] ]
+				sumNumbers: [ :aSymbol | aSymbol sizeInMemory ] ]
 ]
 
 { #category : #metrics }

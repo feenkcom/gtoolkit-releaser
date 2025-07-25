@@ -48,7 +48,7 @@ GtMetrics >> classesAndTraitsInProjects: aCollection [
 GtMetrics >> famix3LinesOfCode [
 	^ famix3LinesOfCode ifNil: [ famix3LinesOfCode := (BaselineOfFamix3SmalltalkImporter version 
 	withDeepCollect: [ :each | each projects collect: #version ])
-		sum: [:each | each gtRPackages sum: #linesOfCode ] ]
+		sumNumbers: [:each | each gtRPackages sumNumbers: #linesOfCode ] ]
 ]
 
 { #category : #'gt-extensions' }
@@ -291,7 +291,7 @@ GtMetrics >> smaccParserPackages [
 
 { #category : #accessing }
 GtMetrics >> smaccParsersLinesOfCode [
-	^ smaccParsersLinesOfCode ifNil: [ smaccParsersLinesOfCode := self smaccParserPackages sum: #linesOfCode]
+	^ smaccParsersLinesOfCode ifNil: [ smaccParsersLinesOfCode := self smaccParserPackages sumNumbers: #linesOfCode]
 ]
 
 { #category : #accessing }
@@ -302,5 +302,5 @@ GtMetrics >> totalLinesOfCode [
 { #category : #accessing }
 GtMetrics >> xmlSupportLinesOfCode [
 	^ xmlSupportLinesOfCode ifNil: [ xmlSupportLinesOfCode := (BaselineOfGToolkit4XMLSupport version withDeepCollect: [ :each | each projects collect: #version ])
-		sum: [:each | each gtRPackages sum: #linesOfCode ]. ]
+		sumNumbers: [:each | each gtRPackages sumNumbers: #linesOfCode ]. ]
 ]
