@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'project'
 	],
-	#category : 'GToolkit-Releaser-BaselineModel-Metacello'
+	#category : #'GToolkit-Releaser-BaselineModel-Metacello'
 }
 
 { #category : #'instance creation' }

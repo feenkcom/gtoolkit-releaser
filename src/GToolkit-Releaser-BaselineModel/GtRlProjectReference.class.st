@@ -11,7 +11,7 @@ Class {
 	#instVars : [
 		'referencedProject'
 	],
-	#category : 'GToolkit-Releaser-BaselineModel-Model'
+	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
 
 { #category : #'instance creation' }
