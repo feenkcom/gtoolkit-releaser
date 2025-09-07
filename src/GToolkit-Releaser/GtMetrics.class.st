@@ -260,19 +260,33 @@ GtMetrics >> pharoToReplaceMethods [
 
 { #category : #accessing }
 GtMetrics >> pharoToReplaceProjects [
-	| projects |
-	projects :=  {
-		BaselineOfBasicTools .
-		BaselineOfIDE. 
-		BaselineOfShout . 
-		BaselineOfCalypso . 
-		BaselineOfQA . 
-		BaselineOfOSWindow.
-		BaselineOfSpec2 } flatCollect: [:class | 
-			class withAllContainedProjects ].
+	| projects baselines |
+	"Projects picked manually by inspecting BaselineOfIDE"
+	baselines := self
+			forPharo12: {BaselineOfBasicTools.
+					BaselineOfDrTests.
+					BaselineOfHeuristicCompletion.
+					BaselineOfShout.
+					BaselineOfCalypso.
+					BaselineOfWelcomeBrowser.
+					BaselineOfNewToolsDocumentBrowser.
+					BaselineOfQA.
+					BaselineOfOSWindow.
+					BaselineOfNewTools.
+					BaselineOfSpec2}
+			forPharo11AndPharo10: {BaselineOfBasicTools.
+					BaselineOfShout.
+					BaselineOfCalypso.
+					BaselineOfQA.
+					BaselineOfOSWindow.
+					BaselineOfSpec2}.
+	projects := baselines flatCollect: [ :class | class withAllContainedProjects ].
 	self assert: projects notEmpty.
 	self assert: (projects noneSatisfy: #isNil).
-	^ (projects \ {BaselineOfTraits version . BaselineOfUnifiedFFI version . BaselineOfReflectivity version}) \ self gtProjects
+	^ projects
+		\ (BaselineOfTraits withAllContainedProjects
+				, BaselineOfUnifiedFFI withAllContainedProjects
+				, BaselineOfReflectivity withAllContainedProjects) \ self gtProjects
 ]
 
 { #category : #accessing }
