@@ -11,7 +11,7 @@ Class {
 	#instVars : [
 		'releaseActions'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #accessing }

@@ -13,7 +13,7 @@ Class {
 	#instVars : [
 		'data'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #accessing }

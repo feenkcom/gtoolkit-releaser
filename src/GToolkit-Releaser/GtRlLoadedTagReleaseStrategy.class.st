@@ -1,7 +1,7 @@
 Class {
 	#name : #GtRlLoadedTagReleaseStrategy,
 	#superclass : #GtRlReleaseStrategy,
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #assertions }

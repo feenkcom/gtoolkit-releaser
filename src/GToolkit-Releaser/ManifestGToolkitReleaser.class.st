@@ -6,7 +6,7 @@ I store metadata for this package used by various other tools.
 Class {
 	#name : #ManifestGToolkitReleaser,
 	#superclass : #PackageManifest,
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #'meta-data' }

@@ -1,7 +1,7 @@
 Class {
 	#name : #GtReleaserBumpGToolkitVersionCommandLineHandler,
 	#superclass : #CommandLineHandler,
-	#category : 'GToolkit-Releaser-GToolkit-Releaser'
+	#category : #'GToolkit-Releaser-GToolkit-Releaser'
 }
 
 { #category : #accessing }

@@ -5,7 +5,7 @@ Class {
 		'repository',
 		'newCommits'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #accessing }

@@ -11,7 +11,7 @@ A null version number is equal to any other null version number.
 Class {
 	#name : #GtRlNullVersionNumber,
 	#superclass : #GtRlVersionNumber,
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #versions }

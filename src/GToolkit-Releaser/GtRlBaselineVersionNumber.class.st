@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'versionString'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #comparing }

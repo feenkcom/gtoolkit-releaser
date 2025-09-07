@@ -6,7 +6,7 @@ I provide a null strategy to indicate that a release has no strategy. I mark a r
 Class {
 	#name : #GtRlNullReleaseStrategy,
 	#superclass : #GtRlReleaseStrategy,
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #printing }

@@ -10,7 +10,7 @@ Class {
 	#instVars : [
 		'projectRelease'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #'instance creation' }

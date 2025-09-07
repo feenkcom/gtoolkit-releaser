@@ -215,9 +215,7 @@ GtMetrics >> gtMetricsFor: aView [
 { #category : #accessing }
 GtMetrics >> gtProjects [
 	| projects |
-	projects := {BaselineOfGToolkit} flatCollect: [:project | 
-			project version withDeepCollect: [ :each | 
-				each projects collect: #version ] as: Set ].
+	projects := BaselineOfGToolkit withAllContainedProjects.
 	self assert: projects notEmpty.
 	self assert: (projects noneSatisfy: #isNil).
 	^ projects
@@ -277,9 +275,10 @@ GtMetrics >> pharoToReplaceProjects [
 
 { #category : #accessing }
 GtMetrics >> smaccParserPackages [
-	^ ((BaselineOfSmaCC project version
-		withDeepCollect: [ :each | each projects collect: #version ]
-		as: Set) flatCollect: #gtRPackages)
+	^ ((GtRlDependenciesModelBuilder new
+		buildProjectFromBaselineClass: BaselineOfSmaCC
+		withRepositoryDescription: '') withAllChildProjects
+		flatCollect: [ :each | each packages collect: [ :p | p asRPackage ] ])
 		select: [ :each | 
 			({'SmaCC_Grammar_Parser'.
 				'SmaCC_Debugging_Support'.

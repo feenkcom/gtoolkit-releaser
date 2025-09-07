@@ -20,7 +20,7 @@ Class {
 		'patch',
 		'iceTag'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #testing }

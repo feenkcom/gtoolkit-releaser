@@ -13,7 +13,7 @@ Class {
 	#instVars : [
 		'commitId'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #comparing }

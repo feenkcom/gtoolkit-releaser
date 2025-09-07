@@ -13,7 +13,7 @@ Class {
 	#instVars : [
 		'actionOrder'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #initialization }

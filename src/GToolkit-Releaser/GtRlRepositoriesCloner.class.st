@@ -1,7 +1,7 @@
 Class {
 	#name : #GtRlRepositoriesCloner,
 	#superclass : #Object,
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #releasing }

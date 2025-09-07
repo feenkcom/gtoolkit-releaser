@@ -4,7 +4,7 @@ I export the version of the releaser used to create a release of the glamorous t
 Class {
 	#name : #GtRlExportReleaserVersionAction,
 	#superclass : #GtRlRepositoryReleaseAction,
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #accessing }

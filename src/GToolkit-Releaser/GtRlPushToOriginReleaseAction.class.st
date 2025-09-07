@@ -6,7 +6,7 @@ I execute a push to the remote branch associated with the local release branch. 
 Class {
 	#name : #GtRlPushToOriginReleaseAction,
 	#superclass : #GtRlRepositoryReleaseAction,
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #printing }

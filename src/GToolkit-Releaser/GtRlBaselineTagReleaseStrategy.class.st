@@ -13,7 +13,7 @@ See {{gtMethod:GtRlBaselineTagReleaseStrategy>>#assertCompatibleWithRepository:}
 Class {
 	#name : #GtRlBaselineTagReleaseStrategy,
 	#superclass : #GtRlReleaseStrategy,
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #assertions }
