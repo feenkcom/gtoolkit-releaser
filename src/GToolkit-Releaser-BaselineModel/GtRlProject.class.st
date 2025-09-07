@@ -183,24 +183,9 @@ GtRlProject >> gtParentProjectsFor: aView [
 GtRlProject >> gtProjectMapFor: aView [
 	<gtView>
 	^ aView mondrian
-		title: 'Project map' translated;
+		title: 'Project graph' translated;
 		priority: 1;
-		painting: [ :mondrian |
-			mondrian nodes 
-				shape: [ :aProject |
-					BrLabel new text: aProject name; aptitude: BrGlamorousLabelAptitude ];
-				with: self withAllChildProjects.
-			mondrian edges
-				shape: [ 
-					BlLineElement new 
-						zIndex: -1;
-						border: (BlBorder paint: (Color gray alpha: 0.5) width: 2);
-						toHead: (BlArrowheadSimpleArrow new
-							border: (BlBorder builder paint: (Color gray alpha: 0.5); width: 2; build)) ];
-				fromRightCenter;
-				toLeftCenter;
-				connectToAll: #childProjects.
-			mondrian layout custom: (GtGradWestHierarchicalLayout new) ]
+		painting: [ :mondrian | self paintProjectDependenciesWith: mondrian ]
 ]
 
 { #category : #ui }
@@ -305,6 +290,80 @@ GtRlProject >> name: aString [
 { #category : #accessing }
 GtRlProject >> packages [
 	^ packages
+]
+
+{ #category : #ui }
+GtRlProject >> paintProjectDependenciesSelectingRelationsThat: aTwoArgBlock labelledAs: anOneArgBlock with: mondrian [
+	| standardEdge projects |
+	standardEdge := BlBorder paint: Color veryVeryLightGray.
+	projects := Set new.
+	self
+		withDeep: [ :each | each childProjects ]
+		relationDo: [ :a :b | 
+			(aTwoArgBlock value: a value: b)
+				ifTrue: [ projects
+						add: a;
+						add: b ] ].
+	mondrian nodes
+		stencil: [ :aProject | 
+			| element |
+			element := BlTextElement new
+					text: (anOneArgBlock value: aProject) asRopedText glamorousRegularFont.
+			element
+				when: BlClickEvent
+					do: [ :e | 
+						e consumed: true.
+						element phlow
+							spawnTool: (GtClassCoderTool forClass: aProject baselineClass) ];
+				when: BlMouseEnterEvent
+					do: [ :anEvent | 
+						anEvent currentTarget graph connectedEdges incoming
+							do: [ :inner | 
+								inner element border: (BlBorder paint: Color blue muchLighter width: 5).
+								inner fromElement background: Color blue muchLighter ].
+						anEvent currentTarget graph connectedEdges outgoing
+							do: [ :inner | 
+								inner element border: (BlBorder paint: Color lightRed width: 5).
+								inner toElement background: Color lightRed ] ];
+				when: BlMouseLeaveEvent
+					do: [ :anEvent | 
+						anEvent currentTarget graph connectedEdges
+							do: [ :inner | 
+								inner element border: standardEdge.
+								inner fromElement background: Color transparent.
+								inner toElement background: Color transparent ] ] ];
+		with: projects.
+	mondrian edges
+		shape: [ BlManhattanLineElement new
+				zIndex: -1;
+				beFixedTo;
+				fixedDistance: 10;
+				cornerRadius: 10;
+				border: standardEdge;
+				toHead: (BlArrowheadSimpleArrow new
+						border: (BlBorder builder
+								paint: Color veryVeryLightGray;
+								width: 1;
+								build))	"BlLineElement new 
+						zIndex: -1;
+						border: (BlBorder paint: (Color gray alpha: 0.5) width: 2);
+						toHead: (BlArrowheadSimpleArrow new
+							border: (BlBorder builder paint: (Color gray alpha: 0.5); width: 2; build))" ];
+		fromRightCenter;
+		toLeftCenter;
+		connectToAll: #childProjects.
+	^ mondrian layout
+		custom: (GtGradHorizontalDominanceTreeLayout new
+				levelDistance: 10;
+				nodeDistance: 10)
+]
+
+{ #category : #ui }
+GtRlProject >> paintProjectDependenciesWith: mondrian [
+	self
+		paintProjectDependenciesSelectingRelationsThat: [ :a :b | true ]
+		labelledAs: [ :aProject | aProject name ]
+		with: mondrian
 ]
 
 { #category : #accessing }
