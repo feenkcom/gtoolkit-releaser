@@ -46,9 +46,11 @@ GtMetrics >> classesAndTraitsInProjects: aCollection [
 
 { #category : #accessing }
 GtMetrics >> famix3LinesOfCode [
-	^ famix3LinesOfCode ifNil: [ famix3LinesOfCode := (BaselineOfFamix3SmalltalkImporter version 
-	withDeepCollect: [ :each | each projects collect: #version ])
-		sumNumbers: [:each | each gtRPackages sumNumbers: #linesOfCode ] ]
+	^ famix3LinesOfCode
+		ifNil: [ famix3LinesOfCode := (BaselineOfFamix3SmalltalkImporter
+					withAllContainedProjects
+					flatCollect: [ :each | each packages collect: [ :p | p asRPackage ] ])
+					sumNumbers: #linesOfCode ]
 ]
 
 { #category : #'gt-extensions' }
@@ -215,9 +217,7 @@ GtMetrics >> gtMetricsFor: aView [
 { #category : #accessing }
 GtMetrics >> gtProjects [
 	| projects |
-	projects := {BaselineOfGToolkit} flatCollect: [:project | 
-			project version withDeepCollect: [ :each | 
-				each projects collect: #version ] as: Set ].
+	projects := BaselineOfGToolkit withAllContainedProjects.
 	self assert: projects notEmpty.
 	self assert: (projects noneSatisfy: #isNil).
 	^ projects
@@ -260,26 +260,39 @@ GtMetrics >> pharoToReplaceMethods [
 
 { #category : #accessing }
 GtMetrics >> pharoToReplaceProjects [
-	| projects |
-	projects :=  {
-		BaselineOfBasicTools . 
-		BaselineOfShout . 
-		BaselineOfCalypso . 
-		BaselineOfQA . 
-		BaselineOfOSWindow.
-		BaselineOfSpec2 } flatCollect: [:project | 
-			project version withDeepCollect: [ :each | 
-				each projects collect: #version ] as: Set ].
+	| projects baselines |
+	"Projects picked manually by inspecting BaselineOfIDE"
+	baselines := self
+			forPharo12: {BaselineOfBasicTools.
+					BaselineOfDrTests.
+					BaselineOfHeuristicCompletion.
+					BaselineOfShout.
+					BaselineOfCalypso.
+					BaselineOfWelcomeBrowser.
+					BaselineOfNewToolsDocumentBrowser.
+					BaselineOfQA.
+					BaselineOfOSWindow.
+					BaselineOfNewTools.
+					BaselineOfSpec2}
+			forPharo11AndPharo10: {BaselineOfBasicTools.
+					BaselineOfShout.
+					BaselineOfCalypso.
+					BaselineOfQA.
+					BaselineOfOSWindow.
+					BaselineOfSpec2}.
+	projects := baselines flatCollect: [ :class | class withAllContainedProjects ].
 	self assert: projects notEmpty.
 	self assert: (projects noneSatisfy: #isNil).
-	^ (projects \ {BaselineOfTraits version . BaselineOfUnifiedFFI version . BaselineOfReflectivity version}) \ self gtProjects
+	^ projects
+		\ (BaselineOfTraits withAllContainedProjects
+				, BaselineOfUnifiedFFI withAllContainedProjects
+				, BaselineOfReflectivity withAllContainedProjects) \ self gtProjects
 ]
 
 { #category : #accessing }
 GtMetrics >> smaccParserPackages [
-	^ ((BaselineOfSmaCC project version
-		withDeepCollect: [ :each | each projects collect: #version ]
-		as: Set) flatCollect: #gtRPackages)
+	^ (BaselineOfSmaCC withAllContainedProjects
+		flatCollect: [ :each | each packages collect: [ :p | p asRPackage ] ])
 		select: [ :each | 
 			({'SmaCC_Grammar_Parser'.
 				'SmaCC_Debugging_Support'.
@@ -301,6 +314,8 @@ GtMetrics >> totalLinesOfCode [
 
 { #category : #accessing }
 GtMetrics >> xmlSupportLinesOfCode [
-	^ xmlSupportLinesOfCode ifNil: [ xmlSupportLinesOfCode := (BaselineOfGToolkit4XMLSupport version withDeepCollect: [ :each | each projects collect: #version ])
-		sumNumbers: [:each | each gtRPackages sumNumbers: #linesOfCode ]. ]
+	^ xmlSupportLinesOfCode
+		ifNil: [ xmlSupportLinesOfCode := (BaselineOfGToolkit4XMLSupport withAllContainedProjects
+					flatCollect: [ :each | each packages collect: [ :p | p asRPackage ] ])
+					sumNumbers: #linesOfCode ]
 ]
