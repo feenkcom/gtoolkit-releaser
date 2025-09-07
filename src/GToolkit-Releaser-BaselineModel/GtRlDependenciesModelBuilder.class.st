@@ -210,16 +210,21 @@ GtRlDependenciesModelBuilder >> updateProjectDependenciesFor: currentProject fro
 	projectReferences := (aMetacelloVersion projects
 			select: [ :aMetacelloProjectSpec | 
 				| targetVersion shouldKeep |
-				targetVersion := self 
-					forPharo12: [(aMetacelloProjectSpec className
-						asClassInEnvironment: self class environment) 
-							project versions first] 
-					forPharo11AndPharo10: [ aMetacelloProjectSpec version ].
-				shouldKeep := targetVersion notNil
-					and: [ targetVersion name = 'baseline' ].
-					
-				shouldKeep ifFalse: [ StringSignal
-					emit: ('Ignoring dependency ' , aMetacelloProjectSpec className , ' of ', currentProject name) ].
+				targetVersion := self
+						forPharo12: [ | class |
+							class := aMetacelloProjectSpec className
+									asClassInEnvironment: self class environment
+									ifAbsent: [ nil ].
+							"we check here in case we have a BaselineOfX reference for which the class is not yet in the image"
+							class
+								ifNotNil: [  :c | c project versions first ] ]
+						forPharo11AndPharo10: [ aMetacelloProjectSpec version ].
+				shouldKeep := targetVersion notNil and: [ targetVersion name = 'baseline' ].
+
+				shouldKeep
+					ifFalse: [ StringSignal
+							emit: 'Ignoring dependency ' , aMetacelloProjectSpec className , ' of '
+									, currentProject name ].
 				shouldKeep ])
 			collect: [ :aMCProjectSpec | 
 				| referencedProject |
