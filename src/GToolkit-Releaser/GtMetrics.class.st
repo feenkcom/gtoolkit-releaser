@@ -263,7 +263,7 @@ GtMetrics >> pharoToReplaceProjects [
 	| projects baselines |
 	"Projects picked manually by inspecting BaselineOfIDE"
 	baselines := self
-			forPharo12: {BaselineOfBasicTools.
+			forPharo12AndNewer: {BaselineOfBasicTools.
 					BaselineOfDrTests.
 					BaselineOfHeuristicCompletion.
 					BaselineOfShout.
@@ -274,7 +274,7 @@ GtMetrics >> pharoToReplaceProjects [
 					BaselineOfOSWindow.
 					BaselineOfNewTools.
 					BaselineOfSpec2}
-			forPharo11AndPharo10: {BaselineOfBasicTools.
+			forPharo11: {BaselineOfBasicTools.
 					BaselineOfShout.
 					BaselineOfCalypso.
 					BaselineOfQA.

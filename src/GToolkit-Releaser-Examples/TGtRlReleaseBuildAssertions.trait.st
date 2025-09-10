@@ -1,6 +1,6 @@
 Trait {
 	#name : #TGtRlReleaseBuildAssertions,
-	#category : 'GToolkit-Releaser-Examples'
+	#category : #'GToolkit-Releaser-Examples'
 }
 
 { #category : #asserting }
