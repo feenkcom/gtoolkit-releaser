@@ -52,7 +52,7 @@ GtRlChecksRunner class >> dedicatedReleaseBranchExamplesFactory [
 	allPackageNames := packages collect: [ :aPackage | aPackage name ].
 	allPackageNames := allPackageNames difference: self defaultSkippedPackageNames.
 
-	allPackageNames := allPackageNames first: 100.
+	"allPackageNames := allPackageNames first: 100."
 
 	examples := allPackageNames flatCollect: [ :pName | 
 		(self class packageOrganizer packageNamed: pName) gtExamplesAllContained ].
