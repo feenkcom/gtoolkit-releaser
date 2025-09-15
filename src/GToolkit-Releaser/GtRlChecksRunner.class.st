@@ -59,7 +59,7 @@ GtRlChecksRunner class >> dedicatedReleaseBranchExamplesFactory [
 
 	factory := GtRrChecksFactory new.
 	factory addExampleTestNames: 
-		(examples collect: [ :each | each providerClass name -> each selector ]).
+		(examples collect: [ :each | each providerClass name asSymbol -> each selector asSymbol ]).
 	^ factory
 ]
 
@@ -73,6 +73,133 @@ GtRlChecksRunner class >> defaultSkippedPackageNames [
 	'PythonBridge-Pharo'
 	'GToolkit-Pharo-Coder-Examples'
 	)
+]
+
+{ #category : #accessing }
+GtRlChecksRunner class >> knownErrors [
+
+	^ {
+	#GtRlLeafRepositoryReleaseExamples -> #releaseWithBranchStrategyOnOneVersionRepo.
+	#GtRlLeafRepositoryReleaseExamples -> #releaseWorkflowWithDedicatedBranchForSecondVersion.
+	#GtRlLeafRepositoryReleaseExamples -> #basicReleaseStructureWithExistingTag.
+	#GtRlLeafRepositoryReleaseExamples -> #projectStructureWithThreeDependencies.
+	#GtRlLeafRepositoryReleaseExamples -> #projectWithOneReleasedVersionAndChanges.
+	#GtRlLeafRepositoryReleaseExamples -> #projectBWithNoVersion.
+	#GtRlLeafRepositoryReleaseExamples -> #releaseWithLoadedTagStrategyOnSingleRepoUsingConfig.
+	#GtRlLeafRepositoryReleaseExamples -> #projectWithOneReleasedVersionAndNewCommit.
+	#GtRlLeafRepositoryReleaseExamples -> #projectAWithNoVersion.
+	#GtRlLeafRepositoryReleaseExamples -> #releaseWithBranchStrategyOnNoVersionRepo.
+	#LeSnippetStateExtractorExamples -> #extractCommonStateForAllSnippetTypes.
+	#GtRlLeafRepositoryReleaseExamples -> #releaseWorkflowWithDedicatedBranchForInitialVersion.
+	#GtRlLeafRepositoryReleaseExamples -> #printBaselineCodeReleaseForFourRepositoriesWithNewCommit.
+	#GtRlLeafRepositoryReleaseExamples -> #releaseWithBranchStrategyForcingReleaseOnOneVersionRepo.
+	#GtRlLeafRepositoryReleaseExamples -> #projectStructureWithOneChildDependency.
+	#GtRlLeafRepositoryReleaseExamples -> #projectWithOneReleasedVersionAndNoChanges.
+	#GtRlLeafRepositoryReleaseExamples -> #releaseWithLoadedTagStrategyOnSingleRepo.
+	#GtRlLeafRepositoryReleaseExamples -> #releaseWorkflowWithLatestCommitForInitialVersion.
+	#GtRlLeafRepositoryReleaseExamples -> #basicReleaseStructureWithNoVersions.
+	#GtRlLeafRepositoryReleaseExamples -> #releaseWorkflowWithLoadedTagForSingleRepoUsingConfig.
+	#GtRlLeafRepositoryReleaseExamples -> #basicReleaseWithBranchStrategyOnNoVersionsRepo.
+	#GtRlLeafRepositoryReleaseExamples -> #releaseWithBranchStrategyOnOneVersionRepoWithNewCommit.
+	#GtRlLeafRepositoryReleaseExamples -> #releaseWorkflowWithLoadedTagForSingleRepo.
+	#GtRlLeafRepositoryReleaseExamples -> #basicReleaseWithLatestCommitStrategyOnNoVersionRepo.
+	#GtRlLeafRepositoryReleaseExamples -> #releaseWithLatestCommitStrategyOnNoVersionRepo.
+	#GtRlLeafRepositoryReleaseExamples -> #projectWithTagAndNoVersion.
+	#LeSnippetStateExtractorExamples -> #extractCommonStateForAllEmptySnippetTypes.
+	#LeSnippetStateExtractorExamples -> #extractSpecificStateForAllEmptySnippetTypes.
+	#GtRlDedicatedBranchRootReleaseExamples -> #projectWithOneReleasedVersionAndChanges.
+	#GtRlDedicatedBranchRootReleaseExamples -> #releaseWithHeadCommitChildRepositoryWithNoChange.
+	#GtRlDedicatedBranchRootReleaseExamples -> #projectWithOneReleasedVersionAndNoChanges.
+	#GtRlDedicatedBranchRootReleaseExamples -> #releaseWithHeadCommitChildRepository.
+	#GtRlDedicatedBranchRootReleaseExamples -> #projectWithTagAndNoVersion.
+	#GtRlDedicatedBranchRootReleaseExamples -> #projectAWithNoVersion.
+	#GtRlDedicatedBranchRootReleaseExamples -> #projectWithOneReleasedVersionAndNewCommit.
+	#GtRlDedicatedBranchRootReleaseExamples -> #releaseWorkflowForHeadCommitChild.
+	#GtRlDedicatedBranchRootReleaseExamples -> #projectBWithNoVersion.
+	#GtRlDedicatedBranchRootReleaseExamples -> #printMetacelloBaselineCodeReleaseForFourRepositoriesWithNewCommit.
+	#GtRlDedicatedBranchRootReleaseExamples -> #releaseWorkflowForMultipleRepositoriesWithNewCommit.
+	#GtRlDedicatedBranchRootReleaseExamples -> #printBaselineCodereleaseForFourRepositoriesWithNoVersionAndNoNewChanges.
+	#GtRlDedicatedBranchRootReleaseExamples -> #projectStructureWithThreeDependencies.
+	#GtRlDedicatedBranchRootReleaseExamples -> #releaseForFourRepositoriesWithNewCommit.
+	#GtRlDedicatedBranchRootReleaseExamples -> #releaseWorkflowForInitialVersionInMultipleRepositories.
+	#GtRlDedicatedBranchRootReleaseExamples -> #projectStructureWithOneChildDependency.
+	#GtRlDedicatedBranchRootReleaseExamples -> #releaseForFourRepositoriesWithNoVersionAndNoNewChanges.
+	#GtRlDedicatedBranchRootReleaseExamples -> #printBaselineCodeReleaseForFourRepositoriesWithNewCommit.
+	#GtRlDedicatedBranchRootReleaseExamples -> #printBaselineCodeReleaseWithHeadCommitChildRepository.
+	#GtRlDedicatedBranchRootReleaseExamples -> #releaseWithHeadCommitChildRepositoryWithNewCommit.
+	#GtRlDedicatedBranchRootReleaseExamples -> #releaseWorkflowForHeadCommitChildWithNewCommit.
+	#GtGitElementExamples -> #scripterOnExpandedElementWithDeletedRepository.
+	#GtGitElementExamples -> #scripterOnExpandedElementWithInitializationDone.
+	#GtGitElementExamples -> #scripterOnExpandedElementWithExpandedProperties.
+	#GtGitElementExamples -> #scripterOnExpandedElementWithEditedBranch.
+	#LeJsonV4SerialisationExamples -> #deSerializeAllImplementors.
+	#GtRlReleaserExamples -> #projectBWithNoVersion.
+	#GtRlReleaserExamples -> #projectWithOneReleasedVersionAndNewCommit.
+	#GtRlReleaserExamples -> #projectAWithNoVersion.
+	#GtRlReleaserExamples -> #projectWithTagAndNoVersion.
+	#GtRlReleaserExamples -> #projectStructureWithOneChildDependency.
+	#GtRlReleaserExamples -> #projectWithOneReleasedVersionAndChanges.
+	#GtRlReleaserExamples -> #projectStructureWithThreeDependencies.
+	#GtRlReleaserExamples -> #projectWithOneReleasedVersionAndNoChanges.
+	#GtRlLeafRepositoryReleaseExamples -> #releaseWorkflowWithDedicatedBranchForSecondForcedVersion.
+	#GtRlLeafRepositoryReleaseExamples -> #basicReleaseWithLoadedTagStrategyOnSingleRepo.
+	}
+]
+
+{ #category : #accessing }
+GtRlChecksRunner class >> knownFailures [
+
+	^ {
+	#GtInspectorScripterExamples -> #stackMachineV1WithCodeEvaluated.
+	#GtWardleyMapDecoratorWithScripterExamples -> #mapWithLepiterPageAction_ClickOnMapCanvasDecorator.
+	#LeDatabaseByScripterExamples -> #scripterWithLinkClicked.
+	#GtWorldByScripterExamples -> #executeInspectorPlaygroundSnippetInTheThirdPage.
+	#GtWorldByScripterExamples -> #worldSpotter_ResizeVertically.
+	#GtWorldByScripterExamples -> #executePlaygroundSnippet.
+	#GtWorldByScripterExamples -> #clickBackOnPlaygroundInTheFirstPane.
+	#GtWorldByScripterExamples -> #displayClassHierarchyDropdownInSecondPane_SelectAnotherClass.
+	#GtWorldByScripterExamples -> #browsePackageInSecondPane.
+	#GtWorldByScripterExamples -> #displayClassHierarchyDropdownInSecondPane.
+	#GtWorldByScripterExamples -> #worldSpotter_ResizeVertically_ClosePressingEscape.
+	#GtWorldByScripterExamples -> #worldSpotter_ResizeVertically_ClosePressingEscape_ResizeSecondTime.
+	#GtWorldByScripterExamples -> #displayRustObjectDefiningMethodContextMenu.
+	#GtWorldByScripterExamples -> #clickOnInspectorInTheSecondPane.
+	#GtWorldByScripterExamples -> #typeSnippetInPlayground.
+	#GtWorldByScripterExamples -> #clickOnPackageEditableNameInSecondPane.
+	#GtWorldByScripterExamples -> #displayClassHierarchyDropdownInSecondPane_SelectAnotherClass_closePinnedMenu.
+	#GtWorldByScripterExamples -> #displayRustObjectDefiningMethodContextMenu_hoverDefiningMethod.
+	#GtWorldByScripterExamples -> #createInstanceTwiceDisplayingTheSecondTab.
+	#GtWorldByScripterExamples -> #cannotClickOnCoderIssue.
+	#GtWorldByScripterExamples -> #clickAgainOnPackageEditableNameInTheFirstPane.
+	#GtWorldByScripterExamples -> #selectClassInSecondPane.
+	#GtWorldByScripterExamples -> #displayRustObjectDefiningMethodContextMenu_inspectDefiningMethod.
+	#GtWorldByScripterExamples -> #inspectRustRemoteObject.
+	}
+]
+
+{ #category : #'instance creation' }
+GtRlChecksRunner class >> preCommitExamples [
+	"Run the dedicated release branch examples, 
+	minus checks that are known to fail in this environment,
+	but should still pass in the CI."
+
+	^ self checksFactory: self preCommitExamplesFactory.
+]
+
+{ #category : #'instance creation' }
+GtRlChecksRunner class >> preCommitExamplesFactory [
+	| factory tasks task checkNames |
+
+	factory := self dedicatedReleaseBranchExamplesFactory.
+	tasks := factory tasks.
+	self assert: tasks size equals: 1.
+	task := tasks first.
+	checkNames := task checkNames asOrderedCollection.
+	checkNames
+		removeAll: self knownFailures;
+		removeAll: self knownErrors.
+	task checkNames: checkNames asArray.
+	^ factory.
 ]
 
 { #category : #'instance creation' }
@@ -112,11 +239,27 @@ GtRlChecksRunner >> critical: aBlock [
 ]
 
 { #category : #accessing }
+GtRlChecksRunner >> errorNames [
+	"Answer a collection of check names that errored in the last run"
+
+	^ self errorResults collect: [ :each |
+		each checkName ]
+]
+
+{ #category : #accessing }
 GtRlChecksRunner >> errorResults [
 
 	^ self critical:
 		[ (checkFailures collect: #last as: Array)
 			select: [ :each | each isError ] ].
+]
+
+{ #category : #accessing }
+GtRlChecksRunner >> failureNames [
+	"Answer a collection of check names that failed in the last run"
+
+	^ self failureResults collect: [ :each |
+		each checkName ]
 ]
 
 { #category : #accessing }
