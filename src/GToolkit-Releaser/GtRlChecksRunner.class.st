@@ -132,7 +132,6 @@ GtRlChecksRunner class >> knownErrors [
 	#GtGitElementExamples -> #scripterOnExpandedElementWithInitializationDone.
 	#GtGitElementExamples -> #scripterOnExpandedElementWithExpandedProperties.
 	#GtGitElementExamples -> #scripterOnExpandedElementWithEditedBranch.
-	#LeJsonV4SerialisationExamples -> #deSerializeAllImplementors.
 	#GtRlReleaserExamples -> #projectBWithNoVersion.
 	#GtRlReleaserExamples -> #projectWithOneReleasedVersionAndNewCommit.
 	#GtRlReleaserExamples -> #projectAWithNoVersion.
