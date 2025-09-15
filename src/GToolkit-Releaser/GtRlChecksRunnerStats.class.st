@@ -229,10 +229,11 @@ GtRlChecksRunnerStats >> unsubscribe: anObject [
 GtRlChecksRunnerStats >> updateInImage: aTaskFinishedAnnouncement [
 	| task |
 
-		task := aTaskFinishedAnnouncement task.
-		task result do: [ :result | | shortName |
-			shortName := result shortName.
-			shortName = #pass ifTrue: [ self incrementInImagePassed ] ].
+	task := aTaskFinishedAnnouncement task.
+	task result do: [ :result | | shortName |
+		shortName := result shortName.
+		shortName = #pass ifTrue: [ self incrementInImagePassed ] ].
+	self notifyUpdate.
 ]
 
 { #category : #'as yet unclassified' }
@@ -253,11 +254,12 @@ GtRlChecksRunnerStats >> updateUiProcess: aTaskFinishedAnnouncement [
 GtRlChecksRunnerStats >> updateWorker: aTaskFinishedAnnouncement [
 	| task |
 
-		task := aTaskFinishedAnnouncement task.
-		task result do: [ :result | | shortName |
-			shortName := result shortName.
-			shortName = #pass ifTrue: [ self incrementWorkerPassed ].
-			shortName = #skip ifTrue: [ self incrementSkipped ] ].
+	task := aTaskFinishedAnnouncement task.
+	task result do: [ :result | | shortName |
+		shortName := result shortName.
+		shortName = #pass ifTrue: [ self incrementWorkerPassed ].
+		shortName = #skip ifTrue: [ self incrementSkipped ] ].
+	self notifyUpdate.
 ]
 
 { #category : #accessing }
