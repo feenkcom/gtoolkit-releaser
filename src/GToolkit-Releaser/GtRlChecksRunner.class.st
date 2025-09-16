@@ -426,6 +426,28 @@ GtRlChecksRunner >> jobCompleted: aJobCompletedAnnouncement [
 ]
 
 { #category : #private }
+GtRlChecksRunner >> loadSchedulingTimes [
+	"Load the times used to sequence the checks"
+	| timesOrigin timesDir timesFile |
+
+	"Different platforms support a different subset of the known origins.
+	Find one that is available, and will be the same across images (on that platform)."
+	timesOrigin := #(userData preferences imageDirectory) detect:[ :origin |
+		(FileLocator supportedOrigins includes: origin) and:
+		[ (FileLocator origin: origin) isDirectory ] ].
+	timesDir := (FileLocator origin: timesOrigin) / 'Gt'.
+	timesDir ensureCreateDirectory.
+	timesFile := timesDir / 'GtRrCheckSchedulingTimes.json'.
+	times := timesFile exists ifTrue:
+		[ GtRrCheckSchedulingTimes
+			loadDefaultFromFile: timesFile
+			runner: workerRunner ]
+	ifFalse:
+		[ GtRrCheckSchedulingTimes new
+			remoteRunner: workerRunner ]
+]
+
+{ #category : #private }
 GtRlChecksRunner >> queueInImage: anAssociation timeout: taskTimeout [
 	| task job |
 
@@ -540,9 +562,7 @@ GtRlChecksRunner >> startRunners [
 	inImageRunner managerStartupAndShutdown
 		poolSize: 0;
 		startInImageWorker.
-	times := GtRrCheckSchedulingTimes
-			loadDefaultFromFile: FileLocator userData / 'Gt' / 'GtRrCheckSchedulingTimes.json'
-			runner: workerRunner.
+	self loadSchedulingTimes
 ]
 
 { #category : #'as yet unclassified' }
