@@ -286,7 +286,7 @@ GtRlChecksRunner >> finishUp [
 	stats
 		state: #finished;
 		endTime: DateAndTime now.
-	self updateCheckTimes.
+	self updateSchedulingTimes.
 	self stopRunners.
 ]
 
@@ -428,16 +428,9 @@ GtRlChecksRunner >> jobCompleted: aJobCompletedAnnouncement [
 { #category : #private }
 GtRlChecksRunner >> loadSchedulingTimes [
 	"Load the times used to sequence the checks"
-	| timesOrigin timesDir timesFile |
+	| timesFile |
 
-	"Different platforms support a different subset of the known origins.
-	Find one that is available, and will be the same across images (on that platform)."
-	timesOrigin := #(userData preferences imageDirectory) detect:[ :origin |
-		(FileLocator supportedOrigins includes: origin) and:
-		[ (FileLocator origin: origin) isDirectory ] ].
-	timesDir := (FileLocator origin: timesOrigin) / 'Gt'.
-	timesDir ensureCreateDirectory.
-	timesFile := timesDir / 'GtRrCheckSchedulingTimes.json'.
+	timesFile := self schedulingTimesFile.
 	times := timesFile exists ifTrue:
 		[ GtRrCheckSchedulingTimes
 			loadDefaultFromFile: timesFile
@@ -525,6 +518,21 @@ GtRlChecksRunner >> runTaskFailures: aTaskFinishedAnnouncement [
 							lf.
 						 ] ] ] ] ]
 	forkNamed: self class name asString, ' runTaskFailures'.
+]
+
+{ #category : #private }
+GtRlChecksRunner >> schedulingTimesFile [
+	"Answer the file used to store scheduling (check) times"
+	| timesOrigin timesDir |
+
+	"Different platforms support a different subset of the known origins.
+	Find one that is available, and will be the same across images (on that platform)."
+	timesOrigin := #(userData preferences imageDirectory) detect:[ :origin |
+		(FileLocator supportedOrigins includes: origin) and:
+		[ (FileLocator origin: origin) isDirectory ] ].
+	timesDir := (FileLocator origin: timesOrigin) / 'Gt'.
+	timesDir ensureCreateDirectory.
+	^ timesDir / 'GtRrCheckSchedulingTimes.json'.
 ]
 
 { #category : #private }
@@ -666,10 +674,10 @@ GtRlChecksRunner >> uiProcessTaskCompleted: aTaskFinishedAnnouncement [
 ]
 
 { #category : #private }
-GtRlChecksRunner >> updateCheckTimes [
+GtRlChecksRunner >> updateSchedulingTimes [
 
 	GtRrCheckSchedulingTimes default saveToFile: 
-		FileLocator userData / 'Gt' / 'GtRrCheckSchedulingTimes.json'.
+		self schedulingTimesFile
 ]
 
 { #category : #accessing }
