@@ -309,7 +309,7 @@ GtImage >> gtExtensionsFor: aView [
 			classPragmas := #gtClassView gtPragmas.
 			spotterPragmas := GtSpotter extensionsPragma gtPragmas.
 			coderAddOnsPragmas := GtCoderModel astExtensionsPragma gtPragmas.
-			coderContextMenuPragmas := GtCoderModel contextMenuAddOnsPragma gtPragmas.
+			coderContextMenuPragmas := GtCoderModel contextMenuAddOnsPragma gtPragmas | GtCoderModel contextMenuAddOnsPragma gtAsReader gtPragmas.
 			actionPragmas := #gtAction gtPragmas.
 			classActionPragmas := #gtClassAction gtPragmas.
 			advicePragmas := #gtAdvice gtPragmas.
