@@ -66,7 +66,7 @@ GtRlReleaseAction >> gtActionExecuteFor: anAction [
 	<gtAction>
 	self isExecuted ifTrue: [ ^ anAction ].
 	^ anAction button
-			icon: BrGlamorousIcons go asElement;
+			icon: BrGlamorousVectorIcons play;
 			label: 'Execute action';
 			action: [ self execute ]
 ]
