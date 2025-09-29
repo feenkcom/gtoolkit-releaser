@@ -335,7 +335,7 @@ GtRlChecksRunner >> gtRunInImageSuccessesFor: aView [
 	^ aView list
 		title: 'Run In-Image';
 		priority: 31;
-		items: [ self successfulRunInImageResults ];
+		items: [ self successfulUiResults ];
 		actionUpdateButton
 ]
 
@@ -411,7 +411,8 @@ GtRlChecksRunner >> initialize [
 	checkResults := Dictionary new.
 	checkFailures := Dictionary new.
 	checkSkips := Dictionary new.
-	stats := GtRlChecksRunnerStats new.
+	stats := GtRlChecksRunnerStats new
+		rlRunner: self.
 ]
 
 { #category : #private }
@@ -447,6 +448,7 @@ GtRlChecksRunner >> queueInImage: anAssociation timeout: taskTimeout [
 	task := GtRrExplicitExampleTask exampleNames: { anAssociation }.
 	task taskTimeout: taskTimeout.
 	job := task asJob.
+	job name: 'In-image job'.
 	job
 		when: GtRrTaskCompletedAnnouncement
 		send: #inImageTaskCompleted:
@@ -468,8 +470,11 @@ GtRlChecksRunner >> runInImageTasks [
 
 	^ self completedTasks select: [ :task |
 		task workerAttributes
-			at: #runInImage
-			ifAbsent: [ false ] ]
+			ifNil: [ false ]
+			ifNotNil: [ :attrs |
+				attrs
+					at: #runInImage
+					ifAbsent: [ false ] ] ]
 ]
 
 { #category : #private }
@@ -484,7 +489,9 @@ GtRlChecksRunner >> runTaskFailures: aTaskFinishedAnnouncement [
 				[ | newTask job |
 				newTask := task copy.
 				job := newTask asJob.
-				job taskTimeout: jobs first taskTimeout.
+				job 
+					taskTimeout: jobs first taskTimeout;
+					name: 'UI job'.
 				jobs add: job.
 				job
 					when: GtRrTaskCompletedAnnouncement
@@ -540,6 +547,7 @@ GtRlChecksRunner >> startInitialJob: aGtRrChecksJob [
 
 	enqueueSubmitCount := 0.
 	enqueueRunCount := 0.
+	aGtRrChecksJob name: 'Initial Job'.
 	self critical:
 		[ stats 
 			state: #running;
@@ -617,9 +625,8 @@ GtRlChecksRunner >> storeTaskResults: aTaskFinishedAnnouncement [
 	self critical:
 		[ | task |
 		task := aTaskFinishedAnnouncement task.
-		task result do: [ :result |
-			self storeCheckResult: result.
-			taskResults add: aTaskFinishedAnnouncement ] ].
+		taskResults add: aTaskFinishedAnnouncement.
+		task result do: [ :result | self storeCheckResult: result ] ].
 ]
 
 { #category : #private }
@@ -634,14 +641,14 @@ GtRlChecksRunner >> submitRetries: aTaskFinishedAnnouncement [
 ]
 
 { #category : #accessing }
-GtRlChecksRunner >> successfulRunInImageResults [
+GtRlChecksRunner >> successfulUiResults [
 
-	^ self successfulRunInImageTasks flatCollect: [ :task |
+	^ self successfulUiTasks flatCollect: [ :task |
 		task result select: #isSuccess ]
 ]
 
 { #category : #accessing }
-GtRlChecksRunner >> successfulRunInImageTasks [
+GtRlChecksRunner >> successfulUiTasks [
 
 	^ self runInImageTasks select: [ :task |
 		task hasResult and: [ task result anySatisfy: #isSuccess ] ]
@@ -684,7 +691,10 @@ GtRlChecksRunner >> updateSchedulingTimes [
 GtRlChecksRunner >> workerInImageTasks [
 
 	^ self completedTasks select: [ :task |
-		task workerAttributes
-			at: #workerInImage
-			ifAbsent: [ false ] ]
+		task workerAttributes 
+			ifNil: [ false ]
+			ifNotNil: [ :attrs |
+				attrs
+					at: #workerInImage
+					ifAbsent: [ false ] ] ]
 ]
