@@ -13,7 +13,8 @@ Class {
 		'warning',
 		'startTime',
 		'endTime',
-		'announcer'
+		'announcer',
+		'rlRunner'
 	],
 	#category : #'GToolkit-Releaser'
 }
@@ -69,7 +70,7 @@ GtRlChecksRunnerStats >> gtSummaryFor: aView [
 		  items: [ self summaryAttributes ];
 		  column: #Attribute text: [ :item | item first ];
 		  column: #Value text: [ :item | item second ];
-		  send: [ :item | item last ];
+		  send: [ :item | item last value ];
 		  updateWhen: GtRlChecksRunnerUpdateAnnouncement in: announcer;
 		  actionUpdateButton
 ]
@@ -157,6 +158,16 @@ GtRlChecksRunnerStats >> removeSubscription: subscription [
 ]
 
 { #category : #accessing }
+GtRlChecksRunnerStats >> rlRunner [
+	^ rlRunner
+]
+
+{ #category : #accessing }
+GtRlChecksRunnerStats >> rlRunner: anObject [
+	rlRunner := anObject
+]
+
+{ #category : #accessing }
 GtRlChecksRunnerStats >> skipped [
 	^ skipped
 ]
@@ -192,10 +203,18 @@ GtRlChecksRunnerStats >> summaryAttributes [
 		{ 'End Time'. endTime. }.
 		{ 'Duration'. self duration. }.
 		{ 'Worker Passed'. workerPassed. }.
-		{ 'InImage Passed'. inImagePassed. }.
-		{ 'UI Process Passed'. uiProcessPassed. }.
-		{ 'Failure'. failure. }.
-		{ 'Error'. error. }.
+		{ 'InImage Passed'. inImagePassed. [ rlRunner successfulWorkerInImageResults ]. }.
+		{ 'UI Process Passed'. uiProcessPassed. [ rlRunner successfulUiResults ]. }.
+		{ 'Failure'. 
+			failure > 0
+				ifTrue: [ failure asString asRopedText foreground: BrGlamorousColors failureBackgroundColor ]
+				ifFalse: [ failure ].
+			[ rlRunner failureResults ]. }.
+		{ 'Error'. 
+			error > 0
+				ifTrue: [ error asString asRopedText foreground: BrGlamorousColors errorBackgroundColor ]
+				ifFalse: [ error ].
+			[ rlRunner errorResults ]. }.
 		{ 'Skipped'. skipped. }.
 		{ 'Warning'. warning. }.
 		{ 'Not Counted'. self notCounted. }.
