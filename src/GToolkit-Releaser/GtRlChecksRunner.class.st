@@ -71,7 +71,6 @@ GtRlChecksRunner class >> defaultSkippedPackageNames [
 	'Sparta-Skia' 
 	'GToolkit-RemoteExamples-GemStone' 
 	'PythonBridge-Pharo'
-	'GToolkit-Pharo-Coder-Examples'
 	)
 ]
 
