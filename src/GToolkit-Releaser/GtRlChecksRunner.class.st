@@ -575,7 +575,10 @@ GtRlChecksRunner >> startRunners [
 	workerRunner := GtRemoteRunner new.
 	workerRunner
 		managerStartupAndShutdown: GtRrLocalManagerStartupAndShutdown new;
-		startLogging;
+		startLogging.
+	workerRunner managerStartupAndShutdown workerManager
+		addVmArguments: #('--print-stack-on-signals').
+	workerRunner
 		start.
 
 	inImageRunner := GtRemoteRunner new.
