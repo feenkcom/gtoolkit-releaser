@@ -28,7 +28,7 @@ GtRlDedicatedBranchRootReleaseExamples >> baselineCodeReleaseForFourRepositories
 	]' format: {
 		self realNameForProjectName: 'RepositoryWithNoVersionA'.
 		self realNameForProjectName: 'RepositoryWithTagAndNoVersion'.
-		self realNameForProjectName: 'ProjectWithReleasedVersionAndNoChanges'
+		self realNameForProjectName: 'PrWithReleasedVerAndNoChanges'
 	}
 	
 ]
@@ -50,7 +50,7 @@ GtRlDedicatedBranchRootReleaseExamples >> baselineCodeReleaseForFourRepositories
 	]' format: {
 		self realNameForProjectName: 'RepositoryWithNoVersionA'.
 		self realNameForProjectName: 'RepositoryWithTagAndNoVersion'.
-		self realNameForProjectName: 'ProjectWithReleasedVersionAndNoChanges'.
+		self realNameForProjectName: 'PrWithReleasedVerAndNoChanges'.
 	}
 	
 ]
@@ -84,7 +84,7 @@ GtRlDedicatedBranchRootReleaseExamples >> baselineMetacelloCodeReleaseForFourRep
 ' format: {
 	self realNameForProjectName: 'RepositoryWithNoVersionA'.
 	self realNameForProjectName: 'RepositoryWithTagAndNoVersion'.
-	self realNameForProjectName: 'ProjectWithReleasedVersionAndNoChanges'.
+	self realNameForProjectName: 'PrWithReleasedVerAndNoChanges'.
 }
 ]
 

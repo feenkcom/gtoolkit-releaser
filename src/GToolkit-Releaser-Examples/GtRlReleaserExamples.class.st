@@ -316,7 +316,7 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndChanges [
 	<after: #removeRepositoriesAndCode>
 	<return: #AssertionFailure>
 	| project semanticTags icebergRepository projectName |
-	projectName := self randomizeProjectName: 'ProjectWithReleasedVersionAndChanges'.
+	projectName := self randomizeProjectName: 'PrWithReleasedVerAndChanges'.
 	project := self createSingleProjectWithName: projectName.
 	icebergRepository := project repository icebergRepository.
 	self releaseNewVersionForProject: project.	"checkout ends up with MCPackageLoader>>basicLoad which may flush changes file"
@@ -344,7 +344,7 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndNewCommit [
 	<after: #removeRepositoriesAndCode>
 	<return: #RPackageConflictError>
 	| project semanticTags icebergRepository projectName |
-	projectName := self randomizeProjectName: 'ProjectWithReleasedVersionAndNewCommit'.
+	projectName := self randomizeProjectName: 'PrWithReleasedVerAndNewCommit'.
 	project := self createSingleProjectWithName: projectName.
 	icebergRepository := project repository icebergRepository.
 	self releaseNewVersionForProject: project.
@@ -368,7 +368,7 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndNoChanges [
 	<after: #removeRepositoriesAndCode>
 	<return: #RPackageConflictError>
 	| project releaseWorkflow semanticTags projectName |
-	projectName := self randomizeProjectName: 'ProjectWithReleasedVersionAndNoChanges'.
+	projectName := self randomizeProjectName: 'PrWithReleasedVerAndNoChanges'.
 	project := self createSingleProjectWithName: projectName.
 	releaseWorkflow := GtRlReleaserExportWorkflow
 			forProject: project
