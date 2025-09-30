@@ -71,7 +71,6 @@ GtRlChecksRunner class >> defaultSkippedPackageNames [
 	'Sparta-Skia' 
 	'GToolkit-RemoteExamples-GemStone' 
 	'PythonBridge-Pharo'
-	'GToolkit-Pharo-Coder-Examples'
 	)
 ]
 
@@ -570,14 +569,23 @@ GtRlChecksRunner >> startInitialJob: aGtRrChecksJob [
 
 { #category : #private }
 GtRlChecksRunner >> startRunners [
+	"Start the headless and in-image runners and workers"
+
+	"Headless workers sync changes, but not ongoing code sync"
 	workerRunner := GtRemoteRunner new.
 	workerRunner
-		startLogging;
+		managerStartupAndShutdown: GtRrLocalManagerStartupAndShutdown new;
+		startLogging.
+	workerRunner managerStartupAndShutdown workerManager
+		addVmArguments: #('--print-stack-on-signals').
+	workerRunner
 		start.
+
 	inImageRunner := GtRemoteRunner new.
 	inImageRunner managerStartupAndShutdown
 		poolSize: 0;
 		startInImageWorker.
+
 	self loadSchedulingTimes
 ]
 
