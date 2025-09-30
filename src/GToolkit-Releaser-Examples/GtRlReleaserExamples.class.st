@@ -4,7 +4,8 @@ Class {
 	#traits : 'TGtRlReleaseBuildAssertions',
 	#classTraits : 'TGtRlReleaseBuildAssertions classTrait',
 	#instVars : [
-		'repositories'
+		'repositories',
+		'repositoryDirectoryName'
 	],
 	#category : #'GToolkit-Releaser-Examples'
 }
@@ -481,7 +482,13 @@ GtRlReleaserExamples >> repositories [
 
 { #category : #'creation repositories' }
 GtRlReleaserExamples >> repositoryDirectory [
-	^ FileLocator localDirectory / #'gtoolkit-releaser'
+	^ FileLocator localDirectory / self repositoryDirectoryName
+]
+
+{ #category : #'creation repositories' }
+GtRlReleaserExamples >> repositoryDirectoryName [
+	^ repositoryDirectoryName ifNil: [
+		repositoryDirectoryName := 'gtoolkit-releaser-', (UUID new asString36 last: 8) asLowercase ]
 ]
 
 { #category : #'creation projects' }
