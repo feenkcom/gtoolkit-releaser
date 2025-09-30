@@ -570,14 +570,20 @@ GtRlChecksRunner >> startInitialJob: aGtRrChecksJob [
 
 { #category : #private }
 GtRlChecksRunner >> startRunners [
+	"Start the headless and in-image runners and workers"
+
+	"Headless workers sync changes, but not ongoing code sync"
 	workerRunner := GtRemoteRunner new.
 	workerRunner
+		managerStartupAndShutdown: GtRrLocalManagerStartupAndShutdown new;
 		startLogging;
 		start.
+
 	inImageRunner := GtRemoteRunner new.
 	inImageRunner managerStartupAndShutdown
 		poolSize: 0;
 		startInImageWorker.
+
 	self loadSchedulingTimes
 ]
 
