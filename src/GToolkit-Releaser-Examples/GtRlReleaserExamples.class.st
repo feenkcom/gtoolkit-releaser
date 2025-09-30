@@ -211,7 +211,7 @@ GtRlReleaserExamples >> projectAWithNoVersion [
 	<after: #removeRepositoriesAndCode>
 	<return: #RPackageConflictError>
 	| projectName icebergRepository repository project |
-	projectName := 'RepositoryWithNoVersionA'.
+	projectName := self randomizeProjectName: 'RepositoryWithNoVersionA'.
 
 	icebergRepository := self
 			createIcebergRepositoryWithEmptyBaselineNamed: projectName.
@@ -232,7 +232,7 @@ GtRlReleaserExamples >> projectBWithNoVersion [
 	<after: #removeRepositoriesAndCode>
 	<return: #RPackageConflictError>
 	| projectName icebergRepository repository project |
-	projectName := 'RepositoryWithNoVersionB'.
+	projectName := self randomizeProjectName: 'RepositoryWithNoVersionB'.
 
 	icebergRepository := self
 			createIcebergRepositoryWithEmptyBaselineNamed: projectName.
@@ -251,7 +251,7 @@ GtRlReleaserExamples >> projectStructureWithOneChildDependency [
 	<after: #removeRepositoriesAndCode>
 	<return: #RPackageConflictError>
 	| rootProject projectName childProject icebergRepository |
-	projectName := 'ProjectWithOneChildDependency'.
+	projectName := self randomizeProjectName: 'ProjectWithOneChildDependency'.
 	childProject := self projectBWithNoVersion.
 	icebergRepository := self
 			createIcebergRepositoryNamed: projectName
@@ -265,7 +265,7 @@ GtRlReleaserExamples >> projectStructureWithOneChildDependency [
 	self assert: rootProject childProjects size equals: 1.
 	self
 		assert: (rootProject childProjects collect: #name) asArray
-		equals: #('RepositoryWithNoVersionB').	"Fix current issues caused by projects not being loaded in the image"
+		equals: {childProject name}.	"Fix current issues caused by projects not being loaded in the image"
 	rootProject metacelloToolbox: GtRlMetacelloToolBoxWithSpecs new.
 	rootProject childProjects
 		do: [ :aProject | rootProject metacelloToolbox addSpecForBaselineClass: aProject baselineClass ].
@@ -279,7 +279,7 @@ GtRlReleaserExamples >> projectStructureWithThreeDependencies [
 	<after: #removeRepositoriesAndCode>
 	<return: #RPackageConflictError>
 	| project projectName projectA projectB projectC icebergRepository |
-	projectName := 'ProjectWithThreeDependencies'.
+	projectName := self randomizeProjectName: 'ProjectWithThreeDependencies'.
 
 	projectA := self projectAWithNoVersion.
 	projectB := self projectWithTagAndNoVersion.
@@ -299,7 +299,7 @@ GtRlReleaserExamples >> projectStructureWithThreeDependencies [
 	self assert: project childProjects size equals: 3.
 	self
 		assert: (project childProjects collect: #name) asArray
-		equals: #('RepositoryWithNoVersionA' 'RepositoryWithTagAndNoVersion' 'ProjectWithReleasedVersionAndNoChanges').	"Fix current issues caused by projects not being loaded in the image"
+		equals: {projectA name .projectB name . projectC name}.	"Fix current issues caused by projects not being loaded in the image"
 	project metacelloToolbox: GtRlMetacelloToolBoxWithSpecs new.
 	project childProjects
 		do: [ :aProject | project metacelloToolbox addSpecForBaselineClass: aProject baselineClass ].
@@ -314,9 +314,9 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndChanges [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
 	<return: #AssertionFailure>
-	| project semanticTags icebergRepository |
-	project := self
-			createSingleProjectWithName: 'ProjectWithReleasedVersionAndChanges'.
+	| project semanticTags icebergRepository projectName |
+	projectName := self randomizeProjectName: 'ProjectWithReleasedVersionAndChanges'.
+	project := self createSingleProjectWithName: projectName.
 	icebergRepository := project repository icebergRepository.
 	self releaseNewVersionForProject: project.	"checkout ends up with MCPackageLoader>>basicLoad which may flush changes file"
 	GtPharoCodeModifier current
@@ -342,9 +342,9 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndNewCommit [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
 	<return: #RPackageConflictError>
-	| project semanticTags icebergRepository |
-	project := self
-			createSingleProjectWithName: 'ProjectWithReleasedVersionAndNewCommit'.
+	| project semanticTags icebergRepository projectName |
+	projectName := self randomizeProjectName: 'ProjectWithReleasedVersionAndNewCommit'.
+	project := self createSingleProjectWithName: projectName.
 	icebergRepository := project repository icebergRepository.
 	self releaseNewVersionForProject: project.
 	self commiNewMethodNamed: #method1 onMasterToProject: project.
@@ -366,9 +366,9 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndNoChanges [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
 	<return: #RPackageConflictError>
-	| project releaseWorkflow semanticTags |
-	project := self
-			createSingleProjectWithName: 'ProjectWithReleasedVersionAndNoChanges'.
+	| project releaseWorkflow semanticTags projectName |
+	projectName := self randomizeProjectName: 'ProjectWithReleasedVersionAndNoChanges'.
+	project := self createSingleProjectWithName: projectName.
 	releaseWorkflow := GtRlReleaserExportWorkflow
 			forProject: project
 			withConfiguration: self defaultReleaseConfiguration.
@@ -388,7 +388,7 @@ GtRlReleaserExamples >> projectWithTagAndNoVersion [
 	<after: #removeRepositoriesAndCode>
 	<return: #RPackageConflictError>
 	| projectName icebergRepository repository project |
-	projectName := 'RepositoryWithTagAndNoVersion'.
+	projectName := self randomizeProjectName: 'RepositoryWithTagAndNoVersion'.
 
 	icebergRepository := self
 			createIcebergRepositoryWithEmptyBaselineNamed: projectName.
@@ -400,6 +400,20 @@ GtRlReleaserExamples >> projectWithTagAndNoVersion [
 	project := (self instantiateAndInitializeProjectWithName: projectName)
 			linkWithRepository: repository.
 	^ project
+]
+
+{ #category : #utils }
+GtRlReleaserExamples >> randomizeProjectName: aString [ 
+	^ aString, '_', (UUID new asString36 last: 8) capitalized.
+]
+
+{ #category : #utilities }
+GtRlReleaserExamples >> realNameForProjectName: aString [ 
+	self repositories 
+		detect: [ :each | each name beginsWith: aString,'_']
+		ifFound: [ :each |^  each name ].
+	
+	Error signal: 'Project not found: ',aString
 ]
 
 { #category : #'examples - configs' }
@@ -417,13 +431,13 @@ GtRlReleaserExamples >> releaseConfigurationForcingRelease [
 
 { #category : #'examples - configs' }
 GtRlReleaserExamples >> releaseConfigurationWithHeadCommitStrategyForChild [
-	<gtExample>
 	<return: #GtRlReleaseConfiguration>
 	| releaseConfiguration |
 	releaseConfiguration := self defaultReleaseConfiguration.
 	releaseConfiguration
 		setReleaseStrategyOfType: GtRlHeadCommitReleaseStrategy
-		forProjecs: {'github://example/RepositoryWithNoVersionB/src'}.
+		forProjecs: {'github://example/{1}/src' format: {
+			self realNameForProjectName: 'RepositoryWithNoVersionB'}}.
 
 	^ releaseConfiguration
 ]

@@ -17,16 +17,19 @@ GtRlDedicatedBranchRootReleaseExamples >> baselineCodeReleaseForFourRepositories
 	<baseline>
 	spec for: #''common'' do: [
 		spec
-			baseline: ''RepositoryWithNoVersionA'' with: [
-				spec repository: ''github://example/RepositoryWithNoVersionA:v0.2.0/src'' ].
+			baseline: ''{1}'' with: [
+				spec repository: ''github://example/{1}:v0.2.0/src'' ].
 		spec
-			baseline: ''RepositoryWithTagAndNoVersion'' with: [
-				spec repository: ''github://example/RepositoryWithTagAndNoVersion:v0.1.0/src'' ].
+			baseline: ''{2}'' with: [
+				spec repository: ''github://example/{2}:v0.1.0/src'' ].
 		spec
-			baseline: ''ProjectWithReleasedVersionAndNoChanges'' with: [
-				spec repository: ''github://example/ProjectWithReleasedVersionAndNoChanges:v0.1.0/src'' ].
-	]'
-
+			baseline: ''{3}'' with: [
+				spec repository: ''github://example/{3}:v0.1.0/src'' ].
+	]' format: {
+		self realNameForProjectName: 'RepositoryWithNoVersionA'.
+		self realNameForProjectName: 'RepositoryWithTagAndNoVersion'.
+		self realNameForProjectName: 'ProjectWithReleasedVersionAndNoChanges'
+	}
 	
 ]
 
@@ -36,16 +39,19 @@ GtRlDedicatedBranchRootReleaseExamples >> baselineCodeReleaseForFourRepositories
 	<baseline>
 	spec for: #''common'' do: [
 		spec
-			baseline: ''RepositoryWithNoVersionA'' with: [
-				spec repository: ''github://example/RepositoryWithNoVersionA:v0.1.0/src'' ].
+			baseline: ''{1}'' with: [
+				spec repository: ''github://example/{1}:v0.1.0/src'' ].
 		spec
-			baseline: ''RepositoryWithTagAndNoVersion'' with: [
-				spec repository: ''github://example/RepositoryWithTagAndNoVersion:v0.1.0/src'' ].
+			baseline: ''{2}'' with: [
+				spec repository: ''github://example/{2}:v0.1.0/src'' ].
 		spec
-			baseline: ''ProjectWithReleasedVersionAndNoChanges'' with: [
-				spec repository: ''github://example/ProjectWithReleasedVersionAndNoChanges:v0.1.0/src'' ].
-	]'
-
+			baseline: ''{3}'' with: [
+				spec repository: ''github://example/{3}:v0.1.0/src'' ].
+	]' format: {
+		self realNameForProjectName: 'RepositoryWithNoVersionA'.
+		self realNameForProjectName: 'RepositoryWithTagAndNoVersion'.
+		self realNameForProjectName: 'ProjectWithReleasedVersionAndNoChanges'.
+	}
 	
 ]
 
@@ -55,9 +61,11 @@ GtRlDedicatedBranchRootReleaseExamples >> baselineCodeReleaseWithHeadCommitChild
 	<baseline>
 	spec for: #''common'' do: [
 		spec
-			baseline: ''RepositoryWithNoVersionB'' with: [
-				spec repository: ''github://example/RepositoryWithNoVersionB:{1}/src'' ].
-	]' format: { aCommidId }
+			baseline: ''{1}'' with: [
+				spec repository: ''github://example/{1}:{2}/src'' ].
+	]' format: { 
+		self realNameForProjectName: 'RepositoryWithNoVersionB'.
+		aCommidId }
 	
 ]
 
@@ -67,13 +75,17 @@ GtRlDedicatedBranchRootReleaseExamples >> baselineMetacelloCodeReleaseForFourRep
 	<baseline>
 	spec for: #''common'' do: [
 		spec 
-			baseline: ''RepositoryWithNoVersionA'' with: [
-				spec repository: ''github://example/RepositoryWithNoVersionA:v0.2.0/src'' ];
-			baseline: ''RepositoryWithTagAndNoVersion'' with: [
-				spec repository: ''github://example/RepositoryWithTagAndNoVersion:v0.1.0/src'' ];
-			baseline: ''ProjectWithReleasedVersionAndNoChanges'' with: [
-				spec repository: ''github://example/ProjectWithReleasedVersionAndNoChanges:v0.1.0/src'' ]. ].
-'
+			baseline: ''{1}'' with: [
+				spec repository: ''github://example/{1}:v0.2.0/src'' ];
+			baseline: ''{2}'' with: [
+				spec repository: ''github://example/{2}:v0.1.0/src'' ];
+			baseline: ''{3}'' with: [
+				spec repository: ''github://example/{3}:v0.1.0/src'' ]. ].
+' format: {
+	self realNameForProjectName: 'RepositoryWithNoVersionA'.
+	self realNameForProjectName: 'RepositoryWithTagAndNoVersion'.
+	self realNameForProjectName: 'ProjectWithReleasedVersionAndNoChanges'.
+}
 ]
 
 { #category : #'examples - baseline printing' }

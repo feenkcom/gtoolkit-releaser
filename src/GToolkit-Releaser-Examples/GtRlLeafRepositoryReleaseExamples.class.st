@@ -208,13 +208,13 @@ GtRlLeafRepositoryReleaseExamples >> printBaselineCodeReleaseForFourRepositories
 
 { #category : #'examples - configs' }
 GtRlLeafRepositoryReleaseExamples >> releaseConfigurationWithLoadedTagStrategyForChild [
-	<gtExample>
 	<return: #GtRlReleaseConfiguration>
 	| releaseConfiguration |
 	releaseConfiguration := self defaultReleaseConfiguration.
 	releaseConfiguration
 		setReleaseStrategyOfType: GtRlLoadedTagReleaseStrategy
-		forProjecs: {'github://example/RepositoryWithTagAndNoVersion/src'}.
+		forProjecs: {'github://example/{1}/src' format: {
+			self realNameForProjectName: 'RepositoryWithTagAndNoVersion'}}.
 
 	^ releaseConfiguration
 ]
