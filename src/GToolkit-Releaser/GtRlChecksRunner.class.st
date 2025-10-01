@@ -13,7 +13,8 @@ Class {
 		'checkSkips',
 		'enqueueSubmitCount',
 		'enqueueRunCount',
-		'stats'
+		'stats',
+		'initialisationProcess'
 	],
 	#category : #'GToolkit-Releaser'
 }
@@ -21,16 +22,8 @@ Class {
 { #category : #'instance creation' }
 GtRlChecksRunner class >> checksFactory: aGtRrChecksFactory [
 	"Run the examples in the supplied factory"
-	| checksRunner initialJob |
 
-	"Start the runner first so the default GtRrCheckSchedulingTimes is available"
-	checksRunner := self new.
-	checksRunner startRunners.	"Generate and submit the job"
-	aGtRrChecksFactory groupTasksByTime.
-	initialJob := aGtRrChecksFactory job.
-	initialJob taskTimeout: 5 minutes.
-	checksRunner initialJob: initialJob.
-	^ checksRunner
+	^ self new checksFactory: aGtRrChecksFactory
 ]
 
 { #category : #'instance creation' }
@@ -222,6 +215,21 @@ GtRlChecksRunner class >> remoteRunnerFactory [
 	factory addExampleTestNames: 
 		(examples collect: [ :each | each providerClass name -> each selector ]).
 	^ factory
+]
+
+{ #category : #initialization }
+GtRlChecksRunner >> checksFactory: aGtRrChecksFactory [
+	"Run the examples in the supplied factory"
+	| initialJob |
+
+	initialisationProcess := 
+		[ "Start the runner first so the default GtRrCheckSchedulingTimes is available"
+		self startRunners.
+		"Generate and submit the job"
+		aGtRrChecksFactory groupTasksByTime.
+		initialJob := aGtRrChecksFactory job.
+		initialJob taskTimeout: 5 minutes.
+		self initialJob: initialJob ] fork.
 ]
 
 { #category : #accessing }
