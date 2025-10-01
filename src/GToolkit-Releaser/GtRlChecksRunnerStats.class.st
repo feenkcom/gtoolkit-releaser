@@ -16,7 +16,7 @@ Class {
 		'announcer',
 		'rlRunner'
 	],
-	#category : #'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser-ChecksRunner'
 }
 
 { #category : #announcer }
@@ -60,7 +60,7 @@ GtRlChecksRunnerStats >> failure [
 	^ failure
 ]
 
-{ #category : #accessing }
+{ #category : #ui }
 GtRlChecksRunnerStats >> gtSummaryFor: aView [
 	<gtView>
 
@@ -247,7 +247,21 @@ GtRlChecksRunnerStats >> unsubscribe: anObject [
 ]
 
 { #category : #'as yet unclassified' }
+GtRlChecksRunnerStats >> updateFinal: aTaskFinishedAnnouncement [
+	| task |
+
+		task := aTaskFinishedAnnouncement task.
+		task result do: [ :result | | shortName |
+			shortName := result shortName.
+			shortName = #failure ifTrue: [ self incrementFailure ].
+			shortName = #error ifTrue: [ self incrementError ].
+			shortName = #warning ifTrue: [ self incrementWarning ] ].
+]
+
+{ #category : #'as yet unclassified' }
 GtRlChecksRunnerStats >> updateInImage: aTaskFinishedAnnouncement [
+	"Update the receiver based on the check having been run in the in-image worker.
+	Any sort of failure is not recorded here as additional attempts may be made."
 	| task |
 
 	task := aTaskFinishedAnnouncement task.
@@ -259,20 +273,20 @@ GtRlChecksRunnerStats >> updateInImage: aTaskFinishedAnnouncement [
 
 { #category : #'as yet unclassified' }
 GtRlChecksRunnerStats >> updateUiProcess: aTaskFinishedAnnouncement [
+	"Update the receiver based on the check having been run in the UI process.
+	Any sort of failure is not recorded here as additional attempts may be made."
 	| task |
 
 		task := aTaskFinishedAnnouncement task.
 		task result do: [ :result | | shortName |
 			shortName := result shortName.
-			shortName = #pass ifTrue: [ self incrementUiProcessPassed ].
-			shortName = #skip ifTrue: [ self error: 'Shouldn''t happen' ].
-			shortName = #failure ifTrue: [ self incrementFailure ].
-			shortName = #error ifTrue: [ self incrementError ].
-			shortName = #warning ifTrue: [ self incrementWarning ] ].
+			shortName = #pass ifTrue: [ self incrementUiProcessPassed ] ].
 ]
 
 { #category : #'as yet unclassified' }
 GtRlChecksRunnerStats >> updateWorker: aTaskFinishedAnnouncement [
+	"Update the receiver based on the check having been run in the headless worker.
+	Any sort of failure is not recorded here as additional attempts may be made."
 	| task |
 
 	task := aTaskFinishedAnnouncement task.

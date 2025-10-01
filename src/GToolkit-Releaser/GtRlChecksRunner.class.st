@@ -13,24 +13,18 @@ Class {
 		'checkSkips',
 		'enqueueSubmitCount',
 		'enqueueRunCount',
-		'stats'
+		'stats',
+		'initialisationProcess',
+		'retryStrategy'
 	],
-	#category : #'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser-ChecksRunner'
 }
 
 { #category : #'instance creation' }
 GtRlChecksRunner class >> checksFactory: aGtRrChecksFactory [
 	"Run the examples in the supplied factory"
-	| checksRunner initialJob |
 
-	"Start the runner first so the default GtRrCheckSchedulingTimes is available"
-	checksRunner := self new.
-	checksRunner startRunners.	"Generate and submit the job"
-	aGtRrChecksFactory groupTasksByTime.
-	initialJob := aGtRrChecksFactory job.
-	initialJob taskTimeout: 5 minutes.
-	checksRunner initialJob: initialJob.
-	^ checksRunner
+	^ self new checksFactory: aGtRrChecksFactory
 ]
 
 { #category : #'instance creation' }
@@ -181,7 +175,7 @@ GtRlChecksRunner class >> preCommitExamples [
 	minus checks that are known to fail in this environment,
 	but should still pass in the CI."
 
-	^ self checksFactory: self preCommitExamplesFactory.
+	^ self new preCommitExamples
 ]
 
 { #category : #'instance creation' }
@@ -222,6 +216,21 @@ GtRlChecksRunner class >> remoteRunnerFactory [
 	factory addExampleTestNames: 
 		(examples collect: [ :each | each providerClass name -> each selector ]).
 	^ factory
+]
+
+{ #category : #initialization }
+GtRlChecksRunner >> checksFactory: aGtRrChecksFactory [
+	"Run the examples in the supplied factory"
+	| initialJob |
+
+	initialisationProcess := 
+		[ "Start the runner first so the default GtRrCheckSchedulingTimes is available"
+		self startRunners.
+		"Generate and submit the job"
+		aGtRrChecksFactory groupTasksByTime.
+		initialJob := aGtRrChecksFactory job.
+		initialJob taskTimeout: 5 minutes.
+		self initialJob: initialJob ] fork.
 ]
 
 { #category : #accessing }
@@ -282,11 +291,20 @@ GtRlChecksRunner >> failuresByPackage [
 
 { #category : #private }
 GtRlChecksRunner >> finishUp [
-	stats
-		state: #finished;
-		endTime: DateAndTime now.
+	"Shut the receiver down.
+	Fork the process as this is typically called from a worker notification,
+	and shutting down the runner will terminate the process."
+
+	[ stats
+		state: #stopping;
+		endTime: DateAndTime now;
+		notifyUpdate.
 	self updateSchedulingTimes.
 	self stopRunners.
+	stats
+		state: #finished;
+		notifyUpdate ]
+			forkNamed: 'GtRlChecksRunner finishUp'.
 ]
 
 { #category : #ui }
@@ -325,6 +343,17 @@ GtRlChecksRunner >> gtFailuresFor: aView [
 		priority: 20;
 		items: [ self failureResults ];
 		actionUpdateButton
+]
+
+{ #category : #ui }
+GtRlChecksRunner >> gtHeadlessWorkerSummaryFor: aView [
+	<gtView>
+
+	^ aView forward
+		title: 'Headless Runner';
+		priority: 15;
+		object: [ workerRunner ];
+		view: #gtSummaryFor:
 ]
 
 { #category : #ui }
@@ -375,9 +404,7 @@ GtRlChecksRunner >> gtWorkerInImageSuccessesFor: aView [
 { #category : #private }
 GtRlChecksRunner >> inImageTaskCompleted: aTaskFinishedAnnouncement [
 
-	self storeTaskResults: aTaskFinishedAnnouncement.
-	self runTaskFailures: aTaskFinishedAnnouncement.
-	stats updateInImage: aTaskFinishedAnnouncement.
+	retryStrategy inImageTaskCompleted: aTaskFinishedAnnouncement
 ]
 
 { #category : #accessing }
@@ -395,9 +422,7 @@ GtRlChecksRunner >> initialJob: aGtRrChecksJob [
 { #category : #private }
 GtRlChecksRunner >> initialJobTaskCompleted: aTaskCompletedAnnouncement [
 
-	self storeTaskResults: aTaskCompletedAnnouncement.
-	self submitRetries: aTaskCompletedAnnouncement.
-	stats updateWorker: aTaskCompletedAnnouncement.
+	retryStrategy initialJobTaskCompleted: aTaskCompletedAnnouncement
 ]
 
 { #category : #initialization }
@@ -412,6 +437,7 @@ GtRlChecksRunner >> initialize [
 	checkSkips := Dictionary new.
 	stats := GtRlChecksRunnerStats new
 		rlRunner: self.
+	self retryStrategy: GtRlChecksRunnerRetryStrategy new.
 ]
 
 { #category : #private }
@@ -440,6 +466,15 @@ GtRlChecksRunner >> loadSchedulingTimes [
 			remoteRunner: workerRunner ]
 ]
 
+{ #category : #running }
+GtRlChecksRunner >> preCommitExamples [
+	"Run the dedicated release branch examples, 
+	minus checks that are known to fail in this environment,
+	but should still pass in the CI."
+
+	^ self checksFactory: self class preCommitExamplesFactory.
+]
+
 { #category : #private }
 GtRlChecksRunner >> queueInImage: anAssociation timeout: taskTimeout [
 	| task job |
@@ -465,6 +500,18 @@ GtRlChecksRunner >> queueInImage: anAssociation timeout: taskTimeout [
 ]
 
 { #category : #accessing }
+GtRlChecksRunner >> retryStrategy [
+	^ retryStrategy
+]
+
+{ #category : #accessing }
+GtRlChecksRunner >> retryStrategy: aGtRlChecksRunnerRetryStrategy [
+
+	retryStrategy := aGtRlChecksRunnerRetryStrategy.
+	retryStrategy rlRunner: self.
+]
+
+{ #category : #accessing }
 GtRlChecksRunner >> runInImageTasks [
 
 	^ self completedTasks select: [ :task |
@@ -477,7 +524,7 @@ GtRlChecksRunner >> runInImageTasks [
 ]
 
 { #category : #private }
-GtRlChecksRunner >> runTaskFailures: aTaskFinishedAnnouncement [ 
+GtRlChecksRunner >> runUiProcessFailures: aTaskFinishedAnnouncement [ 
 
 	[ self critical:
 		[ | task |
@@ -505,22 +552,21 @@ GtRlChecksRunner >> runTaskFailures: aTaskFinishedAnnouncement [
 					send: #jobCompleted:
 					to: self.
 				enqueueSubmitCount := enqueueSubmitCount + 1.
-				Stdio stdout
-					<< 'enqueueSubmit: ';
-					<< enqueueSubmitCount asString;
-					lf.
 				BlTaskAction
 					enqueueElement: (GtWorld allInstances detect: #isOpened)
 					action: [
 						enqueueRunCount := enqueueRunCount + 1.
 						Stdio stdout
-							<< 'runInImage starting: ';
+							<< 'run in UI process starting: ';
+							<< task checkNames asString;
+							<< ' (';
 							<< enqueueRunCount asString;
-							lf.
+							<< ')';
+							lf; flush.
 						[ job runInImage ] ensure: 
 							[ EpMonitor current enable ].
 						Stdio stdout
-							<< 'runInImage completed';
+							<< 'run in UI process completed';
 							lf.
 						 ] ] ] ] ]
 	forkNamed: self class name asString, ' runTaskFailures'.
@@ -589,7 +635,12 @@ GtRlChecksRunner >> startRunners [
 	self loadSchedulingTimes
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
+GtRlChecksRunner >> stats [
+	^ stats
+]
+
+{ #category : #control }
 GtRlChecksRunner >> stopRunners [
 
 	workerRunner ifNotNil:
@@ -638,7 +689,7 @@ GtRlChecksRunner >> storeTaskResults: aTaskFinishedAnnouncement [
 ]
 
 { #category : #private }
-GtRlChecksRunner >> submitRetries: aTaskFinishedAnnouncement [ 
+GtRlChecksRunner >> submitInImageRetries: aTaskFinishedAnnouncement [ 
 
 	self critical:
 		[ | task |
@@ -679,13 +730,7 @@ GtRlChecksRunner >> successfulWorkerInImageTasks [
 { #category : #private }
 GtRlChecksRunner >> uiProcessTaskCompleted: aTaskFinishedAnnouncement [
 
-	[ | task |
-	task := aTaskFinishedAnnouncement task.
-	task result do: [ :result |
-		self storeCheckResult: result.
-		self storeCheckFailure: result. ] ]
-			forkNamed: self class name asString, ' runTaskFailures store results'.
-	stats updateUiProcess: aTaskFinishedAnnouncement.
+	retryStrategy uiProcessTaskCompleted: aTaskFinishedAnnouncement
 ]
 
 { #category : #private }
