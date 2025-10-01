@@ -201,7 +201,9 @@ GtRlChecksRunnerStats >> summaryAttributes [
 		{ 'State'. state. }.
 		{ 'Start Time'. startTime. }.
 		{ 'End Time'. endTime. }.
-		{ 'Duration'. self duration. }.
+		{ 'Duration'. self duration ifNil:
+			[ startTime ifNotNil: [ :theStartTime | 
+				'{1}+' format: { (DateAndTime now - theStartTime) gtShortPrintString } ] ]. }.
 		{ 'Worker Passed'. workerPassed. }.
 		{ 'InImage Passed'. inImagePassed. [ rlRunner successfulWorkerInImageResults ]. }.
 		{ 'UI Process Passed'. uiProcessPassed. [ rlRunner successfulUiResults ]. }.
