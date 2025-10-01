@@ -60,7 +60,7 @@ GtRlChecksRunnerStats >> failure [
 	^ failure
 ]
 
-{ #category : #accessing }
+{ #category : #ui }
 GtRlChecksRunnerStats >> gtSummaryFor: aView [
 	<gtView>
 
