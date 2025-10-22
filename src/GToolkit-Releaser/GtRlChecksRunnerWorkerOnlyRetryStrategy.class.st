@@ -14,6 +14,15 @@ GtRlChecksRunnerWorkerOnlyRetryStrategy >> inImageTaskCompleted: aTaskFinishedAn
 GtRlChecksRunnerWorkerOnlyRetryStrategy >> initialJobTaskCompleted: aTaskCompletedAnnouncement [
 
 	rlRunner storeTaskResults: aTaskCompletedAnnouncement.
+	rlRunner critical:
+		[ | task |
+		task := aTaskCompletedAnnouncement task.
+		rlRunner addTaskResult: aTaskCompletedAnnouncement.
+		task result do: [ :result | 
+			rlRunner 
+				storeCheckResult: result;
+				storeCheckFailure: result ]
+		].
 	rlRunner stats
 		updateWorker: aTaskCompletedAnnouncement;
 		updateFinal: aTaskCompletedAnnouncement.

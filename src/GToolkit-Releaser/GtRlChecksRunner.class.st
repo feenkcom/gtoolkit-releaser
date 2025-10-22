@@ -218,6 +218,12 @@ GtRlChecksRunner class >> remoteRunnerFactory [
 	^ factory
 ]
 
+{ #category : #private }
+GtRlChecksRunner >> addTaskResult: aTaskCompletedAnnouncement [
+
+	^ taskResults add: aTaskCompletedAnnouncement
+]
+
 { #category : #initialization }
 GtRlChecksRunner >> checksFactory: aGtRrChecksFactory [
 	"Run the examples in the supplied factory"
