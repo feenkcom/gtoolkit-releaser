@@ -298,7 +298,7 @@ GtImage >> gtExtensionPragmas: aView [
 { #category : #accessing }
 GtImage >> gtExtensionsFor: aView [
 	<gtView>
-	| inspectorPragmas spotterPragmas coderAddOnsPragmas coderContextMenuPragmas advicePragmas actionPragmas lepiterSnippets exceptionPragmas contextPragmas classPragmas classActionPragmas |
+	| inspectorPragmas spotterPragmas coderAddOnsPragmas coderContextMenuPragmas advicePragmas actionPragmas lepiterSnippets exceptionPragmas contextPragmas classPragmas classActionPragmas elementOverviewPragmas |
 	^ aView columnedList
 		title: 'Main extensions';
 		priority: 20;
@@ -313,6 +313,7 @@ GtImage >> gtExtensionsFor: aView [
 			actionPragmas := #gtAction gtPragmas.
 			classActionPragmas := #gtClassAction gtPragmas.
 			advicePragmas := #gtAdvice gtPragmas.
+			elementOverviewPragmas := GtInspectorElementOverview inspectorElementOverviewPragmaName gtPragmas.
 			lepiterSnippets := LeSnippet allSubclasses select: [:each | each class includesSelector: #leJsonV4Name ].
 			{
 				{'Inspector views' . inspectorPragmas . inspectorPragmas size}.
@@ -325,6 +326,7 @@ GtImage >> gtExtensionsFor: aView [
 				{'Coder AST add ons' . coderAddOnsPragmas . coderAddOnsPragmas size}.
 				{'Coder menu add ons' . coderContextMenuPragmas . coderContextMenuPragmas size}.
 				{'Advices' . advicePragmas . advicePragmas size}.
+				{'Element overviews' . elementOverviewPragmas . elementOverviewPragmas size}.
 				{'Lepiter snippets' . lepiterSnippets . lepiterSnippets size}.
 			} ];
 		column: 'Property' text: [ :each | each first ];
