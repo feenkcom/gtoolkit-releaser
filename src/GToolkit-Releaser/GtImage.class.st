@@ -379,6 +379,7 @@ GtImage >> gtPreviewFor: aView [
 			{
 				('GT version' -> self version versionString).
 				('GT release timestamp' -> self timestamp).
+				('GT VM version' -> GtVirtualMachine new bundleVersion).
 				('Image directory' -> Smalltalk image imageDirectory).
 				('Image file' -> Smalltalk image imageFile resolve basename).
 				('Base image info' -> (String streamContents: [ :s | self imageInfoOn: s])).
