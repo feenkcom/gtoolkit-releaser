@@ -13,7 +13,7 @@ Class {
 	#instVars : [
 		'repositoriesChain'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #utils }

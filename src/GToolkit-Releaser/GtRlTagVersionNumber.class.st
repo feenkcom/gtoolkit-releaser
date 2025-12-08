@@ -13,7 +13,7 @@ Class {
 	#instVars : [
 		'tagName'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #comparing }

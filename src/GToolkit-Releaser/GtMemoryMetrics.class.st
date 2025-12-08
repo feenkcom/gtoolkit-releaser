@@ -46,11 +46,75 @@ GtMemoryMetrics class >> totalClassOrganisationInstancesSize [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics class >> totalClassesBasicSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassesBasicSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalClassesClassSideBasicSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassesClassSideBasicSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalClassesClassSideByComponentsSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassesClassSideByComponentsSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalClassesClassSideBySubComponentsSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassesClassSideBySubComponentsSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalClassesClassSideLayoutSize [
+	<gtExample>
+	<noTest>
+	 
+	^ self default totalClassesClassSideLayoutSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalClassesClassSideMethodDictionariesSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassesClassSideMethodDictionariesSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalClassesClassSideProtocolsSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassesClassSideProtocolsSize
+]
+
+{ #category : #metrics }
 GtMemoryMetrics class >> totalClassesClassSideSize [
 	<gtExample>
 	<noTest>
 	
 	^ self default totalClassesClassSideSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalClassesClassSideWithoutMethodDictionariesSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassesClassSideWithoutMethodDictionariesSize
 ]
 
 { #category : #metrics }
@@ -62,11 +126,107 @@ GtMemoryMetrics class >> totalClassesCount [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics class >> totalClassesInstanceSideBasicSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassesInstanceSideBasicSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalClassesInstanceSideByComponentsSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassesInstanceSideByComponentsSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalClassesInstanceSideBySubComponentsSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassesInstanceSideBySubComponentsSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalClassesInstanceSideLayoutSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassesInstanceSideLayoutSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalClassesInstanceSideMethodDictionariesSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassesInstanceSideMethodDictionariesSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalClassesInstanceSideProtocolsSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassesInstanceSideProtocolsSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalClassesInstanceSideSharedPoolsSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassesInstanceSideSharedPoolsSize
+]
+
+{ #category : #metrics }
 GtMemoryMetrics class >> totalClassesInstanceSideSize [
 	<gtExample>
 	<noTest>
 	
 	^ self default totalClassesInstanceSideSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalClassesInstanceSideSubclassesSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassesInstanceSideSubclassesSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalClassesInstanceSideWithoutMethodDictionariesSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassesInstanceSideWithoutMethodDictionariesSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalClassesLayoutSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassesLayoutSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalClassesMethodDictionariesSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassesMethodDictionariesSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalClassesProtocolsSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalClassesProtocolsSize
 ]
 
 { #category : #metrics }
@@ -83,6 +243,22 @@ GtMemoryMetrics class >> totalCodeAnalysedSize [
 	<noTest>
 	
 	^ self default totalCodeAnalysedSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalCompiledBlockBasicInstancesSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalCompiledBlockBasicInstancesSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalCompiledBlockInstancesCount [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalCompiledBlockInstancesCount
 ]
 
 { #category : #metrics }
@@ -182,6 +358,14 @@ GtMemoryMetrics class >> totalPragmasCacheSize [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics class >> totalStringLiteralsOnlyInMethodsSize [
+	<gtExample>
+	<noTest>
+	
+	^ self default totalStringLiteralsOnlyInMethodsSize
+]
+
+{ #category : #metrics }
 GtMemoryMetrics class >> totalSymbolsCount [
 	<gtExample>
 	<noTest>
@@ -217,11 +401,97 @@ GtMemoryMetrics >> cacheAt: aSymbol ifAbsentPut: aBlock [
 ]
 
 { #category : #utils }
-GtMemoryMetrics >> computeClasesClasssSideSize [
+GtMemoryMetrics >> computeClassesClassSideBasicSize [
+
+	^ SystemNavigation default allClasses 
+		sumNumbers: [ :aClass |
+	 		aClass classSide sizeInMemory ]
+]
+
+{ #category : #utils }
+GtMemoryMetrics >> computeClassesClassSideLayoutSize [
+
+	^ SystemNavigation default allClasses 
+		sumNumbers: [ :aClass |
+	 		(aClass classSide instVarNamed: #layout)
+	 				ifNil: [ 0 ] 
+	 				ifNotNil: [ :each | each gtSpecificSizeInMemory ] ]
+]
+
+{ #category : #utils }
+GtMemoryMetrics >> computeClassesClassSideMethodDictionariesSize [
+
+	^ SystemNavigation default allClasses 
+		sumNumbers: [ :aClass |
+	 		aClass classSide methodDict gtSpecificSizeInMemory ]
+]
+
+{ #category : #utils }
+GtMemoryMetrics >> computeClassesClassSideProtocolsSize [
+
+	^ SystemNavigation default allClasses 
+		sumNumbers: [ :aClass |
+	 		aClass classSide gtSpecificSizeInMemoryForProtocols ]
+]
+
+{ #category : #utils }
+GtMemoryMetrics >> computeClassesClassSideSharedPoolsSize [
+
+	^ SystemNavigation default allClasses 
+		sumNumbers: [ :aClass |
+	 		aClass classSide basicSharedPools 
+	 			ifNil: [ 0 ] ifNotNil: [ :each | each gtSpecificSizeInMemory ] ]
+]
+
+{ #category : #utils }
+GtMemoryMetrics >> computeClassesClassSideSize [
 
 	^ SystemNavigation default allClasses 
 		sumNumbers: [ :aClass |
 	 		aClass classSide gtSpecificSizeInMemory ]
+]
+
+{ #category : #utils }
+GtMemoryMetrics >> computeClassesInstanceSideBasicSize [
+
+	^ SystemNavigation default allClasses 
+			sumNumbers: [ :aClass |
+	 			aClass instanceSide sizeInMemory ]
+]
+
+{ #category : #utils }
+GtMemoryMetrics >> computeClassesInstanceSideLayoutSize [
+
+	^ SystemNavigation default allClasses 
+		sumNumbers: [ :aClass |
+	 		(aClass instanceSide instVarNamed: #layout)
+	 				ifNil: [ 0 ] 
+	 				ifNotNil: [ :each | each gtSpecificSizeInMemory ] ]
+]
+
+{ #category : #utils }
+GtMemoryMetrics >> computeClassesInstanceSideMethodDictionariesSize [
+
+	^ SystemNavigation default allClasses 
+			sumNumbers: [ :aClass |
+	 			aClass instanceSide methodDict gtSpecificSizeInMemory ]
+]
+
+{ #category : #utils }
+GtMemoryMetrics >> computeClassesInstanceSideProtocolsSize [
+
+	^ SystemNavigation default allClasses 
+			sumNumbers: [ :aClass |
+	 			aClass instanceSide gtSpecificSizeInMemoryForProtocols ]
+]
+
+{ #category : #utils }
+GtMemoryMetrics >> computeClassesInstanceSideSharedPoolsSize [
+
+	^ SystemNavigation default allClasses 
+		sumNumbers: [ :aClass |
+	 		aClass instanceSide basicSharedPools 
+	 			ifNil: [ 0 ] ifNotNil: [ :each | each gtSpecificSizeInMemory ] ]
 ]
 
 { #category : #utils }
@@ -230,6 +500,16 @@ GtMemoryMetrics >> computeClassesInstanceSideSize [
 	^ SystemNavigation default allClasses 
 			sumNumbers: [ :aClass |
 	 			aClass instanceSide gtSpecificSizeInMemory ]
+]
+
+{ #category : #utils }
+GtMemoryMetrics >> computeClassesInstanceSideSubclassesSize [
+
+	^ SystemNavigation default allClasses 
+			sumNumbers: [ :aClass |
+	 			(aClass instanceSide instVarNamed: #subclasses)
+	 			ifNil: [ 0 ] 
+	 			ifNotNil: [ :each | each sizeInMemory ] ]
 ]
 
 { #category : #utils }
@@ -287,12 +567,75 @@ GtMemoryMetrics >> totalClassOrganisationInstancesSize [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics >> totalClassesBasicSize [
+	
+	^ self totalClassesClassSideBasicSize  + self totalClassesInstanceSideBasicSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalClassesClassSideBasicSize [
+
+	^ self 
+		cacheAt: #totalClassesClassSideBasicSize
+		ifAbsentPut: [
+			self computeClassesClassSideBasicSize ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalClassesClassSideByComponentsSize [
+
+	^ self totalClassesClassSideBasicSize
+		+ self totalClassesClassSideMethodDictionariesSize
+		+ self totalClassesClassSideBySubComponentsSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalClassesClassSideBySubComponentsSize [
+
+	^ self totalClassesClassSideProtocolsSize
+		+ self totalClassesClassSideLayoutSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalClassesClassSideLayoutSize [
+
+	^ self 
+		cacheAt: #totalClassesClassSideLayoutSize
+		ifAbsentPut: [
+			self computeClassesClassSideLayoutSize ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalClassesClassSideMethodDictionariesSize [
+
+	^ self 
+		cacheAt: #totalClassesClassSideMethodDictionariesSize
+		ifAbsentPut: [
+			self computeClassesClassSideMethodDictionariesSize ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalClassesClassSideProtocolsSize [
+
+	^ self 
+		cacheAt: #totalClassesClassSideProtocolsSize
+		ifAbsentPut: [
+			self computeClassesClassSideProtocolsSize ]
+]
+
+{ #category : #metrics }
 GtMemoryMetrics >> totalClassesClassSideSize [
 
 	^ self 
 		cacheAt: #totalClassesClassSideSize
 		ifAbsentPut: [
-			self computeClasesClasssSideSize ]
+			self computeClassesClassSideSize ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalClassesClassSideWithoutMethodDictionariesSize [
+
+	^ self totalClassesClassSideSize - self totalClassesClassSideMethodDictionariesSize
 ]
 
 { #category : #metrics }
@@ -305,12 +648,108 @@ GtMemoryMetrics >> totalClassesCount [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics >> totalClassesInstanceSideBasicSize [
+
+	^ self 
+		cacheAt: #totalClassesInstanceSideBasicSize
+		ifAbsentPut: [
+			self computeClassesInstanceSideBasicSize ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalClassesInstanceSideByComponentsSize [
+
+	^ self totalClassesInstanceSideBasicSize
+		+ self totalClassesInstanceSideMethodDictionariesSize
+		+ self totalClassesInstanceSideBySubComponentsSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalClassesInstanceSideBySubComponentsSize [
+
+	^ self totalClassesInstanceSideSubclassesSize
+		+ self totalClassesInstanceSideProtocolsSize
+		+ self totalClassesInstanceSideLayoutSize
+		+ self totalClassesInstanceSideSharedPoolsSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalClassesInstanceSideLayoutSize [
+
+	^ self 
+		cacheAt: #totalClassesInstanceSideLayoutSize
+		ifAbsentPut: [
+			self computeClassesInstanceSideLayoutSize ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalClassesInstanceSideMethodDictionariesSize [
+
+	^ self 
+		cacheAt: #totalClassesInstanceSideMethodDictionariesSize
+		ifAbsentPut: [
+			self computeClassesInstanceSideMethodDictionariesSize ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalClassesInstanceSideProtocolsSize [
+
+	^ self 
+		cacheAt: #totalClassesInstanceSideProtocolsSize
+		ifAbsentPut: [
+			self computeClassesInstanceSideProtocolsSize ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalClassesInstanceSideSharedPoolsSize [
+
+	^ self 
+		cacheAt: #totalClassesInstanceSideSharedPoolsSize
+		ifAbsentPut: [
+			self computeClassesInstanceSideSharedPoolsSize ]
+]
+
+{ #category : #metrics }
 GtMemoryMetrics >> totalClassesInstanceSideSize [
 
 	^ self 
 		cacheAt: #totalClassesInstanceSideSize
 		ifAbsentPut: [
 			self computeClassesInstanceSideSize ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalClassesInstanceSideSubclassesSize [
+
+	^ self 
+		cacheAt: #totalClassesInstanceSideSubclassesSize
+		ifAbsentPut: [
+			self computeClassesInstanceSideSubclassesSize ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalClassesInstanceSideWithoutMethodDictionariesSize [
+
+	^ self totalClassesInstanceSideSize - self totalClassesInstanceSideMethodDictionariesSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalClassesLayoutSize [
+	
+	^ self totalClassesClassSideLayoutSize  + self totalClassesInstanceSideLayoutSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalClassesMethodDictionariesSize [
+	
+	^ self totalClassesClassSideMethodDictionariesSize  
+		+ self totalClassesInstanceSideMethodDictionariesSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalClassesProtocolsSize [
+	
+	^ self totalClassesClassSideProtocolsSize  + self totalClassesInstanceSideProtocolsSize
 ]
 
 { #category : #metrics }
@@ -329,6 +768,24 @@ GtMemoryMetrics >> totalCodeAnalysedSize [
 		+ self totalCompleterCacheSize
 		+ self navigationEnvironmentSize
 		+ self totalPackagesSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalCompiledBlockBasicInstancesSize [
+
+	^ self 
+		cacheAt: #totalCompiledBlockBasicInstancesSize
+		ifAbsentPut: [
+			 CompiledBlock instancesSizeInMemory ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalCompiledBlockInstancesCount [
+
+	^ self 
+		cacheAt: #totalCompiledBlockInstancesCount
+		ifAbsentPut: [
+			 CompiledBlock instanceCount ]
 ]
 
 { #category : #metrics }
@@ -435,6 +892,16 @@ GtMemoryMetrics >> totalPragmasCacheSize [
 			Pragma pragmaCache gtSpecificSizeInMemory + 
 				(Pragma pragmaCache sumNumbers: [ :pragmasSet | 
 					pragmasSet gtSpecificSizeInMemory +  (pragmasSet sumNumbers: #sizeInMemory) ]) ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalStringLiteralsOnlyInMethodsSize [
+
+	^ self 
+		cacheAt: #totalStringLiteralsOnlyInMethodsSize
+		ifAbsentPut: [
+			SystemNavigation default  allMethods 
+				sumNumbers: [ :aMethod | aMethod gtSpecificSizeInMemoryStringLiteralsOnly ] ]
 ]
 
 { #category : #metrics }

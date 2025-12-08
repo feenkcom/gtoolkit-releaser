@@ -21,7 +21,7 @@ Class {
 		'parentReleases',
 		'childReleases'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #'instance creation' }

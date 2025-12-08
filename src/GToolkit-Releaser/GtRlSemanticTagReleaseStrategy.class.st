@@ -21,7 +21,7 @@ Class {
 		'shouldForceNewRelease',
 		'enforcedVersion'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #assertions }

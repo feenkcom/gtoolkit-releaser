@@ -21,7 +21,7 @@ Class {
 	#instVars : [
 		'repositoryRelease'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #assertions }

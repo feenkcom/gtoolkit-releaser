@@ -18,7 +18,7 @@ Class {
 		'projectReleasesMap',
 		'repositoryReleasesMap'
 	],
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #'instance creation' }

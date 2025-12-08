@@ -11,7 +11,7 @@ See {{gtMethod:GtRlLeafProjectReleaseStrategy>>#shouldCreateNewRelease}} for the
 Class {
 	#name : #GtRlLeafProjectReleaseStrategy,
 	#superclass : #GtRlSemanticTagReleaseStrategy,
-	#category : 'GToolkit-Releaser'
+	#category : #'GToolkit-Releaser'
 }
 
 { #category : #assertions }
