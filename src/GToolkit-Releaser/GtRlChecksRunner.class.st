@@ -224,19 +224,24 @@ GtRlChecksRunner >> addTaskResult: aTaskCompletedAnnouncement [
 	^ taskResults add: aTaskCompletedAnnouncement
 ]
 
+{ #category : #accessing }
+GtRlChecksRunner >> checkNames [
+	"Answer the collection of checks that are run"
+
+	^ self initialJob checkNames
+]
+
 { #category : #initialization }
 GtRlChecksRunner >> checksFactory: aGtRrChecksFactory [
 	"Run the examples in the supplied factory"
-	| initialJob |
 
-	initialisationProcess := 
-		[ "Start the runner first so the default GtRrCheckSchedulingTimes is available"
-		self startRunners.
-		"Generate and submit the job"
+	| initialJob |
+	initialisationProcess := [  "Start the runner first so the default GtRrCheckSchedulingTimes is available"self
+			startRunners.	"Generate and submit the job"
 		aGtRrChecksFactory groupTasksByTime.
 		initialJob := aGtRrChecksFactory job.
-		initialJob taskTimeout: 5 minutes.
-		self initialJob: initialJob ] fork.
+		initialJob taskTimeout: self defaultTaskTimeout.
+		self initialJob: initialJob ] forkNamed: 'GtRlChecksRunner generate initialJob'.
 ]
 
 { #category : #accessing }
@@ -249,6 +254,11 @@ GtRlChecksRunner >> completedTasks [
 GtRlChecksRunner >> critical: aBlock [
 
 	^ sharedAccess critical: aBlock
+]
+
+{ #category : #initialization }
+GtRlChecksRunner >> defaultTaskTimeout [
+	^ 5 minutes
 ]
 
 { #category : #accessing }
@@ -421,7 +431,9 @@ GtRlChecksRunner >> initialJob [
 
 { #category : #running }
 GtRlChecksRunner >> initialJob: aGtRrChecksJob [
+
 	self assert: jobs isEmpty description: 'Job already submitted'.
+	retryStrategy configureInitialJob: aGtRrChecksJob.
 	self startInitialJob: aGtRrChecksJob
 ]
 
@@ -470,6 +482,28 @@ GtRlChecksRunner >> loadSchedulingTimes [
 	ifFalse:
 		[ GtRrCheckSchedulingTimes new
 			remoteRunner: workerRunner ]
+]
+
+{ #category : #accessing }
+GtRlChecksRunner >> notFinished [
+	| checkNames |
+
+	checkNames := self checkNames asSet.
+	jobs do: [ :job |
+		job results do: [ :task | 
+			task result do: [ :pharoLinkResult | 
+				checkNames remove: pharoLinkResult checkName ifAbsent: [] ] ] ].
+	^ checkNames
+]
+
+{ #category : #accessing }
+GtRlChecksRunner >> notFinishedCount [
+	| checkNames completedNames |
+
+	checkNames := self checkNames asSet.
+	completedNames := jobs do: [ :job |
+		job results ].
+	^ checkNames difference: completedNames
 ]
 
 { #category : #running }
@@ -627,8 +661,11 @@ GtRlChecksRunner >> startRunners [
 	workerRunner := GtRemoteRunner new.
 	workerRunner
 		managerStartupAndShutdown: GtRrLocalManagerStartupAndShutdown new;
+		taskTimeout: self defaultTaskTimeout;
+		workerTimeout: self defaultTaskTimeout + 2 minutes;
 		startLogging.
 	workerRunner managerStartupAndShutdown workerManager
+		autoRestart: false;
 		addVmArguments: #('--print-stack-on-signals').
 	workerRunner
 		start.
@@ -638,7 +675,7 @@ GtRlChecksRunner >> startRunners [
 		poolSize: 0;
 		startInImageWorker.
 
-	self loadSchedulingTimes
+	self loadSchedulingTimes.
 ]
 
 { #category : #private }
