@@ -9,10 +9,19 @@ Class {
 	#name : #GtRlChecksRunnerRetryStrategy,
 	#superclass : #Object,
 	#instVars : [
-		'rlRunner'
+		'rlRunner',
+		'taskRetryStrategy'
 	],
 	#category : #'GToolkit-Releaser-ChecksRunner'
 }
+
+{ #category : #configuration }
+GtRlChecksRunnerRetryStrategy >> configureInitialJob: aGtRrJob [
+
+	taskRetryStrategy ifNotNil:
+		[ aGtRrJob tasks do: [ :task |
+			task retryStrategy: taskRetryStrategy copy ] ].
+]
 
 { #category : #'event handling' }
 GtRlChecksRunnerRetryStrategy >> inImageTaskCompleted: aTaskFinishedAnnouncement [
@@ -30,6 +39,13 @@ GtRlChecksRunnerRetryStrategy >> initialJobTaskCompleted: aTaskCompletedAnnounce
 	rlRunner stats updateWorker: aTaskCompletedAnnouncement.
 ]
 
+{ #category : #initialization }
+GtRlChecksRunnerRetryStrategy >> initialize [
+
+	super initialize.
+	taskRetryStrategy := GtRrTaskTestRetry new.
+]
+
 { #category : #accessing }
 GtRlChecksRunnerRetryStrategy >> rlRunner [
 	^ rlRunner
@@ -38,6 +54,20 @@ GtRlChecksRunnerRetryStrategy >> rlRunner [
 { #category : #accessing }
 GtRlChecksRunnerRetryStrategy >> rlRunner: anObject [
 	rlRunner := anObject
+]
+
+{ #category : #accessing }
+GtRlChecksRunnerRetryStrategy >> taskRetryStrategy [
+	<return: #GtRrTaskRetry>
+
+	^ taskRetryStrategy
+]
+
+{ #category : #accessing }
+GtRlChecksRunnerRetryStrategy >> taskRetryStrategy: aGtRrTaskRetry [
+	"Set the retry strategy used by the headless GtRemoteRunner"
+
+	taskRetryStrategy := aGtRrTaskRetry
 ]
 
 { #category : #'event handling' }
