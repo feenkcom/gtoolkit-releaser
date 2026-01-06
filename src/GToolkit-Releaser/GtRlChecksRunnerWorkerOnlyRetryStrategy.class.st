@@ -13,7 +13,6 @@ GtRlChecksRunnerWorkerOnlyRetryStrategy >> inImageTaskCompleted: aTaskFinishedAn
 { #category : #'event handling' }
 GtRlChecksRunnerWorkerOnlyRetryStrategy >> initialJobTaskCompleted: aTaskCompletedAnnouncement [
 
-	rlRunner storeTaskResults: aTaskCompletedAnnouncement.
 	rlRunner critical:
 		[ | task |
 		task := aTaskCompletedAnnouncement task.
