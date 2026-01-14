@@ -402,8 +402,7 @@ GtRlChecksRunner >> gtSummaryFor: aView [
 		  title: 'Summary';
 		  priority: 10;
 		  object: [ stats ];
-		  view: #gtSummaryFor:;
-		  actionUpdateButton
+		  view: #gtSummaryFor:
 ]
 
 { #category : #ui }
