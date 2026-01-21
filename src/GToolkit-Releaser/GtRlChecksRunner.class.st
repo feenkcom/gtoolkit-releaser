@@ -656,18 +656,7 @@ GtRlChecksRunner >> startInitialJob: aGtRrChecksJob [
 GtRlChecksRunner >> startRunners [
 	"Start the headless and in-image runners and workers"
 
-	"Headless workers sync changes, but not ongoing code sync"
-	workerRunner := GtRemoteRunner new.
-	workerRunner
-		managerStartupAndShutdown: GtRrLocalManagerStartupAndShutdown new;
-		taskTimeout: self defaultTaskTimeout;
-		workerTimeout: self defaultTaskTimeout + 2 minutes;
-		startLogging.
-	workerRunner managerStartupAndShutdown workerManager
-		autoRestart: false;
-		addVmArguments: #('--print-stack-on-signals').
-	workerRunner
-		start.
+	self workerRunner start.
 
 	inImageRunner := GtRemoteRunner new.
 	inImageRunner managerStartupAndShutdown
@@ -792,4 +781,24 @@ GtRlChecksRunner >> workerInImageTasks [
 				attrs
 					at: #workerInImage
 					ifAbsent: [ false ] ] ]
+]
+
+{ #category : #private }
+GtRlChecksRunner >> workerRunner [
+	"Answer the workerRunner with default configuration"
+
+	workerRunner ifNotNil: [ ^ workerRunner ].
+
+	"Headless workers sync changes, but not ongoing code sync"
+	workerRunner := GtRemoteRunner new.
+	workerRunner
+		managerStartupAndShutdown: GtRrLocalManagerStartupAndShutdown new;
+		taskTimeout: self defaultTaskTimeout;
+		workerTimeout: self defaultTaskTimeout + 2 minutes;
+		startLogging.
+	workerRunner managerStartupAndShutdown workerManager
+		autoRestart: false;
+		addVmArguments: #('--print-stack-on-signals').
+
+	^ workerRunner.
 ]
