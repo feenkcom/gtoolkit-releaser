@@ -68,6 +68,18 @@ GtRlChecksRunner class >> defaultSkippedPackageNames [
 	)
 ]
 
+{ #category : #'instance creation' }
+GtRlChecksRunner class >> gemstoneRemoteExamplesFactory [
+	| factory |
+
+	factory := GtRrChecksFactory new.
+	factory
+		retryStrategy: GtRrTaskTestRetry new;
+		addExamplePackages: {'GToolkit-RemoteExamples-GemStone' asPackage};
+		groupTasksByTime.
+	^ factory.
+]
+
 { #category : #accessing }
 GtRlChecksRunner class >> knownErrors [
 
@@ -321,6 +333,14 @@ GtRlChecksRunner >> finishUp [
 		state: #finished;
 		notifyUpdate ]
 			forkNamed: 'GtRlChecksRunner finishUp'.
+]
+
+{ #category : #running }
+GtRlChecksRunner >> gemstoneRemoteExamples [
+	"Run the examples from GToolkit-RemoteExamples-GemStone."
+
+	self workerRunner managerStartupAndShutdown poolSize: 3.
+	^ self checksFactory: self class gemstoneRemoteExamplesFactory.
 ]
 
 { #category : #ui }
