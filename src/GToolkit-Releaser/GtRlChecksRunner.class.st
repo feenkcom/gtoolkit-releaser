@@ -75,8 +75,7 @@ GtRlChecksRunner class >> gemstoneRemoteExamplesFactory [
 	factory := GtRrChecksFactory new.
 	factory
 		retryStrategy: GtRrTaskTestRetry new;
-		addExamplePackages: {'GToolkit-RemoteExamples-GemStone' asPackage};
-		groupTasksByTime.
+		addExamplePackages: {'GToolkit-RemoteExamples-GemStone' asPackage}.
 	^ factory.
 ]
 
@@ -246,10 +245,12 @@ GtRlChecksRunner >> checkNames [
 { #category : #initialization }
 GtRlChecksRunner >> checksFactory: aGtRrChecksFactory [
 	"Run the examples in the supplied factory"
-
 	| initialJob |
-	initialisationProcess := [  "Start the runner first so the default GtRrCheckSchedulingTimes is available"self
-			startRunners.	"Generate and submit the job"
+
+	initialisationProcess := [
+	  "Start the runner first so the default GtRrCheckSchedulingTimes is available"
+	  self startRunners.
+		"Generate and submit the job"
 		aGtRrChecksFactory groupTasksByTime.
 		initialJob := aGtRrChecksFactory job.
 		initialJob taskTimeout: self defaultTaskTimeout.
@@ -493,6 +494,7 @@ GtRlChecksRunner >> loadSchedulingTimes [
 	"Load the times used to sequence the checks"
 	| timesFile |
 
+	times ifNotNil: [ ^ times ].
 	timesFile := self schedulingTimesFile.
 	times := timesFile exists ifTrue:
 		[ GtRrCheckSchedulingTimes
