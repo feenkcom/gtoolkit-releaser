@@ -505,6 +505,18 @@ GtRlChecksRunner >> loadSchedulingTimes [
 			remoteRunner: workerRunner ]
 ]
 
+{ #category : #private }
+GtRlChecksRunner >> newLogBasename [
+
+	^ String streamContents: [ :stream | 
+			stream
+				<< 'rlChecksRunner-';
+				<< Date today yyyymmdd;
+				<< '-';
+				<< Time now hhmm24;
+				<< '.log' ].
+]
+
 { #category : #accessing }
 GtRlChecksRunner >> notFinished [
 	| checkNames |
@@ -678,7 +690,10 @@ GtRlChecksRunner >> startInitialJob: aGtRrChecksJob [
 GtRlChecksRunner >> startRunners [
 	"Start the headless and in-image runners and workers"
 
-	self workerRunner start.
+	self workerRunner 
+		startLogging;
+		moveLoggingTo: self newLogBasename;
+		start.
 
 	inImageRunner := GtRemoteRunner new.
 	inImageRunner managerStartupAndShutdown
