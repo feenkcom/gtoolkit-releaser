@@ -6,7 +6,7 @@ Class {
 		'baselineData',
 		'icebergData'
 	],
-	#category : 'GToolkit-Releaser-Cloner-Errors'
+	#category : #'GToolkit-Releaser-Cloner-Errors'
 }
 
 { #category : #accessing }

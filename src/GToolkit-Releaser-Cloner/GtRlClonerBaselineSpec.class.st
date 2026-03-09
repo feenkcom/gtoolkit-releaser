@@ -12,7 +12,7 @@ Class {
 		'baselineName',
 		'repositoryLocation'
 	],
-	#category : 'GToolkit-Releaser-Cloner-Core'
+	#category : #'GToolkit-Releaser-Cloner-Core'
 }
 
 { #category : #accessing }

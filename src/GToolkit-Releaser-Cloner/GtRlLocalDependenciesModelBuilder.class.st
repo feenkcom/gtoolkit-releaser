@@ -1,7 +1,7 @@
 Class {
 	#name : #GtRlLocalDependenciesModelBuilder,
 	#superclass : #GtRlDependenciesModelBuilder,
-	#category : 'GToolkit-Releaser-Cloner-Core'
+	#category : #'GToolkit-Releaser-Cloner-Core'
 }
 
 { #category : #building }

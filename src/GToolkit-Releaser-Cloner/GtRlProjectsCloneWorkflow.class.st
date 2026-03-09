@@ -119,6 +119,16 @@ GtRlProjectsCloneWorkflow >> ensureRepositoryCloneFor: aRepositoryLocationString
 		ifFalse: [ ^ Error signal: 'Cannot load' ].
 	
 	mcRepository := Iceberg mcRepositoryFor: mcRepositorySpec description.
+	self 
+		forPharo14: [] 
+		forPharo13: [
+			"This is only broken in Pharo 13"
+			(mcRepository projectVersion = mcRepository repository branchName) 
+				ifFalse: [ 
+					mcRepository repository 
+						switchToCommitishNamed: mcRepository projectVersion ] ] 
+		forPharo12: [] 
+		forPharo11: [].
 	self ensureRepositoryRegisteredFor: aRepositoryLocationString.
 	
 	^ mcRepository repository
