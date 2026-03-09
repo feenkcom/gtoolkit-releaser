@@ -18,6 +18,23 @@ Object >> forPharo12AndNewer: pharo12OrNewerBlock forPharo11: pharo11Block [
 ]
 
 { #category : #'*GToolkit-PharoMigrations' }
+Object >> forPharo13AndNewer: pharo13OrNewerBlock forOlder: pharo12AndOlder [
+	"Evaluate one of the blocks based on the pharo's major version"
+	| unsupportedVersionBlock |
+	
+	unsupportedVersionBlock := [
+		self error: 'Unsupported pharo version: ',SystemVersion current major asString ].
+	
+	^ self
+		forPharo14: pharo13OrNewerBlock 
+		forPharo13: pharo13OrNewerBlock
+		forPharo12: pharo12AndOlder 
+		forPharo11: pharo12AndOlder
+		newer: pharo13OrNewerBlock
+		older: pharo12AndOlder
+]
+
+{ #category : #'*GToolkit-PharoMigrations' }
 Object >> forPharo13AndNewer: pharo13OrNewerBlock forPharo12: pharo12Block forPharo11: pharo11Block [
 	"Evaluate one of the blocks based on the pharo's major version"
 	| unsupportedVersionBlock |
