@@ -5,7 +5,7 @@ Class {
 		'loadedVersionString',
 		'newVersionString'
 	],
-	#category : 'GToolkit-Releaser-Cloner-Errors'
+	#category : #'GToolkit-Releaser-Cloner-Errors'
 }
 
 { #category : #accessing }
