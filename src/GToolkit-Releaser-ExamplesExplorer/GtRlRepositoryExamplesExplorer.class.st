@@ -5,7 +5,7 @@ Class {
 		'repository',
 		'projectExplorers'
 	],
-	#category : 'GToolkit-Releaser-ExamplesExplorer'
+	#category : #'GToolkit-Releaser-ExamplesExplorer'
 }
 
 { #category : #'instance creation' }

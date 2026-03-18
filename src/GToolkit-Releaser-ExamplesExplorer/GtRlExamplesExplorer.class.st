@@ -51,5 +51,5 @@ GtRlExamplesExplorer >> gtViewExamplesFor: aView [
 		title: 'Examples';
 		priority: 15;
 		object: [ self containedExamples ];
-		view: #gtExamplesFor:
+		view: #gtExamplesFor:context:
 ]
