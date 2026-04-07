@@ -334,15 +334,14 @@ GtImage >> gtExtensionsFor: aView [
 		send: #second
 ]
 
-{ #category : #ui }
-GtImage >> gtImageInfoFor: aView [
+{ #category : #views }
+GtImage >> gtLlmConnectionsFor: aView [
 	<gtView>
-
-	^ aView textEditor 
-		title: 'Image info' translated;
-		priority: 12;
-		aptitude: BrGlamorousCodeEditorAptitude;
-		text: [ (String streamContents: [ :s | self imageInfoOn: s]) asRopedText ]
+	^ aView forward
+		title: 'Llm connections';
+		priority: 30;
+		object: [ GtLConnectionRegistry default ];
+		view: #gtConnectionsFor:
 ]
 
 { #category : #ui }
