@@ -9,7 +9,7 @@ Class {
 	#instVars : [
 		'project'
 	],
-	#category : 'GToolkit-Releaser-BaselineModel-Generator'
+	#category : #'GToolkit-Releaser-BaselineModel-Generator'
 }
 
 { #category : #'instance creation' }

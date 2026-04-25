@@ -1,7 +1,7 @@
 Class {
 	#name : #GtRlMetacelloBaselineGenerator,
 	#superclass : #Object,
-	#category : 'GToolkit-Releaser-BaselineModel-Metacello'
+	#category : #'GToolkit-Releaser-BaselineModel-Metacello'
 }
 
 { #category : #baselines }

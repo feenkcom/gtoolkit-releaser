@@ -12,7 +12,7 @@ Class {
 		'sourceNode',
 		'targetNode'
 	],
-	#category : 'GToolkit-Releaser-BaselineModel-Model'
+	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
 
 { #category : #printing }

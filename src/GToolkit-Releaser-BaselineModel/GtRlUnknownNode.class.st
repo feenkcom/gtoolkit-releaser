@@ -6,7 +6,7 @@ I model an unknown node encountered in baseline that does not corespond to a pac
 Class {
 	#name : #GtRlUnknownNode,
 	#superclass : #GtRlNode,
-	#category : 'GToolkit-Releaser-BaselineModel-Model'
+	#category : #'GToolkit-Releaser-BaselineModel-Model'
 }
 
 { #category : #'instance creation' }

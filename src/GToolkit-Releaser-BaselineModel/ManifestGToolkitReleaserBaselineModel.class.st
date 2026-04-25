@@ -6,7 +6,7 @@ I contain a model for capturing Metacello baselines and dependencies between bas
 Class {
 	#name : #ManifestGToolkitReleaserBaselineModel,
 	#superclass : #PackageManifest,
-	#category : 'GToolkit-Releaser-BaselineModel-Manifest'
+	#category : #'GToolkit-Releaser-BaselineModel-Manifest'
 }
 
 { #category : #'meta-data' }
