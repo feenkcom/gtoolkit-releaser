@@ -188,14 +188,16 @@ GtRlProject >> gtProjectMapFor: aView [
 		painting: [ :mondrian | self paintProjectDependenciesWith: mondrian ]
 ]
 
-{ #category : #ui }
+{ #category : #'gt-views' }
 GtRlProject >> gtProjectReferencesFor: aView [
 	<gtView>
-	^ aView list
+	^ aView columnedTree
 		title: 'Project references' translated;
-		items: [ self projectReferences ];
-		itemText: [ :aProjectReference |
-			aProjectReference referencedProject name ];
+		items: [ { self } ];
+		children: #childProjects;
+		expandUpTo: 2;
+		column: 'Project' text: #name;
+		column: 'Packages' text: [ :aProject | aProject packages size ];
 		priority: 55
 ]
 
@@ -355,7 +357,7 @@ GtRlProject >> paintProjectDependenciesSelectingRelationsThat: aTwoArgBlock labe
 	^ mondrian layout
 		custom: (GtGradHorizontalDominanceTreeLayout new
 				levelDistance: 10;
-				nodeDistance: 10)
+				nodeDistance: 5)
 ]
 
 { #category : #ui }
