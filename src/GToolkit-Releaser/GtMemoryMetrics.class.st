@@ -30,22 +30,6 @@ GtMemoryMetrics class >> reset [
 ]
 
 { #category : #metrics }
-GtMemoryMetrics class >> totalClassOrganisationInstancesCount [
-	<gtExample>
-	<noTest>
-	
-	^ self default totalClassOrganisationInstancesCount
-]
-
-{ #category : #metrics }
-GtMemoryMetrics class >> totalClassOrganisationInstancesSize [
-	<gtExample>
-	<noTest>
-	
-	^ self default totalClassOrganisationInstancesSize
-]
-
-{ #category : #metrics }
 GtMemoryMetrics class >> totalClassesBasicSize [
 	<gtExample>
 	<noTest>
@@ -544,26 +528,6 @@ GtMemoryMetrics >> navigationEnvironmentSize [
 		cacheAt: #navigationEnvironmentSize
 		ifAbsentPut: [
 			 SystemNavigation default environment gtSpecificSizeInMemory ]
-]
-
-{ #category : #metrics }
-GtMemoryMetrics >> totalClassOrganisationInstancesCount [
-
-	^ self 
-		cacheAt: #totalClassOrganisationInstancesCount
-		ifAbsentPut: [
-			 ClassOrganization instanceCount ]
-]
-
-{ #category : #metrics }
-GtMemoryMetrics >> totalClassOrganisationInstancesSize [
-
-	^ self 
-		cacheAt: #totalClassOrganisationInstancesSize
-		ifAbsentPut: [
-			 ClassOrganization allInstances 
-				sumNumbers: [ :aClassOrganization | 
-					aClassOrganization gtSpecificSizeInMemory ] ]
 ]
 
 { #category : #metrics }
