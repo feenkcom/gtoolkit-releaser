@@ -210,7 +210,7 @@ GtRlReleaserExamples >> projectAWithNoVersion [
 
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| projectName icebergRepository repository project |
 	projectName := self randomizeProjectName: 'RepositoryWithNoVersionA'.
 
@@ -231,7 +231,7 @@ GtRlReleaserExamples >> projectBWithNoVersion [
 
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| projectName icebergRepository repository project |
 	projectName := self randomizeProjectName: 'RepositoryWithNoVersionB'.
 
@@ -250,7 +250,7 @@ GtRlReleaserExamples >> projectBWithNoVersion [
 GtRlReleaserExamples >> projectStructureWithOneChildDependency [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| rootProject projectName childProject icebergRepository |
 	projectName := self randomizeProjectName: 'ProjectWithOneChildDependency'.
 	childProject := self projectBWithNoVersion.
@@ -278,7 +278,7 @@ GtRlReleaserExamples >> projectStructureWithOneChildDependency [
 GtRlReleaserExamples >> projectStructureWithThreeDependencies [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| project projectName projectA projectB projectC icebergRepository |
 	projectName := self randomizeProjectName: 'ProjectWithThreeDependencies'.
 
@@ -342,7 +342,7 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndNewCommit [
 
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| project semanticTags icebergRepository projectName |
 	projectName := self randomizeProjectName: 'PrWithReleasedVerAndNewCommit'.
 	project := self createSingleProjectWithName: projectName.
@@ -366,7 +366,7 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndNoChanges [
 
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| project releaseWorkflow semanticTags projectName |
 	projectName := self randomizeProjectName: 'PrWithReleasedVerAndNoChanges'.
 	project := self createSingleProjectWithName: projectName.
@@ -387,7 +387,7 @@ GtRlReleaserExamples >> projectWithOneReleasedVersionAndNoChanges [
 GtRlReleaserExamples >> projectWithTagAndNoVersion [
 	<gtExample>
 	<after: #removeRepositoriesAndCode>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| projectName icebergRepository repository project |
 	projectName := self randomizeProjectName: 'RepositoryWithTagAndNoVersion'.
 
