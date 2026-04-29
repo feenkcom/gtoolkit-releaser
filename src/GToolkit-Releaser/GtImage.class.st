@@ -18,7 +18,7 @@ Class {
 GtImage class >> commandLine [
 	<commandline>
 
-	^ (ClapCommand id: 'gtVersionInfo')
+	^ (ClapCommandSpec id: 'gtVersionInfo')
 		description: 'Gtoolkit version information';
 		add: ClapFlag forHelp;
 		meaning: [ :args | | stdout |
