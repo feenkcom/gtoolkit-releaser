@@ -34,7 +34,7 @@ GtRlLeafRepositoryReleaseExamples >> basicReleaseStructureWithExistingTag [
 	"I create a repository release for a project by manually creating and linking the necessary release objects."
 
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| project projectRelease repositoryRelease |
 	project := self projectWithTagAndNoVersion.
 	projectRelease := GtRlProjectRelease new project: project.
@@ -57,7 +57,7 @@ GtRlLeafRepositoryReleaseExamples >> basicReleaseStructureWithNoVersions [
 	"I create a repository release for a project by manually creating and linking the necessary release objects."
 
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| project projectRelease repositoryRelease |
 	project := self projectAWithNoVersion.
 	projectRelease := GtRlProjectRelease new project: project.
@@ -80,7 +80,7 @@ GtRlLeafRepositoryReleaseExamples >> basicReleaseWithBranchStrategyOnNoVersionsR
 	"I create a repository release that has a branch release strategy."
 
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| releaseStrategy repositoryRelease |
 	repositoryRelease := self basicReleaseStructureWithNoVersions.
 	releaseStrategy := self dedicatedBranchReleaseStrategy.
@@ -101,7 +101,7 @@ GtRlLeafRepositoryReleaseExamples >> basicReleaseWithLatestCommitStrategyOnNoVer
 	"I create a repository release that has a head commit release strategy."
 
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| releaseStrategy repositoryRelease |
 	repositoryRelease := self basicReleaseStructureWithNoVersions.
 	releaseStrategy := self headCommitReleaseStrategy.
@@ -119,7 +119,7 @@ GtRlLeafRepositoryReleaseExamples >> basicReleaseWithLoadedTagStrategyOnSingleRe
 	"I create a repository release that has a loaded tag release strategy."
 
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| releaseStrategy repositoryRelease |
 	repositoryRelease := self basicReleaseStructureWithExistingTag.
 	releaseStrategy := self loadedTagReleaseStrategy.
@@ -194,7 +194,7 @@ GtRlLeafRepositoryReleaseExamples >> loadedTagReleaseStrategy [
 { #category : #'examples - baseline printing' }
 GtRlLeafRepositoryReleaseExamples >> printBaselineCodeReleaseForFourRepositoriesWithNewCommit [
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| projectRelease printer |
 	projectRelease := self releaseWithBranchStrategyOnNoVersionRepo projectReleases
 			first.
@@ -224,7 +224,7 @@ GtRlLeafRepositoryReleaseExamples >> releaseWithBranchStrategyForcingReleaseOnOn
 	"I create a repository release for a repository with one version and a branch release strategy that forces a new release."
 
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| project releaseBuiler projectRelease repositoryRelease |
 	project := self projectWithOneReleasedVersionAndNoChanges.
 	releaseBuiler := GtRlReleaseBuilder new
@@ -254,7 +254,7 @@ GtRlLeafRepositoryReleaseExamples >> releaseWithBranchStrategyOnNoVersionRepo [
 	versions updated using its branch release strategy."
 
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| repositoryRelease updateWorkflow |
 	repositoryRelease := self basicReleaseWithBranchStrategyOnNoVersionsRepo.
 	updateWorkflow := GtRlReleaseUpdateWorkflow new.
@@ -304,7 +304,7 @@ GtRlLeafRepositoryReleaseExamples >> releaseWithBranchStrategyOnOneVersionRepoWi
 	"I create a repository release for a repository with one version and a new commit, having a branch release strategy."
 
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| project releaseBuiler projectRelease repositoryRelease |
 	project := self projectWithOneReleasedVersionAndNewCommit.
 	releaseBuiler := GtRlReleaseBuilder new
@@ -334,7 +334,7 @@ GtRlLeafRepositoryReleaseExamples >> releaseWithLatestCommitStrategyOnNoVersionR
 	versions updated using its head commit release strategy."
 
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| release updateWorkflow |
 	release := self basicReleaseWithLatestCommitStrategyOnNoVersionRepo.
 	updateWorkflow := GtRlReleaseUpdateWorkflow new.
@@ -370,7 +370,7 @@ GtRlLeafRepositoryReleaseExamples >> releaseWithLoadedTagStrategyOnSingleRepoUsi
 	"I create a repository release for a repository having a tag on the head commit by using a release configuration."
 
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| project releaseBuiler projectRelease repositoryRelease |
 	project := self projectWithTagAndNoVersion.
 	releaseBuiler := GtRlReleaseBuilder new
@@ -388,7 +388,7 @@ GtRlLeafRepositoryReleaseExamples >> releaseWorkflowWithDedicatedBranchForInitia
 	"I execute a release workflow for a release that has no previous versions and a branch release strategy."
 
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| release exportWorkflow |
 	release := self releaseWithBranchStrategyOnNoVersionRepo.
 	exportWorkflow := GtRlReleaserExportWorkflow new
@@ -410,7 +410,7 @@ GtRlLeafRepositoryReleaseExamples >> releaseWorkflowWithDedicatedBranchForSecond
 	"I execute a release workflow for a release that has one previous versions and a branch release strategy that forces a release."
 
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| release exportWorkflow |
 	release := self releaseWithBranchStrategyForcingReleaseOnOneVersionRepo.
 	exportWorkflow := GtRlReleaserExportWorkflow new
@@ -454,7 +454,7 @@ GtRlLeafRepositoryReleaseExamples >> releaseWorkflowWithLatestCommitForInitialVe
 	"I execute a release workflow for a release that uses the commit as the release version."
 
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| release exportWorkflow |
 	release := self releaseWithLatestCommitStrategyOnNoVersionRepo.
 	exportWorkflow := GtRlReleaserExportWorkflow new
@@ -472,7 +472,7 @@ GtRlLeafRepositoryReleaseExamples >> releaseWorkflowWithLoadedTagForSingleRepo [
 	"I execute a release workflow for a release that uses the loaded tag as the release version."
 
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| release exportWorkflow |
 	release := self releaseWithLoadedTagStrategyOnSingleRepo.
 	exportWorkflow := GtRlReleaserExportWorkflow new
@@ -490,7 +490,7 @@ GtRlLeafRepositoryReleaseExamples >> releaseWorkflowWithLoadedTagForSingleRepoUs
 	"I execute a release workflow for a release that uses the loaded tag as the release version."
 
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| release exportWorkflow |
 	release := self releaseWithLoadedTagStrategyOnSingleRepoUsingConfig.
 	exportWorkflow := GtRlReleaserExportWorkflow new

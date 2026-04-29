@@ -91,7 +91,7 @@ GtRlDedicatedBranchRootReleaseExamples >> baselineMetacelloCodeReleaseForFourRep
 { #category : #'examples - baseline printing' }
 GtRlDedicatedBranchRootReleaseExamples >> printBaselineCodeReleaseForFourRepositoriesWithNewCommit [
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| projectRelease printer |
 	projectRelease := self releaseForFourRepositoriesWithNewCommit projectReleases
 			first.
@@ -127,7 +127,7 @@ GtRlDedicatedBranchRootReleaseExamples >> printBaselineCodeReleaseWithHeadCommit
 { #category : #'examples - baseline printing' }
 GtRlDedicatedBranchRootReleaseExamples >> printBaselineCodereleaseForFourRepositoriesWithNoVersionAndNoNewChanges [
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| projectRelease printer |
 	projectRelease := self releaseForFourRepositoriesWithNoVersionAndNoNewChanges
 			projectReleases first.
@@ -144,7 +144,7 @@ GtRlDedicatedBranchRootReleaseExamples >> printBaselineCodereleaseForFourReposit
 { #category : #'examples - baseline printing' }
 GtRlDedicatedBranchRootReleaseExamples >> printMetacelloBaselineCodeReleaseForFourRepositoriesWithNewCommit [
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| projectRelease printer |
 	projectRelease := self releaseForFourRepositoriesWithNewCommit projectReleases
 			first.
@@ -214,7 +214,7 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseForFourRepositoriesWithNoVersio
 	"I create a repository release for a repository multiple dependencies and a branch release strategy."
 
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| project releaseBuiler projectRelease |
 	project := self projectStructureWithThreeDependencies.
 	releaseBuiler := GtRlReleaseBuilder new
@@ -258,7 +258,7 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseWithHeadCommitChildRepository [
 	"I create a release for a repository with a dependency to a repository that uses a head commit release strategy."
 
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| project releaseBuiler projectRelease |
 	project := self projectStructureWithOneChildDependency.
 	releaseBuiler := GtRlReleaseBuilder new
@@ -283,7 +283,7 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseWithHeadCommitChildRepositoryWi
 	"I create a release for a repository with a dependency to a repository that uses a head commit release strategy and has new commit."
 
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| project releaseBuiler projectRelease |
 	project := self projectStructureWithOneChildDependency.
 	self
@@ -319,7 +319,7 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseWithHeadCommitChildRepositoryWi
 	when the root repository has already a release and the child repository has no new changes."
 
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| project releaseBuiler projectRelease |
 	project := self projectStructureWithOneChildDependency.
 	self
@@ -343,7 +343,7 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseWithHeadCommitChildRepositoryWi
 { #category : #'examples - workflows' }
 GtRlDedicatedBranchRootReleaseExamples >> releaseWorkflowForHeadCommitChild [
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| release exportWorkflow |
 	release := self releaseWithHeadCommitChildRepository.
 	exportWorkflow := GtRlReleaserExportWorkflow new
@@ -368,7 +368,7 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseWorkflowForHeadCommitChild [
 { #category : #'examples - workflows' }
 GtRlDedicatedBranchRootReleaseExamples >> releaseWorkflowForHeadCommitChildWithNewCommit [
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| release exportWorkflow |
 	release := self releaseWithHeadCommitChildRepositoryWithNewCommit.
 	exportWorkflow := GtRlReleaserExportWorkflow new
@@ -393,7 +393,7 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseWorkflowForHeadCommitChildWithN
 { #category : #'examples - workflows' }
 GtRlDedicatedBranchRootReleaseExamples >> releaseWorkflowForInitialVersionInMultipleRepositories [
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| release exportWorkflow |
 	release := self releaseForFourRepositoriesWithNoVersionAndNoNewChanges.
 	exportWorkflow := GtRlReleaserExportWorkflow new
@@ -419,7 +419,7 @@ GtRlDedicatedBranchRootReleaseExamples >> releaseWorkflowForInitialVersionInMult
 { #category : #'examples - workflows' }
 GtRlDedicatedBranchRootReleaseExamples >> releaseWorkflowForMultipleRepositoriesWithNewCommit [
 	<gtExample>
-	<return: #RPackageConflictError>
+	<return: #PackageConflictError>
 	| release exportWorkflow |
 	release := self releaseForFourRepositoriesWithNewCommit.
 	exportWorkflow := GtRlReleaserExportWorkflow new
