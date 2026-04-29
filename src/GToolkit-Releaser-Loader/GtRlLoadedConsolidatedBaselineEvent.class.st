@@ -102,7 +102,7 @@ GtRlLoadedConsolidatedBaselineEvent >> gtBarElementsWithGlobalWeight: aWeight lo
 						layout: BlLinearLayout horizontal;
 						constraintsDo: [ :c |
 							c horizontal matchParent.
-							c vertical exact: 20 ];
+							c vertical exact: 40 ];
 						when: BlClickEvent
 						do: [ :anEvent |
 							anEvent consumed: true.
@@ -127,14 +127,14 @@ GtRlLoadedConsolidatedBaselineEvent >> gtBarElementsWithGlobalWeight: aWeight lo
 				anEvent currentTarget phlow spawnObject: self ];
 			constraintsDo: [ :c |
 				c horizontal matchParent.
-				c vertical exact: 20 ];
-			padding: (BlInsets top: 3 bottom: 3);
+				c vertical exact: 40 ];
+			padding: (BlInsets top: 10 bottom: 10);
 			geometry: (BlRoundedRectangleGeometry cornerRadius: 3);
 			border: (BlBorder paint: Color transparent width: 0.25);
 			background: aBarColor;
 			in: [ :aPane | aWeight > 0.005
 				ifTrue: [ aPane addChild: (BrLabel new
-					aptitude: (BrGlamorousLabelAptitude new fontSize: 10);
+					aptitude: (BrGlamorousLabelAptitude new fontSize: 10; foreground: Color white);
 					text: self description) asScalableElement ] ];
 			yourself);
 		addChild: (BlElement new
