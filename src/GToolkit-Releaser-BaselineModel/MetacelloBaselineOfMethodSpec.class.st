@@ -28,7 +28,6 @@ MetacelloBaselineOfMethodSpec >> methodSource [
         cr.
       methodSection versionSpec
         configMethodOn: strm
-        last: methodSection methodSections isEmpty
         indent: indent + 1 ]
     last: false
     post: [ :methodSection :indent :last | 
