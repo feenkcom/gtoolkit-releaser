@@ -191,7 +191,7 @@ BaselineOfGToolkitReleaser >> baseline: spec [
 		spec 
 			baseline: 'DeepTraverser' with: [
 				spec repository: 'github://feenkcom/DeepTraverser:main/src' ]; 
-			baseline: 'Beacon' with: [
+			baseline: 'BeaconForGlamorousToolkit' with: [
 				spec repository: 'github://feenkcom/pharo-beacon/repository' ].
 		spec 
 			package: 'GToolkit-PharoMigrations';
