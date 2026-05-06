@@ -208,7 +208,7 @@ BaselineOfGToolkitReleaser >> baseline: spec [
 			package: 'GToolkit-Releaser-Loader' with: [
 				spec requires: #('GToolkit-Releaser-Cloner' ). ];
 			package: 'GToolkit-Releaser-Logging' with: [
-				spec requires: #('Beacon' ). ];
+				spec requires: #('BeaconForGlamorousToolkit' ). ];
 			package: 'GToolkit-Releaser-Jenkins';
 			package: 'GToolkit-Releaser-BaselineModel-SystemOneExamples';
 			package: 'GToolkit-Releaser-BaselineModel-SystemThreeExamples';
@@ -221,6 +221,6 @@ BaselineOfGToolkitReleaser >> baseline: spec [
 			package: 'GToolkit-Releaser-Examples' with: [
 				spec requires: #('GToolkit-Releaser' 'GToolkit-Releaser-IcebergExtensions' 'GToolkit-Releaser-BaselineModel-Examples' ). ];
 			package: 'GToolkit-Releaser-Support' with: [ 
-				spec requires: #('Beacon' 'GToolkit-Releaser' ) ]. ].
+				spec requires: #('BeaconForGlamorousToolkit' 'GToolkit-Releaser' ) ]. ].
 
 ]
