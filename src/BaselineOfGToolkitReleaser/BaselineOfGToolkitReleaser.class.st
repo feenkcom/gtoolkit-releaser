@@ -191,7 +191,7 @@ BaselineOfGToolkitReleaser >> baseline: spec [
 		spec 
 			baseline: 'DeepTraverser' with: [
 				spec repository: 'github://feenkcom/DeepTraverser:main/src' ]; 
-			baseline: 'BeaconForGlamorousToolkit' with: [
+			baseline: 'Beacon' with: [
 				spec repository: 'github://feenkcom/pharo-beacon/repository' ].
 		spec 
 			package: 'GToolkit-PharoMigrations';
@@ -208,7 +208,7 @@ BaselineOfGToolkitReleaser >> baseline: spec [
 			package: 'GToolkit-Releaser-Loader' with: [
 				spec requires: #('GToolkit-Releaser-Cloner' ). ];
 			package: 'GToolkit-Releaser-Logging' with: [
-				spec requires: #('BeaconForGlamorousToolkit' ). ];
+				spec requires: #('Beacon' ). ];
 			package: 'GToolkit-Releaser-Jenkins';
 			package: 'GToolkit-Releaser-BaselineModel-SystemOneExamples';
 			package: 'GToolkit-Releaser-BaselineModel-SystemThreeExamples';
@@ -221,6 +221,6 @@ BaselineOfGToolkitReleaser >> baseline: spec [
 			package: 'GToolkit-Releaser-Examples' with: [
 				spec requires: #('GToolkit-Releaser' 'GToolkit-Releaser-IcebergExtensions' 'GToolkit-Releaser-BaselineModel-Examples' ). ];
 			package: 'GToolkit-Releaser-Support' with: [ 
-				spec requires: #('BeaconForGlamorousToolkit' 'GToolkit-Releaser' ) ]. ].
+				spec requires: #('Beacon' 'GToolkit-Releaser' ) ]. ].
 
 ]
