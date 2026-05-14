@@ -626,7 +626,7 @@ GtRlChecksRunner >> runUiProcessFailures: aTaskFinishedAnnouncement [
 					to: self.
 				enqueueSubmitCount := enqueueSubmitCount + 1.
 				BlTaskAction
-					enqueueElement: (GtWorld allInstances detect: #isOpened)
+					enqueueElement: (GtWorld defaultWorld)
 					action: [
 						enqueueRunCount := enqueueRunCount + 1.
 						Stdio stdout
