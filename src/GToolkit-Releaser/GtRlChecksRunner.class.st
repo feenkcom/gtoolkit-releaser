@@ -531,12 +531,8 @@ GtRlChecksRunner >> notFinished [
 
 { #category : #accessing }
 GtRlChecksRunner >> notFinishedCount [
-	| checkNames completedNames |
 
-	checkNames := self checkNames asSet.
-	completedNames := jobs do: [ :job |
-		job results ].
-	^ checkNames difference: completedNames
+	^ self notFinished size
 ]
 
 { #category : #running }
