@@ -524,7 +524,7 @@ GtRlChecksRunner >> notFinished [
 	checkNames := self checkNames asSet.
 	jobs do: [ :job |
 		job results do: [ :task | 
-			task result do: [ :pharoLinkResult | 
+			(task result ifNil: [ #() ]) do: [ :pharoLinkResult | 
 				checkNames remove: pharoLinkResult checkName ifAbsent: [] ] ] ].
 	^ checkNames
 ]
