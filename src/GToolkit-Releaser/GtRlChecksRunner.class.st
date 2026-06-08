@@ -685,16 +685,18 @@ GtRlChecksRunner >> startInitialJob: aGtRrChecksJob [
 { #category : #private }
 GtRlChecksRunner >> startRunners [
 	"Start the headless and in-image runners and workers"
-
+	| manager |
+	
 	self workerRunner 
 		startLogging;
 		moveLoggingTo: self newLogBasename;
 		start.
 
 	inImageRunner := GtRemoteRunner new.
-	inImageRunner managerStartupAndShutdown
-		poolSize: 0;
-		startInImageWorker.
+	inImageRunner port: #none.
+	manager := inImageRunner managerStartupAndShutdown.
+	inImageRunner start.
+	manager startInImageWorker.
 
 	self loadSchedulingTimes.
 ]
