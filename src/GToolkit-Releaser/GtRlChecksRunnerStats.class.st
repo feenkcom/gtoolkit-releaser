@@ -219,7 +219,7 @@ GtRlChecksRunnerStats >> summaryAttributes [
 			[ rlRunner errorResults ]. }.
 		{ 'Skipped'. skipped. }.
 		{ 'Warning'. warning. }.
-		{ 'Not Counted'. self notCounted. }.
+		{ 'Not Counted'. self notCounted. [ rlRunner notFinished ]. }.
 		{ 'Total'. total. }.
 		}
 ]
