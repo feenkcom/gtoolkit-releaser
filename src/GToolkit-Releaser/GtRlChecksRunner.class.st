@@ -341,6 +341,7 @@ GtRlChecksRunner >> gemstoneRemoteExamples [
 	"Run the examples from GToolkit-RemoteExamples-GemStone."
 
 	self workerRunner managerStartupAndShutdown poolSize: 3.
+	self retryStrategy: GtRlChecksRunnerWorkerOnlyRetryStrategy new.
 	^ self checksFactory: self class gemstoneRemoteExamplesFactory.
 ]
 
