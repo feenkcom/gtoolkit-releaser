@@ -37,23 +37,22 @@ GtRlChecksRunner class >> dedicatedReleaseBranchExamples [
 { #category : #'instance creation' }
 GtRlChecksRunner class >> dedicatedReleaseBranchExamplesFactory [
 	"Answer a GtRrChecksFactory with the dedicatedReleaseBranch examples"
-	| examples baselineProject packages allPackageNames factory |
 
+	| examples baselineProject packages allPackageNames factory |
 	baselineProject := BaselineOfGToolkit fullBaselineProject.
-	packages := baselineProject withAllContainedRPackagesSelect: [ :aPackage | 
-		aPackage gtExamplesAllContained isNotEmpty ].
+	packages := baselineProject
+			withAllContainedRPackagesSelect: [ :aPackage | aPackage gtExamplesAllContained isNotEmpty ].
 
 	allPackageNames := packages collect: [ :aPackage | aPackage name ].
-	allPackageNames := allPackageNames difference: self defaultSkippedPackageNames.
+	allPackageNames := allPackageNames difference: self defaultSkippedPackageNames.	"allPackageNames := allPackageNames first: 100."
 
-	"allPackageNames := allPackageNames first: 100."
-
-	examples := allPackageNames flatCollect: [ :pName | 
-		(self class packageOrganizer packageNamed: pName) gtExamplesAllContained ].
+	examples := allPackageNames
+			flatCollect: [ :pName | (self class packageOrganizer packageNamed: pName) gtExamplesAllContained ].
 
 	factory := GtRrChecksFactory new.
-	factory addExampleTestNames: 
-		(examples collect: [ :each | each providerClass name asSymbol -> each selector asSymbol ]).
+	factory
+		addExampleTestNames: (examples
+				collect: [ :each | each receiverClass name asSymbol -> each selector asSymbol ]).
 	^ factory
 ]
 
