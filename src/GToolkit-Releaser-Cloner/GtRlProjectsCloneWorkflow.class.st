@@ -32,7 +32,7 @@ GtRlProjectsCloneWorkflow >> createBaselineProjectForPackage: baselinePackage fr
 
 { #category : #testing }
 GtRlProjectsCloneWorkflow >> defaultBranchName [
-	^ 'master'
+	^ 'main'
 ]
 
 { #category : #logging }
