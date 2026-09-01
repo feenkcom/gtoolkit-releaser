@@ -441,7 +441,7 @@ GtRlProject >> propertyAt: propertyName ifAbsent: aBlock [
 GtRlProject >> propertyAt: propertyName put: propValue [
 	^ self properties
 		at: propertyName
-		ifAbsentPut: propValue
+		put: propValue
 ]
 
 { #category : #accessing }
