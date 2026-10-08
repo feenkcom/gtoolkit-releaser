@@ -1512,10 +1512,7 @@ MetacelloToolBox >> baselineNamed: baseName [
 				superclass: BaselineOf;
 				package: baselineName].
 
-     self 
-     	forPharo12AndNewer: [ self class packageOrganizer ensurePackage: baselineName ] 
-     	forPharo11: [ 
-     		MetacelloPlatform current registerPackageNamed: baselineName ].
+     self class packageOrganizer ensurePackage: baselineName.
      
       (Smalltalk at: baselineName asSymbol)
         compile: 'baseline: spec <baseline>'

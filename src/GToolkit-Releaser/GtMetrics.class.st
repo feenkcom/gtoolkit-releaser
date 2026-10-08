@@ -262,23 +262,15 @@ GtMetrics >> pharoToReplaceMethods [
 GtMetrics >> pharoToReplaceProjects [
 	| projects baselines |
 	"Projects picked manually by inspecting BaselineOfIDE"
-	baselines := self
-			forPharo12AndNewer: {BaselineOfBasicTools.
+	baselines := {BaselineOfBasicTools.
 					BaselineOfDrTests.
 					BaselineOfHeuristicCompletion.
 					BaselineOfShout.
 					BaselineOfCalypso.
-					BaselineOfWelcomeBrowser.
 					BaselineOfNewToolsDocumentBrowser.
 					BaselineOfQA.
 					BaselineOfOSWindow.
 					BaselineOfNewTools.
-					BaselineOfSpec2}
-			forPharo11: {BaselineOfBasicTools.
-					BaselineOfShout.
-					BaselineOfCalypso.
-					BaselineOfQA.
-					BaselineOfOSWindow.
 					BaselineOfSpec2}.
 	projects := baselines flatCollect: [ :class | class withAllContainedProjects ].
 	self assert: projects notEmpty.
