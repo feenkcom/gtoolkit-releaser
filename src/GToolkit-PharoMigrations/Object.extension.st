@@ -35,7 +35,7 @@ Object >> forPharo13AndNewer: pharo13OrNewerBlock forOlder: pharo12AndOlder [
 ]
 
 { #category : #'*GToolkit-PharoMigrations' }
-Object >> forPharo13AndNewer: pharo13OrNewerBlock forPharo12: pharo12Block forPharo11: pharo11Block [
+Object >> forPharo13AndNewer: pharo13OrNewerBlock forPharo12: pharo12Block [ 
 	"Evaluate one of the blocks based on the pharo's major version"
 	| unsupportedVersionBlock |
 	
@@ -46,13 +46,13 @@ Object >> forPharo13AndNewer: pharo13OrNewerBlock forPharo12: pharo12Block forPh
 		forPharo14: pharo13OrNewerBlock 
 		forPharo13: pharo13OrNewerBlock
 		forPharo12: pharo12Block 
-		forPharo11: pharo11Block
+		forPharo11: unsupportedVersionBlock
 		newer: pharo13OrNewerBlock
 		older: unsupportedVersionBlock
 ]
 
 { #category : #'*GToolkit-PharoMigrations' }
-Object >> forPharo14: pharo14Block forPharo13: pharo13Block forPharo12: pharo12Block forPharo11: pharo11Block [
+Object >> forPharo14: pharo14Block forPharo13: pharo13Block forPharo12: pharo12Block [ 
 	"Evaluate one of the blocks based on the pharo's major version"
 	| unsupportedVersionBlock |
 	
@@ -63,7 +63,7 @@ Object >> forPharo14: pharo14Block forPharo13: pharo13Block forPharo12: pharo12B
 		forPharo14: pharo14Block 
 		forPharo13: pharo13Block
 		forPharo12: pharo12Block 
-		forPharo11: pharo11Block
+		forPharo11: unsupportedVersionBlock
 		newer: unsupportedVersionBlock
 		older: unsupportedVersionBlock
 ]
