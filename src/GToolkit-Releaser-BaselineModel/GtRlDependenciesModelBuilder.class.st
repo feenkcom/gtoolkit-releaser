@@ -54,12 +54,8 @@ GtRlDependenciesModelBuilder >> buildProjectFromBaselineClass: aBaselineClass wi
 GtRlDependenciesModelBuilder >> buildProjectFromMetacelloSpec: aMetacelloProjectSpec [
 	| targetVersions newProject |
 	
-	targetVersions := self 
-		forPharo12AndNewer: [ 
-			(aMetacelloProjectSpec className asClassInEnvironment:
-		         self class environment) project versions.] 
-		forPharo11: [ 
-			aMetacelloProjectSpec project versions ].
+	targetVersions := (aMetacelloProjectSpec className 
+		asClassInEnvironment: self class environment) project versions.
 	 
 	self assert: [ targetVersions size = 1 ].
 	self assert: [ aMetacelloProjectSpec repositorySpecs size = 1 ].
@@ -74,9 +70,7 @@ GtRlDependenciesModelBuilder >> buildProjectFromMetacelloSpec: aMetacelloProject
 			  
 	"If this is the first time the project is encountered, create it and initalize its dependencies"
 	newProject := self instantiateProjectFromMetacelloSpec: aMetacelloProjectSpec.
-	self updateDependenciesFor: newProject fromMCVersion: (self 
-		forPharo12AndNewer: [ targetVersions first ] 
-		forPharo11: [ aMetacelloProjectSpec version ] ).
+	self updateDependenciesFor: newProject fromMCVersion: targetVersions first.
 	
 	"Only add the project to the "
 	self projectsByBaselineClass
@@ -121,9 +115,7 @@ GtRlDependenciesModelBuilder >> instantiatePackageFromMetacelloSpec: aMetacelloP
 { #category : #'private - building' }
 GtRlDependenciesModelBuilder >> instantiateProjectFromMetacelloSpec: aBaselineProjectSpec [
 	| repositoriesSpec project |
-	repositoriesSpec := self 
-		forPharo12AndNewer: [ aBaselineProjectSpec repositories ] 
-		forPharo11: [ aBaselineProjectSpec version spec repositories ].
+	repositoriesSpec := aBaselineProjectSpec repositories.
 
 	self assert: [ repositoriesSpec map size = 1 ].
 	
@@ -132,13 +124,8 @@ GtRlDependenciesModelBuilder >> instantiateProjectFromMetacelloSpec: aBaselinePr
 		baselineClass: aBaselineProjectSpec projectClass;
 		linkWithRepository: (self ensureRepositoriesFor: repositoriesSpec map values first description).
 		
-	self 
-		forPharo12AndNewer: [ 
-			project baselineVersion: (aBaselineProjectSpec className
-				asClassInEnvironment:
-		        	self class environment) project versions first ] 
-		forPharo11: [ 
-			project baselineVersion: aBaselineProjectSpec version ].
+	project baselineVersion: (aBaselineProjectSpec className
+		asClassInEnvironment: self class environment) project versions first.
 	
 	^ project
 ]
