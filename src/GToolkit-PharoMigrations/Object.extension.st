@@ -86,3 +86,20 @@ Object >> forPharo14: pharo14Block forPharo13: pharo13Block forPharo12: pharo12B
 
 	^ olderBlock value
 ]
+
+{ #category : #'*GToolkit-PharoMigrations' }
+Object >> forPharo14AndNewer: pharo14OrNewerBlock forPharo13: pharo13Block [ 
+	"Evaluate one of the blocks based on the pharo's major version"
+	| unsupportedVersionBlock |
+	
+	unsupportedVersionBlock := [
+		self error: 'Unsupported pharo version: ',SystemVersion current major asString ].
+	
+	^ self
+		forPharo14: pharo14OrNewerBlock 
+		forPharo13: pharo13Block
+		forPharo12: unsupportedVersionBlock 
+		forPharo11: unsupportedVersionBlock
+		newer: pharo14OrNewerBlock
+		older: unsupportedVersionBlock
+]
