@@ -12,7 +12,6 @@ Object >> forPharo12AndNewer: pharo12OrNewerBlock forPharo11: pharo11Block [
 		forPharo14: pharo12OrNewerBlock 
 		forPharo13: pharo12OrNewerBlock
 		forPharo12: pharo12OrNewerBlock 
-		forPharo11: pharo11Block
 		newer: pharo12OrNewerBlock
 		older: unsupportedVersionBlock
 ]
@@ -29,7 +28,6 @@ Object >> forPharo13AndNewer: pharo13OrNewerBlock forOlder: pharo12AndOlder [
 		forPharo14: pharo13OrNewerBlock 
 		forPharo13: pharo13OrNewerBlock
 		forPharo12: pharo12AndOlder 
-		forPharo11: pharo12AndOlder
 		newer: pharo13OrNewerBlock
 		older: pharo12AndOlder
 ]
@@ -46,7 +44,6 @@ Object >> forPharo13AndNewer: pharo13OrNewerBlock forPharo12: pharo12Block [
 		forPharo14: pharo13OrNewerBlock 
 		forPharo13: pharo13OrNewerBlock
 		forPharo12: pharo12Block 
-		forPharo11: unsupportedVersionBlock
 		newer: pharo13OrNewerBlock
 		older: unsupportedVersionBlock
 ]
@@ -63,13 +60,12 @@ Object >> forPharo14: pharo14Block forPharo13: pharo13Block forPharo12: pharo12B
 		forPharo14: pharo14Block 
 		forPharo13: pharo13Block
 		forPharo12: pharo12Block 
-		forPharo11: unsupportedVersionBlock
 		newer: unsupportedVersionBlock
 		older: unsupportedVersionBlock
 ]
 
 { #category : #'*GToolkit-PharoMigrations' }
-Object >> forPharo14: pharo14Block forPharo13: pharo13Block forPharo12: pharo12Block forPharo11: pharo11Block  newer: newerBlock older: olderBlock [
+Object >> forPharo14: pharo14Block forPharo13: pharo13Block forPharo12: pharo12Block newer: newerBlock older: olderBlock [
 	"Evaluate one of the blocks based on the pharo's major version"
 	
 	SystemVersion current major > 14
@@ -81,8 +77,6 @@ Object >> forPharo14: pharo14Block forPharo13: pharo13Block forPharo12: pharo12B
 		ifTrue: [ ^ pharo13Block value ].
 	SystemVersion current major = 12
 		ifTrue: [ ^ pharo12Block value ].
-	SystemVersion current major = 11
-		ifTrue: [ ^ pharo11Block value ].
 
 	^ olderBlock value
 ]
@@ -99,7 +93,6 @@ Object >> forPharo14AndNewer: pharo14OrNewerBlock forPharo13: pharo13Block [
 		forPharo14: pharo14OrNewerBlock 
 		forPharo13: pharo13Block
 		forPharo12: unsupportedVersionBlock 
-		forPharo11: unsupportedVersionBlock
 		newer: pharo14OrNewerBlock
 		older: unsupportedVersionBlock
 ]
