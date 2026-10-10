@@ -196,18 +196,15 @@ GtRlDependenciesModelBuilder >> updateProjectDependenciesFor: currentProject fro
 	| projectReferences |
 	projectReferences := (aMetacelloVersion projects
 			select: [ :aMetacelloProjectSpec | 
-				| targetVersion shouldKeep |
-				targetVersion := self
-						forPharo12AndNewer: [ | class |
-							class := aMetacelloProjectSpec className
-									asClassInEnvironment: self class environment
-									ifAbsent: [ nil ].
-							"we check here in case we have a BaselineOfX reference for which the class is not yet in the image"
-							class
-								ifNotNil: [  :c | c project versions first ] ]
-						forPharo11: [ aMetacelloProjectSpec version ].
+				| targetVersion shouldKeep  class|
+				class := aMetacelloProjectSpec className
+						asClassInEnvironment: self class environment
+						ifAbsent: [ nil ].
+				"we check here in case we have a BaselineOfX reference for which the class is not yet in the image"
+					targetVersion := class
+								ifNotNil: [  :c | c project versions first ].
+								
 				shouldKeep := targetVersion notNil and: [ targetVersion name = 'baseline' ].
-
 				shouldKeep
 					ifFalse: [ StringSignal
 							emit: 'Ignoring dependency ' , aMetacelloProjectSpec className , ' of '

@@ -127,8 +127,7 @@ GtRlProjectsCloneWorkflow >> ensureRepositoryCloneFor: aRepositoryLocationString
 				ifFalse: [ 
 					mcRepository repository 
 						switchToCommitishNamed: mcRepository projectVersion ] ] 
-		forPharo12: [] 
-		forPharo11: [].
+		forPharo12: [] .
 	self ensureRepositoryRegisteredFor: aRepositoryLocationString.
 	
 	^ mcRepository repository
