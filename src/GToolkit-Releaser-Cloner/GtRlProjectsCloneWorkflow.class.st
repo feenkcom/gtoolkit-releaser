@@ -221,20 +221,20 @@ GtRlProjectsCloneWorkflow >> isBaselineNamedAlreadyLoadedForSpec: aBaselineSpec 
 { #category : #loading }
 GtRlProjectsCloneWorkflow >> loadBaselinePackageForSpec: aBaselineSpec [
 	| icebergRepository icebergPackage baselineClassName |
-	baselineClassName := MetacelloScriptEngine 
-		baselineNameFrom: aBaselineSpec baselineName.
-	
-	icebergRepository := self ensureRepositoryCloneFor: aBaselineSpec repositoryLocation.
-	(icebergRepository workingCopy packageNames 
-		includes: baselineClassName)
-			ifFalse: [ Error signal: 'Cannot find baseline package ', baselineClassName ].
-	
+	baselineClassName := (aBaselineSpec baselineName indexOfSubCollection: 'BaselineOf') > 0
+			ifTrue: [ aBaselineSpec baselineName ]
+			ifFalse: [ 'BaselineOf' , aBaselineSpec baselineName ].
+
+	icebergRepository := self
+			ensureRepositoryCloneFor: aBaselineSpec repositoryLocation.
+	(icebergRepository workingCopy packageNames includes: baselineClassName)
+		ifFalse: [ Error signal: 'Cannot find baseline package ' , baselineClassName ].
+
 	self emitPackageLoadForSpec: aBaselineSpec.
 	icebergPackage := icebergRepository workingCopy packageNamed: baselineClassName.
 	icebergPackage load.
-	
-	^ self class packageOrganizer
-		packageNamed: icebergPackage name
+
+	^ self class packageOrganizer packageNamed: icebergPackage name
 ]
 
 { #category : #loading }

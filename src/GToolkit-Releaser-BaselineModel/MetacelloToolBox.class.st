@@ -31,7 +31,9 @@ MetacelloToolBox class >> baselineNameFrom: baseName [
   "Return the fully-qualified baseline class name."
 
   <apiDocumentation>
-  ^ MetacelloScriptEngine baselineNameFrom: baseName
+  ^ (baseName indexOfSubCollection: 'BaselineOf') > 0
+        ifTrue: [ baseName ]
+        ifFalse: [ 'BaselineOf' , baseName ]
 ]
 
 { #category : #'instance creation' }

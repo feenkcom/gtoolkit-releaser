@@ -35,9 +35,17 @@ GtRlDependenciesModelBuilder >> assertBaselineMethodIn: aBaselineClass [
 { #category : #building }
 GtRlDependenciesModelBuilder >> buildProjectFromBaselineClass: aBaselineClass withRepositoryDescription: aRepositoryUrl [
 	| newProject mcVersion |
-	self assert: [ aBaselineClass project versions size = 1 ].
 	
-	mcVersion := aBaselineClass project versions first.
+	self 
+		forPharo14AndNewer: [
+			mcVersion := aBaselineClass project version ] 
+		forPharo13: [
+			self assert: [ aBaselineClass project versions size = 1 ].
+			mcVersion := aBaselineClass project versions first.].
+	
+	"In Pharo 14 'aBaselineClass project version' returns a MetacelloVersionSpec instead
+	of a MetacelloVersion. We should replace #baselineVersion: with baselineVersionSpec:
+	in Pharo 14"
 	newProject := GtRlProject new
 		name: (MetacelloScriptEngine baseNameOf: aBaselineClass name); 
 		baselineVersion: mcVersion;
