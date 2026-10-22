@@ -66,6 +66,7 @@ GtRlChecksRunner class >> defaultSkippedPackageNames [
 	'PythonBridge-Pharo'
 	'GToolkit-Editor'
 	'GToolkit-Pharo-Coder-Examples-RustEditor'
+	'GToolkit4PetitParser2-RustEditor'
 	)
 ]
 
