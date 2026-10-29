@@ -67,6 +67,7 @@ GtRlChecksRunner class >> defaultSkippedPackageNames [
 	'GToolkit-Editor'
 	'GToolkit-Pharo-Coder-Examples-RustEditor'
 	'GToolkit4PetitParser2-RustEditor'
+	'Gt4CSS-Examples-RustEditor'
 	)
 ]
 
