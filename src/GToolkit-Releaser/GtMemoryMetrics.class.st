@@ -304,6 +304,20 @@ GtMemoryMetrics class >> totalImageSizeInMemory [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics class >> totalLepiterDatabasesIndexSize [
+	<gtExample>
+	<noTest>
+	^ self default totalLepiterDatabasesIndexSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalLepiterGtBookIndexSize [
+	<gtExample>
+	<noTest>
+	^ self default totalLepiterGtBookIndexSize
+]
+
+{ #category : #metrics }
 GtMemoryMetrics class >> totalMethodDictionaryBasicSize [
 	<gtExample>
 	<noTest>
@@ -533,6 +547,33 @@ GtMemoryMetrics >> computeClassesInstanceSideSubclassesSize [
 	 			(aClass instanceSide instVarNamed: #subclasses)
 	 			ifNil: [ 0 ] 
 	 			ifNotNil: [ :each | each sizeInMemory ] ]
+]
+
+{ #category : #utils }
+GtMemoryMetrics >> computeLepiterDatabasesIndexSize [
+	"All databases of the default logical database, including the ones loaded at startup"
+
+	| aLogicalDatabase |
+	aLogicalDatabase := LeDatabasesRegistry default
+			currentLoadedDefaultLogicalDatabase.
+	aLogicalDatabase ifNil: [ ^ 0 ].
+
+	^ aLogicalDatabase databases
+		sumNumbers: [ :aDatabase | aDatabase indexSizeInMemory ]
+]
+
+{ #category : #utils }
+GtMemoryMetrics >> computeLepiterGtBookIndexSize [
+	"The GT Book is the only Lepiter database saved in the image"
+
+	| aLogicalDatabase |
+	aLogicalDatabase := LeDatabasesRegistry default
+			currentLoadedDefaultLogicalDatabase.
+	aLogicalDatabase ifNil: [ ^ 0 ].
+
+	^ (aLogicalDatabase databaseNamed: LeDatabase gtBookName ifNone: [ nil ])
+		ifNil: [ 0 ]
+		ifNotNil: [ :aDatabase | aDatabase indexSizeInMemory ]
 ]
 
 { #category : #utils }
@@ -782,13 +823,9 @@ GtMemoryMetrics >> totalClassesSize [
 
 { #category : #metrics }
 GtMemoryMetrics >> totalCodeAnalysedSize [
-	
-	^ self totalClassesSize 
-		+ self totalMethodsSize 
-		+ self totalSymbolsSize 
-		+ self totalPragmasCacheSize
-		+ self totalCompleterCacheSize
-		+ self navigationEnvironmentSize
+	^ self totalClassesSize + self totalMethodsSize + self totalSymbolsSize
+		+ self totalPragmasCacheSize + self totalCompleterCacheSize
+		+ self totalLepiterGtBookIndexSize + self navigationEnvironmentSize
 		+ self totalPackagesSize
 ]
 
@@ -861,6 +898,20 @@ GtMemoryMetrics >> totalImageSizeInMemory [
 			aVirtualMachine := Smalltalk vm.
 			aVirtualMachine oldSpace - aVirtualMachine freeOldSpaceSize
 				+ aVirtualMachine youngSpaceSize ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalLepiterDatabasesIndexSize [
+	^ self
+		cacheAt: #totalLepiterDatabasesIndexSize
+		ifAbsentPut: [ self computeLepiterDatabasesIndexSize ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalLepiterGtBookIndexSize [
+	^ self
+		cacheAt: #totalLepiterGtBookIndexSize
+		ifAbsentPut: [ self computeLepiterGtBookIndexSize ]
 ]
 
 { #category : #metrics }
