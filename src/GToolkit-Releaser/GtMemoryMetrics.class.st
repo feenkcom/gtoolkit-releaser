@@ -30,6 +30,26 @@ GtMemoryMetrics class >> reset [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics class >> totalAnalysedSize [
+	"Code-related entities and the GT Book database.
+	The index of the GT Book is part of both, so we count it once."
+
+	<gtExample>
+	<noTest>
+	^ self default totalCodeAnalysedSize + GtLepiterMemoryMetrics totalGtBookSize
+		- self default totalLepiterGtBookIndexSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalChangesFileSize [
+	"The changes file contains the source code of methods changed or added after the sources file"
+
+	<gtExample>
+	<noTest>
+	^ Smalltalk changesName asFileReference size
+]
+
+{ #category : #metrics }
 GtMemoryMetrics class >> totalClassesBasicSize [
 	<gtExample>
 	<noTest>
@@ -278,6 +298,22 @@ GtMemoryMetrics class >> totalCompleterCacheSize [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics class >> totalEdenSize [
+	"The eden of the new space, where new objects are allocated"
+
+	<gtExample>
+	<noTest>
+	^ Smalltalk vm edenSpaceSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalFreeOldSpaceSize [
+	<gtExample>
+	<noTest>
+	^ Smalltalk vm freeOldSpaceSize
+]
+
+{ #category : #metrics }
 GtMemoryMetrics class >> totalHeapSize [
 	"The current size of the heap. Besides the objects saved in the image, 
 	it also includes free space and objects created by the UI and the user."
@@ -372,6 +408,25 @@ GtMemoryMetrics class >> totalMethodsSize [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics class >> totalNotAnalysedSize [
+	"The part of the image in memory that is not analysed: global state of the system 
+	(for example fonts and caches), objects created by the UI and the user, and other databases"
+
+	<gtExample>
+	<noTest>
+	^ self totalImageSizeInMemory - self totalAnalysedSize max: 0
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalOldSpaceSize [
+	"The old space of the heap, including its free space"
+
+	<gtExample>
+	<noTest>
+	^ Smalltalk vm oldSpace
+]
+
+{ #category : #metrics }
 GtMemoryMetrics class >> totalPackagesSize [
 	<gtExample>
 	<noTest>
@@ -385,6 +440,15 @@ GtMemoryMetrics class >> totalPragmasCacheSize [
 	<noTest>
 	
 	^ self default totalPragmasCacheSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalSourcesFileSize [
+	"The sources file contains the source code of methods of the base system"
+
+	<gtExample>
+	<noTest>
+	^ Smalltalk sourcesName asFileReference size
 ]
 
 { #category : #metrics }
