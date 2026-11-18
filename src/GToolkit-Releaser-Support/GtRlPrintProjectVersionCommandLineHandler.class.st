@@ -51,6 +51,6 @@ GtRlPrintProjectVersionCommandLineHandler >> projectVersionString [
 
 	<return: #String>
 	^ GtImage instance projectVersion
-		ifNotNil: #versionString
+		ifNotNil: [ :v | v versionString ]
 		ifNil: [ '<no version>' ]
 ]
