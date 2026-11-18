@@ -38,7 +38,7 @@ GtRlSystemFiveGeneratedModelExamples >> componentAReferenceNode [
 
 			self
 				assert: projectReference name
-				equals: 'GtRlBaselineExampleSystemFiveComponentA'.
+				equals: #GtRlBaselineExampleSystemFiveComponentA.
 			self assert: projectReference parentProject equals: project.
 
 			theReferenceComponentANode := projectReference ]
@@ -74,7 +74,7 @@ GtRlSystemFiveGeneratedModelExamples >> componentBReferenceNode [
 
 			self
 				assert: projectReference name
-				equals: 'GtRlBaselineExampleSystemFiveComponentB'.
+				equals: #GtRlBaselineExampleSystemFiveComponentB.
 			self assert: projectReference parentProject equals: project.
 
 			theReferenceComponentBNode := projectReference ]
@@ -108,7 +108,7 @@ GtRlSystemFiveGeneratedModelExamples >> packageANode [
 		ifNil: [ project := self systemProject.
 			package := project packages first.
 
-			self assert: package name equals: 'PackageA'.
+			self assert: package name equals: #PackageA.
 			self assert: package parentProject equals: project.
 
 			thePackageANode := package ]
@@ -142,7 +142,7 @@ GtRlSystemFiveGeneratedModelExamples >> packageBNode [
 		ifNil: [ project := self systemProject.
 			package := project packages second.
 
-			self assert: package name equals: 'PackageB'.
+			self assert: package name equals: #PackageB.
 			self assert: package parentProject equals: project.
 
 			thePackageBNode := package ]
@@ -176,7 +176,7 @@ GtRlSystemFiveGeneratedModelExamples >> packageCNode [
 		ifNil: [ project := self systemProject.
 			package := project packages third.
 
-			self assert: package name equals: 'PackageC'.
+			self assert: package name equals: #PackageC.
 			self assert: package parentProject equals: project.
 
 			thePackageCNode := package ]

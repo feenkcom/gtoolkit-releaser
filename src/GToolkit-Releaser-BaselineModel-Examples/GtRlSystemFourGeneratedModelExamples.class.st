@@ -49,7 +49,7 @@ GtRlSystemFourGeneratedModelExamples >> packageAMainNode [
 		ifNil: [ project := self systemProject.
 			package := project packages first.
 
-			self assert: package name equals: 'PackageAMain'.
+			self assert: package name equals: #PackageAMain.
 			self assert: package parentProject equals: project.
 
 			thePackageAMainNode := package ]
@@ -93,7 +93,7 @@ GtRlSystemFourGeneratedModelExamples >> packageAPart1Node [
 		ifNil: [ project := self systemProject.
 			package := project packages fourth.
 
-			self assert: package name equals: 'PackageA-Part1'.
+			self assert: package name equals: #'PackageA-Part1'.
 			self assert: package parentProject equals: project.
 
 			thePackageAPart1Node := package ]
@@ -108,7 +108,7 @@ GtRlSystemFourGeneratedModelExamples >> packageATestNode [
 		ifNil: [ project := self systemProject.
 			package := project packages fifth.
 
-			self assert: package name equals: 'PackageA-Test'.
+			self assert: package name equals: #'PackageA-Test'.
 			self assert: package parentProject equals: project.
 
 			thePackageTestNode := package ]
@@ -124,7 +124,7 @@ GtRlSystemFourGeneratedModelExamples >> systemHasCorrectPackages [
 	self assert: project packages size equals: 5.
 	self
 		assert: (project packages collect: #name) asArray
-		equals: #('PackageAMain' 'PackageB' 'PackageB-Tests' 'PackageA-Part1' 'PackageA-Test').
+		equals: #(#PackageAMain #PackageB #'PackageB-Tests' #'PackageA-Part1' #'PackageA-Test').
 	^ project
 ]
 

@@ -142,7 +142,7 @@ GtRlPackageExamples >> packageWithName [
 	| package |
 	package := GtRlPackage new name: 'Package-Main'.
 
-	self assert: package name equals: 'Package-Main'.
+	self assert: package name equals: #'Package-Main'.
 
 	^ package
 ]
