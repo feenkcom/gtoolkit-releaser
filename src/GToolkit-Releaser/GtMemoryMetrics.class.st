@@ -30,6 +30,15 @@ GtMemoryMetrics class >> reset [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics class >> totalChangesFileSize [
+	"The changes file contains the source code of methods changed or added after the sources file"
+
+	<gtExample>
+	<noTest>
+	^ Smalltalk changesName asFileReference size
+]
+
+{ #category : #metrics }
 GtMemoryMetrics class >> totalClassesBasicSize [
 	<gtExample>
 	<noTest>
@@ -278,11 +287,59 @@ GtMemoryMetrics class >> totalCompleterCacheSize [
 ]
 
 { #category : #metrics }
-GtMemoryMetrics class >> totalImageSize [
+GtMemoryMetrics class >> totalEdenSize [
+	"The eden of the new space, where new objects are allocated"
+
 	<gtExample>
 	<noTest>
-	
+	^ Smalltalk vm edenSpaceSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalFreeOldSpaceSize [
+	<gtExample>
+	<noTest>
+	^ Smalltalk vm freeOldSpaceSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalHeapSize [
+	"The current size of the heap. Besides the objects saved in the image, 
+	it also includes free space and objects created by the UI and the user."
+
+	<gtExample>
+	<noTest>
 	^ Smalltalk vm memorySize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalImageSize [
+	"The size of the image file on disk, as of the last save"
+
+	<gtExample>
+	<noTest>
+	^ Smalltalk imagePath asFileReference size
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalImageSizeInMemory [
+	<gtExample>
+	<noTest>
+	^ self default totalImageSizeInMemory
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalLepiterDatabasesIndexSize [
+	<gtExample>
+	<noTest>
+	^ self default totalLepiterDatabasesIndexSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalLepiterGtBookIndexSize [
+	<gtExample>
+	<noTest>
+	^ self default totalLepiterGtBookIndexSize
 ]
 
 { #category : #metrics }
@@ -318,11 +375,34 @@ GtMemoryMetrics class >> totalMethodsCount [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics class >> totalMethodsFromTraitsCount [
+	<gtExample>
+	<noTest>
+	^ self default totalMethodsFromTraitsCount
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalMethodsFromTraitsSize [
+	<gtExample>
+	<noTest>
+	^ self default totalMethodsFromTraitsSize
+]
+
+{ #category : #metrics }
 GtMemoryMetrics class >> totalMethodsSize [
 	<gtExample>
 	<noTest>
 	
 	^ self default totalMethodsSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalOldSpaceSize [
+	"The old space of the heap, including its free space"
+
+	<gtExample>
+	<noTest>
+	^ Smalltalk vm oldSpace
 ]
 
 { #category : #metrics }
@@ -339,6 +419,15 @@ GtMemoryMetrics class >> totalPragmasCacheSize [
 	<noTest>
 	
 	^ self default totalPragmasCacheSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalSourcesFileSize [
+	"The sources file contains the source code of methods of the base system"
+
+	<gtExample>
+	<noTest>
+	^ Smalltalk sourcesName asFileReference size
 ]
 
 { #category : #metrics }
@@ -363,6 +452,13 @@ GtMemoryMetrics class >> totalSymbolsSize [
 	<noTest>
 	
 	^ self default totalSymbolsSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalTraitsOverheadForClassesWithoutTraitsSize [
+	<gtExample>
+	<noTest>
+	^ self default totalTraitsOverheadForClassesWithoutTraitsSize
 ]
 
 { #category : #metrics }
@@ -497,28 +593,74 @@ GtMemoryMetrics >> computeClassesInstanceSideSubclassesSize [
 ]
 
 { #category : #utils }
-GtMemoryMetrics >> computeTraitsOverheadSize [
-	| targetTraits |
-	
-	targetTraits := Smalltalk allClasses 
-		select: [ :class | class isTrait ].
-	targetTraits remove: TraitedClass.
+GtMemoryMetrics >> computeLepiterDatabasesIndexSize [
+	"All databases of the default logical database, including the ones loaded at startup"
 
-	^ targetTraits  
-		inject: 0
-		into: [ :traitsOverheadSize :targetTrait | 
-			traitsOverheadSize + (targetTrait users  
-				inject: 0
-				into: [ :traitUsersSize :targetClass | 
-					traitUsersSize 
-						+ targetClass class localMethodDict gtSpecificSizeInMemory
-						+ targetClass class baseLocalMethods gtSpecificSizeInMemory ]) ]
+	| aLogicalDatabase |
+	aLogicalDatabase := LeDatabasesRegistry default
+			currentLoadedDefaultLogicalDatabase.
+	aLogicalDatabase ifNil: [ ^ 0 ].
+
+	^ aLogicalDatabase databases
+		sumNumbers: [ :aDatabase | aDatabase indexSizeInMemory ]
+]
+
+{ #category : #utils }
+GtMemoryMetrics >> computeLepiterGtBookIndexSize [
+	"The GT Book is the only Lepiter database saved in the image"
+
+	| aLogicalDatabase |
+	aLogicalDatabase := LeDatabasesRegistry default
+			currentLoadedDefaultLogicalDatabase.
+	aLogicalDatabase ifNil: [ ^ 0 ].
+
+	^ (aLogicalDatabase databaseNamed: LeDatabase gtBookName ifNone: [ nil ])
+		ifNil: [ 0 ]
+		ifNotNil: [ :aDatabase | aDatabase indexSizeInMemory ]
+]
+
+{ #category : #utils }
+GtMemoryMetrics >> computeTraitsOverheadForClassesWithoutTraitsSize [
+	"Classes (and traits) that do not use traits themselves, neither on the instance side 
+	nor on the class side, can still have a TraitedMetaclass, for example because they 
+	inherit from a class that uses traits. 
+	Their extra method dictionaries contain the same methods as their method dictionaries."
+
+	^ SystemNavigation default allClasses
+		sumNumbers: [ :aClass | 
+			(aClass hasTraitComposition or: [ aClass classSide hasTraitComposition ])
+				ifTrue: [ 0 ]
+				ifFalse: [ self traitsOverheadSizeFor: aClass ] ]
+]
+
+{ #category : #utils }
+GtMemoryMetrics >> computeTraitsOverheadSize [
+	"Count the extra method dictionaries once for every class that has a TraitedMetaclass."
+
+	^ SystemNavigation default allClasses
+		sumNumbers: [ :aClass | self traitsOverheadSizeFor: aClass ]
 ]
 
 { #category : #initialization }
 GtMemoryMetrics >> initialize [ 
 	super initialize.
 	cache := Dictionary new.
+]
+
+{ #category : #utils }
+GtMemoryMetrics >> methodsFromTraitsDo: aBlock [
+	"Evaluate aBlock with every method installed in a class from a trait.
+	Traits can be used on the instance side or on the class side. The class side of traits 
+	also gets the methods of TraitedClass. Only classes with a TraitedMetaclass can have such methods."
+
+	SystemNavigation default allClasses
+		do: [ :aClass | 
+			(aClass classSide isKindOf: TraitedMetaclass)
+				ifTrue: [ {aClass instanceSide.
+						aClass classSide}
+						do: [ :aBehavior | 
+							aBehavior methodDict
+								valuesDo: [ :aMethod | aMethod isFromTrait ifTrue: [ aBlock value: aMethod ] ] ] ] ]
 ]
 
 { #category : #metrics }
@@ -724,13 +866,9 @@ GtMemoryMetrics >> totalClassesSize [
 
 { #category : #metrics }
 GtMemoryMetrics >> totalCodeAnalysedSize [
-	
-	^ self totalClassesSize 
-		+ self totalMethodsSize 
-		+ self totalSymbolsSize 
-		+ self totalPragmasCacheSize
-		+ self totalCompleterCacheSize
-		+ self navigationEnvironmentSize
+	^ self totalClassesSize + self totalMethodsSize + self totalSymbolsSize
+		+ self totalPragmasCacheSize + self totalCompleterCacheSize
+		+ self totalLepiterGtBookIndexSize + self navigationEnvironmentSize
 		+ self totalPackagesSize
 ]
 
@@ -791,6 +929,35 @@ GtMemoryMetrics >> totalCompleterCacheSize [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics >> totalImageSizeInMemory [
+	"The memory used now by all objects in the image, after a full garbage collection.
+	This is close to what saving the image now would write to disk. 
+	It also includes objects created by the UI and the user, but not the free space of the heap."
+
+	^ self
+		cacheAt: #totalImageSizeInMemory
+		ifAbsentPut: [ | aVirtualMachine |
+			Smalltalk garbageCollect.
+			aVirtualMachine := Smalltalk vm.
+			aVirtualMachine oldSpace - aVirtualMachine freeOldSpaceSize
+				+ aVirtualMachine youngSpaceSize ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalLepiterDatabasesIndexSize [
+	^ self
+		cacheAt: #totalLepiterDatabasesIndexSize
+		ifAbsentPut: [ self computeLepiterDatabasesIndexSize ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalLepiterGtBookIndexSize [
+	^ self
+		cacheAt: #totalLepiterGtBookIndexSize
+		ifAbsentPut: [ self computeLepiterGtBookIndexSize ]
+]
+
+{ #category : #metrics }
 GtMemoryMetrics >> totalMethodDictionaryBasicSize [
 
 	^ self 
@@ -829,6 +996,27 @@ GtMemoryMetrics >> totalMethodsCount [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics >> totalMethodsFromTraitsCount [
+	^ self
+		cacheAt: #totalMethodsFromTraitsCount
+		ifAbsentPut: [ | count |
+			count := 0.
+			self methodsFromTraitsDo: [ :aMethod | count := count + 1 ].
+			count ]
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalMethodsFromTraitsSize [
+	^ self
+		cacheAt: #totalMethodsFromTraitsSize
+		ifAbsentPut: [ | size |
+			size := 0.
+			self
+				methodsFromTraitsDo: [ :aMethod | size := size + aMethod gtSpecificSizeInMemory ].
+			size ]
+]
+
+{ #category : #metrics }
 GtMemoryMetrics >> totalMethodsSize [
 
 	^ self 
@@ -849,13 +1037,14 @@ GtMemoryMetrics >> totalPackagesSize [
 
 { #category : #metrics }
 GtMemoryMetrics >> totalPragmasCacheSize [
+	"Only the structure of the cache: the dictionary and the sets of pragmas.
+	The pragma objects are counted as part of the methods that define them."
 
-	^ self 
+	^ self
 		cacheAt: #totalPragmasCacheSize
-		ifAbsentPut: [
-			Pragma pragmaCache gtSpecificSizeInMemory + 
-				(Pragma pragmaCache sumNumbers: [ :pragmasSet | 
-					pragmasSet gtSpecificSizeInMemory +  (pragmasSet sumNumbers: #sizeInMemory) ]) ]
+		ifAbsentPut: [ Pragma pragmaCache gtSpecificSizeInMemory
+				+ (Pragma pragmaCache
+						sumNumbers: [ :pragmasSet | pragmasSet gtSpecificSizeInMemory ]) ]
 ]
 
 { #category : #metrics }
@@ -888,10 +1077,35 @@ GtMemoryMetrics >> totalSymbolsSize [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics >> totalTraitsOverheadForClassesWithoutTraitsSize [
+	^ self
+		cacheAt: #totalTraitsOverheadForClassesWithoutTraitsSize
+		ifAbsentPut: [ self computeTraitsOverheadForClassesWithoutTraitsSize ]
+]
+
+{ #category : #metrics }
 GtMemoryMetrics >> totalTraitsOverheadSize [
 
 	^ self 
 		cacheAt: #totalTraitsOverheadSize
 		ifAbsentPut: [
 			self computeTraitsOverheadSize ]
+]
+
+{ #category : #utils }
+GtMemoryMetrics >> traitsOverheadSizeFor: aClass [
+	"Classes that use traits, or inherit from a class that uses traits, have a TraitedMetaclass.
+	It keeps two extra method dictionaries with the methods defined locally in the class,
+	for the instance side and for the class side."
+
+	| aMetaclass |
+	aMetaclass := aClass classSide.
+	(aMetaclass isKindOf: TraitedMetaclass) ifFalse: [ ^ 0 ].
+
+	^ (aMetaclass localMethodDict
+		ifNil: [ 0 ]
+		ifNotNil: [ :aDictionary | aDictionary gtSpecificSizeInMemory ])
+		+ (aMetaclass baseLocalMethods
+				ifNil: [ 0 ]
+				ifNotNil: [ :aDictionary | aDictionary gtSpecificSizeInMemory ])
 ]
