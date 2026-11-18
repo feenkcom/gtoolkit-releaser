@@ -30,17 +30,6 @@ GtMemoryMetrics class >> reset [
 ]
 
 { #category : #metrics }
-GtMemoryMetrics class >> totalAnalysedSize [
-	"Code-related entities and the GT Book database.
-	The index of the GT Book is part of both, so we count it once."
-
-	<gtExample>
-	<noTest>
-	^ self default totalCodeAnalysedSize + GtLepiterMemoryMetrics totalGtBookSize
-		- self default totalLepiterGtBookIndexSize
-]
-
-{ #category : #metrics }
 GtMemoryMetrics class >> totalChangesFileSize [
 	"The changes file contains the source code of methods changed or added after the sources file"
 
@@ -405,16 +394,6 @@ GtMemoryMetrics class >> totalMethodsSize [
 	<noTest>
 	
 	^ self default totalMethodsSize
-]
-
-{ #category : #metrics }
-GtMemoryMetrics class >> totalNotAnalysedSize [
-	"The part of the image in memory that is not analysed: global state of the system 
-	(for example fonts and caches), objects created by the UI and the user, and other databases"
-
-	<gtExample>
-	<noTest>
-	^ self totalImageSizeInMemory - self totalAnalysedSize max: 0
 ]
 
 { #category : #metrics }
