@@ -11,7 +11,7 @@ Class {
 	#instVars : [
 		'specs'
 	],
-	#category : 'GToolkit-Releaser-BaselineModel-Examples'
+	#category : #'GToolkit-Releaser-BaselineModel-Examples'
 }
 
 { #category : #accessing }
