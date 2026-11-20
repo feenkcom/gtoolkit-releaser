@@ -27,6 +27,24 @@ GtRlChecksRunner class >> checksFactory: aGtRrChecksFactory [
 	^ self new checksFactory: aGtRrChecksFactory
 ]
 
+{ #category : #ci }
+GtRlChecksRunner class >> ciExamples [
+	^ self ciExamplesRunner checksFactory: self ciExamplesFactory
+]
+
+{ #category : #ci }
+GtRlChecksRunner class >> ciExamplesFactory [
+	^ self dedicatedReleaseBranchExamplesFactory
+]
+
+{ #category : #ci }
+GtRlChecksRunner class >> ciExamplesRunner [
+	| runner |
+	runner := self new.
+	runner retryStrategy: GtRlChecksRunnerWorkerOnlyRetryStrategy new.
+	^ runner
+]
+
 { #category : #'instance creation' }
 GtRlChecksRunner class >> dedicatedReleaseBranchExamples [
 	"Run the dedicated release branch examples"
@@ -258,6 +276,24 @@ GtRlChecksRunner >> checksFactory: aGtRrChecksFactory [
 		initialJob := aGtRrChecksFactory job.
 		initialJob taskTimeout: self defaultTaskTimeout.
 		self initialJob: initialJob ] forkNamed: 'GtRlChecksRunner generate initialJob'.
+]
+
+{ #category : #ci }
+GtRlChecksRunner >> ciInitializationFailed [
+	^ initialisationProcess notNil
+		and: [ initialisationProcess isTerminated and: [ stats state = #notStarted ] ]
+]
+
+{ #category : #ci }
+GtRlChecksRunner >> ciResults [
+	^ self
+		critical: [ self checkNames
+				collect: [ :name | 
+					| results |
+					results := checkResults
+							at: name
+							ifAbsent: [ checkSkips at: name ifAbsent: [ #() ] ].
+					name -> (results isEmpty ifTrue: [ nil ] ifFalse: [ results last ]) ] ]
 ]
 
 { #category : #accessing }
