@@ -76,16 +76,17 @@ GtRlChecksRunner class >> dedicatedReleaseBranchExamplesFactory [
 
 { #category : #'instance creation' }
 GtRlChecksRunner class >> defaultSkippedPackageNames [
+	"Package names are Symbols: the users compare this list with package names (difference:, asSet =)"
 	^ #(
-	'GToolkit-Boxer' 
-	'Sparta-Cairo' 
-	'Sparta-Skia' 
-	'GToolkit-RemoteExamples-GemStone' 
-	'PythonBridge-Pharo'
-	'GToolkit-Editor'
-	'GToolkit-Pharo-Coder-Examples-RustEditor'
-	'GToolkit4PetitParser2-RustEditor'
-	'Gt4CSS-Examples-RustEditor'
+	#'GToolkit-Boxer'
+	#'Sparta-Cairo'
+	#'Sparta-Skia'
+	#'GToolkit-RemoteExamples-GemStone'
+	#'PythonBridge-Pharo'
+	#'GToolkit-Editor'
+	#'GToolkit-Pharo-Coder-Examples-RustEditor'
+	#'GToolkit4PetitParser2-RustEditor'
+	#'Gt4CSS-Examples-RustEditor'
 	)
 ]
 
