@@ -78,7 +78,7 @@ GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChangesBetween: aSourceCo
 	disallowedChanges := releaserChanges reject: [ :aNode |
 		aNode key = GtRlReleaseVersionMetadata fileName or: [ 
 			aNode key = GtRlExportReleaserVersionAction fileName or: [ 
-				aNode key = 'baseline:' ] ] ].
+				aNode key = #baseline: ] ] ].
 
 	self
 		assert: [ disallowedChanges isEmpty ]
@@ -90,7 +90,7 @@ GtRlDedicatedBranchReleaseStrategy >> assertOnlyAllowedChangesBetween: aSourceCo
 			] separatedBy: [ aStream cr ] ] ].
 
 	releaserChanges 
-		select: [ :aNode | aNode key = 'baseline:' ] 
+		select: [ :aNode | aNode key = #baseline: ] 
 		thenDo: [ :aNode | self assertBaselineMethodNodeFor: aNode ].
 
 	metadataChanges := releaserChanges 

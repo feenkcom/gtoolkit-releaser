@@ -538,7 +538,7 @@ GtRlRepositoryRelease >> releaseStrategy: aReleaseStrategy [
 { #category : #'accessing - dynamic' }
 GtRlRepositoryRelease >> remoteOrigin [
 	^ self icebergRepository remotes 
-		detect: [ :iceRemote | iceRemote name = #origin ]
+		detect: [ :iceRemote | iceRemote name = 'origin' ]
 		
 ]
 

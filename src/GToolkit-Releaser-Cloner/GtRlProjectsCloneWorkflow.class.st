@@ -220,18 +220,21 @@ GtRlProjectsCloneWorkflow >> isBaselineNamedAlreadyLoadedForSpec: aBaselineSpec 
 
 { #category : #loading }
 GtRlProjectsCloneWorkflow >> loadBaselinePackageForSpec: aBaselineSpec [
-	| icebergRepository icebergPackage baselineClassName |
+	| icebergRepository icebergPackage baselineClassName baselinePackageName |
 	baselineClassName := (aBaselineSpec baselineName indexOfSubCollection: 'BaselineOf') > 0
 			ifTrue: [ aBaselineSpec baselineName ]
 			ifFalse: [ 'BaselineOf' , aBaselineSpec baselineName ].
 
 	icebergRepository := self
 			ensureRepositoryCloneFor: aBaselineSpec repositoryLocation.
-	(icebergRepository workingCopy packageNames includes: baselineClassName)
-		ifFalse: [ Error signal: 'Cannot find baseline package ' , baselineClassName ].
+			
+	"Iceberg package names are Strings or Symbols: compare them as Strings and use the name the working copy has. Only Pharo methods here, as the releaser is loaded before GT."
+	baselinePackageName := icebergRepository workingCopy packageNames
+		detect: [ :each | each asString = baselineClassName asString ]
+		ifNone: [ Error signal: 'Cannot find baseline package ' , baselineClassName ].
 
 	self emitPackageLoadForSpec: aBaselineSpec.
-	icebergPackage := icebergRepository workingCopy packageNamed: baselineClassName.
+	icebergPackage := icebergRepository workingCopy packageNamed: baselinePackageName.
 	icebergPackage load.
 
 	^ self class packageOrganizer packageNamed: icebergPackage name
