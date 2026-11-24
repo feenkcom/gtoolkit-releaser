@@ -22,7 +22,7 @@ GtRlParallelExamplesCommandLineHandler >> activate [
 	(self hasOption: 'disable-deprecation-rewrites')
 		ifTrue: [ Deprecation activateTransformations: false ].
 	runner := GtRlChecksRunner ciExamples.
-	deadline := DateAndTime now + 210 minutes.
+	deadline := DateAndTime now + 45 minutes.
 	[ runner stats state = #finished
 		or: [ runner ciInitializationFailed or: [ DateAndTime now >= deadline ] ] ]
 		whileFalse: [ (Delay forSeconds: 1) wait ].

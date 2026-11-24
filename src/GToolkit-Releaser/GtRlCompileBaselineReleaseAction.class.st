@@ -32,7 +32,7 @@ GtRlCompileBaselineReleaseAction >> baselineCodeForCommit: aCommit [
 	baselineDefinition := mcPackage definitions 
 		detect: [ :e | 
 			e isMethodDefinition and: [ 
-				e selector = 'baseline:' and: [ 
+				e selector = #baseline: and: [ 
 					e className = baselineName ] ] ]
 		ifNone: [ ^ nil ].
 	^ baselineDefinition source
