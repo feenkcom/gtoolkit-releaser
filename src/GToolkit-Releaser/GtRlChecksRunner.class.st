@@ -726,7 +726,8 @@ GtRlChecksRunner >> schedulingTimes [
 	times := timesFile exists ifTrue:
 		[ GtRrCheckSchedulingTimes loadFromFile: timesFile ]
 	ifFalse:
-		[ GtRrCheckSchedulingTimes new ]
+		[ GtRrCheckSchedulingTimes new ].
+	^ times
 ]
 
 { #category : #private }
