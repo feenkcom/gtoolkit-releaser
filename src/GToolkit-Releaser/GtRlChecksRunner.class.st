@@ -29,7 +29,9 @@ GtRlChecksRunner class >> checksFactory: aGtRrChecksFactory [
 
 { #category : #ci }
 GtRlChecksRunner class >> ciExamples [
-	^ self ciExamplesRunner startChecksFactory: self ciExamplesFactory
+	^ self ciExamplesRunner
+		startChecksFactory: GtRrChecksFactory new
+		configuring: self ciExamplesFactory
 ]
 
 { #category : #ci }
