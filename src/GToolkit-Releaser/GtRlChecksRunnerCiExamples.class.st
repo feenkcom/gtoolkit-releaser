@@ -8,19 +8,6 @@ Class {
 }
 
 { #category : #examples }
-GtRlChecksRunnerCiExamples >> ciFactoryUsesFullReleaseSelection [
-	<gtExample>
-	| factory releaseNames ciNames |
-	factory := GtRlChecksRunner ciExamplesFactory.
-	releaseNames := GtRlChecksRunner dedicatedReleaseBranchExamplesFactory tasks
-			flatCollect: #checkNames.
-	ciNames := factory tasks flatCollect: #checkNames.
-	self assert: ciNames asSet equals: releaseNames asSet.
-	self assert: ciNames isNotEmpty.
-	^ factory
-]
-
-{ #category : #examples }
 GtRlChecksRunnerCiExamples >> ciRunnerLimitsHeadlessWorkers [
 	<gtExample>
 	| runner |
@@ -30,6 +17,24 @@ GtRlChecksRunnerCiExamples >> ciRunnerLimitsHeadlessWorkers [
 		description: [ 'Worker runner pool size is: {1}'
 				format: {runner workerRunner managerStartupAndShutdown poolSize} ].
 	^ runner
+]
+
+{ #category : #examples }
+GtRlChecksRunnerCiExamples >> dedicatedReleaseBranchFactoryStartsWithSoloTasks [
+	<gtExample>
+	| rlRunner factory soloClasses firstTasks |
+	rlRunner := GtRlChecksRunner new.
+	factory := GtRrChecksFactory new.
+	GtRlChecksRunner dedicatedReleaseBranchExamplesFactory
+		value: factory value: rlRunner.
+	soloClasses := GtRlChecksRunner soloTaskClasses.
+	firstTasks := factory tasks first: soloClasses size.
+	self
+		assert: (firstTasks allSatisfy: [ :task | task isKindOf: GtRrClassExampleTask ]).
+	self
+		assert: (firstTasks collect: #exampleClassName) asArray
+		equals: (soloClasses collect: #name).
+	^ factory
 ]
 
 { #category : #examples }

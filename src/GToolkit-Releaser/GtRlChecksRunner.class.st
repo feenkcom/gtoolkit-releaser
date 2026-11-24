@@ -24,12 +24,12 @@ Class {
 GtRlChecksRunner class >> checksFactory: aGtRrChecksFactory [
 	"Run the examples in the supplied factory"
 
-	^ self new checksFactory: aGtRrChecksFactory
+	^ self new startChecksFactory: aGtRrChecksFactory
 ]
 
 { #category : #ci }
 GtRlChecksRunner class >> ciExamples [
-	^ self ciExamplesRunner checksFactory: self ciExamplesFactory
+	^ self ciExamplesRunner startChecksFactory: self ciExamplesFactory
 ]
 
 { #category : #ci }
@@ -49,29 +49,40 @@ GtRlChecksRunner class >> ciExamplesRunner [
 GtRlChecksRunner class >> dedicatedReleaseBranchExamples [
 	"Run the dedicated release branch examples"
 
-	^ self checksFactory: self dedicatedReleaseBranchExamplesFactory.
+	^ self 
+		startChecksFactory: GtRrChecksFactory new 
+		configuring: self dedicatedReleaseBranchExamplesFactory.
 ]
 
 { #category : #'instance creation' }
 GtRlChecksRunner class >> dedicatedReleaseBranchExamplesFactory [
-	"Answer a GtRrChecksFactory with the dedicatedReleaseBranch examples"
-
-	| examples baselineProject packages allPackageNames factory |
+	"Answer a block that configures tje supplied GtRrChecksFactory with the dedicatedReleaseBranch examples"
+	
+	^ [ :checksFactory :rlRunner |
+	| baselineProject packages allPackageNames classNames |
+	
 	baselineProject := BaselineOfGToolkit fullBaselineProject.
 	packages := baselineProject
 			withAllContainedRPackagesSelect: [ :aPackage | aPackage gtExamplesAllContained isNotEmpty ].
 
 	allPackageNames := packages collect: [ :aPackage | aPackage name ].
-	allPackageNames := allPackageNames difference: self defaultSkippedPackageNames.	"allPackageNames := allPackageNames first: 100."
+	allPackageNames := allPackageNames difference: self defaultSkippedPackageNames.
 
-	examples := allPackageNames
-			flatCollect: [ :pName | (self class packageOrganizer packageNamed: pName) gtExamplesAllContained ].
+	classNames := (allPackageNames
+			flatCollect: [ :pName | 
+				(self class packageOrganizer packageNamed: pName) gtExamplesAllContained
+					collect: [ :each | each receiverClass instanceSide name ] ]) asSet.
+	classNames := classNames difference: (self soloTaskClasses collect: #name).
 
-	factory := GtRrChecksFactory new.
-	factory
-		addExampleTestNames: (examples
-				collect: [ :each | each receiverClass name asSymbol -> each selector asSymbol ]).
-	^ factory
+	checksFactory schedulingTimes: rlRunner schedulingTimes.
+	checksFactory addExampleClasses: 
+		(classNames collect: [ :className | 
+			self class environment at: className ]).
+	checksFactory groupTasksByTime.
+	checksFactory addTasksFirst: 
+		(self soloTaskClasses collect: [ :each | 
+			GtRrClassExampleTask exampleClassName: each name ]).
+	checksFactory ]
 ]
 
 { #category : #'instance creation' }
@@ -92,13 +103,15 @@ GtRlChecksRunner class >> defaultSkippedPackageNames [
 
 { #category : #'instance creation' }
 GtRlChecksRunner class >> gemstoneRemoteExamplesFactory [
-	| factory |
 
-	factory := GtRrChecksFactory new.
-	factory
+	^ [ :checksFactory :rlRunner |
+	checksFactory
 		retryStrategy: GtRrTaskTestRetry new;
 		addExamplePackages: {'GToolkit-RemoteExamples-GemStone' asPackage}.
-	^ factory.
+	checksFactory 
+		schedulingTimes: rlRunner schedulingTimes;
+		groupTasksByTime.
+	checksFactory ].
 ]
 
 { #category : #accessing }
@@ -209,25 +222,30 @@ GtRlChecksRunner class >> preCommitExamples [
 
 { #category : #'instance creation' }
 GtRlChecksRunner class >> preCommitExamplesFactory [
-	| factory tasks task checkNames |
 
-	factory := self dedicatedReleaseBranchExamplesFactory.
-	tasks := factory tasks.
-	self assert: tasks size equals: 1.
-	task := tasks first.
-	checkNames := task checkNames asOrderedCollection.
-	checkNames
-		removeAll: self knownFailures;
-		removeAll: self knownErrors.
-	task checkNames: checkNames asArray.
-	^ factory.
+	^ [ :checksFactory :rlRunner |
+	| tasks checkNames |
+
+	rlRunner retryStrategy: GtRlChecksRunnerWorkerOnlyRetryStrategy new.
+	self dedicatedReleaseBranchExamplesFactory
+		value: checksFactory value: rlRunner.
+	tasks := checksFactory tasks.
+	tasks 
+		select: [ :task | task class = GtRrExplicitExampleTask ]
+		thenDo: [ :task |
+			checkNames := task checkNames asOrderedCollection.
+			checkNames
+				removeAllFoundIn: self knownFailures;
+				removeAllFoundIn: self knownErrors.
+			task checkNames: checkNames asArray.
+	checksFactory ] ].
 ]
 
 { #category : #'instance creation' }
 GtRlChecksRunner class >> remoteRunnerExamples [
 	"Run the RemoteRunner examples"
 
-	^ self checksFactory: self remoteRunnerFactory
+	^ self startChecksFactory: self remoteRunnerFactory
 ]
 
 { #category : #'instance creation' }
@@ -247,6 +265,26 @@ GtRlChecksRunner class >> remoteRunnerFactory [
 	^ factory
 ]
 
+{ #category : #accessing }
+GtRlChecksRunner class >> soloTaskClasses [
+	^ {GtObjectClipboardExamples.
+		GtInspectorScripterExamples}
+]
+
+{ #category : #'instance creation' }
+GtRlChecksRunner class >> startChecksFactory: aGtRrChecksFactory [
+	"Run the examples in the supplied factory"
+
+	^ self new startChecksFactory: aGtRrChecksFactory
+]
+
+{ #category : #running }
+GtRlChecksRunner class >> startChecksFactory: aGtRrChecksFactory configuring: aBlock [
+	"Run a factory configured after the runner is available."
+
+	^ self new startChecksFactory: aGtRrChecksFactory configuring: aBlock
+]
+
 { #category : #private }
 GtRlChecksRunner >> addTaskResult: aTaskCompletedAnnouncement [
 
@@ -262,17 +300,9 @@ GtRlChecksRunner >> checkNames [
 
 { #category : #initialization }
 GtRlChecksRunner >> checksFactory: aGtRrChecksFactory [
-	"Run the examples in the supplied factory"
-	| initialJob |
-
-	initialisationProcess := [
-	  "Start the runner first so the default GtRrCheckSchedulingTimes is available"
-	  self startRunners.
-		"Generate and submit the job"
-		aGtRrChecksFactory groupTasksByTime.
-		initialJob := aGtRrChecksFactory job.
-		initialJob taskTimeout: self defaultTaskTimeout.
-		self initialJob: initialJob ] forkNamed: 'GtRlChecksRunner generate initialJob'.
+	"Renamed to #startChecksFactory:"
+	
+	^ self startChecksFactory: aGtRrChecksFactory
 ]
 
 { #category : #ci }
@@ -377,7 +407,8 @@ GtRlChecksRunner >> gemstoneRemoteExamples [
 	"Run the examples from GToolkit-RemoteExamples-GemStone."
 
 	self workerRunner managerStartupAndShutdown poolSize: 3.
-	^ self checksFactory: self class gemstoneRemoteExamplesFactory.
+	^ self startChecksFactory: self
+		configuring: self class gemstoneRemoteExamplesFactory.
 ]
 
 { #category : #ui }
@@ -526,22 +557,6 @@ GtRlChecksRunner >> jobCompleted: aJobCompletedAnnouncement [
 ]
 
 { #category : #private }
-GtRlChecksRunner >> loadSchedulingTimes [
-	"Load the times used to sequence the checks"
-	| timesFile |
-
-	times ifNotNil: [ ^ times ].
-	timesFile := self schedulingTimesFile.
-	times := timesFile exists ifTrue:
-		[ GtRrCheckSchedulingTimes
-			loadDefaultFromFile: timesFile
-			runner: workerRunner ]
-	ifFalse:
-		[ GtRrCheckSchedulingTimes new
-			remoteRunner: workerRunner ]
-]
-
-{ #category : #private }
 GtRlChecksRunner >> newLogBasename [
 
 	^ String streamContents: [ :stream | 
@@ -577,7 +592,16 @@ GtRlChecksRunner >> preCommitExamples [
 	minus checks that are known to fail in this environment,
 	but should still pass in the CI."
 
-	^ self checksFactory: self class preCommitExamplesFactory.
+	^ self startChecksFactory: GtRrChecksFactory new
+			configuring: self class preCommitExamplesFactory.
+]
+
+{ #category : #running }
+GtRlChecksRunner >> prepareChecksFactory: aGtRrChecksFactory [
+	"Group the factory's regular tasks with this runner's scheduling times."
+
+	aGtRrChecksFactory schedulingTimes: self schedulingTimes.
+	aGtRrChecksFactory groupTasksByTime
 ]
 
 { #category : #private }
@@ -602,6 +626,22 @@ GtRlChecksRunner >> queueInImage: anAssociation timeout: taskTimeout [
 		to: self.
 	self critical:
 		[ jobs add: (inImageRunner submitJob: job) ].
+]
+
+{ #category : #accessing }
+GtRlChecksRunner >> resultsForClassNames: aCollection [
+	| keys |
+
+	keys := self checkNames select: [ :assoc |
+		aCollection includes: assoc key ].
+	^ keys collect: [ :key |
+		checkResults at: key ].
+]
+
+{ #category : #accessing }
+GtRlChecksRunner >> resultsForClasses: aCollection [
+
+	^ self resultsForClassNames: (aCollection collect: #name)
 ]
 
 { #category : #accessing }
@@ -678,6 +718,18 @@ GtRlChecksRunner >> runUiProcessFailures: aTaskFinishedAnnouncement [
 ]
 
 { #category : #private }
+GtRlChecksRunner >> schedulingTimes [
+	| timesFile |
+
+	times ifNotNil: [ ^ times ].
+	timesFile := self schedulingTimesFile.
+	times := timesFile exists ifTrue:
+		[ GtRrCheckSchedulingTimes loadFromFile: timesFile ]
+	ifFalse:
+		[ GtRrCheckSchedulingTimes new ]
+]
+
+{ #category : #private }
 GtRlChecksRunner >> schedulingTimesFile [
 	"Answer the file used to store scheduling (check) times"
 	| timesOrigin timesDir |
@@ -692,11 +744,34 @@ GtRlChecksRunner >> schedulingTimesFile [
 	^ timesDir / 'GtRrCheckSchedulingTimes.json'.
 ]
 
+{ #category : #initialization }
+GtRlChecksRunner >> startChecksFactory: aGtRrChecksFactory [
+	"Group the supplied factory using this runner's scheduling times, then run it."
+
+	^ self
+		startChecksFactory: aGtRrChecksFactory
+		configuring: [ :factory :runner | runner prepareChecksFactory: factory ]
+]
+
+{ #category : #running }
+GtRlChecksRunner >> startChecksFactory: aGtRrChecksFactory configuring: aBlock [
+	"Configure the factory before creating and submitting its job.
+	The block receives the factory and this runner."
+
+	| initialJob |
+	initialisationProcess := [ aBlock value: aGtRrChecksFactory value: self.
+		initialJob := aGtRrChecksFactory job.
+		initialJob taskTimeout: self defaultTaskTimeout.
+		self initialJob: initialJob ]
+			forkNamed: 'GtRlChecksRunner generate initialJob'
+]
+
 { #category : #private }
 GtRlChecksRunner >> startInitialJob: aGtRrChecksJob [
 
 	enqueueSubmitCount := 0.
 	enqueueRunCount := 0.
+	self startRunners.
 	aGtRrChecksJob name: 'Initial Job'.
 	self critical:
 		[ stats 
@@ -718,6 +793,16 @@ GtRlChecksRunner >> startInitialJob: aGtRrChecksJob [
 		stats startTime: DateAndTime now. ].
 ]
 
+{ #category : #initialization }
+GtRlChecksRunner >> startJob: aGtRrChecksJob [
+	"Run the examples in the supplied factory.
+	Checks are start either by calling this method or startChecksFactory:"
+
+	initialisationProcess := [
+		aGtRrChecksJob taskTimeout: self defaultTaskTimeout.
+		self initialJob: aGtRrChecksJob ] forkNamed: 'GtRlChecksRunner startJob:'.
+]
+
 { #category : #private }
 GtRlChecksRunner >> startRunners [
 	"Start the headless and in-image runners and workers"
@@ -727,14 +812,13 @@ GtRlChecksRunner >> startRunners [
 		startLogging;
 		moveLoggingTo: self newLogBasename;
 		start.
+	self schedulingTimes remoteRunner: workerRunner.
 
 	inImageRunner := GtRemoteRunner new.
 	inImageRunner port: #none.
 	manager := inImageRunner managerStartupAndShutdown.
 	inImageRunner start.
 	manager startInImageWorker.
-
-	self loadSchedulingTimes.
 ]
 
 { #category : #private }
