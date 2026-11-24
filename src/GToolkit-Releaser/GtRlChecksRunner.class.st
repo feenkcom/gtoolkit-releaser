@@ -154,10 +154,6 @@ GtRlChecksRunner class >> knownErrors [
 	#GtRlDedicatedBranchRootReleaseExamples -> #printBaselineCodeReleaseWithHeadCommitChildRepository.
 	#GtRlDedicatedBranchRootReleaseExamples -> #releaseWithHeadCommitChildRepositoryWithNewCommit.
 	#GtRlDedicatedBranchRootReleaseExamples -> #releaseWorkflowForHeadCommitChildWithNewCommit.
-	#GtGitElementExamples -> #scripterOnExpandedElementWithDeletedRepository.
-	#GtGitElementExamples -> #scripterOnExpandedElementWithInitializationDone.
-	#GtGitElementExamples -> #scripterOnExpandedElementWithExpandedProperties.
-	#GtGitElementExamples -> #scripterOnExpandedElementWithEditedBranch.
 	#GtRlReleaserExamples -> #projectBWithNoVersion.
 	#GtRlReleaserExamples -> #projectWithOneReleasedVersionAndNewCommit.
 	#GtRlReleaserExamples -> #projectAWithNoVersion.
