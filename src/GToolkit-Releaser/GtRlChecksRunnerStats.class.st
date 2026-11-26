@@ -145,9 +145,12 @@ GtRlChecksRunnerStats >> notCounted [
 
 { #category : #ui }
 GtRlChecksRunnerStats >> notifyUpdate [
-	"Announce that the summary view should be updated"
+	"Announce the current state so subscribers can update the summary view"
 
-	self announce: GtRlChecksRunnerUpdateAnnouncement new
+	self
+		announce: (GtRlChecksRunnerUpdateAnnouncement new
+				state: self state;
+				yourself)
 ]
 
 { #category : #'announcer - subscription' }
