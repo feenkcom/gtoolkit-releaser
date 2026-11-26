@@ -22,14 +22,13 @@ GtRlParallelExamplesCommandLineHandler >> activate [
 	(self hasOption: 'disable-deprecation-rewrites')
 		ifTrue: [ Deprecation activateTransformations: false ].
 	runner := GtRlChecksRunner ciExamples.
-	deadline := DateAndTime now + 45 minutes.
 	[ runner stats state = #finished
-		or: [ runner ciInitializationFailed or: [ DateAndTime now >= deadline ] ] ]
+		or: [ runner ciInitializationFailed ] ]
 		whileFalse: [ (Delay forSeconds: 1) wait ].
 	runner ciInitializationFailed
 		ifTrue: [ ^ self exitFailure: 'Parallel examples failed during initialization' ].
 	runner stats state = #finished
-		ifFalse: [ ^ self exitFailure: 'Parallel examples did not finish within 210 minutes' ].
+		ifFalse: [ ^ self exitFailure: 'Parallel examples did not finish' ].
 	failed := self writeReportFor: runner.
 	failed ifTrue: [ ^ self exitFailure: 'Parallel examples failed' ].
 	^ self exitSuccess

@@ -431,11 +431,29 @@ GtMemoryMetrics class >> totalSourcesFileSize [
 ]
 
 { #category : #metrics }
+GtMemoryMetrics class >> totalSpaceTallyHistorySize [
+	<gtExample>
+	<noTest>
+
+	^ self default totalSpaceTallyHistorySize
+
+]
+
+{ #category : #metrics }
 GtMemoryMetrics class >> totalStringLiteralsOnlyInMethodsSize [
 	<gtExample>
 	<noTest>
 	
 	^ self default totalStringLiteralsOnlyInMethodsSize
+]
+
+{ #category : #metrics }
+GtMemoryMetrics class >> totalSymbolTablesSize [
+	<gtExample>
+	<noTest>
+
+	^ self default totalSymbolTablesSize
+
 ]
 
 { #category : #metrics }
@@ -867,9 +885,10 @@ GtMemoryMetrics >> totalClassesSize [
 { #category : #metrics }
 GtMemoryMetrics >> totalCodeAnalysedSize [
 	^ self totalClassesSize + self totalMethodsSize + self totalSymbolsSize
-		+ self totalPragmasCacheSize + self totalCompleterCacheSize
-		+ self totalLepiterGtBookIndexSize + self navigationEnvironmentSize
-		+ self totalPackagesSize
+		+ self totalSymbolTablesSize + self totalPragmasCacheSize
+		+ self totalCompleterCacheSize + self totalLepiterGtBookIndexSize
+		+ self navigationEnvironmentSize + self totalPackagesSize
+
 ]
 
 { #category : #metrics }
@@ -1018,12 +1037,16 @@ GtMemoryMetrics >> totalMethodsFromTraitsSize [
 
 { #category : #metrics }
 GtMemoryMetrics >> totalMethodsSize [
+	"Methods with their blocks, pragmas and literals. Methods can share literals
+	(for example after ImageCleaner class>>#shareLiterals); each literal is counted once."
 
-	^ self 
+	^ self
 		cacheAt: #totalMethodsSize
-		ifAbsentPut: [
-			SystemNavigation default  allMethods 
-				sumNumbers: [ :aMethod | aMethod gtSpecificSizeInMemory ] ]
+		ifAbsentPut: [ | countedLiterals |
+			countedLiterals := IdentitySet new.
+			SystemNavigation default allMethods
+				sumNumbers: [ :aMethod | aMethod gtSizeInMemoryCountingLiteralsOnceIn: countedLiterals ] ]
+
 ]
 
 { #category : #metrics }
@@ -1048,13 +1071,41 @@ GtMemoryMetrics >> totalPragmasCacheSize [
 ]
 
 { #category : #metrics }
-GtMemoryMetrics >> totalStringLiteralsOnlyInMethodsSize [
+GtMemoryMetrics >> totalSpaceTallyHistorySize [
+	"The space tallies recorded while the image is built"
 
-	^ self 
+	^ self
+		cacheAt: #totalSpaceTallyHistorySize
+		ifAbsentPut: [ GtSpaceTallyHistory default gtSpecificSizeInMemory ]
+
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalStringLiteralsOnlyInMethodsSize [
+	"The strings that are literals of methods, also inside literal arrays.
+	Methods can share literals; each string is counted once."
+
+	^ self
 		cacheAt: #totalStringLiteralsOnlyInMethodsSize
-		ifAbsentPut: [
-			SystemNavigation default  allMethods 
-				sumNumbers: [ :aMethod | aMethod gtSpecificSizeInMemoryStringLiteralsOnly ] ]
+		ifAbsentPut: [ | countedLiterals |
+			countedLiterals := IdentitySet new.
+			SystemNavigation default allMethods
+				sumNumbers: [ :aMethod | aMethod gtStringLiteralsSizeInMemoryCountingOnceIn: countedLiterals ] ]
+
+]
+
+{ #category : #metrics }
+GtMemoryMetrics >> totalSymbolTablesSize [
+	"The sets that hold the interned symbols, and the cache of the selectors used by methods"
+
+	^ self
+		cacheAt: #totalSymbolTablesSize
+		ifAbsentPut: [ #(#SymbolTable #NewSymbols #SelectorTable)
+				sumNumbers: [ :aName |
+					(Symbol classVariableNamed: aName) value
+						ifNil: [ 0 ]
+						ifNotNil: [ :aSet | aSet gtSpecificSizeInMemory ] ] ]
+
 ]
 
 { #category : #metrics }
