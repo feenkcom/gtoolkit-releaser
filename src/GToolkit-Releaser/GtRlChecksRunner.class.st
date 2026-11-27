@@ -925,8 +925,8 @@ GtRlChecksRunner >> uiProcessTaskCompleted: aTaskFinishedAnnouncement [
 { #category : #private }
 GtRlChecksRunner >> updateSchedulingTimes [
 
-	GtRrCheckSchedulingTimes default saveToFile: 
-		self schedulingTimesFile
+	times ifNotNil:
+		[ times saveToFile: self schedulingTimesFile ]
 ]
 
 { #category : #accessing }
